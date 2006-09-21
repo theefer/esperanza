@@ -1,6 +1,6 @@
 DEPENDPATH += ..
 INCLUDEPATH += . /sw/include ../lib 
-CONFIG += link_pkgconfig staticlib
+CONFIG += link_pkgconfig staticlib debug
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp
 

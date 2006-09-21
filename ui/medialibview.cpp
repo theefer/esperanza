@@ -23,6 +23,13 @@ MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (paren
 
 	setIconSize (QSize (75, 75));
 
+	connect (m_model, SIGNAL (searchDone ()), this, SLOT (search_done ()));
+}
+
+void
+MedialibView::search_done ()
+{
+	emit searchDone ();
 }
 
 QList<uint32_t>

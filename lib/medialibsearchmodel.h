@@ -22,6 +22,9 @@ class MedialibSearchModel : public PlaylistModel
 		void do_search (uint32_t, const QString &);
 		void got_connection (XClient *client);
 
+	signals:
+		void searchDone ();
+
 	private:
 		bool handle_search (const Xmms::List<Xmms::Dict> &);
 };

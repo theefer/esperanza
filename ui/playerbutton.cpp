@@ -7,7 +7,11 @@
 PlayerButton::PlayerButton (QWidget *parent, const QString &pic) : QLabel (parent)
 {
 	setMargin (3);
-	setPixmap (QPixmap (pic));
+	QPixmap p (pic);
+	if (!p.isNull ())
+		setPixmap (p);
+	else
+		setText (pic);
 	setFrameStyle (QFrame::StyledPanel | QFrame::Plain);
 
 	setAutoFillBackground (true);

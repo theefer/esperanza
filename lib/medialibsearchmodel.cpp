@@ -54,10 +54,11 @@ MedialibSearchModel::handle_search (const Xmms::List< Xmms::Dict > &list)
 {
 	m_plist.clear ();
 
-
 	for (list.first (); list.isValid (); ++ list) {
 		m_plist.append ((*list).get<int32_t> ("id"));
 	}
+
+	emit searchDone ();
 
 	reset ();
 

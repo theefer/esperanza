@@ -21,6 +21,12 @@ class MedialibView : public QTreeView
 		QList<uint32_t> get_selection ();
 		QList<uint32_t> get_all ();
 
+	private slots:
+		void search_done ();
+
+	signals:
+		void searchDone ();
+
 	private:
 		MedialibSearchModel *m_model;
 		QItemSelectionModel *m_selections;

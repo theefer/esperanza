@@ -71,6 +71,8 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	resize (s.value ("medialibdialog/size", QSize (500, 350)).toSize ());
 	if (s.contains ("medialibdialog/position"))
 		move (s.value ("medialibdialog/position").toPoint ());
+
+	connect (m_list, SIGNAL (searchDone ()), this, SLOT (search_done ()));
 }
 
 void
@@ -88,10 +90,17 @@ MedialibDialog::plus_pressed (QMouseEvent *ev)
 }
 
 void
+MedialibDialog::search_done ()
+{
+	m_le->setEnabled (true);
+}
+
+void
 MedialibDialog::do_search ()
 {
 	m_list->do_search (m_qb->itemData (m_qb->currentIndex ()).toUInt (),
 					   m_le->displayText ());
+	m_le->setEnabled (false);
 }
 
 void

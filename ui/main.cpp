@@ -10,6 +10,7 @@
 
 #include "xclient.h"
 #include "playerwidget.h"
+#include "serverdialog.h"
 
 int
 main (int argc, char **argv)
@@ -36,9 +37,24 @@ main (int argc, char **argv)
 	QApplication::setPalette (p);
 
 	XClient client (NULL, "SimpleQt");
+
+	QString path;
+
+	if (!getenv ("XMMS_PATH")) {
+		ServerDialog sd (NULL);
+		path = sd.get_path ();
+		if (path == "local") {
+			path = "";
+		} else if (path.isNull ()) {
+			return EXIT_FAILURE;
+		}
+	} else {
+		path = QString::fromAscii (getenv ("XMMS_PATH"));
+	}
+
 	PlayerWidget *pw = new PlayerWidget (NULL, &client);
 
-	client.connect (getenv ("XMMS_PATH") ? getenv ("XMMS_PATH") : "");
+	client.connect (path.toStdString ());
 
 	pw->show ();
 
