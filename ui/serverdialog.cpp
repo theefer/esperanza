@@ -26,7 +26,6 @@ ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent)
 
 	QMap <QString, QVariant> def;
 	def["local"] = QString ("local");
-//	def["remote"] = QString ("tcp://192.168.1.2:5555/");
 
 	QSettings s;
 	QMap<QString, QVariant> m = s.value ("serverbrowser/list", def).toMap ();
@@ -94,7 +93,6 @@ AddServerDialog::AddServerDialog (QWidget *parent)
 void
 ServerDialog::add_server ()
 {
-	qDebug ("woot woot hej!");
 	AddServerDialog add (this);
 	QListWidgetItem *item;
 	if (add.exec () == QDialog::Accepted) {
@@ -116,6 +114,15 @@ ServerDialog::add_server ()
 void
 ServerDialog::remove_server ()
 {
+	QListWidgetItem *item = m_list->currentItem ();
+	if (item->text () == "local") {
+		QErrorMessage *err = new QErrorMessage (this);
+		err->showMessage (tr ("Eeep! Can't remove local item!"));
+		err->exec ();
+		return;
+	}
+
+	delete item;
 }
 
 QString
