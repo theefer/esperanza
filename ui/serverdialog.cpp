@@ -63,6 +63,8 @@ ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent)
 
 	g->addWidget (dummy, 3, 0, 1, 2);
 
+	connect (m_list, SIGNAL (itemDoubleClicked (QListWidgetItem *)), this, SLOT (accept ()));
+
 	resize (250, 300);
 }
 
