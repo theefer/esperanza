@@ -4,6 +4,7 @@
 #include <QHash>
 #include <QVariant>
 #include <QErrorMessage>
+#include <QSettings>
 
 #include "xclient.h"
 #include "xmmsqt4.h"
@@ -18,23 +19,39 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 	m_cache = new XMediainfoCache (this, this);
 }
 
-void
+bool
 XClient::connect (const std::string &ipcpath)
 {
+	bool tried_once = false;
+
+try_again:
+
 	try {
 		Xmms::Client::connect (ipcpath);
 	}
 	catch (Xmms::connection_error& e) {
+		if (ipcpath == "" && !tried_once) {
+			QSettings s;
+			if (s.value ("core/autostart", true).toBool ()) {
+				if (!system ("xmms2-launcher")) {
+					tried_once = true;
+					goto try_again;
+				}
+			}
+		}
+
 		QErrorMessage *err = new QErrorMessage ();
 		err->showMessage ("Couldn't connect to XMMS2, please try again.");
 		err->exec ();
 		delete err;
-		return;
+		return false;
 	}
 
 	setMainloop (new XmmsQT4 (getConnection ()));
 
 	emit gotConnection (this);
+
+	return true;
 }
 
 void

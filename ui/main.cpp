@@ -40,6 +40,7 @@ main (int argc, char **argv)
 
 	QString path;
 
+browser:
 	if (!getenv ("XMMS_PATH")) {
 		ServerDialog sd (NULL);
 		path = sd.get_path ();
@@ -54,7 +55,8 @@ main (int argc, char **argv)
 
 	PlayerWidget *pw = new PlayerWidget (NULL, &client);
 
-	client.connect (path.toStdString ());
+	if (!client.connect (path.toStdString ()))
+		goto browser;
 
 	pw->show ();
 

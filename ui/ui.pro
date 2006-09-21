@@ -1,4 +1,5 @@
-DEPENDPATH += ..
+DEPENDPATH += ../lib
+PRE_TARGETDEPS += ../lib/libxmmsqt.a
 INCLUDEPATH += . /sw/include ../lib 
 CONFIG += link_pkgconfig debug
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
