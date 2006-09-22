@@ -183,8 +183,6 @@ PlaylistModel::parent (const QModelIndex &idx) const
 		return QModelIndex ();
 	}
 
-//	qDebug ("%d %d %d", idx.internalId (), idx.row (), idx.column ());
-
 	return createIndex (idx.internalId (), idx.column (), -1);
 }
 
