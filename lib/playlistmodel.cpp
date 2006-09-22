@@ -226,7 +226,11 @@ PlaylistModel::decoration_data (const QModelIndex &index, int role) const
 	}
 	if (role == Qt::DecorationRole) {
 		if (index.column () == 1) {
-			return QVariant (m_client->cache ()->get_icon (id));
+			QIcon i = m_client->cache ()->get_icon (id);
+			if (i.isNull ())
+				return QVariant ();
+			else
+				return i;
 		}
 	}
 	return QVariant ();
