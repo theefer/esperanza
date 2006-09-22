@@ -4,6 +4,7 @@
 #include "playerbutton.h"
 
 #include <QLabel>
+#include <QSettings>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -13,6 +14,8 @@
 
 MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
+	QSettings s;
+
 	setWindowFlags (Qt::Dialog);
 	setAttribute (Qt::WA_DeleteOnClose);
 
@@ -29,6 +32,8 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	m_qb->addItem (tr ("Album"), MedialibSearchModel::SEARCH_ALBUM);
 	m_qb->addItem (tr ("Title"), MedialibSearchModel::SEARCH_TITLE);
 	m_qb->addItem (tr ("Year"), MedialibSearchModel::SEARCH_YEAR);
+
+	m_qb->setCurrentIndex (s.value ("medialib/searchdef", 0).toInt ());
 	
 	g->addWidget (m_qb, 0, 0, 1, 1);
 
@@ -67,7 +72,6 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	g->addWidget (dummy, 2, 0, 1, 3);
 	g->setMargin (1);
 
-	QSettings s;
 	resize (s.value ("medialibdialog/size", QSize (500, 350)).toSize ());
 	if (s.contains ("medialibdialog/position"))
 		move (s.value ("medialibdialog/position").toPoint ());
@@ -98,6 +102,10 @@ MedialibDialog::search_done ()
 void
 MedialibDialog::do_search ()
 {
+	QSettings s;
+
+	s.setValue ("medialib/searchdef", m_qb->currentIndex ());
+
 	m_list->do_search (m_qb->itemData (m_qb->currentIndex ()).toUInt (),
 					   m_le->displayText ());
 	m_le->setEnabled (false);

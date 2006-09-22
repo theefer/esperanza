@@ -36,6 +36,7 @@ class PreferenceDialog : public QMainWindow
 	private slots:
 		void on_save ();
 		void on_cancel ();
+		void on_reset ();
 
 	private:
 		QTableWidget *m_table;

@@ -46,10 +46,6 @@ ProgressFrame::ProgressFrame( QWidget *parent ) :
     setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
     setLineWidth( 1 );
 
-	QFont f = font ();
-	f.setPixelSize (10);
-	setFont (f);
-
 }
 
 
@@ -140,17 +136,34 @@ ProgressFrame::disconnectWatch()
 void
 ProgressFrame::paintEvent( QPaintEvent * event )
 {
+	QSettings s;
     QRect rect = event->rect();
     rect.adjust( 8, 0, -8, 0 );
 
     // progress bar colour
-    QColor cactivetop = QColor( 200, 200, 200, 255 );
-    QColor cactivemiddle = QColor( 100, 100, 100, 255 );
-    QColor cactivebottom = QColor( 60, 60, 60, 255 );
+	QColor top = s.value ("ui/titlebartop", QColor (200, 200, 200)).value<QColor> ();
+	QColor bottom = s.value ("ui/titlebarbottom", QColor (60, 60, 60)).value<QColor> ();
 
+    QColor cactivetop = top;
+    QColor cactivemiddle = top.dark ();
+    QColor cactivebottom = bottom;
+
+	QColor ctop, cmiddle, cbottom;
+	if (s.value ("ui/titlelighter", true).toBool ()) {
+		ctop = cactivetop.dark ();
+		cmiddle = cactivemiddle.dark ();
+		cbottom = cactivebottom.dark ();
+	} else {
+		ctop = cactivetop.light ();
+		cmiddle = cactivemiddle.light ();
+		cbottom = cactivebottom.light ();
+	}
+
+	/*
     QColor ctop = QColor( 140, 140, 140, 255 );
     QColor cmiddle = QColor( 60, 60, 60, 255 );
     QColor cbottom = QColor( 40, 40, 40, 255 );
+	*/
 
 	/*
     QColor ctop = QColor( 243, 247, 252, 255 );
@@ -203,9 +216,8 @@ ProgressFrame::paintEvent( QPaintEvent * event )
         rect.adjust( icon().width() + 6, 1, 0, 0 );
     }
 
-    // texts on top
-    painter.setPen( Qt::black );
-    painter.setBrush( Qt::black );
+    painter.setPen (s.value ("ui/titlebartext", QColor (Qt::black)).value<QColor> ());
+    painter.setBrush (s.value ("ui/titlebartext", QColor (Qt::black)).value<QColor> ());
 
     QString timeString;
     if ( m_drawTime && maximum() != 0 )

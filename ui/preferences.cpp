@@ -11,6 +11,8 @@
 #include <QColor>
 #include <QLabel>
 #include <QColorDialog>
+#include <QMessageBox>
+#include <QApplication>
 
 #define PREF_VALUE(v,h,t,d) { QMap<QString, QVariant> m; m["value"]=QVariant(v); m["help"]=QVariant(h); m["type"]=QVariant(t);m["default"]=QVariant(d);ret.append(m); }
 
@@ -20,6 +22,7 @@ ColorButton::ColorButton (QWidget *parent, const QColor &val) : QLabel (parent)
 	p.fill (val);
 	setPixmap (p);
 	m_color = val;
+	setAlignment (Qt::AlignHCenter | Qt::AlignVCenter);
 }
 
 void
@@ -46,13 +49,18 @@ PreferenceDialog::build_prefvalues ()
 	QList < QMap < QString, QVariant > > ret;
 
 	PREF_VALUE("core/autostart", "Autostart xmms2d if not running", T_BOOL, true);
-	PREF_VALUE("serverbrowser/show", "Show serverbrowser on startup", T_BOOL, true);
+	PREF_VALUE("serverdialog/show", "Show serverbrowser on startup", T_BOOL, true);
 	PREF_VALUE("playlist/jumptocurrent", "Jump to current entry on song change", T_BOOL, true);
 	PREF_VALUE("playlist/compactmode", "Use compact (boring) playlist mode", T_BOOL, false);
 //	PREF_VALUE("playlist/fontsize", "Playlist fontsize in pixels", T_NUM, 10);
-	PREF_VALUE("core/fontsize", "General fontsize in pixels", T_NUM, 10);
+	PREF_VALUE("ui/fontsize", "General fontsize in pixels", T_NUM, 10);
 	PREF_VALUE("ui/highlight", "General highlight color", T_COLOR, QColor (80, 80, 80));
 	PREF_VALUE("ui/highlightedtext", "Highlighted text color", T_COLOR, QColor (Qt::black));
+	PREF_VALUE("ui/titlebartop", "Titlebar color gradient top", T_COLOR, QColor (200, 200, 200));
+	PREF_VALUE("ui/titlebarbottom", "Titlebar color gradient bottom", T_COLOR, QColor (60, 60, 60));
+	PREF_VALUE("ui/titlebartext", "Titlebar text color", T_COLOR, QColor (Qt::black));
+	PREF_VALUE("ui/titlelighter", "Paint the progress in a lighter color", T_BOOL, true);
+	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::red));
 
 	return ret;
 }
@@ -83,6 +91,7 @@ PreferenceDialog::PreferenceDialog (QWidget *parent) : QMainWindow (parent)
 	m_table->horizontalHeader ()->setResizeMode (0, QHeaderView::Stretch);
 	m_table->horizontalHeader ()->setClickable (false);
 	m_table->horizontalHeader ()->resizeSection (1, 100);
+	m_table->setSelectionMode (QAbstractItemView::NoSelection);
 
 	for (int i = 0; i < pref.size (); i ++) {
 		QMap<QString, QVariant> m = pref.at (i);
@@ -139,9 +148,12 @@ PreferenceDialog::PreferenceDialog (QWidget *parent) : QMainWindow (parent)
 	connect (ok, SIGNAL (clicked ()), this, SLOT (on_save ()));
 	QPushButton *cancel = new QPushButton (tr ("Discard"), dummy);
 	connect (cancel, SIGNAL (clicked ()), this, SLOT (on_cancel ()));
+	QPushButton *reset = new QPushButton (tr ("Reset"), dummy);
+	connect (reset, SIGNAL (clicked ()), this, SLOT (on_reset ()));
 
 	hbox->addWidget (ok);
 	hbox->addWidget (cancel);
+	hbox->addWidget (reset);
 	g->addWidget (dummy, 1, 0, 1, 1);
 }
 
@@ -174,6 +186,23 @@ PreferenceDialog::on_save ()
 		}
 		s.setValue (m["value"].toString (), ret);
 	}
+
+	/* XXX: remove this ugly duplication! */
+	QFont f = QApplication::font ();
+	f.setPixelSize (s.value ("ui/fontsize", 10).toInt ());
+	QApplication::setFont (f);
+
+	/* base palette */
+	QPalette p (QApplication::palette ());
+	p.setColor (QPalette::Highlight,
+				s.value ("ui/highlight", QColor (80, 80, 80)).value<QColor> ());
+	p.setColor (QPalette::HighlightedText,
+				s.value ("ui/highlightedtext", QColor (Qt::black)).value<QColor> ());
+	p.setColor (QPalette::Inactive, QPalette::Text, QColor (Qt::black));
+	QApplication::setPalette (p);
+
+	close ();
+	s.sync ();
 }
 
 void
@@ -182,3 +211,20 @@ PreferenceDialog::on_cancel ()
 	close ();
 }
 
+void
+PreferenceDialog::on_reset ()
+{
+	QSettings s;
+
+	if (QMessageBox::question (this,
+							   tr ("Reset settings?"),
+							   tr ("Are your sure you want to reset program to standard values?"),
+							   tr ("Yes"), tr ("No")) == 0) {
+		QStringList l = s.allKeys ();
+		for (int i = 0; i < l.count (); i++) {
+			s.remove (l.at (i));
+		}
+	}
+
+	close ();
+}

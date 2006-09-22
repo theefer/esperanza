@@ -5,6 +5,7 @@
 
 #include <QHeaderView>
 #include <QPainter>
+#include <QSettings>
 
 PlaylistDelegate::PlaylistDelegate (QObject *parent, PlaylistModel *model) : QItemDelegate (parent)
 {
@@ -16,11 +17,14 @@ PlaylistDelegate::paint (QPainter *painter,
 						 const QStyleOptionViewItem &option,
 						 const QModelIndex &index) const
 {
+	QSettings s;
+
 	QStyleOptionViewItem o (option);
 	if (index.data (PlaylistModel::CurrentEntryRole).toBool ()) {
 		QPalette p (o.palette);
-		p.setColor (QPalette::Text, QColor (Qt::red));
-		p.setColor (QPalette::HighlightedText, QColor (Qt::red));
+		QColor col = s.value ("ui/currententry", QColor (Qt::red)).value<QColor> ();
+		p.setColor (QPalette::Text, col);
+		p.setColor (QPalette::HighlightedText, col);
 		o.palette = p;
 	}
 	if (index.internalId() != -1) {
@@ -84,13 +88,20 @@ PlaylistView::got_connection (XClient *client)
 bool
 PlaylistView::handle_update_pos (const uint32_t &pos)
 {
-	setCurrentIndex (m_model->index (pos, 0));
+	QSettings s;
+	if (s.value ("playlist/jumptocurrent", true).toBool ())
+		setCurrentIndex (m_model->index (pos, 0));
 	return true;
 }
 
 void
 PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 {
+	QSettings s;
+
+	if (s.value ("playlist/compactmode", false).toBool ())
+		return;
+
 	if (n.internalId () != -1) {
 		setCurrentIndex (old);
 		return;

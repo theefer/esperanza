@@ -22,11 +22,11 @@ main (int argc, char **argv)
 	QCoreApplication::setOrganizationDomain("xmms.org");
 	QCoreApplication::setApplicationName("simpleqt");
 
+	QSettings s;
 	QFont f = app.font ();
-	f.setPixelSize (10);
+	f.setPixelSize (s.value ("ui/fontsize", 10).toInt ());
 	QApplication::setFont (f);
 
-	QSettings s;
 	/* base palette */
 	QPalette p (app.palette ());
 	p.setColor (QPalette::Highlight,
@@ -43,7 +43,11 @@ main (int argc, char **argv)
 browser:
 	if (!getenv ("XMMS_PATH")) {
 		ServerDialog sd (NULL);
-		path = sd.get_path ();
+		if (!s.value ("serverdialog/show", true).toBool ()) {
+			path = sd.get_default ();
+		} else {
+			path = sd.get_path ();
+		}
 		if (path == "local") {
 			path = "";
 		} else if (path.isNull ()) {

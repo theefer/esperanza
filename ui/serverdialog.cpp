@@ -128,6 +128,22 @@ ServerDialog::remove_server ()
 }
 
 QString
+ServerDialog::get_default ()
+{
+	QSettings s;
+	QMap<QString, QVariant> m = s.value ("serverbrowser/list").toMap ();
+	QString defconn = s.value ("serverbrowser/default", "local").toString ();
+
+	QList<QString> lst = m.keys ();
+	for (int i = 0; i < lst.size (); i ++) {
+		if (lst.at (i) == defconn)
+			return m[lst.at (i)].toString ();
+	}
+
+	return QString ();
+}
+
+QString
 ServerDialog::get_path ()
 {
 	QSettings s;

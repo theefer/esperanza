@@ -23,6 +23,7 @@ class ServerDialog : public QDialog
 	public:
 		ServerDialog (QWidget *);
 		QString get_path ();
+		QString get_default ();
 
 	private slots:
 		void add_server ();
