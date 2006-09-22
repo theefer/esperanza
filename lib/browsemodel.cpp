@@ -7,7 +7,7 @@
 #include <QString>
 #include <QIcon>
 #include <QObject>
-
+#include <QWidget>
 
 bool
 BrowseModelItem::itemCompare (BrowseModelItem *s1, BrowseModelItem *s2)
@@ -22,7 +22,8 @@ BrowseModelItem::itemCompare (BrowseModelItem *s1, BrowseModelItem *s2)
 BrowseModel::BrowseModel (QObject *parent, XClient *client) : QAbstractTableModel ()
 {
 	m_columns.append ("Name");
-//	m_style = parent->style ();
+	QWidget *w = dynamic_cast<QWidget*>(parent);
+	m_style = w->style ();
 	m_filter_dot = true;
 	m_client = client;
 }

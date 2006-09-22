@@ -18,6 +18,7 @@ ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent)
 	QGridLayout *g = new QGridLayout (this);
 
 	QLabel *l = new QLabel (tr ("Welcome to an XMMS2 client\nPlease select the server to connect to.\nIt's possible to disable this dialog in preferences"), this);
+	l->setAlignment (Qt::AlignCenter);
 	g->addWidget (l, 0, 0, 1, 2);
 	g->setRowStretch (0, 0);
 
