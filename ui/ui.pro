@@ -12,5 +12,5 @@ TARGET=simpleqt
 RESOURCES += simpleqt.qrc
 
 # Input
-HEADERS += playlistview.h playerwidget.h progressframe.h browsedialog.h playerbutton.h filedialog.h medialibdialog.h medialibview.h serverdialog.h
-SOURCES += main.cpp playlistview.cpp playerwidget.cpp progressframe.cpp browsedialog.cpp playerbutton.cpp filedialog.cpp medialibdialog.cpp medialibview.cpp serverdialog.cpp
+HEADERS += playlistview.h playerwidget.h progressframe.h browsedialog.h playerbutton.h filedialog.h medialibdialog.h medialibview.h serverdialog.h preferences.h
+SOURCES += main.cpp playlistview.cpp playerwidget.cpp progressframe.cpp browsedialog.cpp playerbutton.cpp filedialog.cpp medialibdialog.cpp medialibview.cpp serverdialog.cpp preferences.cpp

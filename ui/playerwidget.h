@@ -26,7 +26,7 @@ class PlayerWidget : public QWidget
 		void resizeEvent (QResizeEvent *);
 		void moveEvent (QMoveEvent *);
 
-	public slots:
+	private slots:
 		void got_connection (XClient *);
 		void plus_pressed (QMouseEvent *);
 		void minus_pressed (QMouseEvent *);
@@ -46,6 +46,8 @@ class PlayerWidget : public QWidget
 
 		void show_medialib ();
 		void entry_changed (uint32_t);
+
+		void open_pref ();
 
 	private:
 		XClient *m_client;

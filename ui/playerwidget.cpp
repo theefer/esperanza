@@ -16,6 +16,7 @@
 #include "filedialog.h"
 #include "browsedialog.h"
 #include "medialibdialog.h"
+#include "preferences.h"
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -230,13 +231,20 @@ void
 PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
 	QMenu m;
-	m.addAction (tr ("Preferences"));
+	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
 	QMenu *pm = m.addMenu (tr ("Playlist Options"));
 	pm->addAction (tr ("Shuffle"));
 	pm->addAction (tr ("Random"))->setCheckable (true);
 	pm->addAction (tr ("Stop after play"))->setCheckable (true);
 
 	m.exec (ev->globalPos ());
+}
+
+void
+PlayerWidget::open_pref ()
+{
+	PreferenceDialog *pd = new PreferenceDialog (this);
+	pd->show ();
 }
 
 void
