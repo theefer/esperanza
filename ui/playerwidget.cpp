@@ -20,6 +20,8 @@
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 {
+	QSettings s;
+
 	m_client = client;
 
 	setFocusPolicy (Qt::StrongFocus);
@@ -66,7 +68,15 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	connect (volume, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (volume_pressed (QMouseEvent *)));
 
+	PlayerButton *playstop = new PlayerButton (dummy, ":images/playstop.png");
+	connect (playstop, SIGNAL (clicked (QMouseEvent *)),
+			 this, SLOT (playstop_pressed (QMouseEvent *)));
+
 	hbox->addWidget (back);
+	if (s.value ("ui/showstop", false).toBool ())
+		hbox->addWidget (playstop);
+	else
+		playstop->hide ();
 	hbox->addWidget (m_playbutt);
 	hbox->addWidget (fwd);
 
@@ -90,7 +100,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	connect (client, SIGNAL (gotConnection (XClient *)),
 			 this, SLOT (got_connection (XClient *))); 
 
-	QSettings s;
 
 	resize (s.value ("player/windowsize", QSize (550, 350)).toSize());
 	if (s.contains ("player/position"))
@@ -302,6 +311,12 @@ PlayerWidget::remove_selected ()
 	for (int i = itm.size () - 1; i > -1; i --) {
 		m_client->playlist.remove (itm.at (i), &XClient::log);
 	}
+}
+
+void
+PlayerWidget::playstop_pressed (QMouseEvent *ev)
+{
+	m_client->playback.stop (&XClient::log);
 }
 
 void

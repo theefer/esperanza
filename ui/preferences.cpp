@@ -61,6 +61,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/titlebartext", "Titlebar text color", T_COLOR, QColor (Qt::black));
 	PREF_VALUE("ui/titlelighter", "Paint the progress in a lighter color", T_BOOL, true);
 	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::red));
+	PREF_VALUE("ui/showstop", "Show a stop button as well", T_BOOL, false);
 
 	return ret;
 }

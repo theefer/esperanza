@@ -31,6 +31,7 @@ class PlayerWidget : public QWidget
 		void plus_pressed (QMouseEvent *);
 		void minus_pressed (QMouseEvent *);
 		void play_pressed (QMouseEvent *);
+		void playstop_pressed (QMouseEvent *);
 		void fwd_pressed (QMouseEvent *);
 		void back_pressed (QMouseEvent *);
 		void snett_pressed (QMouseEvent *);
