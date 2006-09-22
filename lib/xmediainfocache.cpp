@@ -84,7 +84,7 @@ XMediainfoCache::get_info (uint32_t id)
 bool
 XMediainfoCache::handle_mlib_entry_changed (const uint32_t &id)
 {
-	get_info (id);
+	m_client->medialib.getInfo (id, Xmms::bind (&XMediainfoCache::handle_medialib_info, this));
 	return true;
 }
 
