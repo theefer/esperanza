@@ -71,7 +71,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 		id = chg.get<uint32_t> ("id");
 	} catch (Xmms::no_such_key_error) {
 	}
-	
+
 	QModelIndex idx = QModelIndex ();
 
 	switch (change) {
@@ -113,13 +113,22 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 bool
 PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
 {
+	beginRemoveRows (QModelIndex (), 0, m_plist.size ());
 	m_plist.clear ();
+	endRemoveRows ();
 
+	int i = 0;
+	for (list.first (); list.isValid (); ++list) {
+		i ++;
+	}
+	beginInsertRows (QModelIndex (), 0, i);
 	for (list.first (); list.isValid (); ++list) {
 		m_plist.append (*list);
 	}
 
-	reset ();
+	endInsertRows ();
+
+//	reset ();
 	return true;
 }
 
@@ -174,7 +183,9 @@ PlaylistModel::parent (const QModelIndex &idx) const
 		return QModelIndex ();
 	}
 
-	return createIndex (idx.internalId (), idx.column (), 0);
+//	qDebug ("%d %d %d", idx.internalId (), idx.row (), idx.column ());
+
+	return createIndex (idx.internalId (), idx.column (), -1);
 }
 
 QModelIndex
