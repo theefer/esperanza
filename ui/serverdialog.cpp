@@ -6,7 +6,7 @@
 #include <QSettings>
 #include <QLabel>
 #include <QListWidgetItem>
-#include <QHboxLayout>
+#include <QHBoxLayout>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QErrorMessage>
