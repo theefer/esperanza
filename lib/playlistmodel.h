@@ -32,7 +32,10 @@ class PlaylistModel : public QAbstractItemModel
 		Qt::ItemFlags flags (const QModelIndex &) const;
 		QModelIndex parent (const QModelIndex &) const;
 		QModelIndex index (int row, int column, const QModelIndex &idx = QModelIndex ()) const;
-
+		QMimeData *mimeData (const QModelIndexList &list) const;
+		bool dropMimeData (const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent);
+		QStringList mimeTypes () const;
+		
 		void setColumns (const QList <QString> &);
 		void setColumnFallback (const QList <QString> &);
 

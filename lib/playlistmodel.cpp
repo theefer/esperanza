@@ -3,6 +3,7 @@
 #include <QHash>
 #include <QVariant>
 #include <QIcon>
+#include <QMimeData>
 
 #include "playlistmodel.h"
 
@@ -90,7 +91,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 			m_plist.removeAt (pos);
 			endRemoveRows ();
 
-			npos = chg.get<uint32_t> ("newposition");
+			npos = chg.get<int32_t> ("newposition");
 			beginInsertRows (idx, npos, npos);
 			m_plist.insert (npos, id);
 			endInsertRows ();
@@ -284,6 +285,49 @@ PlaylistModel::playlist_data (const QModelIndex &index, int role) const
 	}
 
 	return QVariant ();
+}
+
+QStringList
+PlaylistModel::mimeTypes () const
+{
+	return QStringList ("application/x-xmms2poslist");
+}
+
+QMimeData *
+PlaylistModel::mimeData (const QModelIndexList &list) const
+{
+	QMimeData *ret = new QMimeData ();
+	QString s;
+	for (int i = 0; i < list.size (); i ++) {
+		QModelIndex idx = list.at (i);
+		if (idx.column () != 0)
+			continue;
+		s += QString ("%0;").arg (idx.row ());
+	}
+	ret->setData ("application/x-xmms2poslist", s.toAscii ());
+	
+	return ret;
+}
+
+bool
+PlaylistModel::dropMimeData (const QMimeData *data,
+			  Qt::DropAction action,
+			  int row, int column,
+			  const QModelIndex & parent)
+{
+	if (data->hasFormat ("application/x-xmms2poslist")) {
+		QString s = QString::fromAscii (data->data ("application/x-xmms2poslist"));
+		QStringList l = s.split (';', QString::SkipEmptyParts);
+		qSort (l);
+		int target = parent.row ();
+		for (int i = 0; i < l.size (); i ++) {
+			int orow = l.at (i).toInt ();
+			qDebug ("moving %d to %d", orow, target);
+			m_client->playlist.move (orow, target ++, &XClient::log);
+		}
+		return true;
+	}
+	return false;
 }
 
 QVariant

@@ -110,9 +110,13 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 		setCurrentIndex (old);
 		return;
 	}
-
-	setExpanded (old, false);
-	setExpanded (n, true);
+	
+	if (getSelection ().count () > 1) {
+		setExpanded (old, false);
+	} else {
+		setExpanded (old, false);
+		setExpanded (n, true);
+	}
 }
 
 static bool
