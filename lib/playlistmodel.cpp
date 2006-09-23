@@ -308,7 +308,7 @@ PlaylistModel::flags (const QModelIndex &idx) const
 		return Qt::ItemIsEnabled;
 
 	if (idx.internalId () == -1)
-		return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
 
 	return Qt::ItemIsEnabled;
 }

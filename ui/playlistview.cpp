@@ -51,6 +51,10 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setItemsExpandable (false);
 	setRootIsDecorated (false);
 
+	setDragEnabled (true);
+	setAcceptDrops (true);
+	setDropIndicatorShown (true);
+
 	QHeaderView *head = header ();
 	head->resizeSection (0, 40);
 	head->setResizeMode (0, QHeaderView::Interactive);

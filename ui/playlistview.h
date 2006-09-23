@@ -5,6 +5,7 @@
 
 #include <QTreeView>
 #include <QItemDelegate>
+#include <QDropEvent>
 
 #include "playlistmodel.h"
 #include "xclient.h"
