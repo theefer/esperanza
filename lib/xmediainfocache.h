@@ -30,11 +30,10 @@ class XMediainfoCache : public QObject
 	private:
 		bool handle_medialib_info (const Xmms::PropDict &info);
 		bool handle_mlib_entry_changed (const uint32_t &id);
-		bool handle_bindata (const Xmms::bin &);
+		bool handle_bindata (const Xmms::bin &, const QString &);
 
 		QHash< uint32_t, QHash<QString, QVariant> > m_info;
 
-		QList < QString > m_pending_icons;
 		QHash < QString, QIcon > m_icons;
 		QHash < QString, QList <uint32_t> > m_icon_map;
 

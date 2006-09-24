@@ -29,10 +29,12 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 	emit entryChanged (id);
 
 	if (hash.contains ("picture_front")) {
-		m_client->bindata.retrieve (hash["picture_front"].toString ().toStdString (),
-									Xmms::bind (&XMediainfoCache::handle_bindata, this));
-		m_pending_icons.append (hash["picture_front"].toString ());
 		QString ha = hash["picture_front"].toString ();
+		if (!m_icons.contains (ha)) {
+			m_icons[ha] = QIcon ();
+			m_client->bindata.retrieve (ha.toStdString (),
+										boost::bind (&XMediainfoCache::handle_bindata, this, _1, ha));
+		}
 		m_icon_map[ha].append (id);
 	}
 
@@ -40,13 +42,13 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 }
 
 bool
-XMediainfoCache::handle_bindata (const Xmms::bin &data)
+XMediainfoCache::handle_bindata (const Xmms::bin &data, const QString &id)
 {
-	QString id = m_pending_icons.takeFirst ();
 	QPixmap p;
 	p.loadFromData (data.c_str (), data.size());
 	p = p.scaled (QSize (75, 75), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	QIcon ico (p);
+
 
 	if (ico.isNull ()) {
 		return true;
