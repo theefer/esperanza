@@ -3,6 +3,7 @@
 
 MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (parent)
 {
+	m_client = client;
 	m_model = new MedialibSearchModel (this, client);
 	setModel (m_model);
 
@@ -24,6 +25,16 @@ MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (paren
 	setIconSize (QSize (75, 75));
 
 	connect (m_model, SIGNAL (searchDone ()), this, SLOT (search_done ()));
+
+	connect (this, SIGNAL (doubleClicked (const QModelIndex &)),
+			 this, SLOT (add_id (const QModelIndex &)));
+}
+
+void
+MedialibView::add_id (const QModelIndex &idx)
+{
+	uint32_t id = idx.data (MedialibSearchModel::MedialibIdRole).toUInt ();
+	m_client->playlist.addId (id, &XClient::log);
 }
 
 void

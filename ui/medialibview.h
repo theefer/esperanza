@@ -23,11 +23,13 @@ class MedialibView : public QTreeView
 
 	private slots:
 		void search_done ();
+		void add_id (const QModelIndex &);
 
 	signals:
 		void searchDone ();
 
 	private:
+		XClient *m_client;
 		MedialibSearchModel *m_model;
 		QItemSelectionModel *m_selections;
 };
