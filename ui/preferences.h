@@ -1,6 +1,8 @@
 #ifndef __PREFERENCES_H__
 #define __PREFERENCES_H__
 
+#include "xclient.h"
+
 #include <QMainWindow>
 #include <QTableWidget>
 #include <QHash>
@@ -30,7 +32,7 @@ class PreferenceDialog : public QMainWindow
 			T_COLOR
 		};
 
-		PreferenceDialog (QWidget *);
+		PreferenceDialog (QWidget *, XClient *);
 		QList < QMap < QString, QVariant > > build_prefvalues ();
 
 	private slots:
@@ -40,6 +42,7 @@ class PreferenceDialog : public QMainWindow
 
 	private:
 		QTableWidget *m_table;
+		XClient *m_client;
 
 };
 

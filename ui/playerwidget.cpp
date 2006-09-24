@@ -68,16 +68,17 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	connect (volume, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (volume_pressed (QMouseEvent *)));
 
-	PlayerButton *playstop = new PlayerButton (dummy, ":images/playstop.png");
-	connect (playstop, SIGNAL (clicked (QMouseEvent *)),
+	m_playstop = new PlayerButton (dummy, ":images/playstop.png");
+	connect (m_playstop, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (playstop_pressed (QMouseEvent *)));
 
 	hbox->addWidget (back);
-	if (s.value ("ui/showstop", false).toBool ())
-		hbox->addWidget (playstop);
-	else
-		playstop->hide ();
 	hbox->addWidget (m_playbutt);
+
+	hbox->addWidget (m_playstop);
+	if (!s.value ("ui/showstop", false).toBool ())
+		m_playstop->hide ();
+
 	hbox->addWidget (fwd);
 
 	hbox->addStretch (1);
@@ -107,6 +108,39 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 
 	connect (m_client->cache (), SIGNAL (entryChanged (uint32_t)),
 			 this, SLOT (entry_changed (uint32_t)));
+
+	connect (m_client->settings (), SIGNAL (settingsChanged ()),
+			 this, SLOT (changed_settings ()));
+
+	/* run it once first time */
+	changed_settings ();
+}
+
+void
+PlayerWidget::changed_settings ()
+{
+	QSettings s;
+
+	/* XXX: remove this ugly duplication! */
+	QFont f = QApplication::font ();
+	f.setPixelSize (s.value ("ui/fontsize", 10).toInt ());
+	QApplication::setFont (f);
+
+	/* base palette */
+	QPalette p (QApplication::palette ());
+	p.setColor (QPalette::Highlight,
+				s.value ("ui/highlight", QColor (80, 80, 80)).value<QColor> ());
+	p.setColor (QPalette::HighlightedText,
+				s.value ("ui/highlightedtext", QColor (Qt::black)).value<QColor> ());
+	p.setColor (QPalette::Inactive, QPalette::Text, QColor (Qt::black));
+	QApplication::setPalette (p);
+
+	if (!s.value ("ui/showstop", false).toBool ())
+		m_playstop->hide ();
+	else
+		m_playstop->show ();
+
+	update ();
 }
 
 void
@@ -252,7 +286,7 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 void
 PlayerWidget::open_pref ()
 {
-	PreferenceDialog *pd = new PreferenceDialog (this);
+	PreferenceDialog *pd = new PreferenceDialog (this, m_client);
 	pd->show ();
 }
 

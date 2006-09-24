@@ -1,3 +1,4 @@
+#include "xclient.h"
 #include "preferences.h"
 
 #include <QMainWindow>
@@ -66,11 +67,13 @@ PreferenceDialog::build_prefvalues ()
 	return ret;
 }
 
-PreferenceDialog::PreferenceDialog (QWidget *parent) : QMainWindow (parent)
+PreferenceDialog::PreferenceDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
 	setWindowFlags (Qt::Dialog);
 	setAttribute (Qt::WA_DeleteOnClose);
 	QSettings s;
+
+	m_client = client;
 
 	QWidget *base = new QWidget (this);
 	setCentralWidget (base);
@@ -156,6 +159,7 @@ PreferenceDialog::PreferenceDialog (QWidget *parent) : QMainWindow (parent)
 	hbox->addWidget (cancel);
 	hbox->addWidget (reset);
 	g->addWidget (dummy, 1, 0, 1, 1);
+
 }
 
 void
@@ -188,19 +192,7 @@ PreferenceDialog::on_save ()
 		s.setValue (m["value"].toString (), ret);
 	}
 
-	/* XXX: remove this ugly duplication! */
-	QFont f = QApplication::font ();
-	f.setPixelSize (s.value ("ui/fontsize", 10).toInt ());
-	QApplication::setFont (f);
-
-	/* base palette */
-	QPalette p (QApplication::palette ());
-	p.setColor (QPalette::Highlight,
-				s.value ("ui/highlight", QColor (80, 80, 80)).value<QColor> ());
-	p.setColor (QPalette::HighlightedText,
-				s.value ("ui/highlightedtext", QColor (Qt::black)).value<QColor> ());
-	p.setColor (QPalette::Inactive, QPalette::Text, QColor (Qt::black));
-	QApplication::setPalette (p);
+	m_client->settings ()->change_settings ();
 
 	close ();
 	s.sync ();

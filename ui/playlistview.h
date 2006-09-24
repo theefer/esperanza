@@ -27,16 +27,19 @@ class PlaylistView : public QTreeView
 		PlaylistView (QWidget *parent, XClient *client);
 		QList<uint32_t> getSelection ();
 
+		void collapse_all ();
+
 	public slots:
 		void jump_pos (const QModelIndex &);
 		void item_selected (const QModelIndex &, const QModelIndex &);
 		void got_connection (XClient *client);
-
+		void changed_settings ();
 
 	private:
 		XClient *m_client;
 		PlaylistModel *m_model;
 		QItemSelectionModel *m_selections;
+		QList<QModelIndex> m_explist;
 
 		bool handle_update_pos (const uint32_t &);
 };

@@ -9,6 +9,17 @@
 #include "xclient.h"
 #include "xmmsqt4.h"
 
+XSettings::XSettings (QObject *parent) : QObject (parent)
+{
+	/* dummy */
+}
+
+void
+XSettings::change_settings ()
+{
+	emit settingsChanged ();
+}
+
 bool XClient::log ()
 {
 	return false;
@@ -17,6 +28,7 @@ bool XClient::log ()
 XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), Xmms::Client (name)
 {
 	m_cache = new XMediainfoCache (this, this);
+	m_settings = new XSettings (this);
 }
 
 bool

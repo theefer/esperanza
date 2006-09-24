@@ -23,22 +23,12 @@ main (int argc, char **argv)
 	QCoreApplication::setApplicationName("simpleqt");
 
 	QSettings s;
-	QFont f = app.font ();
-	f.setPixelSize (s.value ("ui/fontsize", 10).toInt ());
-	QApplication::setFont (f);
-
-	/* base palette */
-	QPalette p (app.palette ());
-	p.setColor (QPalette::Highlight,
-				s.value ("ui/highlight", QColor (80, 80, 80)).value<QColor> ());
-	p.setColor (QPalette::HighlightedText,
-				s.value ("ui/highlightedtext", QColor (Qt::black)).value<QColor> ());
-	p.setColor (QPalette::Inactive, QPalette::Text, QColor (Qt::black));
-	QApplication::setPalette (p);
 
 	XClient client (NULL, "SimpleQt");
 
 	QString path;
+
+	PlayerWidget *pw = new PlayerWidget (NULL, &client);
 
 browser:
 	if (!getenv ("XMMS_PATH")) {
@@ -56,8 +46,6 @@ browser:
 	} else {
 		path = QString::fromAscii (getenv ("XMMS_PATH"));
 	}
-
-	PlayerWidget *pw = new PlayerWidget (NULL, &client);
 
 	if (!client.connect (path.toStdString ()))
 		goto browser;

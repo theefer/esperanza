@@ -11,6 +11,17 @@ class XClient;
 
 #include "xmediainfocache.h"
 
+class XSettings : public QObject
+{
+	Q_OBJECT
+	public:
+		XSettings (QObject *);
+		void change_settings ();
+
+	signals:
+		void settingsChanged ();
+};
+
 class XClient : public QObject, public Xmms::Client
 {
 	Q_OBJECT
@@ -30,11 +41,16 @@ class XClient : public QObject, public Xmms::Client
 			return m_cache;
 		};
 
+		XSettings *settings () const {
+			return m_settings;
+		};
+
 	signals:
 		void gotConnection (XClient *);
 
 	private:
 		XMediainfoCache *m_cache;
+		XSettings *m_settings;
 
 };
 

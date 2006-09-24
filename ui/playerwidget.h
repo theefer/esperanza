@@ -50,11 +50,14 @@ class PlayerWidget : public QWidget
 
 		void open_pref ();
 
+		void changed_settings ();
+
 	private:
 		XClient *m_client;
 		Xmms::Playback::Status m_status;
 		PlaylistView *m_playlist;
 		PlayerButton *m_playbutt;
+		PlayerButton *m_playstop;
 
 		bool handle_current_id (const unsigned int &);
 		bool handle_playtime (const unsigned int &);

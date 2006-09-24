@@ -78,7 +78,33 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	connect (client, SIGNAL(gotConnection (XClient *)),
 			 this, SLOT (got_connection (XClient *))); 
 
+	connect (m_client->settings (), SIGNAL (settingsChanged ()),
+			 this, SLOT (changed_settings ()));
+
 	setIconSize (QSize (75, 75));
+}
+
+void
+PlaylistView::changed_settings ()
+{
+	QSettings s;
+	if (!s.value ("playlist/compactmode", false).toBool ()) {
+		if (getSelection ().size () > 1)
+			return;
+		setExpanded (m_selections->currentIndex (), true);
+		m_explist.append (m_selections->currentIndex ());
+	} else {
+		collapse_all ();
+	}
+}
+
+void
+PlaylistView::collapse_all ()
+{
+	for (int i = 0; i < m_explist.count (); i++) {
+		setExpanded (m_explist.at (i), false);
+		m_explist.removeAll (m_explist.at (i));
+	}
 }
 
 void
@@ -112,10 +138,12 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 	}
 	
 	if (getSelection ().count () > 1) {
-		setExpanded (old, false);
+		collapse_all ();
 	} else {
-		setExpanded (old, false);
+		collapse_all ();
+
 		setExpanded (n, true);
+		m_explist.append (n);
 	}
 }
 
