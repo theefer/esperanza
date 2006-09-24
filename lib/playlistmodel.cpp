@@ -70,7 +70,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	try {
 		pos = chg.get<int32_t> ("position");
 		id = chg.get<uint32_t> ("id");
-	} catch (Xmms::no_such_key_error) {
+	} catch (Xmms::no_such_key_error&) {
 	}
 
 	QModelIndex idx = QModelIndex ();
@@ -129,7 +129,6 @@ PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
 
 	endInsertRows ();
 
-//	reset ();
 	return true;
 }
 
