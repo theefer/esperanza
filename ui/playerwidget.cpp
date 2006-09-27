@@ -219,6 +219,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 		case Qt::Key_C:
 			remove_all ();
 			break;
+		case Qt::Key_M:
+			show_medialib ();
+			break;
 	}
 }
 
