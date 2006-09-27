@@ -35,7 +35,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	QGridLayout *layout = new QGridLayout (this);
 
 	m_pf = new ProgressFrame (this);
-	m_pf->setReverse (true);
 
 	layout->addWidget (m_pf, 0, 0, 1, 3);
 	layout->addWidget (m_playlist, 1, 0, 1, 3);
@@ -142,6 +141,9 @@ PlayerWidget::changed_settings ()
 		m_playstop->hide ();
 	else
 		m_playstop->show ();
+
+	if (s.value ("ui/reverseplaytime", true).toBool ())
+		m_pf->setReverse (true);
 
 	update ();
 }

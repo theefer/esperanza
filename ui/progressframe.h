@@ -70,9 +70,6 @@ class ProgressFrame : public QFrame
     public slots:
         void setValue( int value );
 
-    protected:
-        void mouseMoveEvent( QMouseEvent *event );
-
     private:
         void paintEvent( QPaintEvent* event );
 

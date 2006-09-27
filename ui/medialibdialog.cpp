@@ -84,6 +84,13 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 }
 
 void
+MedialibDialog::keyPressEvent (QKeyEvent *ev)
+{
+	if (ev->key () == Qt::Key_Escape)
+		close ();
+}
+
+void
 MedialibDialog::plus_pressed (QMouseEvent *ev)
 {
 	QList<uint32_t> ids = m_list->get_selection ();

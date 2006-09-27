@@ -132,7 +132,6 @@ ProgressFrame::disconnectWatch()
 	*/
 }
 
-
 void
 ProgressFrame::paintEvent( QPaintEvent * event )
 {
@@ -270,54 +269,3 @@ ProgressFrame::setValue( int value )
 	}
 }
 
-
-void
-ProgressFrame::mouseMoveEvent( QMouseEvent *event )
-{
-    if ( !( event->buttons() & Qt::LeftButton ) )
-        return;
-
-    QString anchor = text();
-    if ( !anchor.isEmpty() )
-    {
-        QDrag *drag = new QDrag( this );
-
-        QMimeData *mimeData = new QMimeData();
-        mimeData->setText( anchor );
-        mimeData->setData( "item/type", QByteArray::number( m_itemType ) );
-
-        QHash<QString, QString> data = itemData();
-        if ( data.count() )
-        {
-            for ( int i = 0; i < data.count(); i++ )
-            {
-                qDebug() << "Setting data" << data.keys().at( i ) << data.values().at( i );
-                mimeData->setData( QString( "item/%1" ).arg( data.keys().at( i ) ), data.values().at( i ).toUtf8() );
-            }
-        }
-        else
-            return;
-
-        QPainter painter;
-        QPixmap pixmap( painter.fontMetrics().width( anchor ) + 16, painter.fontMetrics().height() + 4 );
-        QRect rect( 0, 0, pixmap.width() - 1, pixmap.height() - 1 );
-
-        painter.begin( &pixmap );
-        painter.setBackgroundMode( Qt::OpaqueMode );
-
-        painter.setBrush( Qt::white );
-        painter.setPen( Qt::black );
-        painter.drawRect( rect );
-
-        painter.setPen( Qt::black );
-        painter.drawText( rect, Qt::AlignCenter, anchor );
-        painter.end();
-
-        drag->setMimeData( mimeData );
-        drag->setPixmap( pixmap );
-
-		/*
-        Qt::DropAction dropAction = drag->start( Qt::CopyAction );
-		*/
-    }
-}

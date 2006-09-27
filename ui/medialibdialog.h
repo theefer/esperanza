@@ -18,6 +18,7 @@ class MedialibDialog : public QMainWindow
 
 		void resizeEvent (QResizeEvent *);
 		void moveEvent (QMoveEvent *);
+		void keyPressEvent (QKeyEvent *);
 
 	private slots:
 		void do_search ();
