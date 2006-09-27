@@ -8,6 +8,8 @@
 #include <QFont>
 #include <QHBoxLayout>
 #include <QMenu>
+#include <QProgressBar>
+#include <QProgressDialog>
 
 #include "playerwidget.h"
 #include "playerbutton.h"
@@ -23,6 +25,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	QSettings s;
 
 	m_client = client;
+	m_unindexed = NULL;
 
 	setFocusPolicy (Qt::StrongFocus);
 
@@ -375,6 +378,45 @@ PlayerWidget::got_connection (XClient *client)
 
 	client->playback.volumeGet (Xmms::bind (&PlayerWidget::handle_volume, this));
 	client->playback.broadcastVolumeChanged (Xmms::bind (&PlayerWidget::handle_volume, this));
+
+	/* XXX: broken in c++ bindings
+	client->stats.broadcastMediainfoReaderStatus (Xmms::bind (&PlayerWidget::handle_index_status, this));
+	client->stats.signalMediainfoReaderUnindexed (Xmms::bind (&PlayerWidget::handle_unindexed, this));
+	*/
+}
+
+bool
+PlayerWidget::handle_index_status (const Xmms::Stats::ReaderStatus &rs)
+{
+	if (rs == Xmms::Stats::IDLE) {
+		if (!m_unindexed) {
+			m_unindexed = new QProgressDialog (tr ("Indexing files"), tr ("Hide window"), 0, 1, this);
+			QProgressBar *b = new QProgressBar (m_unindexed);
+			b->setInvertedAppearance (true);
+			b->setRange (0, 1);
+			m_unindexed->setBar (b);
+		}
+	} else if (rs == Xmms::Stats::RUNNING) {
+		if (m_unindexed) {
+			m_unindexed->cancel ();
+			delete m_unindexed;
+			m_unindexed = NULL;
+		}
+	}
+
+	return true;
+}
+
+bool
+PlayerWidget::handle_unindexed (const uint32_t &i)
+{
+	if (m_unindexed) {
+		if (m_unindexed->maximum () == 1) {
+			m_unindexed->setRange (0, i);
+		}
+		m_unindexed->setValue (m_unindexed->maximum()-i);
+	}
+	return true;
 }
 
 bool

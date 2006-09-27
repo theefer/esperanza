@@ -85,6 +85,27 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 }
 
 void
+PlaylistView::keyPressEvent (QKeyEvent *ev)
+{
+	QModelIndex idx = m_selections->currentIndex ();
+	QModelIndex nidx;
+	switch (ev->key ()) {
+		case Qt::Key_Up:
+			nidx = m_model->index (idx.row () - 1, idx.column (), QModelIndex ());
+			break;
+		case Qt::Key_Down:
+			nidx = m_model->index (idx.row () + 1, idx.column (), QModelIndex ());
+			break;
+		default:
+			ev->ignore ();
+			return;
+	}
+
+	if (nidx.isValid ())
+		setCurrentIndex (nidx);
+}
+
+void
 PlaylistView::changed_settings ()
 {
 	QSettings s;

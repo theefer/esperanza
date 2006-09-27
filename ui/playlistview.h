@@ -29,6 +29,8 @@ class PlaylistView : public QTreeView
 
 		void collapse_all ();
 
+		void keyPressEvent (QKeyEvent *);
+
 	public slots:
 		void jump_pos (const QModelIndex &);
 		void item_selected (const QModelIndex &, const QModelIndex &);

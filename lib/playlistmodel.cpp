@@ -190,8 +190,13 @@ QModelIndex
 PlaylistModel::index (int row, int column,
 					  const QModelIndex &parent) const
 {
-	if (!parent.isValid ())
+	if (!parent.isValid ()) {
+		if (row > (m_plist.size () - 1))
+			return QModelIndex ();
+		if (row < 0)
+			return QModelIndex ();
 		return createIndex (row, column, -1);
+	}
 
 	return createIndex (row, column, parent.row ());
 }

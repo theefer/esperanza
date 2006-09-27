@@ -64,6 +64,9 @@ class PlayerWidget : public QWidget
 		bool handle_status (const Xmms::Playback::Status &);
 		bool handle_volume (const Xmms::Dict &);
 
+		bool handle_index_status (const Xmms::Stats::ReaderStatus &);
+		bool handle_unindexed (const uint32_t &);
+
 		void new_info (const QHash<QString, QVariant>&);
 
 		uint32_t m_current_id;
@@ -71,6 +74,7 @@ class PlayerWidget : public QWidget
 		uint32_t m_channels;
 
 		ProgressFrame *m_pf;
+		QProgressDialog *m_unindexed;
 };
 
 #endif
