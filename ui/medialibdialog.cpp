@@ -2,6 +2,7 @@
 #include "medialibsearchmodel.h"
 
 #include "playerbutton.h"
+#include "progressindicator.h"
 
 #include <QLabel>
 #include <QSettings>
@@ -48,8 +49,11 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	g->addWidget (m_le, 0, 2, 1, 1);
 	g->setColumnStretch (2, 1);
 
+	m_indicator = new ProgressIndicator (base);
+	g->addWidget (m_indicator, 0, 3, 1, 1);
+
 	m_list = new MedialibView (base, client);
-	g->addWidget (m_list, 1, 0, 1, 3);
+	g->addWidget (m_list, 1, 0, 1, 4);
 
 	QWidget *dummy = new QWidget (base);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
@@ -69,7 +73,7 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	hbox->addWidget (plus);
 	hbox->addWidget (stop);
-	g->addWidget (dummy, 2, 0, 1, 3);
+	g->addWidget (dummy, 2, 0, 1, 4);
 	g->setMargin (1);
 
 	resize (s.value ("medialibdialog/size", QSize (500, 350)).toSize ());
@@ -97,6 +101,8 @@ void
 MedialibDialog::search_done ()
 {
 	m_le->setEnabled (true);
+	m_indicator->setStatus (false);
+	m_le->setFocus (Qt::OtherFocusReason);
 }
 
 void
@@ -109,6 +115,7 @@ MedialibDialog::do_search ()
 	m_list->do_search (m_qb->itemData (m_qb->currentIndex ()).toUInt (),
 					   m_le->displayText ());
 	m_le->setEnabled (false);
+	m_indicator->setStatus (true);
 }
 
 void

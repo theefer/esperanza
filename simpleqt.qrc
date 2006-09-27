@@ -10,5 +10,6 @@
 		<file>images/volume.png</file>
 		<file>images/stop.png</file>
 		<file>images/playstop.png</file>
+		<file>images/progress.mng</file>
 	</qresource>
 </RCC>

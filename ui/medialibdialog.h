@@ -7,6 +7,7 @@
 #include <QMainWindow>
 
 #include "medialibview.h"
+#include "progressindicator.h"
 
 class MedialibDialog : public QMainWindow
 {
@@ -30,6 +31,8 @@ class MedialibDialog : public QMainWindow
 		MedialibView *m_list;
 
 		XClient *m_client;
+
+		ProgressIndicator *m_indicator;
 
 };
 
