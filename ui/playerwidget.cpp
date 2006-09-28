@@ -19,6 +19,7 @@
 #include "browsedialog.h"
 #include "medialibdialog.h"
 #include "preferences.h"
+#include "volumebar.h"
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -28,6 +29,8 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	m_unindexed = NULL;
 
 	setFocusPolicy (Qt::StrongFocus);
+
+	m_volbar = new VolumeBar (NULL, client);
 
 	QWidget *dummy = new QWidget (this);
 
@@ -165,40 +168,8 @@ PlayerWidget::resizeEvent (QResizeEvent *ev)
 void
 PlayerWidget::volume_pressed (QMouseEvent *ev)
 {
-	QMenu m;
-	QAction *a;
-
-	connect (&m, SIGNAL (triggered (QAction *)),
-			 this, SLOT (volume_changed (QAction *)));
-
-	for (uint32_t i = 100; i > 9; i -= 10) {
-		QString s = QString ("%0%").arg (i);
-		a = m.addAction (s);
-		a->setData (QVariant (i));
-		a->setCheckable (true);
-		if (m_volume <= i && m_volume > i - 10) {
-			a->setChecked (true);
-		}
-	}
-
-	a = m.addAction (tr ("Mute"));
-	a->setCheckable (true);
-	if (m_volume == 0) {
-		a->setChecked (true);
-	}
-	a->setData (QVariant (0));
-	m.exec (ev->globalPos ());
-}
-
-void
-PlayerWidget::volume_changed (QAction *a)
-{
-	if (m_channels == 1) {
-		m_client->playback.volumeSet ("master", a->data ().toUInt (), &XClient::log);
-	} else {
-		m_client->playback.volumeSet ("left", a->data ().toUInt (), &XClient::log);
-		m_client->playback.volumeSet ("right", a->data ().toUInt (), &XClient::log);
-	}
+	m_volbar->move (ev->globalPos ());
+	m_volbar->show ();
 }
 
 void
@@ -381,8 +352,6 @@ PlayerWidget::got_connection (XClient *client)
 	client->playback.getStatus (Xmms::bind (&PlayerWidget::handle_status, this));
 	client->playback.broadcastStatus (Xmms::bind (&PlayerWidget::handle_status, this));
 
-	client->playback.volumeGet (Xmms::bind (&PlayerWidget::handle_volume, this));
-	client->playback.broadcastVolumeChanged (Xmms::bind (&PlayerWidget::handle_volume, this));
 
 	/* XXX: broken in c++ bindings
 	client->stats.broadcastMediainfoReaderStatus (Xmms::bind (&PlayerWidget::handle_index_status, this));
@@ -420,20 +389,6 @@ PlayerWidget::handle_unindexed (const uint32_t &i)
 			m_unindexed->setRange (0, i);
 		}
 		m_unindexed->setValue (m_unindexed->maximum()-i);
-	}
-	return true;
-}
-
-bool
-PlayerWidget::handle_volume (const Xmms::Dict &d)
-{
-	/* XXX: this function really should do each and sum / split the channels */
-	if (d.contains ("master")) {
-		m_volume = d.get<uint32_t> ("master");
-		m_channels = 1;
-	} else if (d.contains ("left") && d.contains ("right")) {
-		m_volume = (d.get<uint32_t> ("left") + d.get<uint32_t> ("right")) / 2;
-		m_channels = 2;
 	}
 	return true;
 }

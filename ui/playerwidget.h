@@ -10,6 +10,7 @@
 #include "playlistview.h"
 #include "progressframe.h"
 #include "playerbutton.h"
+#include "volumebar.h"
 
 class PlayerWidget : public QWidget
 {
@@ -40,7 +41,6 @@ class PlayerWidget : public QWidget
 		void add_remote_file ();
 		void add_local_file ();
 		void add_local_dir ();
-		void volume_changed (QAction *);
 
 		void remove_selected ();
 		void remove_all ();
@@ -62,7 +62,6 @@ class PlayerWidget : public QWidget
 		bool handle_current_id (const unsigned int &);
 		bool handle_playtime (const unsigned int &);
 		bool handle_status (const Xmms::Playback::Status &);
-		bool handle_volume (const Xmms::Dict &);
 
 		bool handle_index_status (const Xmms::Stats::ReaderStatus &);
 		bool handle_unindexed (const uint32_t &);
@@ -70,10 +69,10 @@ class PlayerWidget : public QWidget
 		void new_info (const QHash<QString, QVariant>&);
 
 		uint32_t m_current_id;
-		uint32_t m_volume;
-		uint32_t m_channels;
 
 		ProgressFrame *m_pf;
+		VolumeBar *m_volbar;
+
 		QProgressDialog *m_unindexed;
 };
 
