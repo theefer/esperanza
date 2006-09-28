@@ -8,8 +8,9 @@ MOC_DIR = qmake_build
 RCC_DIR = qmake_build
 
 TEMPLATE=app
-TARGET=simpleqt
-RESOURCES += simpleqt.qrc
+TARGET=esperanza
+macx:TARGET=Esperanza
+RESOURCES += esperanza.qrc
 
 # library files
 HEADERS += lib/playlistmodel.h lib/xmmsqt4.h  lib/xclient.h lib/browsemodel.h lib/medialibsearchmodel.h lib/xmediainfocache.h

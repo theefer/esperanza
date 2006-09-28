@@ -20,11 +20,11 @@ main (int argc, char **argv)
 
 	QCoreApplication::setOrganizationName("XMMS2");
 	QCoreApplication::setOrganizationDomain("xmms.org");
-	QCoreApplication::setApplicationName("simpleqt");
+	QCoreApplication::setApplicationName("Esperanza");
 
 	QSettings s;
 
-	XClient client (NULL, "SimpleQt");
+	XClient client (NULL, "Esperanza");
 
 	QString path;
 

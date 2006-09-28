@@ -28,6 +28,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	m_client = client;
 	m_unindexed = NULL;
 
+	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
 
 	m_volbar = new VolumeBar (NULL, client);

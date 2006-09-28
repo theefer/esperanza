@@ -19,6 +19,7 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	setWindowFlags (Qt::Dialog);
 	setAttribute (Qt::WA_DeleteOnClose);
+	setWindowTitle ("Esperanza - Medialib");
 
 	QWidget *base = new QWidget (this);
 	setCentralWidget (base);

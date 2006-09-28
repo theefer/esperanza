@@ -72,6 +72,7 @@ PreferenceDialog::PreferenceDialog (QWidget *parent, XClient *client) : QMainWin
 {
 	setWindowFlags (Qt::Dialog);
 	setAttribute (Qt::WA_DeleteOnClose);
+	setWindowTitle ("Esperanza - Preferences");
 	QSettings s;
 
 	m_client = client;
