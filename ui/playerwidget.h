@@ -11,6 +11,7 @@
 #include "progressframe.h"
 #include "playerbutton.h"
 #include "volumebar.h"
+#include "growl.h"
 
 class PlayerWidget : public QWidget
 {
@@ -74,6 +75,9 @@ class PlayerWidget : public QWidget
 		VolumeBar *m_volbar;
 
 		QProgressDialog *m_unindexed;
+
+		GrowlNotifier *m_growl;
+		QString m_last_growl_str; /* fulhack */
 };
 
 #endif

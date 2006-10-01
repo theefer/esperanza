@@ -29,7 +29,8 @@ class PreferenceDialog : public QMainWindow
 		enum {
 			T_BOOL,
 			T_NUM,
-			T_COLOR
+			T_COLOR,
+			T_STR
 		};
 
 		PreferenceDialog (QWidget *, XClient *);

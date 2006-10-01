@@ -1,6 +1,7 @@
 DEPENDPATH += lib ui
 INCLUDEPATH += ui lib /sw/include
 CONFIG += link_pkgconfig debug
+QT += network
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp
 OBJECTS_DIR = qmake_build
@@ -13,8 +14,8 @@ macx:TARGET=Esperanza
 RESOURCES += esperanza.qrc
 
 # library files
-HEADERS += lib/playlistmodel.h lib/xmmsqt4.h  lib/xclient.h lib/browsemodel.h lib/medialibsearchmodel.h lib/xmediainfocache.h
-SOURCES += lib/playlistmodel.cpp lib/xmmsqt4.cpp lib/xclient.cpp lib/browsemodel.cpp lib/medialibsearchmodel.cpp lib/xmediainfocache.cpp 
+HEADERS += lib/playlistmodel.h lib/xmmsqt4.h  lib/xclient.h lib/browsemodel.h lib/medialibsearchmodel.h lib/xmediainfocache.h lib/qtmd5.h lib/growl.h
+SOURCES += lib/playlistmodel.cpp lib/xmmsqt4.cpp lib/xclient.cpp lib/browsemodel.cpp lib/medialibsearchmodel.cpp lib/xmediainfocache.cpp lib/qtmd5.cpp lib/growl.cpp
 
 # Input
 HEADERS += ui/playlistview.h ui/playerwidget.h ui/progressframe.h ui/browsedialog.h ui/playerbutton.h ui/filedialog.h ui/medialibdialog.h ui/medialibview.h ui/serverdialog.h ui/preferences.h ui/progressindicator.h ui/volumebar.h

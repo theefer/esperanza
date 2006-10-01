@@ -14,6 +14,7 @@
 #include <QColorDialog>
 #include <QMessageBox>
 #include <QApplication>
+#include <QLineEdit>
 
 #define PREF_VALUE(v,h,t,d) { QMap<QString, QVariant> m; m["value"]=QVariant(v); m["help"]=QVariant(h); m["type"]=QVariant(t);m["default"]=QVariant(d);ret.append(m); }
 
@@ -64,6 +65,8 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/titlelighter", "Paint the progress in a lighter color", T_BOOL, true);
 	PREF_VALUE("ui/titlebartext", "Titlebar text color", T_COLOR, QColor (Qt::black));
 	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::red));
+	PREF_VALUE("core/usegrowl", "Use Growl notification", T_BOOL, false);
+	PREF_VALUE("core/growladdress", "Growl notification address", T_STR, "127.0.0.1");
 
 	return ret;
 }
@@ -137,6 +140,12 @@ PreferenceDialog::PreferenceDialog (QWidget *parent, XClient *client) : QMainWin
 					m_table->setCellWidget (i, 1, cb);
 					break;
 				}
+			case T_STR:
+				{
+					QLineEdit *le = new QLineEdit (s.value (val, def).toString (), base);
+					m_table->setCellWidget (i, 1, le);
+					break;
+				}
 			default:
 				qDebug ("error!");
 				break;
@@ -189,6 +198,13 @@ PreferenceDialog::on_save ()
 				{
 					ColorButton *cb = dynamic_cast<ColorButton *>(m_table->cellWidget (i, 1));
 					ret = QVariant (cb->current_color ());
+					break;
+				}
+			case T_STR:
+				{
+					QLineEdit *le = static_cast<QLineEdit *>(m_table->cellWidget (i, 1));
+					ret = QVariant (le->text ());
+					break;
 				}
 		}
 		s.setValue (m["value"].toString (), ret);

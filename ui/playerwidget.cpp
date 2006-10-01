@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QProgressBar>
 #include <QProgressDialog>
+#include <QHostAddress>
 
 #include "playerwidget.h"
 #include "playerbutton.h"
@@ -20,6 +21,7 @@
 #include "medialibdialog.h"
 #include "preferences.h"
 #include "volumebar.h"
+#include "growl.h"
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -27,6 +29,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 
 	m_client = client;
 	m_unindexed = NULL;
+	m_growl = NULL;
 
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
@@ -148,6 +151,17 @@ PlayerWidget::changed_settings ()
 
 	if (s.value ("ui/reverseplaytime", true).toBool ())
 		m_pf->setReverse (true);
+
+	if (s.value ("core/usegrowl", false).toBool ()) {
+		if (!m_growl) {
+			QString h = s.value ("core/growladdress", "127.0.0.1").toString ();
+			m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"), QHostAddress (h));
+			m_growl->do_registration ();
+		}
+	} else if (m_growl) {
+		delete m_growl;
+		m_growl = NULL;
+	}
 
 	update ();
 }
@@ -428,6 +442,11 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		uint32_t dur = h["duration"].toUInt ();
 		m_pf->setMaximum (dur / 1000);
 		m_pf->setValue (0);
+	}
+
+	if (m_growl && m_status == Xmms::Playback::PLAYING && m_last_growl_str != s) {
+		m_last_growl_str = s;
+		m_growl->do_notification ("New song", tr ("Esperanza is now playing:"), s);
 	}
 }
 
