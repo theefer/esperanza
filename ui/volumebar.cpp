@@ -17,6 +17,8 @@ VolumeBar::VolumeBar (QWidget *parent, XClient *client) : QWidget (parent)
 	layout.addWidget (m_slider);
 	resize (m_slider->sizeHint ());
 
+	setFocusPolicy (Qt::StrongFocus);
+
 	connect (m_client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *)));
 	connect (m_slider, SIGNAL (valueChanged (int)), this, SLOT (set_volume (int)));
 
