@@ -9,18 +9,12 @@
 #include <QMap>
 #include <QVariant>
 #include <QLabel>
+#include <QDialog>
+#include <QLabel>
 
-class ColorButton : public QLabel
-{
-	Q_OBJECT
-	public:
-		ColorButton (QWidget *, const QColor &);
-		QColor current_color () const;
-		void mouseDoubleClickEvent (QMouseEvent *);
+#include "preferencessupport.h"
 
-	private:
-		QColor m_color;
-};
+#define PREF_VALUE(v,h,t,d) { QMap<QString, QVariant> m; m["value"]=QVariant(v); m["help"]=QVariant(h); m["type"]=QVariant(t);m["default"]=QVariant(d);ret.append(m); }
 
 class PreferenceDialog : public QMainWindow
 {
@@ -30,11 +24,14 @@ class PreferenceDialog : public QMainWindow
 			T_BOOL,
 			T_NUM,
 			T_COLOR,
-			T_STR
+			T_STR,
+			T_KEY
 		};
 
 		PreferenceDialog (QWidget *, XClient *);
-		QList < QMap < QString, QVariant > > build_prefvalues ();
+		virtual QList < QMap < QString, QVariant > > build_prefvalues ();
+		void fill_list ();
+		void showEvent (QShowEvent *);
 
 	private slots:
 		void on_save ();
@@ -44,7 +41,7 @@ class PreferenceDialog : public QMainWindow
 	private:
 		QTableWidget *m_table;
 		XClient *m_client;
-
+		QWidget *m_base;
 };
 
 #endif
