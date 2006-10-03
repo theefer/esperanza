@@ -6,7 +6,7 @@
 #include <QGridLayout>
 #include <QWidget>
 #include <QSpinBox>
-#include <QComboBox>
+#include <QCheckBox>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QColor>
@@ -124,13 +124,11 @@ PreferenceDialog::fill_list ()
 		switch (type) {
 			case T_BOOL:
 				{
-					QComboBox *cb = new QComboBox (m_base);
-					cb->addItem (tr ("Yes"), QVariant (true));
-					cb->addItem (tr ("No"), QVariant (false));
-					if (!s.value (val, def).toBool ())
-						cb->setCurrentIndex (1);
+					QCheckBox *cb = new QCheckBox (this);
+					if (s.value (val, def).toBool ())
+						cb->setCheckState (Qt::Checked);
 					else
-						cb->setCurrentIndex (0);
+						cb->setCheckState (Qt::Unchecked);
 					m_table->setCellWidget (i, 1, cb);
 					break;
 				}
@@ -177,8 +175,8 @@ PreferenceDialog::on_save ()
 		switch (m["type"].toInt ()) {
 			case T_BOOL:
 				{
-					QComboBox *cb = dynamic_cast<QComboBox *>(m_table->cellWidget (i, 1));
-					ret = cb->itemData (cb->currentIndex ()).toBool ();
+					QCheckBox *cb = dynamic_cast<QCheckBox *>(m_table->cellWidget (i, 1));
+					ret = QVariant (cb->checkState () == Qt::Checked ? true : false);
 					break;
 				}
 			case T_NUM:
