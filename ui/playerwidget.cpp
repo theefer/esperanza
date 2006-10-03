@@ -22,6 +22,7 @@
 #include "preferences.h"
 #include "volumebar.h"
 #include "growl.h"
+#include "shortcuteditor.h"
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -269,12 +270,20 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
+	m.addAction (tr ("Short-cut editor"), this, SLOT (open_sceditor ()));
 	QMenu *pm = m.addMenu (tr ("Playlist Options"));
 	pm->addAction (tr ("Shuffle"));
 	pm->addAction (tr ("Random"))->setCheckable (true);
 	pm->addAction (tr ("Stop after play"))->setCheckable (true);
 
 	m.exec (ev->globalPos ());
+}
+
+void
+PlayerWidget::open_sceditor ()
+{
+	ShortCutEditor *sc = new ShortCutEditor (this, m_client);
+	sc->show ();
 }
 
 void
@@ -444,7 +453,10 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		m_pf->setValue (0);
 	}
 
-	if (m_growl && m_status == Xmms::Playback::PLAYING && m_last_growl_str != s) {
+	if (m_growl &&
+		m_status == Xmms::Playback::PLAYING &&
+		m_last_growl_str != s &&
+		h["id"].toUInt () != 0) {
 		m_last_growl_str = s;
 		m_growl->do_notification ("New song", tr ("Esperanza is now playing:"), s);
 	}
