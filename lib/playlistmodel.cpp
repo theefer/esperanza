@@ -154,6 +154,11 @@ PlaylistModel::entry_changed (uint32_t id)
 		QModelIndex idx1 = index (pos.at (i), 0);
 		QModelIndex idx2 = index (pos.at (i), m_columns.size ());
 		emit dataChanged(idx1, idx2);
+
+		/* and for the infobar under (child) */
+		idx1 = index (0, 0, idx1);
+		idx2 = index (0, m_columns.size (), idx1.parent ());
+		emit dataChanged (idx1, idx2);
 	}
 }
 
@@ -241,10 +246,7 @@ PlaylistModel::decoration_data (const QModelIndex &index, int role) const
 	if (role == Qt::DecorationRole) {
 		if (index.column () == 1) {
 			QIcon i = m_client->cache ()->get_icon (id);
-			if (i.isNull ())
-				return QVariant ();
-			else
-				return i;
+			return i;
 		}
 	}
 	return QVariant ();
