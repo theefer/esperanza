@@ -139,10 +139,11 @@ PlayerWidget::changed_settings ()
 	/* base palette */
 	QPalette p (QApplication::palette ());
 	p.setColor (QPalette::Highlight,
-				s.value ("ui/highlight", QColor (80, 80, 80)).value<QColor> ());
+				s.value ("ui/highlight", QColor (15, 15, 15)).value<QColor> ());
 	p.setColor (QPalette::HighlightedText,
-				s.value ("ui/highlightedtext", QColor (Qt::black)).value<QColor> ());
-	p.setColor (QPalette::Inactive, QPalette::Text, QColor (Qt::black));
+				s.value ("ui/highlightedtext", QColor (80, 80, 80)).value<QColor> ());
+//	p.setColor (QPalette::Inactive, QPalette::Text, QColor (22, 22, 22));
+	p.setColor (QPalette::WindowText, QColor (22, 22, 22));
 	QApplication::setPalette (p);
 
 	if (!s.value ("ui/showstop", false).toBool ())
@@ -153,10 +154,14 @@ PlayerWidget::changed_settings ()
 	if (s.value ("ui/reverseplaytime", true).toBool ())
 		m_pf->setReverse (true);
 
-	if (s.value ("core/usegrowl", false).toBool ()) {
+	bool growl = false;
+#ifdef Q_OS_MACX
+	growl = true;
+#endif
+
+	if (s.value ("core/usegrowl", growl).toBool ()) {
 		if (!m_growl) {
-			QString h = s.value ("core/growladdress", "127.0.0.1").toString ();
-			m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"), QHostAddress (h));
+			m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
 			m_growl->do_registration ();
 		}
 	} else if (m_growl) {
@@ -270,7 +275,7 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
-	m.addAction (tr ("Short-cut editor"), this, SLOT (open_sceditor ()));
+//	m.addAction (tr ("Short-cut editor"), this, SLOT (open_sceditor ()));
 	QMenu *pm = m.addMenu (tr ("Playlist Options"));
 	pm->addAction (tr ("Shuffle"));
 	pm->addAction (tr ("Random"))->setCheckable (true);
@@ -442,8 +447,7 @@ PlayerWidget::entry_changed (uint32_t id)
 void
 PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 {
-	QString s = QString ("%1. %2 - %3")
-		.arg(h["id"].toUInt ())
+	QString s = QString ("%2 - %3")
 		.arg(h["artist"].toString ())
 		.arg(h["title"].toString ());
 	m_pf->setText (s);
@@ -458,7 +462,7 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		m_last_growl_str != s &&
 		h["id"].toUInt () != 0) {
 		m_last_growl_str = s;
-		m_growl->do_notification ("New song", tr ("Esperanza is now playing:"), s);
+		m_growl->do_notification ("New song", tr ("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (h["id"].toUInt ()));
 	}
 }
 

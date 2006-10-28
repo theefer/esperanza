@@ -21,11 +21,16 @@ PlaylistDelegate::paint (QPainter *painter,
 
 	QStyleOptionViewItem o (option);
 	if (index.data (PlaylistModel::CurrentEntryRole).toBool ()) {
+		/*
 		QPalette p (o.palette);
 		QColor col = s.value ("ui/currententry", QColor (Qt::red)).value<QColor> ();
 		p.setColor (QPalette::Text, col);
 		p.setColor (QPalette::HighlightedText, col);
 		o.palette = p;
+		*/
+		QFont f (o.font);
+		f.setBold (true);
+		o.font = f;
 	}
 	if (index.internalId() != -1) {
 		o.state |= QStyle::State_Selected;
@@ -55,9 +60,11 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setAcceptDrops (true);
 	setDropIndicatorShown (true);
 
+	/*
 	QHeaderView *head = header ();
 	head->resizeSection (0, 40);
 	head->setResizeMode (0, QHeaderView::Interactive);
+	*/
 
 	QPalette p (palette ());
 	p.setColor (QPalette::AlternateBase, QColor (230, 230, 230));

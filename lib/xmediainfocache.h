@@ -20,6 +20,7 @@ class XMediainfoCache : public QObject
 
 		QHash<QString, QVariant> get_info (uint32_t id);
 		QIcon get_icon (uint32_t id);
+		QPixmap get_pixmap (uint32_t id);
 
 	signals:
 		void entryChanged (uint32_t);
@@ -34,7 +35,7 @@ class XMediainfoCache : public QObject
 
 		QHash< uint32_t, QHash<QString, QVariant> > m_info;
 
-		QHash < QString, QIcon > m_icons;
+		QHash < QString, QPixmap > m_pixmaps;
 		QHash < QString, QList <uint32_t> > m_icon_map;
 
 		XClient *m_client;

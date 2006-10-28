@@ -11,5 +11,6 @@
 		<file>images/stop.png</file>
 		<file>images/playstop.png</file>
 		<file>images/progress.mng</file>
+		<file>images/test.jpg</file>
 	</qresource>
 </RCC>

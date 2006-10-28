@@ -9,11 +9,11 @@
 
 PlaylistModel::PlaylistModel (QObject *parent, XClient *client) : QAbstractItemModel (parent)
 {
-	m_columns.append ("#");
+//	m_columns.append ("#");
 	m_columns.append ("Artist");
 	m_columns.append ("Title");
 
-	m_colfallback.append ("");
+//	m_colfallback.append ("");
 	m_colfallback.append ("");
 	m_colfallback.append ("url");
 

@@ -30,8 +30,8 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 
 	if (hash.contains ("picture_front")) {
 		QString ha = hash["picture_front"].toString ();
-		if (!m_icons.contains (ha)) {
-			m_icons[ha] = QIcon ();
+		if (!m_pixmaps.contains (ha)) {
+			m_pixmaps[ha] = QPixmap ();
 			m_client->bindata.retrieve (ha.toStdString (),
 										boost::bind (&XMediainfoCache::handle_bindata, this, _1, ha));
 		}
@@ -44,16 +44,13 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 bool
 XMediainfoCache::handle_bindata (const Xmms::bin &data, const QString &id)
 {
-	QPixmap p;
-	p.loadFromData (data.c_str (), data.size());
-	p = p.scaled (QSize (75, 75), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-	QIcon ico (p);
+	QPixmap i;
+	i.loadFromData (data.c_str (), data.size());
 
-
-	if (ico.isNull ()) {
+	if (i.isNull ()) {
 		return true;
 	}
-	m_icons[id] = ico;
+	m_pixmaps[id] = i;
 
 	QList<uint32_t> ids = m_icon_map[id];
 	for (int i = 0; i < ids.size (); i++)
@@ -66,10 +63,19 @@ QIcon
 XMediainfoCache::get_icon (uint32_t id)
 {
 	if (m_info[id].contains ("picture_front")) {
-		return m_icons[m_info[id]["picture_front"].toString ()];
+		return QIcon (m_pixmaps[m_info[id]["picture_front"].toString ()]);
 	}
 
 	return QIcon ();
+}
+
+QPixmap
+XMediainfoCache::get_pixmap (uint32_t id)
+{
+	if (m_info[id].contains ("picture_front")) {
+		return m_pixmaps[m_info[id]["picture_front"].toString ()];
+	}
+	return QPixmap ();
 }
 
 QHash<QString, QVariant>
