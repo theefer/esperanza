@@ -32,9 +32,17 @@ mac_growl_post_notification (const QString &type,
 			QBuffer buffer (&ba);
 			buffer.open(QIODevice::WriteOnly);
 			QPixmap i = qval.value<QPixmap> ();
-			i.save (&buffer, "JPG");
 
-			NSImage *img = [[[NSData alloc] initWithBytes:ba.data () length:ba.size ()] autorelease];
+			NSData *img;
+
+			if (!i.isNull ()) {
+				i.save (&buffer, "JPG");
+				img = [[[NSData alloc] initWithBytes:ba.data () length:ba.size ()] autorelease];
+			} else {
+				NSImage *i;
+				i = [[NSWorkspace sharedWorkspace] iconForFileType:[NSString stringWithUTF8String:"mp3"]];
+				img = [i TIFFRepresentation];
+			}
 
 			[note setObject:img forKey:key];
 		} else if (qval.type () == QVariant::StringList) {

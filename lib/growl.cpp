@@ -32,9 +32,7 @@ GrowlNotifier::do_notification (const QString &notif,
 	note["NotificationName"] = QVariant (notif);
 	note["NotificationTitle"] = QVariant (title);
 	note["NotificationDescription"] = QVariant (desc);
-	if (!img.isNull ()) {
-		note["NotificationIcon"] = QVariant (img);
-	}
+	note["NotificationIcon"] = QVariant (img);
 
 #ifdef Q_OS_MACX
 	mac_growl_post_notification ("GrowlNotification", note);

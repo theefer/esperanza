@@ -59,11 +59,9 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setAcceptDrops (true);
 	setDropIndicatorShown (true);
 
-	/*
 	QHeaderView *head = header ();
-	head->resizeSection (0, 40);
+	head->resizeSection (0, 120);
 	head->setResizeMode (0, QHeaderView::Interactive);
-	*/
 
 	QPalette p (palette ());
 	p.setColor (QPalette::AlternateBase, QColor (230, 230, 230));
