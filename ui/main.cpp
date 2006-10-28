@@ -11,6 +11,7 @@
 #include "xclient.h"
 #include "playerwidget.h"
 #include "serverdialog.h"
+#include "preferences.h"
 
 int
 main (int argc, char **argv)
@@ -21,6 +22,8 @@ main (int argc, char **argv)
 	QCoreApplication::setOrganizationName("XMMS2");
 	QCoreApplication::setOrganizationDomain("xmms.org");
 	QCoreApplication::setApplicationName("Esperanza");
+
+	PreferenceDialog::save_defaults ();
 
 	QSettings s;
 
@@ -33,7 +36,7 @@ main (int argc, char **argv)
 browser:
 	if (!getenv ("XMMS_PATH")) {
 		ServerDialog sd (NULL);
-		if (!s.value ("serverdialog/show", true).toBool ()) {
+		if (!s.value ("serverdialog/show").toBool ()) {
 			path = sd.get_default ();
 		} else {
 			path = sd.get_path ();

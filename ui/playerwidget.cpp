@@ -22,7 +22,6 @@
 #include "preferences.h"
 #include "volumebar.h"
 #include "growl.h"
-#include "shortcuteditor.h"
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -86,7 +85,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	hbox->addWidget (m_playbutt);
 
 	hbox->addWidget (m_playstop);
-	if (!s.value ("ui/showstop", false).toBool ())
+	if (!s.value ("ui/showstop").toBool ())
 		m_playstop->hide ();
 
 	hbox->addWidget (fwd);
@@ -133,33 +132,27 @@ PlayerWidget::changed_settings ()
 
 	/* XXX: remove this ugly duplication! */
 	QFont f = QApplication::font ();
-	f.setPixelSize (s.value ("ui/fontsize", 10).toInt ());
+	f.setPixelSize (s.value ("ui/fontsize").toInt ());
 	QApplication::setFont (f);
 
 	/* base palette */
 	QPalette p (QApplication::palette ());
 	p.setColor (QPalette::Highlight,
-				s.value ("ui/highlight", QColor (15, 15, 15)).value<QColor> ());
+				s.value ("ui/highlight").value<QColor> ());
 	p.setColor (QPalette::HighlightedText,
-				s.value ("ui/highlightedtext", QColor (80, 80, 80)).value<QColor> ());
-//	p.setColor (QPalette::Inactive, QPalette::Text, QColor (22, 22, 22));
-	p.setColor (QPalette::WindowText, QColor (22, 22, 22));
+				s.value ("ui/highlightedtext").value<QColor> ());
+	p.setColor (QPalette::Inactive, QPalette::Text, QColor ("black"));
 	QApplication::setPalette (p);
 
-	if (!s.value ("ui/showstop", false).toBool ())
+	if (!s.value ("ui/showstop").toBool ())
 		m_playstop->hide ();
 	else
 		m_playstop->show ();
 
-	if (s.value ("ui/reverseplaytime", true).toBool ())
+	if (s.value ("ui/reverseplaytime").toBool ())
 		m_pf->setReverse (true);
 
-	bool growl = false;
-#ifdef Q_OS_MACX
-	growl = true;
-#endif
-
-	if (s.value ("core/usegrowl", growl).toBool ()) {
+	if (s.value ("core/usegrowl").toBool ()) {
 		if (!m_growl) {
 			m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
 			m_growl->do_registration ();
@@ -284,12 +277,14 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 	m.exec (ev->globalPos ());
 }
 
+/*
 void
 PlayerWidget::open_sceditor ()
 {
 	ShortCutEditor *sc = new ShortCutEditor (this, m_client);
 	sc->show ();
 }
+*/
 
 void
 PlayerWidget::open_pref ()

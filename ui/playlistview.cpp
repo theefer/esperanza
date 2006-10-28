@@ -116,7 +116,7 @@ void
 PlaylistView::changed_settings ()
 {
 	QSettings s;
-	if (!s.value ("playlist/compactmode", false).toBool ()) {
+	if (!s.value ("playlist/compactmode").toBool ()) {
 		if (getSelection ().size () > 1)
 			return;
 		setExpanded (m_selections->currentIndex (), true);
@@ -147,7 +147,7 @@ bool
 PlaylistView::handle_update_pos (const uint32_t &pos)
 {
 	QSettings s;
-	if (s.value ("playlist/jumptocurrent", true).toBool ())
+	if (s.value ("playlist/jumptocurrent").toBool ())
 		setCurrentIndex (m_model->index (pos, 0));
 	return true;
 }
@@ -157,7 +157,7 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 {
 	QSettings s;
 
-	if (s.value ("playlist/compactmode", false).toBool ())
+	if (s.value ("playlist/compactmode").toBool ())
 		return;
 
 	if (n.internalId () != -1) {

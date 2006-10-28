@@ -44,6 +44,20 @@ PreferenceDialog::build_prefvalues ()
 	return ret;
 }
 
+void
+PreferenceDialog::save_defaults ()
+{
+	QSettings s;
+	QList < QMap < QString, QVariant > > prefs = PreferenceDialog::build_prefvalues ();
+
+	for (int i = 0; i < prefs.size (); i ++) {
+		QMap<QString, QVariant> m = prefs.at (i);
+		if (!s.contains (m["value"].toString ())) {
+			s.setValue (m["value"].toString (), m["default"]);
+		}
+	}
+}
+
 PreferenceDialog::PreferenceDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
 	setWindowFlags (Qt::Dialog);

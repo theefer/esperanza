@@ -29,7 +29,8 @@ class PreferenceDialog : public QMainWindow
 		};
 
 		PreferenceDialog (QWidget *, XClient *);
-		virtual QList < QMap < QString, QVariant > > build_prefvalues ();
+		static QList < QMap < QString, QVariant > > build_prefvalues ();
+		static void save_defaults ();
 		void fill_list ();
 		void showEvent (QShowEvent *);
 

@@ -140,15 +140,15 @@ ProgressFrame::paintEvent( QPaintEvent * event )
     rect.adjust( 8, 0, -8, 0 );
 
     // progress bar colour
-	QColor top = s.value ("ui/titlebartop", QColor (200, 200, 200)).value<QColor> ();
-	QColor bottom = s.value ("ui/titlebarbottom", QColor (60, 60, 60)).value<QColor> ();
+	QColor top = s.value ("ui/titlebartop").value<QColor> ();
+	QColor bottom = s.value ("ui/titlebarbottom").value<QColor> ();
 
     QColor cactivetop = top;
     QColor cactivemiddle = top.dark ();
     QColor cactivebottom = bottom;
 
 	QColor ctop, cmiddle, cbottom;
-	if (s.value ("ui/titlelighter", false).toBool ()) {
+	if (s.value ("ui/titlelighter").toBool ()) {
 		ctop = cactivetop.dark ();
 		cmiddle = cactivemiddle.dark ();
 		cbottom = cactivebottom.dark ();
@@ -215,8 +215,8 @@ ProgressFrame::paintEvent( QPaintEvent * event )
         rect.adjust( icon().width() + 6, 1, 0, 0 );
     }
 
-    painter.setPen (s.value ("ui/titlebartext", QColor (Qt::black)).value<QColor> ());
-    painter.setBrush (s.value ("ui/titlebartext", QColor (Qt::black)).value<QColor> ());
+    painter.setPen (s.value ("ui/titlebartext").value<QColor> ());
+    painter.setBrush (s.value ("ui/titlebartext").value<QColor> ());
 
     QString timeString;
     if ( m_drawTime && maximum() != 0 )

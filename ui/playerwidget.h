@@ -50,7 +50,6 @@ class PlayerWidget : public QWidget
 		void entry_changed (uint32_t);
 
 		void open_pref ();
-		void open_sceditor ();
 
 		void changed_settings ();
 
