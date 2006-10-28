@@ -36,7 +36,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/titlebarbottom", "Titlebar color gradient bottom", T_COLOR, QColor (60, 60, 60));
 	PREF_VALUE("ui/titlelighter", "Paint the progress in a lighter color", T_BOOL, false);
 	PREF_VALUE("ui/titlebartext", "Titlebar text color", T_COLOR, QColor (Qt::black));
-	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::red));
+	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::black));
 #ifdef Q_OS_MACX
 	PREF_VALUE("core/usegrowl", "Use Growl notification", T_BOOL, true);
 #endif
