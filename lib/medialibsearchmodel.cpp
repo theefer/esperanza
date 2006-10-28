@@ -8,6 +8,10 @@ MedialibSearchModel::MedialibSearchModel (QObject *parent, XClient *client) : Pl
 	columns.append ("Album");
 	columns.append ("Title");
 	setColumns (columns);
+	columns.append ("url");
+	columns.append ("");
+	columns.append ("");
+	setColumnFallback (columns);
 
 }
 

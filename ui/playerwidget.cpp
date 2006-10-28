@@ -245,6 +245,7 @@ void
 PlayerWidget::show_medialib ()
 {
 	MedialibDialog *mb = new MedialibDialog (this, m_client);
+	qDebug ("want to show new window!");
 	mb->show ();
 }
 

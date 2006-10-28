@@ -78,8 +78,9 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	g->setMargin (1);
 
 	resize (s.value ("medialibdialog/size", QSize (500, 350)).toSize ());
-	if (s.contains ("medialibdialog/position"))
+	if (s.contains ("medialibdialog/position")) {
 		move (s.value ("medialibdialog/position").toPoint ());
+	}
 
 	connect (m_list, SIGNAL (searchDone ()), this, SLOT (search_done ()));
 }
