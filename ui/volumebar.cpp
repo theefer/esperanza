@@ -9,6 +9,7 @@ VolumeButton::VolumeButton (QWidget *parent, XClient *client) : QWidget (parent)
 	m_client = client;
 
 	setMaximumSize (100, 20);
+	setToolTip ("Volumebar");
 
 	/* Create the slider */
 	m_slider = new QSlider (Qt::Horizontal, this);
