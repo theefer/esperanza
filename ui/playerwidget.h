@@ -65,6 +65,7 @@ class PlayerWidget : public QWidget
 
 		bool handle_index_status (const Xmms::Stats::ReaderStatus &);
 		bool handle_unindexed (const uint32_t &);
+		void handle_disconnect ();
 
 		void new_info (const QHash<QString, QVariant>&);
 

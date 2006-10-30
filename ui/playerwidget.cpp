@@ -11,6 +11,7 @@
 #include <QProgressBar>
 #include <QProgressDialog>
 #include <QHostAddress>
+#include <QErrorMessage>
 
 #include "playerwidget.h"
 #include "playerbutton.h"
@@ -382,11 +383,22 @@ PlayerWidget::got_connection (XClient *client)
 	client->playback.getStatus (Xmms::bind (&PlayerWidget::handle_status, this));
 	client->playback.broadcastStatus (Xmms::bind (&PlayerWidget::handle_status, this));
 
+	client->setDisconnectCallback (boost::bind (&PlayerWidget::handle_disconnect, this));
+
 
 	/* XXX: broken in c++ bindings
 	client->stats.broadcastMediainfoReaderStatus (Xmms::bind (&PlayerWidget::handle_index_status, this));
 	client->stats.signalMediainfoReaderUnindexed (Xmms::bind (&PlayerWidget::handle_unindexed, this));
 	*/
+}
+
+void
+PlayerWidget::handle_disconnect ()
+{
+	QErrorMessage *err = new QErrorMessage (this);
+	err->showMessage (tr ("Server died. The application will now quit."));
+	err->exec ();
+	QApplication::quit ();
 }
 
 bool

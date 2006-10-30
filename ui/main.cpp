@@ -53,6 +53,7 @@ browser:
 	if (!client.connect (path.toStdString ()))
 		goto browser;
 
+
 	pw->show ();
 
 	return app.exec ();
