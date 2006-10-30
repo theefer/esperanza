@@ -158,7 +158,7 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 		return;
 
 	if (n.internalId () != -1) {
-		setCurrentIndex (old);
+		setCurrentIndex (n.parent ());
 		return;
 	}
 	
@@ -169,6 +169,14 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 
 		setExpanded (n, true);
 		m_explist.append (n);
+
+		QModelIndex c = n.child (0, 0);
+		QRect vs = visualRect (c);
+		qDebug ("%d", vs.height ());
+		if (!vs.isValid () || vs.height() < 60) {
+			qDebug ("scrolling to");
+			scrollTo (c);
+		}
 	}
 }
 
