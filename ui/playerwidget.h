@@ -37,7 +37,6 @@ class PlayerWidget : public QWidget
 		void fwd_pressed (QMouseEvent *);
 		void back_pressed (QMouseEvent *);
 		void snett_pressed (QMouseEvent *);
-		void volume_pressed (QMouseEvent *);
 
 		void add_remote_file ();
 		void add_local_file ();

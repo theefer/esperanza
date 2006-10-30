@@ -34,8 +34,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
 
-	m_volbar = new VolumeBar (NULL, client);
-
 	QWidget *dummy = new QWidget (this);
 
 	m_playlist = new PlaylistView (this, client);
@@ -73,9 +71,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	connect (sett, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (snett_pressed (QMouseEvent *)));
 
-	PlayerButton *volume = new PlayerButton (dummy, ":images/volume.png");
-	connect (volume, SIGNAL (clicked (QMouseEvent *)),
-			 this, SLOT (volume_pressed (QMouseEvent *)));
+	VolumeButton *volume = new VolumeButton (dummy, m_client);
 
 	m_playstop = new PlayerButton (dummy, ":images/playstop.png");
 	connect (m_playstop, SIGNAL (clicked (QMouseEvent *)),
@@ -177,13 +173,6 @@ PlayerWidget::resizeEvent (QResizeEvent *ev)
 {
 	QSettings s;
 	s.setValue ("player/windowsize", ev->size ());
-}
-
-void
-PlayerWidget::volume_pressed (QMouseEvent *ev)
-{
-	m_volbar->move (ev->globalPos ());
-	m_volbar->show ();
 }
 
 void
