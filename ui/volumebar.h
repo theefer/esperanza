@@ -9,19 +9,28 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMouseEvent>
+#include <QShowEvent>
+#include <QHideEvent>
 
 class VolumeBar : public QWidget
 {
 	Q_OBJECT
 	public:
 		VolumeBar (QWidget *);
+		/*
 		void focusOutEvent (QFocusEvent *);
+		*/
+		bool eventFilter (QObject *obj, QEvent *ev);
+
+		void showEvent (QShowEvent *);
+		void hideEvent (QHideEvent *);
 
 		void setValue (uint32_t i) {
 			m_slider->setValue (i);
 		};
 
 	private:
+		QWidget *m_parent;
 		QVBoxLayout *m_box;
 		QSlider *m_slider;
 };

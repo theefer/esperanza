@@ -3,6 +3,8 @@
 
 #include <QVBoxLayout>
 #include <QSettings>
+#include <QMouseEvent>
+#include <QApplication>
 
 VolumeButton::VolumeButton (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -107,6 +109,8 @@ VolumeBar::VolumeBar (QWidget *parent) : QWidget (NULL)
 	setWindowFlags (Qt::FramelessWindowHint);
 	setAttribute (Qt::WA_DeleteOnClose);
 
+	m_parent = parent;
+
 	m_box = new QVBoxLayout (this);
 
 	m_slider = new QSlider (Qt::Vertical, this);
@@ -124,9 +128,47 @@ VolumeBar::VolumeBar (QWidget *parent) : QWidget (NULL)
 	hide ();
 }
 
+bool
+VolumeBar::eventFilter (QObject *obj, QEvent *ev)
+{
+	if (isVisible ()) {
+		if (ev->type () == QEvent::MouseButtonPress) {
+			QMouseEvent *mev = (QMouseEvent *) ev;
+			QPoint globalPos = mapToGlobal (mev->pos ());
+			if (!(QApplication::widgetAt (globalPos) == this ||
+				  QApplication::widgetAt (globalPos) == m_slider)) {
+
+				hide ();
+				return true;
+			}
+		}
+	}
+	return QWidget::eventFilter (obj, ev);
+}
+
+void
+VolumeBar::showEvent (QShowEvent *ev)
+{
+	foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+		widget->installEventFilter (this);
+	}
+
+	raise ();
+}
+
+void
+VolumeBar::hideEvent (QHideEvent *ev)
+{
+	foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+		widget->removeEventFilter (this);
+	}
+}
+
+/*
 void
 VolumeBar::focusOutEvent (QFocusEvent *ev)
 {
 	hide ();
 }
+*/
 
