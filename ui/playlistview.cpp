@@ -172,9 +172,7 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 
 		QModelIndex c = n.child (0, 0);
 		QRect vs = visualRect (c);
-		qDebug ("%d", vs.height ());
 		if (!vs.isValid () || vs.height() < 60) {
-			qDebug ("scrolling to");
 			scrollTo (c);
 		}
 	}
@@ -187,8 +185,13 @@ dummy_uint (const uint32_t &)
 }
 
 void
-PlaylistView::jump_pos (const QModelIndex &idx)
+PlaylistView::jump_pos (const QModelIndex &i)
 {
+	QModelIndex idx = i;
+
+	if (!idx.isValid ())
+		idx = currentIndex ();
+
 	uint32_t row = idx.row ();
 	if (idx.internalId () != -1)
 		row = idx.parent ().row ();

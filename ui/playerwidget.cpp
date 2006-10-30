@@ -198,6 +198,22 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 		case Qt::Key_M:
 			show_medialib ();
 			break;
+		case Qt::Key_Enter:
+		case Qt::Key_Return:
+			m_playlist->jump_pos (QModelIndex ());
+			break;
+		case Qt::Key_Space:
+			play_pressed (NULL);
+			break;
+		case Qt::Key_B:
+			fwd_pressed (NULL);
+			break;
+		case Qt::Key_V:
+			back_pressed (NULL);
+			break;
+		default:
+			ev->ignore ();
+			break;
 	}
 }
 
