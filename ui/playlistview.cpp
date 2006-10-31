@@ -156,13 +156,16 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 
 	if (s.value ("playlist/compactmode").toBool ())
 		return;
-
+	
 	if (n.internalId () != -1) {
 		setCurrentIndex (n.parent ());
 		return;
 	}
 	
-	if (getSelection ().count () > 1) {
+	if (getSelection ().count () < 1) {
+		setCurrentIndex (old);
+		return;
+	} else if (getSelection ().count () > 1) {
 		collapse_all ();
 	} else {
 		collapse_all ();
@@ -197,12 +200,16 @@ PlaylistView::jump_pos (const QModelIndex &i)
 		row = idx.parent ().row ();
 
 	m_client->playlist.setNext (row, &dummy_uint);
+	/* Note. tickle before checking status is a good
+	 * idea here. It seems to bork on linux platform
+	 * otherwise
+	 */
+	m_client->playback.tickle (&XClient::log);
 
 	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (parent ());
 	if (pw->status () != Xmms::Playback::PLAYING)
 		m_client->playback.start (&XClient::log);
 
-	m_client->playback.tickle (&XClient::log);
 }
 
 QList<uint32_t>
