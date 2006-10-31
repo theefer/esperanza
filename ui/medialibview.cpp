@@ -10,7 +10,7 @@ MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (paren
 	setIndentation (0);
 	setAlternatingRowColors (true);
 	setItemsExpandable (false);
-	setRootIsDecorated (true);
+	setRootIsDecorated (false);
 
 	QPalette p (palette ());
 	p.setColor (QPalette::AlternateBase, QColor (230, 230, 230));
