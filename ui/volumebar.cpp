@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QSettings>
 
 VolumeButton::VolumeButton (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -19,7 +20,6 @@ VolumeButton::VolumeButton (QWidget *parent, XClient *client) : QWidget (parent)
 	m_slider->setMaximum (100);
 	m_slider->setMinimum (0);
 	m_slider->setTickInterval (5);
-	m_slider->setTracking (false);
 
 	m_volbar = new VolumeBar (this);
 
@@ -56,6 +56,13 @@ VolumeButton::changed_settings ()
 		m_button->hide ();
 		m_slider->show ();
 	}
+
+	if (s.value ("ui/volumeinteractive").toBool ()) {
+		m_slider->setTracking (true);
+	} else { 
+		m_slider->setTracking (false);
+	}
+
 }
 
 void

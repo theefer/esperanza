@@ -39,6 +39,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/titlebartext", "Titlebar text color", T_COLOR, QColor (Qt::black));
 	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::black));
 	PREF_VALUE("ui/volumepopup", "Show volume in a popup", T_BOOL, false);
+	PREF_VALUE("ui/volumeinteractive", "Change volume interactivly, could cause problems.", T_BOOL, false);
 
 #ifdef Q_OS_MACX
 	PREF_VALUE("core/usegrowl", "Use Growl notification", T_BOOL, true);
