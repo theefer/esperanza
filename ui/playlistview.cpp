@@ -213,8 +213,13 @@ PlaylistView::jump_pos (const QModelIndex &i)
 	m_client->playback.tickle (&XClient::log);
 
 	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (parent ());
-	if (pw->status () != Xmms::Playback::PLAYING)
+	if (pw->status () != Xmms::Playback::PLAYING) {
 		m_client->playback.start (&XClient::log);
+
+		if (pw->status () == Xmms::Playback::PAUSED) {
+			m_client->playback.tickle (&XClient::log);
+		}
+	}
 
 }
 
