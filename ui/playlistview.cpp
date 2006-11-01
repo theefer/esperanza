@@ -44,6 +44,7 @@ PlaylistDelegate::paint (QPainter *painter,
 PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (parent)
 {
 	m_client = client;
+	m_parent = parent;
 
 	m_model = new PlaylistModel (this, m_client);
 	setModel (m_model);
@@ -54,6 +55,7 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setAlternatingRowColors (true);
 	setItemsExpandable (false);
 	setRootIsDecorated (false);
+	setTabKeyNavigation (false);
 
 	setDragEnabled (true);
 	setAcceptDrops (true);
@@ -93,11 +95,6 @@ PlaylistView::keyPressEvent (QKeyEvent *ev)
 {
 	QModelIndex idx = m_selections->currentIndex ();
 	QModelIndex nidx;
-
-	if (ev->modifiers () != Qt::NoModifier) {
-		ev->ignore ();
-		return;
-	}
 
 	switch (ev->key ()) {
 		case Qt::Key_Up:
@@ -212,7 +209,7 @@ PlaylistView::jump_pos (const QModelIndex &i)
 	 */
 	m_client->playback.tickle (&XClient::log);
 
-	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (parent ());
+	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
 	if (pw->status () != Xmms::Playback::PLAYING) {
 		m_client->playback.start (&XClient::log);
 

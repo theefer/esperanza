@@ -46,7 +46,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	QWidget *dummy = new QWidget (main_w);
 
-	m_playlist = new PlaylistView (main_w, client);
+	m_playlist = new PlaylistView (this, client);
 	QGridLayout *layout = new QGridLayout (main_w);
 
 	m_pf = new ProgressFrame (this);

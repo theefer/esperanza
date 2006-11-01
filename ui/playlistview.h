@@ -42,6 +42,7 @@ class PlaylistView : public QTreeView
 		PlaylistModel *m_model;
 		QItemSelectionModel *m_selections;
 		QList<QModelIndex> m_explist;
+		QWidget *m_parent;
 
 		bool handle_update_pos (const uint32_t &);
 };
