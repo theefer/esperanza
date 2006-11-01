@@ -177,10 +177,7 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 		m_explist.append (n);
 
 		QModelIndex c = n.child (0, 0);
-		QRect vs = visualRect (c);
-		if (!vs.isValid () || vs.height() < 60) {
-			scrollTo (c);
-		}
+		scrollTo (c);
 	}
 }
 
