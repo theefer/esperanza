@@ -17,7 +17,6 @@ class MedialibDialog : public QMainWindow
 		MedialibDialog (QWidget *, XClient *);
 
 		void resizeEvent (QResizeEvent *);
-		void moveEvent (QMoveEvent *);
 		void keyPressEvent (QKeyEvent *);
 
 	private slots:
