@@ -50,6 +50,8 @@ XMediainfoCache::handle_bindata (const Xmms::bin &data, const QString &id)
 	if (i.isNull ()) {
 		return true;
 	}
+
+
 	m_pixmaps[id] = i;
 
 	QList<uint32_t> ids = m_icon_map[id];

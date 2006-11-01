@@ -63,7 +63,7 @@ mac_growl_post_notification (const QString &type,
 	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:noteName 
 		object:nil
 		userInfo:note
-		deliverImmediately:YES];
+		deliverImmediately:NO];
 
 	[pool release];
 }

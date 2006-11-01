@@ -93,6 +93,12 @@ PlaylistView::keyPressEvent (QKeyEvent *ev)
 {
 	QModelIndex idx = m_selections->currentIndex ();
 	QModelIndex nidx;
+
+	if (ev->modifiers () != Qt::NoModifier) {
+		ev->ignore ();
+		return;
+	}
+
 	switch (ev->key ()) {
 		case Qt::Key_Up:
 			nidx = m_model->index (idx.row () - 1, idx.column (), QModelIndex ());

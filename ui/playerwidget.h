@@ -52,6 +52,8 @@ class PlayerWidget : public QWidget
 
 		void changed_settings ();
 
+		void do_growl ();
+
 	private:
 		XClient *m_client;
 		Xmms::Playback::Status m_status;

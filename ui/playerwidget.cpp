@@ -12,6 +12,7 @@
 #include <QProgressDialog>
 #include <QHostAddress>
 #include <QErrorMessage>
+#include <QTimer>
 
 #include "playerwidget.h"
 #include "playerbutton.h"
@@ -103,6 +104,9 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	layout->setColumnStretch (0, 0);
 	layout->setMargin (1);
 
+	m_last_growl_str = QString ("");
+	m_status = Xmms::Playback::STOPPED;
+
 	m_current_id = 0;
 	connect (client, SIGNAL (gotConnection (XClient *)),
 			 this, SLOT (got_connection (XClient *))); 
@@ -152,7 +156,7 @@ PlayerWidget::changed_settings ()
 	if (s.value ("core/usegrowl").toBool ()) {
 		if (!m_growl) {
 			m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
-			m_growl->do_registration ();
+//			m_growl->do_registration ();
 		}
 	} else if (m_growl) {
 		delete m_growl;
@@ -179,6 +183,11 @@ PlayerWidget::resizeEvent (QResizeEvent *ev)
 void
 PlayerWidget::keyPressEvent (QKeyEvent *ev)
 {
+	if (ev->modifiers () != Qt::NoModifier) {
+		ev->ignore ();
+		return;
+	}
+	
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
@@ -211,6 +220,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			break;
 		case Qt::Key_V:
 			back_pressed (NULL);
+			break;
+		case Qt::Key_P:
+			open_pref ();
 			break;
 		default:
 			ev->ignore ();
@@ -251,7 +263,6 @@ void
 PlayerWidget::show_medialib ()
 {
 	MedialibDialog *mb = new MedialibDialog (this, m_client);
-	qDebug ("want to show new window!");
 	mb->show ();
 }
 
@@ -276,10 +287,12 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 	QMenu m;
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
 //	m.addAction (tr ("Short-cut editor"), this, SLOT (open_sceditor ()));
+	/*
 	QMenu *pm = m.addMenu (tr ("Playlist Options"));
 	pm->addAction (tr ("Shuffle"));
 	pm->addAction (tr ("Random"))->setCheckable (true);
 	pm->addAction (tr ("Stop after play"))->setCheckable (true);
+	*/
 
 	m.exec (ev->globalPos ());
 }
@@ -374,9 +387,6 @@ PlayerWidget::got_connection (XClient *client)
 {
 	m_client = client;
 
-	client->playback.broadcastCurrentID (Xmms::bind (&PlayerWidget::handle_current_id, this));
-	client->playback.currentID (Xmms::bind (&PlayerWidget::handle_current_id, this));
-
 	client->playback.signalPlaytime (Xmms::bind (&PlayerWidget::handle_playtime, this));
 	client->playback.getPlaytime (Xmms::bind (&PlayerWidget::handle_playtime, this));
 
@@ -385,6 +395,8 @@ PlayerWidget::got_connection (XClient *client)
 
 	client->setDisconnectCallback (boost::bind (&PlayerWidget::handle_disconnect, this));
 
+	client->playback.broadcastCurrentID (Xmms::bind (&PlayerWidget::handle_current_id, this));
+	client->playback.currentID (Xmms::bind (&PlayerWidget::handle_current_id, this));
 
 	/* XXX: broken in c++ bindings
 	client->stats.broadcastMediainfoReaderStatus (Xmms::bind (&PlayerWidget::handle_index_status, this));
@@ -471,12 +483,21 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 	}
 
 	if (m_growl &&
+		m_current_id == h["id"].toUInt () &&
 		m_status == Xmms::Playback::PLAYING &&
 		m_last_growl_str != s &&
 		h["id"].toUInt () != 0) {
 		m_last_growl_str = s;
-		m_growl->do_notification ("New song", tr ("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (h["id"].toUInt ()));
+		QTimer::singleShot (0, this, SLOT (do_growl ()));
 	}
+}
+
+void
+PlayerWidget::do_growl ()
+{
+	m_growl->do_notification ("New song", 
+							  tr ("Esperanza is now playing:"), m_last_growl_str, 
+							  m_client->cache ()->get_pixmap (m_current_id));
 }
 
 bool
