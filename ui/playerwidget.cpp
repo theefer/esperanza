@@ -1,5 +1,7 @@
 #include <xmmsclient/xmmsclient++.h>
 
+#include <QMainWindow>
+#include <QMenu>
 #include <QWidget>
 #include <QGridLayout>
 #include <QPixmap>
@@ -26,7 +28,7 @@
 #include "growl.h"
 #include "textdialog.h"
 
-PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
+PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
 	QSettings s;
 
@@ -37,17 +39,20 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
 
-	QWidget *dummy = new QWidget (this);
+	QWidget *main_w = new QWidget (this);
+	setCentralWidget (main_w);
 
-	m_playlist = new PlaylistView (this, client);
-	QGridLayout *layout = new QGridLayout (this);
+	QWidget *dummy = new QWidget (main_w);
+
+	m_playlist = new PlaylistView (main_w, client);
+	QGridLayout *layout = new QGridLayout (main_w);
 
 	m_pf = new ProgressFrame (this);
 
 	layout->addWidget (m_pf, 0, 0, 1, 3);
 	layout->addWidget (m_playlist, 1, 0, 1, 3);
 
-	dummy = new QWidget (this);
+	dummy = new QWidget (main_w);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
 
 	PlayerButton *plus = new PlayerButton (dummy, ":images/plus.png");
@@ -123,6 +128,22 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 	connect (m_client->settings (), SIGNAL (settingsChanged ()),
 			 this, SLOT (changed_settings ()));
 
+	/* mac specific code to show menus */
+#ifdef Q_WS_MACX
+	QMenu *m = menuBar ()->addMenu (tr ("&File"));
+	m->addAction (tr ("Preferences"), this, SLOT (open_pref ()));
+	m->addAction (tr ("About"), this, SLOT (open_about ()));
+	m = menuBar ()->addMenu (tr ("Playlist"));
+	m->addAction (tr ("Add local file"), this, SLOT (add_local_file ()));
+	m->addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
+	m->addSeparator ();
+	m->addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
+	m->addSeparator ();
+	m->addAction (tr ("Add files from medialib"), this, SLOT (show_medialib ()));
+	m = menuBar ()->addMenu (tr ("Help"));
+	m->addAction (tr ("Esperanza Help"), this, SLOT (open_short_help ()));
+#endif
+
 	/* run it once first time */
 	changed_settings ();
 }
@@ -157,7 +178,7 @@ PlayerWidget::changed_settings ()
 	if (s.value ("core/usegrowl").toBool ()) {
 		if (!m_growl) {
 			m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
-//			m_growl->do_registration ();
+			m_growl->do_registration ();
 		}
 	} else if (m_growl) {
 		delete m_growl;

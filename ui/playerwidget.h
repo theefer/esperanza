@@ -3,7 +3,7 @@
 
 #include <xmmsclient/xmmsclient++.h>
 
-#include <QWidget>
+#include <QMainWindow>
 #include <QMouseEvent>
 #include <QAction>
 
@@ -13,7 +13,7 @@
 #include "volumebar.h"
 #include "growl.h"
 
-class PlayerWidget : public QWidget
+class PlayerWidget : public QMainWindow
 {
 	Q_OBJECT
 	public:
