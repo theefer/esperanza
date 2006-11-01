@@ -26,6 +26,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("serverdialog/show", "Show serverbrowser on startup", T_BOOL, true);
 	PREF_VALUE("playlist/jumptocurrent", "Jump to current entry on song change", T_BOOL, true);
 	PREF_VALUE("playlist/compactmode", "Use compact (boring) playlist mode", T_BOOL, false);
+	PREF_VALUE("playlist/albumartplace", "Show albumart under artist", T_BOOL, true);
 	PREF_VALUE("ui/showstop", "Show a stop button as well", T_BOOL, false);
 	PREF_VALUE("ui/reverseplaytime", "Use reversed elapsed time", T_BOOL, true);
 //	PREF_VALUE("playlist/fontsize", "Playlist fontsize in pixels", T_NUM, 10);

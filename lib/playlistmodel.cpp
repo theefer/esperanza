@@ -4,6 +4,7 @@
 #include <QVariant>
 #include <QIcon>
 #include <QMimeData>
+#include <QSettings>
 
 #include "playlistmodel.h"
 
@@ -244,7 +245,13 @@ PlaylistModel::decoration_data (const QModelIndex &index, int role) const
 		
 	}
 	if (role == Qt::DecorationRole) {
-		if (index.column () == 1) {
+		QSettings s;
+		int c = 0;
+
+		if (!s.value ("playlist/albumartplace").toBool ())
+			c = 1;
+		
+		if (index.column () == c) {
 			QIcon i = m_client->cache ()->get_icon (id);
 			return i;
 		}
