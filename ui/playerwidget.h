@@ -49,6 +49,8 @@ class PlayerWidget : public QWidget
 		void entry_changed (uint32_t);
 
 		void open_pref ();
+		void open_about ();
+		void open_short_help ();
 
 		void changed_settings ();
 

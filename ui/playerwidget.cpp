@@ -24,6 +24,7 @@
 #include "preferences.h"
 #include "volumebar.h"
 #include "growl.h"
+#include "textdialog.h"
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -286,6 +287,9 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
+	m.addSeparator ();
+	m.addAction (tr ("About"), this, SLOT (open_about ()));
+	m.addAction (tr ("Keyboard shortcuts"), this, SLOT (open_short_help ()));
 //	m.addAction (tr ("Short-cut editor"), this, SLOT (open_sceditor ()));
 	/*
 	QMenu *pm = m.addMenu (tr ("Playlist Options"));
@@ -305,6 +309,22 @@ PlayerWidget::open_sceditor ()
 	sc->show ();
 }
 */
+
+void
+PlayerWidget::open_about ()
+{
+	TextDialog dia (this);
+	dia.read_file (":text/about.html");
+	dia.exec ();
+}
+
+void
+PlayerWidget::open_short_help ()
+{
+	TextDialog dia (this);
+	dia.read_file (":text/shortcuts.html");
+	dia.exec ();
+}
 
 void
 PlayerWidget::open_pref ()
