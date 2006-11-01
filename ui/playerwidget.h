@@ -11,7 +11,7 @@
 #include "progressframe.h"
 #include "playerbutton.h"
 #include "volumebar.h"
-#include "growl.h"
+#include "systemtray.h"
 
 class PlayerWidget : public QMainWindow
 {
@@ -54,8 +54,6 @@ class PlayerWidget : public QMainWindow
 
 		void changed_settings ();
 
-		void do_growl ();
-
 	private:
 		XClient *m_client;
 		Xmms::Playback::Status m_status;
@@ -80,9 +78,9 @@ class PlayerWidget : public QMainWindow
 		VolumeBar *m_volbar;
 
 		QProgressDialog *m_unindexed;
+		
+		SystemTray *m_systray;
 
-		GrowlNotifier *m_growl;
-		QString m_last_growl_str; /* fulhack */
 };
 
 #endif

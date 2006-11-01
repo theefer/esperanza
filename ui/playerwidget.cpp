@@ -14,6 +14,8 @@
 #include <QProgressDialog>
 #include <QErrorMessage>
 #include <QTimer>
+#include <QIcon>
+
 
 #include "playerwidget.h"
 #include "playerbutton.h"
@@ -24,8 +26,9 @@
 #include "medialibdialog.h"
 #include "preferences.h"
 #include "volumebar.h"
-#include "growl.h"
 #include "textdialog.h"
+#include "systemtray.h"
+
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -33,7 +36,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	m_client = client;
 	m_unindexed = NULL;
-	m_growl = NULL;
 
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
@@ -111,7 +113,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	layout->setColumnStretch (0, 0);
 	layout->setMargin (1);
 
-	m_last_growl_str = QString ("");
 	m_status = Xmms::Playback::STOPPED;
 
 	m_current_id = 0;
@@ -147,6 +148,10 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	/* run it once first time */
 	changed_settings ();
+	
+	// System Tray setup
+	m_systray = new SystemTray (this, m_client);
+	
 }
 
 void
@@ -183,16 +188,6 @@ PlayerWidget::changed_settings ()
 
 	if (s.value ("ui/reverseplaytime").toBool ())
 		m_pf->setReverse (true);
-
-	if (s.value ("core/usegrowl").toBool ()) {
-		if (!m_growl) {
-			m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
-			m_growl->do_registration ();
-		}
-	} else if (m_growl) {
-		delete m_growl;
-		m_growl = NULL;
-	}
 
 	update ();
 }
@@ -526,29 +521,19 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		.arg(h["artist"].toString ())
 		.arg(h["title"].toString ());
 	m_pf->setText (s);
+
 	if (h.contains ("duration")) {
 		uint32_t dur = h["duration"].toUInt ();
 		m_pf->setMaximum (dur / 1000);
 		m_pf->setValue (0);
 	}
-
-	if (m_growl &&
-		m_current_id == h["id"].toUInt () &&
-		m_status == Xmms::Playback::PLAYING &&
-		m_last_growl_str != s &&
-		h["id"].toUInt () != 0) {
-		m_last_growl_str = s;
-		QTimer::singleShot (0, this, SLOT (do_growl ()));
+	if (m_current_id == h["id"].toUInt () &&
+        m_status == Xmms::Playback::PLAYING &&
+        h["id"].toUInt () != 0) {
+		m_systray->do_notification (tr("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (m_current_id));
 	}
 }
 
-void
-PlayerWidget::do_growl ()
-{
-	m_growl->do_notification ("New song", 
-							  tr ("Esperanza is now playing:"), m_last_growl_str, 
-							  m_client->cache ()->get_pixmap (m_current_id));
-}
 
 bool
 PlayerWidget::handle_playtime (const unsigned int &tme)
@@ -564,3 +549,5 @@ PlayerWidget::handle_current_id (const unsigned int &id)
 	new_info (m_client->cache ()->get_info (id));
 	return true;
 }
+
+

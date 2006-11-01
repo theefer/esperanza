@@ -11,6 +11,7 @@
 		<file>images/stop.png</file>
 		<file>images/playstop.png</file>
 		<file>images/progress.mng</file>
+		<file>images/systray.png</file>
 		<file>text/about.html</file>
 		<file>text/shortcuts.html</file>
 	</qresource>
