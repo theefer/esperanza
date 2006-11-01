@@ -1,12 +1,12 @@
 DEPENDPATH += lib ui
 INCLUDEPATH += ui lib /sw/include
 CONFIG += link_pkgconfig debug
-QT += network
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 PKGCONFIG += xmms2-client xmms2-client-cpp
 OBJECTS_DIR = qmake_build
 MOC_DIR = qmake_build
 RCC_DIR = qmake_build
+CONFIG += x86 ppc
 
 TEMPLATE=app
 TARGET=esperanza

@@ -12,7 +12,6 @@
 #include <QMenu>
 #include <QProgressBar>
 #include <QProgressDialog>
-#include <QHostAddress>
 #include <QErrorMessage>
 #include <QTimer>
 
