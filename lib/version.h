@@ -1,0 +1,9 @@
+#ifndef __VERSION_H__
+#define __VERSION_H__
+
+#define ESPERANZA_VERSION_STR "0.1"
+#define ESPERANZA_VERSION 0x000010
+#define ESPERANZA_DATE_STR "2006-11-01"
+#define ESPERANZA_DATE 0x061101
+
+#endif
