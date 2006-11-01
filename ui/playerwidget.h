@@ -72,6 +72,7 @@ class PlayerWidget : public QMainWindow
 		void handle_disconnect ();
 
 		void new_info (const QHash<QString, QVariant>&);
+		void set_colors ();
 
 		uint32_t m_current_id;
 

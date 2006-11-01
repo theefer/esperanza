@@ -69,6 +69,13 @@ ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent)
 	resize (250, 300);
 }
 
+void
+ServerDialog::keyPressEvent (QKeyEvent *ev)
+{
+	if (ev->key () == Qt::Key_Enter || ev->key () == Qt::Key_Return)
+		accept ();
+}
+
 AddServerDialog::AddServerDialog (QWidget *parent)
 {
 	QGridLayout *g = new QGridLayout (this);

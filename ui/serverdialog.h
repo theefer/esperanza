@@ -7,6 +7,7 @@
 #include <QListWidget>
 #include <QWidget>
 #include <QLineEdit>
+#include <QKeyEvent>
 
 class AddServerDialog : public QDialog
 {
@@ -24,6 +25,8 @@ class ServerDialog : public QDialog
 		ServerDialog (QWidget *);
 		QString get_path ();
 		QString get_default ();
+
+		void keyPressEvent (QKeyEvent *);
 
 	private slots:
 		void add_server ();

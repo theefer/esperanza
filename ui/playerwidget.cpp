@@ -39,6 +39,8 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
 
+	set_colors ();
+
 	QWidget *main_w = new QWidget (this);
 	setCentralWidget (main_w);
 
@@ -149,7 +151,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 }
 
 void
-PlayerWidget::changed_settings ()
+PlayerWidget::set_colors ()
 {
 	QSettings s;
 
@@ -166,6 +168,14 @@ PlayerWidget::changed_settings ()
 				s.value ("ui/highlightedtext").value<QColor> ());
 	p.setColor (QPalette::Inactive, QPalette::Text, QColor ("black"));
 	QApplication::setPalette (p);
+}
+
+void
+PlayerWidget::changed_settings ()
+{
+	QSettings s;
+
+	set_colors ();
 
 	if (!s.value ("ui/showstop").toBool ())
 		m_playstop->hide ();
