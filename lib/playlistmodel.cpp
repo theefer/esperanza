@@ -230,16 +230,22 @@ PlaylistModel::decoration_data (const QModelIndex &index, int role) const
 	unsigned int id = m_plist[r];
 	QHash<QString, QVariant> h = m_client->cache ()->get_info (id);
 
+	if (role == Qt::TextAlignmentRole) {
+		return QVariant (Qt::AlignVCenter);
+	}
+
 	if (role == Qt::DisplayRole) {
 		if (index.column () == m_columns.size () - 1) {
 			QString s;
 
+			s.append ("\n");
 			s.append (QString ("Bitrate: %0kbps\n").arg (h["bitrate"].toUInt () / 1000));
 			unsigned int dur = h["duration"].toUInt ();
 			QString m;
 			m.sprintf ("%02d:%02d", (dur / 60000), (dur/1000)%60);
 			s.append (QString ("Duration: %0\n").arg (m));
-			s.append (QString ("Times played: %0\n").arg (h["timesplayed"].toUInt ()));
+			s.append (QString ("Times played: %0").arg (h["timesplayed"].toUInt ()));
+			s.append ("\n");
 			return QVariant (s);
 		}
 		

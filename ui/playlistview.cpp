@@ -63,6 +63,7 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setDragEnabled (false);
 	setAcceptDrops (false);
 	setDropIndicatorShown (true);
+	setContextMenuPolicy (Qt::PreventContextMenu);
 
 	QHeaderView *head = header ();
 	QSettings s;

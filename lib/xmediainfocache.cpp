@@ -68,7 +68,7 @@ XMediainfoCache::get_icon (uint32_t id)
 		return QIcon (m_pixmaps[m_info[id]["picture_front"].toString ()]);
 	}
 
-	return QIcon ();
+	return QIcon (QPixmap ());
 }
 
 QPixmap
