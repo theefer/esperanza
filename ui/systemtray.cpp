@@ -42,6 +42,8 @@ SystemTray::SystemTray (QObject *parent, XClient *client) : QSystemTrayIcon (par
 #ifdef Q_WS_MACX
 	m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
 	m_growl->do_registration ();
+#else
+	m_growl = NULL;
 #endif
 
 }

@@ -18,9 +18,9 @@ main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
 
-	QCoreApplication::setOrganizationName("xmms2");
-	QCoreApplication::setOrganizationDomain("xmms.org");
-	QCoreApplication::setApplicationName("Esperanza");
+	QCoreApplication::setOrganizationName ("xmms2");
+	QCoreApplication::setOrganizationDomain ("xmms.org");
+	QCoreApplication::setApplicationName ("Esperanza");
 
 	QApplication::setWindowIcon (QIcon (":images/esperanza.png"));
 
