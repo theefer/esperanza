@@ -28,16 +28,17 @@ class PlayerWidget : public QMainWindow
 		void resizeEvent (QResizeEvent *);
 		void moveEvent (QMoveEvent *);
 
-	private slots:
-		void got_connection (XClient *);
-		void plus_pressed (QMouseEvent *);
-		void minus_pressed (QMouseEvent *);
-		void play_pressed (QMouseEvent *);
-		void playstop_pressed (QMouseEvent *);
-		void fwd_pressed (QMouseEvent *);
-		void back_pressed (QMouseEvent *);
-		void snett_pressed (QMouseEvent *);
+	public slots:
+		void play_pressed ();
+		void playstop_pressed ();
+		void fwd_pressed ();
+		void back_pressed ();
 
+	private slots:
+		void plus_pressed (QMouseEvent *);
+		void snett_pressed (QMouseEvent *);
+		void minus_pressed (QMouseEvent *);
+		void got_connection (XClient *);
 		void add_remote_file ();
 		void add_local_file ();
 		void add_local_dir ();

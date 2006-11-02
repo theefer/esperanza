@@ -68,15 +68,15 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	m_playbutt = new PlayerButton (dummy, ":images/play.png");
 	connect (m_playbutt, SIGNAL (clicked (QMouseEvent *)),
-			 this, SLOT (play_pressed (QMouseEvent *)));
+			 this, SLOT (play_pressed ()));
 
 	PlayerButton *back = new PlayerButton (dummy, ":images/back.png");
 	connect (back, SIGNAL (clicked (QMouseEvent *)),
-			 this, SLOT (back_pressed (QMouseEvent *)));
+			 this, SLOT (back_pressed ()));
 
 	PlayerButton *fwd = new PlayerButton (dummy, ":images/forward.png");
 	connect (fwd, SIGNAL (clicked (QMouseEvent *)),
-			 this, SLOT (fwd_pressed (QMouseEvent *)));
+			 this, SLOT (fwd_pressed ()));
 
 	PlayerButton *sett = new PlayerButton (dummy, ":images/settings.png");
 	connect (sett, SIGNAL (clicked (QMouseEvent *)),
@@ -86,7 +86,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	m_playstop = new PlayerButton (dummy, ":images/playstop.png");
 	connect (m_playstop, SIGNAL (clicked (QMouseEvent *)),
-			 this, SLOT (playstop_pressed (QMouseEvent *)));
+			 this, SLOT (playstop_pressed ()));
 
 	hbox->addWidget (back);
 	hbox->addWidget (m_playbutt);
@@ -233,13 +233,13 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			m_playlist->jump_pos (QModelIndex ());
 			break;
 		case Qt::Key_Space:
-			play_pressed (NULL);
+			play_pressed ();
 			break;
 		case Qt::Key_B:
-			fwd_pressed (NULL);
+			fwd_pressed ();
 			break;
 		case Qt::Key_V:
-			back_pressed (NULL);
+			back_pressed ();
 			break;
 		case Qt::Key_P:
 			open_pref ();
@@ -251,7 +251,7 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 }
 
 void
-PlayerWidget::play_pressed (QMouseEvent *ev)
+PlayerWidget::play_pressed ()
 {
 	if (m_status == Xmms::Playback::PLAYING)
 		m_client->playback.pause (&XClient::log);
@@ -266,14 +266,14 @@ dummy_uint (const uint32_t &)
 }
 
 void
-PlayerWidget::fwd_pressed (QMouseEvent *ev)
+PlayerWidget::fwd_pressed ()
 {
 	m_client->playlist.setNextRel (1, &dummy_uint);
 	m_client->playback.tickle (&XClient::log);
 }
 
 void
-PlayerWidget::back_pressed (QMouseEvent *ev)
+PlayerWidget::back_pressed ()
 {
 	m_client->playlist.setNextRel (-1, &dummy_uint);
 	m_client->playback.tickle (&XClient::log);
@@ -410,7 +410,7 @@ PlayerWidget::remove_selected ()
 }
 
 void
-PlayerWidget::playstop_pressed (QMouseEvent *ev)
+PlayerWidget::playstop_pressed ()
 {
 	m_client->playback.stop (&XClient::log);
 }
