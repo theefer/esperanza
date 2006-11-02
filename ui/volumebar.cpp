@@ -68,7 +68,6 @@ VolumeButton::changed_settings ()
 void
 VolumeButton::volume_pressed (QMouseEvent *ev)
 {
-	qDebug ("pressed!");
 	m_volbar->move (ev->globalPos ());
 	m_volbar->show ();
 }
@@ -113,8 +112,7 @@ VolumeButton::set_volume (int vol)
 
 VolumeBar::VolumeBar (QWidget *parent) : QWidget (NULL)
 {
-	setWindowFlags (Qt::FramelessWindowHint);
-	setAttribute (Qt::WA_DeleteOnClose);
+	setWindowFlags (Qt::FramelessWindowHint | Qt::Popup);
 
 	m_parent = parent;
 
