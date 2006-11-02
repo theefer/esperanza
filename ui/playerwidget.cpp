@@ -147,7 +147,9 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 #endif
 
 	// System Tray setup
-	m_systray = new SystemTray (this, m_client);
+	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
+		m_systray = new SystemTray (this, m_client);
+	}
 	
 	/* run it once first time */
 	changed_settings ();
