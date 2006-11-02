@@ -146,12 +146,11 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	m->addAction (tr ("Esperanza Help"), this, SLOT (open_short_help ()));
 #endif
 
-	/* run it once first time */
-	changed_settings ();
-	
 	// System Tray setup
 	m_systray = new SystemTray (this, m_client);
 	
+	/* run it once first time */
+	changed_settings ();
 }
 
 void
@@ -178,6 +177,11 @@ PlayerWidget::changed_settings ()
 
 	if (s.value ("ui/reverseplaytime").toBool ())
 		m_pf->setReverse (true);
+	
+	if ( s.value ("core/systray").toBool () )
+		m_systray->show();
+	else
+		m_systray->hide();
 
 	update ();
 }

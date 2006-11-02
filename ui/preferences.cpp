@@ -42,6 +42,7 @@ PreferenceDialog::build_prefvalues ()
 //	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::black));
 	PREF_VALUE("ui/volumepopup", "Show volume in a popup", T_BOOL, false);
 	PREF_VALUE("ui/volumeinteractive", "Change volume interactivly, could cause problems.", T_BOOL, false);
+	PREF_VALUE("core/systray", "Show system tray icon", T_BOOL, true);
 	PREF_VALUE("core/donotification", "Show notification on song change", T_BOOL, true);
 
 	return ret;
