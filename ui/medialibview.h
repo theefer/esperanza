@@ -24,6 +24,7 @@ class MedialibView : public QTreeView
 	private slots:
 		void search_done ();
 		void add_id (const QModelIndex &);
+		void head_size (int, int, int);
 
 	signals:
 		void searchDone ();

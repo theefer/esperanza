@@ -1,5 +1,7 @@
 #include "medialibview.h"
 #include "medialibsearchmodel.h"
+#include <QSettings>
+#include <QHeaderView>
 
 MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (parent)
 {
@@ -18,12 +20,26 @@ MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (paren
     m_selections = new QItemSelectionModel (m_model);
 	setSelectionModel (m_selections);
 
+	QHeaderView *head = header ();
+	QSettings s;
+
+	head->resizeSection (0, s.value ("medialib/section0", 150).toInt ());
+	head->resizeSection (1, s.value ("medialib/section1", 150).toInt ());
+	connect (head, SIGNAL (sectionResized (int, int, int)), this, SLOT (head_size (int, int, int)));
+
 	setIconSize (QSize (75, 75));
 
 	connect (m_model, SIGNAL (searchDone ()), this, SLOT (search_done ()));
 
 	connect (this, SIGNAL (doubleClicked (const QModelIndex &)),
 			 this, SLOT (add_id (const QModelIndex &)));
+}
+
+void
+MedialibView::head_size (int c, int o, int n)
+{
+	QSettings s;
+	s.setValue (QString ("medialib/section%1").arg (c), n);
 }
 
 void
