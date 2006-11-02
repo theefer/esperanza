@@ -60,8 +60,8 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setRootIsDecorated (false);
 	setTabKeyNavigation (false);
 
-	setDragEnabled (true);
-	setAcceptDrops (true);
+	setDragEnabled (false);
+	setAcceptDrops (false);
 	setDropIndicatorShown (true);
 
 	QHeaderView *head = header ();
@@ -118,13 +118,14 @@ void
 PlaylistView::changed_settings ()
 {
 	QSettings s;
+
+	collapse_all ();
+
 	if (!s.value ("playlist/compactmode").toBool ()) {
 		if (getSelection ().size () > 1)
 			return;
 		setExpanded (m_selections->currentIndex (), true);
 		m_explist.append (m_selections->currentIndex ());
-	} else {
-		collapse_all ();
 	}
 }
 

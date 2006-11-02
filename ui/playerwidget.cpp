@@ -250,6 +250,11 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 		case Qt::Key_P:
 			open_pref ();
 			break;
+		case Qt::Key_Escape:
+			if (m_systray) {
+				hide ();
+			}
+			break;
 		default:
 			ev->ignore ();
 			break;
