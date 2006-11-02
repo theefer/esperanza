@@ -149,6 +149,8 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	// System Tray setup
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
 		m_systray = new SystemTray (this, m_client);
+	} else {
+		m_systray = NULL;
 	}
 	
 	/* run it once first time */
@@ -180,10 +182,12 @@ PlayerWidget::changed_settings ()
 	if (s.value ("ui/reverseplaytime").toBool ())
 		m_pf->setReverse (true);
 	
-	if ( s.value ("core/systray").toBool () )
-		m_systray->show();
-	else
-		m_systray->hide();
+	if (m_systray) {
+		if ( s.value ("core/systray").toBool ())
+			m_systray->show();
+		else
+			m_systray->hide();
+	}
 
 	update ();
 }
@@ -523,7 +527,8 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		m_pf->setMaximum (dur / 1000);
 		m_pf->setValue (0);
 	}
-	if (m_current_id == h["id"].toUInt () &&
+	if (m_systray &&
+		m_current_id == h["id"].toUInt () &&
         m_status == Xmms::Playback::PLAYING &&
         h["id"].toUInt () != 0) {
 		m_systray->do_notification (tr("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (m_current_id));
