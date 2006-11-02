@@ -18,7 +18,7 @@ main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
 
-	QCoreApplication::setOrganizationName("XMMS2");
+	QCoreApplication::setOrganizationName("xmms2");
 	QCoreApplication::setOrganizationDomain("xmms.org");
 	QCoreApplication::setApplicationName("Esperanza");
 
