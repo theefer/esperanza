@@ -65,8 +65,11 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setDropIndicatorShown (true);
 
 	QHeaderView *head = header ();
-	head->resizeSection (0, 180);
+	QSettings s;
+
+	head->resizeSection (0, s.value ("playlist/section0", 180).toInt ());
 	head->setResizeMode (0, QHeaderView::Interactive);
+	connect (head, SIGNAL (sectionResized (int, int, int)), this, SLOT (head_size (int, int, int)));
 
     setSelectionMode (QAbstractItemView::ExtendedSelection);
     setSelectionBehavior (QAbstractItemView::SelectRows);
@@ -230,5 +233,14 @@ PlaylistView::getSelection ()
 	}
 
 	return ret;
+}
+
+void
+PlaylistView::head_size (int c, int o, int n)
+{
+	if (c == 0) {
+		QSettings s;
+		s.setValue ("playlist/section0", n);
+	}
 }
 
