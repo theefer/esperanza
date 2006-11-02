@@ -17,7 +17,6 @@ int
 main (int argc, char **argv)
 {
 	QApplication app(argc, argv);
-	QApplication::setDesktopSettingsAware (false);
 
 	QCoreApplication::setOrganizationName("XMMS2");
 	QCoreApplication::setOrganizationDomain("xmms.org");

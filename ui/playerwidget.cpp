@@ -157,21 +157,20 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 void
 PlayerWidget::set_colors ()
 {
-	QSettings s;
 
-	/* XXX: remove this ugly duplication! */
-	QFont f = QApplication::font ();
-	f.setPixelSize (s.value ("ui/fontsize").toInt ());
-	QApplication::setFont (f);
-
-	/* base palette */
+#ifdef Q_WS_MACX
 	QPalette p (QApplication::palette ());
+	p.setColor (QPalette::Inactive, QPalette::Text, QColor ("black"));
+	QApplication::setPalette (p);
+#endif
+	/*
 	p.setColor (QPalette::Highlight,
 				s.value ("ui/highlight").value<QColor> ());
 	p.setColor (QPalette::HighlightedText,
 				s.value ("ui/highlightedtext").value<QColor> ());
-	p.setColor (QPalette::Inactive, QPalette::Text, QColor ("black"));
-	QApplication::setPalette (p);
+	*/
+
+
 }
 
 void

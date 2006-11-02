@@ -23,8 +23,7 @@ PlayerButton::enterEvent (QEvent *ev)
 	QSettings s;
 
 	QPalette p (palette ());
-	p.setColor (QPalette::Window,
-				s.value ("ui/highlight").value<QColor> ());
+	p.setColor (QPalette::Window, p.color (QPalette::Highlight));
 	setPalette (p);
 	update ();
 }

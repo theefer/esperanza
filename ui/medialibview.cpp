@@ -12,10 +12,6 @@ MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (paren
 	setItemsExpandable (false);
 	setRootIsDecorated (false);
 
-	QPalette p (palette ());
-	p.setColor (QPalette::AlternateBase, QColor (230, 230, 230));
-	setPalette (p);
-
     setSelectionMode (QAbstractItemView::ExtendedSelection);
     setSelectionBehavior (QAbstractItemView::SelectRows);
 

@@ -2,12 +2,12 @@ DEPENDPATH += lib ui
 INCLUDEPATH += ui lib /sw/include
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
-TEMPLATE=app
-TARGET=esperanza
+TEMPLATE = app
+TARGET = esperanza
 RESOURCES += esperanza.qrc
 
 macx {
-	TARGET=Esperanza
+	TARGET = Esperanza
 	CONFIG += x86 ppc
 	SOURCES += lib/mac_growl.mm
 	HEADERS += lib/mac_growl.h
