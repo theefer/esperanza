@@ -16,6 +16,7 @@
 #include <QApplication>
 #include <QLineEdit>
 #include <QKeyEvent>
+#include <QDialogButtonBox>
 
 QList < QMap < QString, QVariant > >
 PreferenceDialog::build_prefvalues ()
@@ -92,20 +93,23 @@ PreferenceDialog::PreferenceDialog (QWidget *parent, XClient *client) : QMainWin
 	g->setColumnStretch (0, 1);
 	g->setRowStretch (0, 1);
 
-	QWidget *dummy = new QWidget (m_base);
-	QHBoxLayout *hbox = new QHBoxLayout (dummy);
-	hbox->addStretch (1);
-	QPushButton *ok = new QPushButton (tr ("Save"), dummy);
+	QDialogButtonBox *bbox = new QDialogButtonBox (Qt::Horizontal, m_base);
+
+	QPushButton *ok = new QPushButton (tr ("Save"), bbox);
+	ok->setDefault (true);
 	connect (ok, SIGNAL (clicked ()), this, SLOT (on_save ()));
-	QPushButton *cancel = new QPushButton (tr ("Discard"), dummy);
+
+	QPushButton *cancel = new QPushButton (tr ("Discard"), bbox);
 	connect (cancel, SIGNAL (clicked ()), this, SLOT (on_cancel ()));
-	QPushButton *reset = new QPushButton (tr ("Reset"), dummy);
+
+	QPushButton *reset = new QPushButton (tr ("Reset"), bbox);
 	connect (reset, SIGNAL (clicked ()), this, SLOT (on_reset ()));
 
-	hbox->addWidget (ok);
-	hbox->addWidget (cancel);
-	hbox->addWidget (reset);
-	g->addWidget (dummy, 1, 0, 1, 1);
+	bbox->addButton (ok, QDialogButtonBox::AcceptRole);
+	bbox->addButton (reset, QDialogButtonBox::ResetRole);
+	bbox->addButton (cancel, QDialogButtonBox::DestructiveRole);
+
+	g->addWidget (bbox, 1, 0, 1, 1);
 
 }
 

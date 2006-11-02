@@ -12,6 +12,7 @@
 #include <QPushButton>
 #include <QToolButton>
 #include <QTreeView>
+#include <QDialogButtonBox>
 
 BrowseDialog::BrowseDialog (QWidget *parent, XClient *client) : QDialog (parent)
 {
@@ -82,13 +83,16 @@ BrowseDialog::BrowseDialog (QWidget *parent, XClient *client) : QDialog (parent)
     grid->addWidget (lookInLabel, 0, 0);
 
     // push buttons
+	QDialogButtonBox *bbox = new QDialogButtonBox (Qt::Horizontal, this);
     QPushButton *acceptButton = new QPushButton (tr ("Open"), this);
     QObject::connect(acceptButton, SIGNAL(clicked()), this, SLOT(accept()));
-    grid->addWidget(acceptButton, 2, 5);
+	acceptButton->setDefault (true);
+	bbox->addButton (acceptButton, QDialogButtonBox::AcceptRole);
 
     QPushButton *rejectButton = new QPushButton (tr ("Cancel"), this);
     QObject::connect(rejectButton, SIGNAL(clicked()), this, SLOT(reject()));
-    grid->addWidget(rejectButton, 2, 4);
+	bbox->addButton (rejectButton, QDialogButtonBox::RejectRole);
+    grid->addWidget (bbox, 2, 0, 1, 6);
 
     m_lookInCombo = new QComboBox (this);
     m_lookInCombo->setInsertPolicy (QComboBox::NoInsert);

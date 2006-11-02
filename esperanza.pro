@@ -8,7 +8,7 @@ RESOURCES += esperanza.qrc
 
 macx {
 	TARGET = Esperanza
-	CONFIG += x86 ppc
+;	CONFIG += x86 ppc
 	SOURCES += lib/mac_growl.mm
 	HEADERS += lib/mac_growl.h
 	RC_FILE += images/esperanza.icns
