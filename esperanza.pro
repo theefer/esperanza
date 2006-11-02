@@ -11,7 +11,9 @@ macx {
 	CONFIG += x86 ppc
 	SOURCES += lib/mac_growl.mm
 	HEADERS += lib/mac_growl.h
+	RC_FILE += images/esperanza.icns
 }
+
 !win32 {
 	PKGCONFIG += xmms2-client xmms2-client-cpp
 	CONFIG += link_pkgconfig debug
@@ -24,6 +26,7 @@ win32 {
 	INCLUDEPATH += c:/xmms2/includes
 	LIBPATH += c:/xmms2/lib
 	LIBS += -lxmmsclient -lxmmsclient++ -lboost_signals -lws2_32
+	RCFILE = esperanza.rc
 }
 
 # library files

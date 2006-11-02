@@ -23,6 +23,8 @@ main (int argc, char **argv)
 	QCoreApplication::setOrganizationDomain("xmms.org");
 	QCoreApplication::setApplicationName("Esperanza");
 
+	QApplication::setWindowIcon (QIcon (":images/esperanza.png"));
+
 	PreferenceDialog::save_defaults ();
 
 	QSettings s;
