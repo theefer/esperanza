@@ -143,9 +143,11 @@ ProgressFrame::paintEvent( QPaintEvent * event )
 	QColor top = s.value ("ui/titlebartop").value<QColor> ();
 	QColor bottom = s.value ("ui/titlebarbottom").value<QColor> ();
 
-    QColor cactivetop = top;
-    QColor cactivemiddle = top.dark ();
-    QColor cactivebottom = bottom;
+	QPalette p = palette ();
+
+    QColor cactivetop = p.highlight ().color ();
+    QColor cactivemiddle = cactivetop.dark ();
+    QColor cactivebottom = cactivemiddle.dark ();
 
 	QColor ctop, cmiddle, cbottom;
 	if (s.value ("ui/titlelighter").toBool ()) {
@@ -215,8 +217,8 @@ ProgressFrame::paintEvent( QPaintEvent * event )
         rect.adjust( icon().width() + 6, 1, 0, 0 );
     }
 
-    painter.setPen (s.value ("ui/titlebartext").value<QColor> ());
-    painter.setBrush (s.value ("ui/titlebartext").value<QColor> ());
+    painter.setPen (p.highlightedText ().color ());
+    painter.setBrush (p.highlightedText ().color ());
 
     QString timeString;
     if ( m_drawTime && maximum() != 0 )

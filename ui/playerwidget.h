@@ -12,6 +12,7 @@
 #include "playerbutton.h"
 #include "volumebar.h"
 #include "systemtray.h"
+#include "infowindow.h"
 
 class PlayerWidget : public QMainWindow
 {
@@ -37,6 +38,7 @@ class PlayerWidget : public QMainWindow
 	private slots:
 		void plus_pressed (QMouseEvent *);
 		void snett_pressed (QMouseEvent *);
+		void info_pressed (QMouseEvent *);
 		void minus_pressed (QMouseEvent *);
 		void got_connection (XClient *);
 		void add_remote_file ();
@@ -81,6 +83,7 @@ class PlayerWidget : public QMainWindow
 		QProgressDialog *m_unindexed;
 		
 		SystemTray *m_systray;
+		InfoWindow *m_info;
 
 };
 

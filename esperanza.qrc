@@ -13,6 +13,7 @@
 		<file>images/progress.mng</file>
 		<file>images/systray.png</file>
 		<file>images/esperanza.png</file>
+		<file>images/info.png</file>
 		<file>text/about.html</file>
 		<file>text/shortcuts.html</file>
 	</qresource>

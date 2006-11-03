@@ -28,6 +28,7 @@
 #include "volumebar.h"
 #include "textdialog.h"
 #include "systemtray.h"
+#include "infowindow.h"
 
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
@@ -82,6 +83,10 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (sett, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (snett_pressed (QMouseEvent *)));
 
+	PlayerButton *info = new PlayerButton (dummy, ":images/info.png");
+	connect (info, SIGNAL (clicked (QMouseEvent *)),
+			 this, SLOT (info_pressed (QMouseEvent *)));
+
 	VolumeButton *volume = new VolumeButton (dummy, m_client);
 
 	m_playstop = new PlayerButton (dummy, ":images/playstop.png");
@@ -103,6 +108,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	hbox->addWidget (plus);
 	hbox->addWidget (minus);
 	hbox->addWidget (sett);
+	hbox->addWidget (info);
 
 	layout->addWidget (dummy, 2, 0, 1, 3);
 
@@ -152,6 +158,11 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	} else {
 		m_systray = NULL;
 	}
+
+	/* create the info window */
+	m_info = new InfoWindow (this, m_client);
+	m_info->hide ();
+	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_info, SLOT (set_current_id (uint32_t)));
 	
 	/* run it once first time */
 	changed_settings ();
@@ -255,6 +266,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 				hide ();
 			}
 			break;
+		case Qt::Key_I:
+			info_pressed (NULL);
+			break;
 		default:
 			ev->ignore ();
 			break;
@@ -310,6 +324,16 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 	m.addAction (tr ("Add files from medialib"), this, SLOT (show_medialib ()));
 
 	m.exec (ev->globalPos ());
+}
+
+void
+PlayerWidget::info_pressed (QMouseEvent *ev)
+{
+	if (m_info->isVisible ()) {
+		m_info->hide ();
+	} else {
+		m_info->show ();
+	}
 }
 
 void
@@ -413,10 +437,20 @@ PlayerWidget::minus_pressed (QMouseEvent *ev)
 void
 PlayerWidget::remove_selected ()
 {
-	QList<uint32_t> itm = m_playlist->getSelection ();
-	qSort (itm);
-	for (int i = itm.size () - 1; i > -1; i --) {
-		m_client->playlist.remove (itm.at (i), &XClient::log);
+	QModelIndexList itm = m_playlist->getSelection ();
+	QList<uint32_t> idlist;
+
+	for (int i = 0; i < itm.size (); i++) {
+		QModelIndex idx = itm.at (i);
+		if (idx.column () != 0)
+			continue;
+
+		idlist.append (idx.row ());
+	}
+
+	qSort (idlist);
+	for (int i = idlist.size () - 1; i > -1; i --) {
+		m_client->playlist.remove (idlist.at (i), &XClient::log);
 	}
 }
 

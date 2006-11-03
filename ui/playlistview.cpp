@@ -168,11 +168,12 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 		setCurrentIndex (n.parent ());
 		return;
 	}
+
+	QModelIndexList l = getSelection ();
 	
-	if (getSelection ().count () < 1) {
+	if (l.count () < 1) {
 		setCurrentIndex (old);
-		return;
-	} else if (getSelection ().count () > 1) {
+	} else if (l.count () > 1) {
 		collapse_all ();
 	} else {
 		collapse_all ();
@@ -182,6 +183,13 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 
 		QModelIndex c = n.child (0, 0);
 		scrollTo (c);
+	}
+
+	/* emit current id */
+	if (l.count () > 1) {
+		emit selectedID (0);
+	} else {
+		emit selectedID (l[0].data (PlaylistModel::MedialibIdRole).toUInt ());
 	}
 }
 
@@ -221,17 +229,18 @@ PlaylistView::jump_pos (const QModelIndex &i)
 
 }
 
-QList<uint32_t>
+QModelIndexList
 PlaylistView::getSelection ()
 {
-	QList<uint32_t> ret;
 	QModelIndexList lst = m_selections->selectedIndexes ();
+	QModelIndexList ret;
+
 	for (int i = 0; i < lst.size (); i++) {
 		QModelIndex idx = lst.at (i);
 		if (idx.column () != 0)
 			continue;
 
-		ret.append (idx.row ());
+		ret.append (idx);
 	}
 
 	return ret;
