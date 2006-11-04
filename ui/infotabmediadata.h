@@ -14,6 +14,9 @@ class InfoTabMediadata : public InfoWindowTab
 		InfoTabMediadata (QWidget *, XClient *);
 		void fill (uint32_t);
 
+	private slots:
+		void head_size (int, int, int);
+
 	private:
 		QTableWidget *m_table;
 		QStringList m_values;

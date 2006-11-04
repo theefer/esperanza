@@ -4,6 +4,7 @@
 #include <QHash>
 #include <QVariant>
 #include <QHeaderView>
+#include <QSettings>
 
 InfoTabMediadata::InfoTabMediadata (QWidget *parent, XClient *client) :
 	InfoWindowTab (parent, client)
@@ -18,12 +19,18 @@ InfoTabMediadata::InfoTabMediadata (QWidget *parent, XClient *client) :
 
 	m_table->setHorizontalHeaderLabels (l);
 	m_table->verticalHeader ()->hide ();
+	m_table->setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
+
 	m_table->horizontalHeader ()->setResizeMode (0, QHeaderView::Interactive);
 	m_table->horizontalHeader ()->setClickable (false);
-	m_table->horizontalHeader ()->resizeSection (0, 70);
+
+	QSettings s;
+	m_table->horizontalHeader ()->resizeSection (0, s.value ("infotabmedia/section0", 70).toInt ());
 	m_table->setSelectionMode (QAbstractItemView::NoSelection);
 	m_table->horizontalHeader ()->setStretchLastSection (true);
-	m_table->setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
+	connect (m_table->horizontalHeader (),
+			 SIGNAL (sectionResized (int, int, int)),
+			 this, SLOT (head_size (int, int, int)));
 
 	g->addWidget (m_table, 0, 0);
 	setLayout (g);
@@ -75,6 +82,15 @@ InfoTabMediadata::fill (uint32_t id)
 
 	} else {
 		m_table->setRowCount (0);
+	}
+}
+
+void
+InfoTabMediadata::head_size (int c, int o, int n)
+{
+	if (c == 0) {
+		QSettings s;
+		s.setValue ("infotabmedia/section0", n);
 	}
 }
 

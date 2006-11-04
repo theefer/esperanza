@@ -31,6 +31,7 @@ class InfoWindow : public QWidget
 	private slots:
 		void set_current_id (uint32_t id);
 		void entry_changed (uint32_t);
+		void change_current (int);
 
 	private:
 		XClient *m_client;

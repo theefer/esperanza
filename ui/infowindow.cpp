@@ -7,6 +7,7 @@
 
 
 #include "infotabmediadata.h"
+#include "infotabart.h"
 
 InfoWindow::InfoWindow (QWidget *parent, XClient *client) : QWidget (parent)
 {
@@ -24,8 +25,10 @@ InfoWindow::InfoWindow (QWidget *parent, XClient *client) : QWidget (parent)
 
 	m_tab = new QTabWidget (this);
 	m_tab->addTab (new InfoTabMediadata (this, m_client), tr ("Metadata"));
-	m_tab->addTab (new QWidget (), tr ("Art"));
-	m_tab->addTab (new QWidget (), tr ("Wikipedia"));
+	m_tab->addTab (new InfoTabArt (this, m_client), tr ("Art"));
+	connect (m_tab, SIGNAL (currentChanged (int)), this, SLOT (change_current (int)));
+
+//	m_tab->addTab (new QWidget (), tr ("Wikipedia"));
 
 	g->addWidget (m_tab, 1, 0);
 
@@ -37,6 +40,12 @@ InfoWindow::InfoWindow (QWidget *parent, XClient *client) : QWidget (parent)
 
 	connect (m_client->cache (), SIGNAL (entryChanged (uint32_t)),
 			 this, SLOT (entry_changed (uint32_t)));
+}
+
+void
+InfoWindow::change_current (int c)
+{
+	set_current_id (m_current_id);
 }
 
 void
