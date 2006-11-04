@@ -186,7 +186,7 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 	}
 
 	/* emit current id */
-	if (l.count () > 1) {
+	if (l.count () > 1 || l.count () < 1) {
 		emit selectedID (0);
 	} else {
 		emit selectedID (l[0].data (PlaylistModel::MedialibIdRole).toUInt ());
