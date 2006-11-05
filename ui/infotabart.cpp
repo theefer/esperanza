@@ -237,8 +237,7 @@ InfoTabArt::setPixmap (const QPixmap &p)
 		m_art->setText (tr ("No Image"));
 	} else {
 		if (p.width () > 220) {
-			QPixmap small = p.scaledToWidth (220, Qt::SmoothTransformation);
-			m_art->setPixmap (small);
+			m_art->setPixmap(p.scaledToWidth (220, Qt::SmoothTransformation));
 		} else {
 			m_art->setPixmap (p);
 		}
