@@ -18,7 +18,6 @@ class InfoTabArt : public InfoWindowTab
 
 	private slots:
 		void browse ();
-		void reset ();
 		void apply ();
 		void remove ();
 		void remove_art (bool);
@@ -35,7 +34,6 @@ class InfoTabArt : public InfoWindowTab
 
 		QLabel *m_art;
 		QPushButton *m_apply;
-		QPushButton *m_reset;
 		QPushButton *m_browse;
 		QPushButton *m_remove;
 		int m_current_id;

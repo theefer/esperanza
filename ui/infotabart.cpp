@@ -37,10 +37,6 @@ InfoTabArt::InfoTabArt (QWidget *parent, XClient *client) :
 	m_browse->setDefault (true);
 	connect (m_browse, SIGNAL (clicked ()), this, SLOT (browse ()));
 
-	m_reset = new QPushButton (tr ("Reset"));
-	connect (m_reset, SIGNAL (clicked ()), this, SLOT (reset ()));
-	m_reset->setEnabled (false);
-
 	m_apply = new QPushButton (tr ("Apply"));
 	connect (m_apply, SIGNAL (clicked ()), this, SLOT (apply ()));
 	m_apply->setEnabled (false);
@@ -50,7 +46,6 @@ InfoTabArt::InfoTabArt (QWidget *parent, XClient *client) :
 	m_remove->setEnabled (false);
 
 	bbox->addButton (m_browse, QDialogButtonBox::ActionRole);
-	bbox->addButton (m_reset, QDialogButtonBox::DestructiveRole);
 	bbox->addButton (m_apply, QDialogButtonBox::ApplyRole);
 	bbox->addButton (m_remove, QDialogButtonBox::DestructiveRole);
 	g->addWidget (bbox, 2, 0);
@@ -120,21 +115,10 @@ InfoTabArt::browse ()
 		setPixmap (p);
 		m_browse->setDefault (false);
 		m_apply->setEnabled (true);
-		m_reset->setEnabled (true);
 		m_apply->setDefault (true);
+		m_remove->setEnabled (false);
 	}
 
-}
-
-void
-InfoTabArt::reset ()
-{
-	QPixmap p = m_client->cache ()->get_pixmap (m_current_id);
-	setPixmap (p);
-	m_browse->setDefault (true);
-	m_apply->setEnabled (false);
-	m_reset->setEnabled (false);
-	m_apply->setDefault (false);
 }
 
 void
@@ -231,8 +215,8 @@ InfoTabArt::art_finished ()
 {
 	m_progress->close ();
 	m_apply->setEnabled (false);
-	m_reset->setEnabled (false);
 	m_browse->setDefault (true);
+	m_remove->setEnabled (true);
 }
 
 void
@@ -241,7 +225,8 @@ InfoTabArt::fill (uint32_t id)
 	m_current_id = id;
 	QPixmap p = m_client->cache ()->get_pixmap (id);
 	setPixmap (p);
-	m_remove->setEnabled (true);
+	if (!p.isNull ())
+		m_remove->setEnabled (true);
 }
 
 void
