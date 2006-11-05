@@ -7,11 +7,13 @@
 #include <QList>
 #include <QVariant>
 #include <QPixmapCache>
+#include <QSettings>
 
 XMediainfoCache::XMediainfoCache (QObject *parent, XClient *client) : QObject (parent)
 {
+	QSettings s;
 	connect (client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
-	QPixmapCache::setCacheLimit (4096 * 5);
+	QPixmapCache::setCacheLimit (s.value ("core/pixmapcache").toInt ());
 }
 
 void
@@ -29,18 +31,6 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 
 	m_info.insert (id, hash);
 	emit entryChanged (id);
-
-	/*
-	if (hash.contains ("picture_front")) {
-		QString ha = hash["picture_front"].toString ();
-		if (!m_pixmaps.contains (ha)) {
-			m_pixmaps[ha] = QPixmap ();
-			m_client->bindata.retrieve (ha.toStdString (),
-										boost::bind (&XMediainfoCache::handle_bindata, this, _1, ha));
-		}
-		m_icon_map[ha].append (id);
-	}
-	*/
 
 	return true;
 }

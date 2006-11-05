@@ -31,13 +31,14 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("playlist/albumartplace", "Show albumart under artist", T_BOOL, true);
 	PREF_VALUE("ui/showstop", "Show a stop button as well", T_BOOL, false);
 	PREF_VALUE("ui/reverseplaytime", "Use reversed elapsed time", T_BOOL, true);
+	PREF_VALUE("core/pixmapcache", "Size of album art cache in kb", T_NUM, 12040);
 //	PREF_VALUE("playlist/fontsize", "Playlist fontsize in pixels", T_NUM, 10);
 //	PREF_VALUE("ui/fontsize", "General fontsize in pixels", T_NUM, 10);
 //	PREF_VALUE("ui/highlight", "General highlight color", T_COLOR, QColor (80, 80, 80));
 //	PREF_VALUE("ui/highlightedtext", "Highlighted text color", T_COLOR, QColor (Qt::black));
 	PREF_VALUE("ui/contextareabright", "Draw the contextarea in a bright color", T_BOOL, true);
-	PREF_VALUE("ui/titlebartop", "Titlebar color gradient top", T_COLOR, QColor (200, 200, 200));
-	PREF_VALUE("ui/titlebarbottom", "Titlebar color gradient bottom", T_COLOR, QColor (60, 60, 60));
+//	PREF_VALUE("ui/titlebartop", "Titlebar color gradient top", T_COLOR, QColor (200, 200, 200));
+//	PREF_VALUE("ui/titlebarbottom", "Titlebar color gradient bottom", T_COLOR, QColor (60, 60, 60));
 	PREF_VALUE("ui/titlelighter", "Paint the progress in a lighter color", T_BOOL, false);
 	PREF_VALUE("ui/titlebartext", "Titlebar text color", T_COLOR, QColor (Qt::black));
 //	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::black));
@@ -160,6 +161,7 @@ PreferenceDialog::fill_list ()
 			case T_NUM:
 				{
 					QSpinBox *sp = new QSpinBox (m_base);
+					sp->setRange (0, INT_MAX);
 					sp->setValue (s.value (val, def).toInt ());
 					m_table->setCellWidget (i, 1, sp);
 					break;
