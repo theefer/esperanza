@@ -6,10 +6,12 @@
 #include <QHash>
 #include <QList>
 #include <QVariant>
+#include <QPixmapCache>
 
 XMediainfoCache::XMediainfoCache (QObject *parent, XClient *client) : QObject (parent)
 {
 	connect (client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
+	QPixmapCache::setCacheLimit (4096);
 }
 
 void
@@ -28,6 +30,7 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 	m_info.insert (id, hash);
 	emit entryChanged (id);
 
+	/*
 	if (hash.contains ("picture_front")) {
 		QString ha = hash["picture_front"].toString ();
 		if (!m_pixmaps.contains (ha)) {
@@ -37,6 +40,7 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 		}
 		m_icon_map[ha].append (id);
 	}
+	*/
 
 	return true;
 }
@@ -51,12 +55,14 @@ XMediainfoCache::handle_bindata (const Xmms::bin &data, const QString &id)
 		return true;
 	}
 
-
-	m_pixmaps[id] = i;
+	QPixmapCache::insert (id, i);
+	qDebug ("got pixmap for hash %s", qPrintable (id));
 
 	QList<uint32_t> ids = m_icon_map[id];
-	for (int i = 0; i < ids.size (); i++)
+	for (int i = 0; i < ids.size (); i++) {
+		qDebug ("updating %d", ids.at (i));
 		emit entryChanged (ids.at (i));
+	}
 
 	return true;
 }
@@ -64,18 +70,25 @@ XMediainfoCache::handle_bindata (const Xmms::bin &data, const QString &id)
 QIcon
 XMediainfoCache::get_icon (uint32_t id)
 {
-	if (m_info[id].contains ("picture_front")) {
-		return QIcon (m_pixmaps[m_info[id]["picture_front"].toString ()]);
-	}
-
-	return QIcon (QPixmap ());
+	return QIcon (get_pixmap (id));
 }
 
 QPixmap
 XMediainfoCache::get_pixmap (uint32_t id)
 {
 	if (m_info[id].contains ("picture_front")) {
-		return m_pixmaps[m_info[id]["picture_front"].toString ()];
+		QString hash = m_info[id]["picture_front"].toString ();
+		QPixmap p;
+
+		if (!QPixmapCache::find (hash, p)) {
+			qDebug ("requesting %s", qPrintable (hash));
+			m_client->bindata.retrieve (hash.toStdString (),
+										boost::bind (&XMediainfoCache::handle_bindata, this, _1, hash));
+			QPixmapCache::insert (hash, QPixmap ());
+			m_icon_map[hash].append (id);
+		}
+
+		return p;
 	}
 	return QPixmap ();
 }
@@ -94,6 +107,7 @@ XMediainfoCache::get_info (uint32_t id)
 bool
 XMediainfoCache::handle_mlib_entry_changed (const uint32_t &id)
 {
+	qDebug ("%d updated!", id);
 	m_client->medialib.getInfo (id, Xmms::bind (&XMediainfoCache::handle_medialib_info, this));
 	return true;
 }

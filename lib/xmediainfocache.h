@@ -11,6 +11,7 @@ class XMediainfoCache;
 #include <QHash>
 #include <QList>
 #include <QVariant>
+#include <QPixmapCache>
 
 class XMediainfoCache : public QObject
 {
@@ -35,7 +36,6 @@ class XMediainfoCache : public QObject
 
 		QHash< uint32_t, QHash<QString, QVariant> > m_info;
 
-		QHash < QString, QPixmap > m_pixmaps;
 		QHash < QString, QList <uint32_t> > m_icon_map;
 
 		XClient *m_client;
