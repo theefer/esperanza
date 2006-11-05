@@ -83,9 +83,11 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (sett, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (snett_pressed (QMouseEvent *)));
 
+	/*
 	PlayerButton *info = new PlayerButton (dummy, ":images/info.png");
 	connect (info, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (info_pressed (QMouseEvent *)));
+			 */
 
 	VolumeButton *volume = new VolumeButton (dummy, m_client);
 
@@ -108,7 +110,9 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	hbox->addWidget (plus);
 	hbox->addWidget (minus);
 	hbox->addWidget (sett);
+	/*
 	hbox->addWidget (info);
+	*/
 
 	layout->addWidget (dummy, 2, 0, 1, 3);
 
@@ -220,6 +224,8 @@ PlayerWidget::resizeEvent (QResizeEvent *ev)
 void
 PlayerWidget::keyPressEvent (QKeyEvent *ev)
 {
+	QSettings s;
+
 	if (ev->modifiers () != Qt::NoModifier) {
 		ev->ignore ();
 		return;
@@ -262,13 +268,15 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			open_pref ();
 			break;
 		case Qt::Key_Escape:
-			if (m_systray) {
+			if (m_systray && s.value ("core/systray").toBool ()) {
 				hide ();
 			}
 			break;
+			/*
 		case Qt::Key_I:
 			info_pressed (NULL);
 			break;
+			*/
 		default:
 			ev->ignore ();
 			break;

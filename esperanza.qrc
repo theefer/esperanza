@@ -16,5 +16,6 @@
 		<file>images/info.png</file>
 		<file>text/about.html</file>
 		<file>text/shortcuts.html</file>
+		<file>text/infobrowser.html</file>
 	</qresource>
 </RCC>

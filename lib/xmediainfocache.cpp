@@ -11,7 +11,7 @@
 XMediainfoCache::XMediainfoCache (QObject *parent, XClient *client) : QObject (parent)
 {
 	connect (client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
-	QPixmapCache::setCacheLimit (4096);
+	QPixmapCache::setCacheLimit (4096 * 5);
 }
 
 void
