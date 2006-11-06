@@ -1,3 +1,14 @@
+Version 0.2 (N/A)
+	* Added a systemtray icon with help of Gianluca Romanin
+	* Added a icon
+	* (Added a infobrowser)
+	* Added a minimode
+	* Tweak colors and looks
+	* Make use of Qt4.2 specific features
+	* Bugfixes to the volumebar
+	* Bugfixes to the context line
+	* Reworked album-art caching
+
 Version 0.1.1 (2006-11-01)
 	* Forgot "version.h" files in 0.1
 
