@@ -1,8 +1,8 @@
 Version 0.2 (N/A)
 	* Added a systemtray icon with help of Gianluca Romanin
 	* Added a icon
-	* (Added a infobrowser)
-	* Added a minimode
+	* Added minimode
+	* Added context customization.
 	* Tweak colors and looks
 	* Make use of Qt4.2 specific features
 	* Bugfixes to the volumebar
