@@ -8,7 +8,7 @@
 #include <QMoveEvent>
 #include <QVariant>
 
-MiniMode::MiniMode (QWidget *parent, XClient *client) : QWidget (NULL)
+MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 {
 	setWindowFlags (Qt::FramelessWindowHint);
 	setWindowTitle (tr ("Esperanza"));

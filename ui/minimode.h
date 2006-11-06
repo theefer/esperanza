@@ -4,9 +4,11 @@
 #include "xclient.h"
 #include "progressframe.h"
 #include "playerbutton.h"
-#include <QWidget>
 
-class MiniMode : public QWidget
+#include <QWidget>
+#include <QFrame>
+
+class MiniMode : public QFrame
 {
 	Q_OBJECT
 	public:
