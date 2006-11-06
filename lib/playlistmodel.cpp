@@ -18,6 +18,9 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client) : QAbstractItemM
 	m_colfallback.append ("");
 	m_colfallback.append ("url");
 
+	m_cached_size.append (QSize ());
+	m_cached_size.append (QSize ());
+
 	connect (client, SIGNAL(gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
 	connect (client->cache (), SIGNAL(entryChanged (uint32_t)), this, SLOT (entry_changed (uint32_t)));
 }
@@ -274,6 +277,13 @@ PlaylistModel::playlist_data (const QModelIndex &index, int role) const
 
 	if (role == MedialibIdRole) {
 		return QVariant (m_plist[index.row ()]);
+	}
+
+	if (role == Qt::SizeHintRole) {
+		if (m_cached_size[index.column ()].isValid ()) {
+			return QVariant (m_cached_size[index.column ()]);
+		}
+		return QVariant ();
 	}
 
 	if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {

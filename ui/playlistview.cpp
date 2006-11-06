@@ -21,13 +21,6 @@ PlaylistDelegate::paint (QPainter *painter,
 
 	QStyleOptionViewItem o (option);
 	if (index.data (PlaylistModel::CurrentEntryRole).toBool ()) {
-		/*
-		QPalette p (o.palette);
-		QColor col = s.value ("ui/currententry").value<QColor> ();
-		p.setColor (QPalette::Text, col);
-		p.setColor (QPalette::HighlightedText, col);
-		o.palette = p;
-		*/
 		QFont f (o.font);
 		f.setBold (true);
 		o.font = f;
@@ -42,6 +35,7 @@ PlaylistDelegate::paint (QPainter *painter,
 	} 
 
 	QItemDelegate::paint (painter, o, index);
+
 }
 
 PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (parent)
@@ -90,7 +84,23 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	connect (m_client->settings (), SIGNAL (settingsChanged ()),
 			 this, SLOT (changed_settings ()));
 
+	connect (m_model, SIGNAL (rowsInserted (const QModelIndex &, int, int)),
+			 this, SLOT (rows_inserted ()));
+
 	setIconSize (QSize (75, 75));
+}
+
+void
+PlaylistView::rows_inserted ()
+{
+	QModelIndex idx = m_model->index (0, 0);
+	if (!m_model->cached_size (idx.column ()).isValid () && idx.internalId () == -1) {
+		m_model->set_cached_size (idx.column (), sizeHintForIndex (idx));
+	}
+	idx = m_model->index (0, 1);
+	if (!m_model->cached_size (idx.column ()).isValid () && idx.internalId () == -1) {
+		m_model->set_cached_size (idx.column (), sizeHintForIndex (idx));
+	}
 }
 
 void

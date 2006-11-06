@@ -36,6 +36,7 @@ class PlaylistView : public QTreeView
 		void item_selected (const QModelIndex &, const QModelIndex &);
 		void got_connection (XClient *client);
 		void changed_settings ();
+		void rows_inserted ();
 		void head_size (int, int, int);
 
 	signals:

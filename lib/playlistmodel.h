@@ -46,6 +46,14 @@ class PlaylistModel : public QAbstractItemModel
 
 		QList<uint32_t> get_all_id ();
 
+		void set_cached_size (int i, const QSize &size) {
+			m_cached_size[i] = size;
+		};
+
+		QSize cached_size (int i) const {
+			return m_cached_size[i];
+		};
+
 	public slots:
 		void got_connection (XClient *);
 		void entry_changed (uint32_t);
@@ -62,6 +70,8 @@ class PlaylistModel : public QAbstractItemModel
 		QList < QString > m_colfallback;
 
 		uint32_t m_current_pos;
+
+		QList<QSize> m_cached_size;
 
 };
 
