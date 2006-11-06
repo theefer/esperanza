@@ -15,6 +15,9 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	m_client = client;
 	m_parent = parent;
 
+	setFrameStyle (QFrame::Plain | QFrame::StyledPanel);
+	setLineWidth (2);
+
 	QGridLayout *g = new QGridLayout (this);
 	setLayout (g);
 	m_progress = new ProgressFrame (this);
@@ -47,7 +50,7 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	g->addWidget (minmax, 0, 5);
 
 	g->setColumnStretch (4, 1);
-	g->setMargin (1);
+	g->setMargin (2);
 	resize (400, 22);
 
 	QSettings s;
