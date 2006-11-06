@@ -74,6 +74,7 @@ SystemTray::toggle_hide ()
 {
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
 	if (pw->isHidden ()) {
+		pw->hide_mini ();
 		pw->show ();
 		m_hide_action->setText (tr ("Hide main window"));
 	} else {

@@ -13,6 +13,7 @@
 #include "volumebar.h"
 #include "systemtray.h"
 #include "infowindow.h"
+#include "minimode.h"
 
 class PlayerWidget : public QMainWindow
 {
@@ -29,21 +30,27 @@ class PlayerWidget : public QMainWindow
 		void resizeEvent (QResizeEvent *);
 		void moveEvent (QMoveEvent *);
 
+		void hide_mini () const
+		{
+			m_mini->hide ();
+		};
+
 	public slots:
 		void play_pressed ();
 		void playstop_pressed ();
 		void fwd_pressed ();
 		void back_pressed ();
+		void snett_pressed (QMouseEvent *);
 
 	private slots:
 		void plus_pressed (QMouseEvent *);
-		void snett_pressed (QMouseEvent *);
 		void info_pressed (QMouseEvent *);
 		void minus_pressed (QMouseEvent *);
 		void got_connection (XClient *);
 		void add_remote_file ();
 		void add_local_file ();
 		void add_local_dir ();
+		void min_pressed ();
 
 		void remove_selected ();
 		void remove_all ();
@@ -68,8 +75,6 @@ class PlayerWidget : public QMainWindow
 		bool handle_playtime (const unsigned int &);
 		bool handle_status (const Xmms::Playback::Status &);
 
-		bool handle_index_status (const Xmms::Stats::ReaderStatus &);
-		bool handle_unindexed (const uint32_t &);
 		void handle_disconnect ();
 
 		void new_info (const QHash<QString, QVariant>&);
@@ -80,10 +85,9 @@ class PlayerWidget : public QMainWindow
 		ProgressFrame *m_pf;
 		VolumeBar *m_volbar;
 
-		QProgressDialog *m_unindexed;
-		
 		SystemTray *m_systray;
 		InfoWindow *m_info;
+		MiniMode *m_mini;
 
 };
 

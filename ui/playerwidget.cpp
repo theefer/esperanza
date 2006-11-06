@@ -29,6 +29,7 @@
 #include "textdialog.h"
 #include "systemtray.h"
 #include "infowindow.h"
+#include "minimode.h"
 
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
@@ -36,7 +37,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	QSettings s;
 
 	m_client = client;
-	m_unindexed = NULL;
 
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
@@ -48,13 +48,23 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	QWidget *dummy = new QWidget (main_w);
 
-	m_playlist = new PlaylistView (this, client);
 	QGridLayout *layout = new QGridLayout (main_w);
+	m_playlist = new PlaylistView (this, client);
+	layout->addWidget (m_playlist, 1, 0, 1, 3);
+
+	QHBoxLayout *pflay = new QHBoxLayout ();
+	pflay->setMargin (0);
 
 	m_pf = new ProgressFrame (this);
+	pflay->addWidget (m_pf);
+	pflay->setStretchFactor (m_pf, 1);
 
-	layout->addWidget (m_pf, 0, 0, 1, 3);
-	layout->addWidget (m_playlist, 1, 0, 1, 3);
+	PlayerButton *min = new PlayerButton (dummy, ":images/minmax.png");
+	connect (min, SIGNAL (clicked (QMouseEvent *)),
+			 this, SLOT (min_pressed ()));
+	pflay->addWidget (min);
+
+	layout->addLayout (pflay, 0, 0, 1, 3);
 
 	dummy = new QWidget (main_w);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
@@ -129,7 +139,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (client, SIGNAL (gotConnection (XClient *)),
 			 this, SLOT (got_connection (XClient *))); 
 
-
 	resize (s.value ("player/windowsize", QSize (550, 350)).toSize());
 	if (s.contains ("player/position"))
 		move (s.value ("player/position").toPoint ());
@@ -164,9 +173,14 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	}
 
 	/* create the info window */
+	/*
 	m_info = new InfoWindow (this, m_client);
 	m_info->hide ();
 	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_info, SLOT (set_current_id (uint32_t)));
+	*/
+
+	m_mini = new MiniMode (this, m_client);
+	m_mini->hide ();
 	
 	/* run it once first time */
 	changed_settings ();
@@ -180,6 +194,13 @@ PlayerWidget::set_colors ()
 	p.setColor (QPalette::Inactive, QPalette::Text, QColor ("black"));
 	QApplication::setPalette (p);
 #endif
+}
+
+void
+PlayerWidget::min_pressed ()
+{
+	m_mini->show ();
+	hide ();
 }
 
 void
@@ -506,49 +527,18 @@ PlayerWidget::handle_disconnect ()
 }
 
 bool
-PlayerWidget::handle_index_status (const Xmms::Stats::ReaderStatus &rs)
-{
-	if (rs == Xmms::Stats::IDLE) {
-		if (!m_unindexed) {
-			m_unindexed = new QProgressDialog (tr ("Indexing files"), tr ("Hide window"), 0, 1, this);
-			QProgressBar *b = new QProgressBar (m_unindexed);
-			b->setInvertedAppearance (true);
-			b->setRange (0, 1);
-			m_unindexed->setBar (b);
-		}
-	} else if (rs == Xmms::Stats::RUNNING) {
-		if (m_unindexed) {
-			m_unindexed->cancel ();
-			delete m_unindexed;
-			m_unindexed = NULL;
-		}
-	}
-
-	return true;
-}
-
-bool
-PlayerWidget::handle_unindexed (const uint32_t &i)
-{
-	if (m_unindexed) {
-		if (m_unindexed->maximum () == 1) {
-			m_unindexed->setRange (0, i);
-		}
-		m_unindexed->setValue (m_unindexed->maximum()-i);
-	}
-	return true;
-}
-
-bool
 PlayerWidget::handle_status (const Xmms::Playback::Status &st)
 {
 	m_status = st;
 
 	if (st == Xmms::Playback::STOPPED ||
-		st == Xmms::Playback::PAUSED)
+		st == Xmms::Playback::PAUSED) {
 		m_playbutt->setPx (":images/play.png");
-	else
+		m_mini->update_playbutton (QPixmap (":images/play.png"));
+	} else {
 		m_playbutt->setPx (":images/pause.png");
+		m_mini->update_playbutton (QPixmap (":images/pause.png"));
+	}
 
 	return true;
 }
@@ -568,11 +558,15 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		.arg(h["artist"].toString ())
 		.arg(h["title"].toString ());
 	m_pf->setText (s);
+	m_mini->setText (s);
 
 	if (h.contains ("duration")) {
 		uint32_t dur = h["duration"].toUInt ();
 		m_pf->setMaximum (dur / 1000);
 		m_pf->setValue (0);
+
+		m_mini->setMaximum (dur / 1000);
+		m_mini->setValue (0);
 	}
 	if (m_systray &&
 		m_current_id == h["id"].toUInt () &&
@@ -587,6 +581,7 @@ bool
 PlayerWidget::handle_playtime (const unsigned int &tme)
 {
 	m_pf->setValue (tme / 1000);
+	m_mini->setValue (tme / 1000);
 	return true;
 }
 

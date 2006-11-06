@@ -261,6 +261,23 @@ ProgressFrame::paintEvent( QPaintEvent * event )
     painter.drawText( rect, Qt::AlignLeft | Qt::AlignVCenter, text() );
 }
 
+void
+ProgressFrame::mousePressEvent (QMouseEvent *event)
+{
+	QPoint p = mapTo (window (), event->pos ());
+	m_diffx = p.x ();
+	m_diffy = p.y ();
+}
+
+void
+ProgressFrame::mouseMoveEvent (QMouseEvent *event)
+{
+	if (m_move) {
+		QWidget *w = window ();
+		w->move (event->globalPos ().x () - m_diffx,
+				 event->globalPos ().y () - m_diffy);
+	}
+}
 
 void
 ProgressFrame::setValue( int value )

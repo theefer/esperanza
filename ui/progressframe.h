@@ -67,6 +67,13 @@ class ProgressFrame : public QFrame
 
         void setGreen( bool green ) { m_green = green; }
 
+		void mouseMoveEvent (QMouseEvent *);
+		void mousePressEvent (QMouseEvent *);
+
+		void setMove (bool b) {
+			m_move = b;
+		};
+
     public slots:
         void setValue( int value );
 
@@ -97,6 +104,10 @@ class ProgressFrame : public QFrame
         bool m_timerEnabled;
         
         QTimer pushTimer;
+
+		bool m_move;
+		uint32_t m_diffx;
+		uint32_t m_diffy;
 
     private slots:
         void updateTimer() { setValue( value() + 1 ); }

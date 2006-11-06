@@ -12,6 +12,7 @@
 #include "playerwidget.h"
 #include "serverdialog.h"
 #include "preferences.h"
+#include "minimode.h"
 
 int
 main (int argc, char **argv)
