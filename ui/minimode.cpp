@@ -66,7 +66,7 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	connect (m_client->settings (), SIGNAL (settingsChanged ()),
 			 this, SLOT (changed_settings ()));
 
-	move (s.value ("mini/pos", parent->pos ()).toPoint ());
+	move (s.value ("minimode/pos", parent->pos ()).toPoint ());
 }
 
 void
@@ -89,7 +89,7 @@ void
 MiniMode::moveEvent (QMoveEvent *ev)
 {
 	QSettings s;
-	s.setValue ("mini/pos", ev->pos ());
+	s.setValue ("minimode/pos", ev->pos ());
 }
 
 void

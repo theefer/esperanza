@@ -32,6 +32,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/showstop", "Show a stop button as well", T_BOOL, false);
 	PREF_VALUE("ui/reverseplaytime", "Use reversed elapsed time", T_BOOL, true);
 	PREF_VALUE("core/pixmapcache", "Size of album art cache in kb", T_NUM, 12040);
+	PREF_VALUE("ui/contextvalues", "Values to be shown in context row (comma-separated)", T_STR, "album,timesplayed,duration");
 //	PREF_VALUE("playlist/fontsize", "Playlist fontsize in pixels", T_NUM, 10);
 //	PREF_VALUE("ui/fontsize", "General fontsize in pixels", T_NUM, 10);
 //	PREF_VALUE("ui/highlight", "General highlight color", T_COLOR, QColor (80, 80, 80));
@@ -77,7 +78,7 @@ PreferenceDialog::PreferenceDialog (QWidget *parent, XClient *client) : QMainWin
 
 	m_base = new QWidget (this);
 	setCentralWidget (m_base);
-	resize (400, 500);
+	resize (600, 500);
 
 	QGridLayout *g = new QGridLayout (m_base);
 
@@ -144,6 +145,7 @@ PreferenceDialog::fill_list ()
 
 		QTableWidgetItem *item = new QTableWidgetItem (help);
 		item->setData (Qt::UserRole, m);
+		item->setToolTip (help);
 		
 		m_table->setItem (i, 0, item);
 

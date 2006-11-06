@@ -239,17 +239,35 @@ PlaylistModel::decoration_data (const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole) {
 		if (index.column () == m_columns.size () - 1) {
-			QString s;
+			QString str;
+			QSettings s;
 
-			s.append ("\n");
-			s.append (QString ("Bitrate: %0kbps\n").arg (h["bitrate"].toUInt () / 1000));
-			unsigned int dur = h["duration"].toUInt ();
-			QString m;
-			m.sprintf ("%02d:%02d", (dur / 60000), (dur/1000)%60);
-			s.append (QString ("Duration: %0\n").arg (m));
-			s.append (QString ("Times played: %0").arg (h["timesplayed"].toUInt ()));
-			s.append ("\n");
-			return QVariant (s);
+			QStringList val = s.value ("ui/contextvalues").toString ().split (",");
+
+			str.append ("\n");
+			for (int i = 0; i < val.count (); i ++) {
+				if (val.at (i) == "bitrate") {
+					str.append (QString ("Bitrate: %0kbps\n").arg (h["bitrate"].toUInt () / 1000));
+				} else if (val.at (i) == "duration") {
+					unsigned int dur = h["duration"].toUInt ();
+					QString m;
+					m.sprintf ("%02d:%02d", (dur / 60000), (dur/1000)%60);
+					str.append (QString ("Duration: %0\n").arg (m));
+				} else if (val.at (i) == "timesplayed") {
+					str.append (QString ("Times played: %0\n").arg (h["timesplayed"].toUInt ()));
+				} else if (val.at (i) == "album") {
+					str.append (QString ("Album: %0\n").arg (h["album"].toString ()));
+				} else if (val.at (i) == "artist") {
+					str.append (QString ("Artist: %0\n").arg (h["artist"].toString ()));
+				} else if (val.at (i) == "title") {
+					str.append (QString ("Title: %0\n").arg (h["title"].toString ()));
+				} else if (val.at (i) == "genre") {
+					str.append (QString ("Genre: %0\n").arg (h["genre"].toString ()));
+				} else if (val.at (i) == "tracknr") {
+					str.append (QString ("Track Number: %0\n").arg (h["tracknr"].toUInt ()));
+				}
+			}
+			return QVariant (str);
 		}
 		
 	}
