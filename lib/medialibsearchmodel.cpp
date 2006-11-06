@@ -1,6 +1,7 @@
 #include "medialibsearchmodel.h"
 
-MedialibSearchModel::MedialibSearchModel (QObject *parent, XClient *client) : PlaylistModel (parent, client)
+MedialibSearchModel::MedialibSearchModel (QObject *parent, XClient *client) :
+	PlaylistModel (parent, client)
 {
 	m_client = client;
 	QStringList columns;

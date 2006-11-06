@@ -94,6 +94,8 @@ void
 PlaylistView::rows_inserted ()
 {
 	QModelIndex idx = m_model->index (0, 0);
+	if (!idx.isValid ())
+		return;
 	if (!m_model->cached_size (idx.column ()).isValid () && idx.internalId () == -1) {
 		m_model->set_cached_size (idx.column (), sizeHintForIndex (idx));
 	}

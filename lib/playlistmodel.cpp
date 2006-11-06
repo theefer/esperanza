@@ -20,6 +20,7 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client) : QAbstractItemM
 
 	m_cached_size.append (QSize ());
 	m_cached_size.append (QSize ());
+	m_cached_size.append (QSize ());
 
 	connect (client, SIGNAL(gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
 	connect (client->cache (), SIGNAL(entryChanged (uint32_t)), this, SLOT (entry_changed (uint32_t)));
