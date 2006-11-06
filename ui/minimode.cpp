@@ -15,6 +15,8 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	m_client = client;
 	m_parent = parent;
 
+	QSettings s;
+
 	setFrameStyle (QFrame::Plain | QFrame::StyledPanel);
 	setLineWidth (2);
 
@@ -39,23 +41,48 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	connect (sett, SIGNAL (clicked (QMouseEvent *)),
 			 parent, SLOT (snett_pressed (QMouseEvent *)));
 
+	m_stop = new PlayerButton (this, ":images/playstop.png");
+	connect (m_stop, SIGNAL (clicked (QMouseEvent *)),
+			 parent, SLOT (playstop_pressed ()));
+
 	PlayerButton *minmax = new PlayerButton (this, ":images/minmax.png");
 	connect (minmax, SIGNAL (clicked (QMouseEvent *)), this, SLOT (min_pressed ()));
 
 	g->addWidget (back, 0, 0);
 	g->addWidget (m_playbutt, 0, 1);
-	g->addWidget (fwd, 0, 2);
-	g->addWidget (sett, 0, 3);
-	g->addWidget (m_progress, 0, 4);
-	g->addWidget (minmax, 0, 5);
+	g->addWidget (m_stop, 0, 2);
 
-	g->setColumnStretch (4, 1);
-	g->setMargin (2);
-	resize (400, 22);
+	if (!s.value ("ui/showstop").toBool ())
+		m_stop->hide ();
 
-	QSettings s;
+	g->addWidget (fwd, 0, 3);
+	g->addWidget (sett, 0, 4);
+	g->addWidget (m_progress, 0, 5);
+	g->addWidget (minmax, 0, 6);
+
+	g->setColumnStretch (5, 1);
+	g->setMargin (1);
+
+	connect (m_client->settings (), SIGNAL (settingsChanged ()),
+			 this, SLOT (changed_settings ()));
+
 	move (s.value ("mini/pos", parent->pos ()).toPoint ());
+}
 
+void
+MiniMode::showEvent (QShowEvent *sh)
+{
+	resize (m_parent->size ().width (), 22);
+}
+
+void
+MiniMode::changed_settings ()
+{
+	QSettings s;
+	if (!s.value ("ui/showstop").toBool ())
+		m_stop->hide ();
+	else
+		m_stop->show ();
 }
 
 void

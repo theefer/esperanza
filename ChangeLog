@@ -8,6 +8,7 @@ Version 0.2 (N/A)
 	* Bugfixes to the volumebar
 	* Bugfixes to the context line
 	* Reworked album-art caching
+	* Speed scrolling in large playlists
 
 Version 0.1.1 (2006-11-01)
 	* Forgot "version.h" files in 0.1

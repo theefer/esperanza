@@ -34,9 +34,11 @@ class MiniMode : public QFrame
 		};
 
 		void moveEvent (QMoveEvent *);
+		void showEvent (QShowEvent *);
 
 	private slots:
 		void min_pressed ();
+		void changed_settings ();
 
 	private:
 		XClient *m_client;
@@ -44,6 +46,7 @@ class MiniMode : public QFrame
 		QWidget *m_parent;
 
 		PlayerButton *m_playbutt;
+		PlayerButton *m_stop;
 };
 
 #endif
