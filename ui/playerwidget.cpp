@@ -40,6 +40,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
+	setAttribute (Qt::WA_DeleteOnClose);
 
 	set_colors ();
 
