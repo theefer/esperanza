@@ -190,11 +190,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 void
 PlayerWidget::set_colors ()
 {
-#if 0
-	QPalette p (QApplication::palette ());
-	p.setColor (QPalette::Inactive, QPalette::Text, QColor ("black"));
-	QApplication::setPalette (p);
-#endif
 }
 
 void

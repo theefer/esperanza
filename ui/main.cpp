@@ -13,6 +13,7 @@
 #include "serverdialog.h"
 #include "preferences.h"
 #include "minimode.h"
+#include "mdns.h"
 
 int
 main (int argc, char **argv)
@@ -30,6 +31,8 @@ main (int argc, char **argv)
 	QSettings s;
 
 	XClient client (NULL, "Esperanza");
+	MDNSQuery mdns (NULL);
+	mdns.browse_service ("_xmms2._tcp");
 
 	QString path;
 
@@ -37,7 +40,7 @@ main (int argc, char **argv)
 
 browser:
 	if (!getenv ("XMMS_PATH")) {
-		ServerDialog sd (NULL);
+		ServerDialog sd (NULL, &mdns);
 		if (!s.value ("serverdialog/show").toBool ()) {
 			path = sd.get_default ();
 		} else {

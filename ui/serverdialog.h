@@ -2,6 +2,7 @@
 #define __SERVERDIALOG_H__
 
 #include "xclient.h"
+#include "mdns.h"
 
 #include <QDialog>
 #include <QListWidget>
@@ -22,7 +23,7 @@ class ServerDialog : public QDialog
 {
 	Q_OBJECT
 	public:
-		ServerDialog (QWidget *);
+		ServerDialog (QWidget *, MDNSQuery *);
 		QString get_path ();
 		QString get_default ();
 
@@ -31,9 +32,12 @@ class ServerDialog : public QDialog
 	private slots:
 		void add_server ();
 		void remove_server ();
+		void mdns_server_update ();
 
 	private:
 		QListWidget *m_list;
+		MDNSQuery *m_mdns;
+		QList<QListWidgetItem *> m_mdns_servers;
 };
 
 #endif

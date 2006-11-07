@@ -12,7 +12,11 @@ macx {
 	SOURCES += lib/mac_growl.mm
 	HEADERS += lib/mac_growl.h
 	RC_FILE += images/esperanza.icns
+	DEFINES += HAVE_DNSSD
 }
+
+;DEFINES += HAVE_DNSSD
+;LIBS += -ldnssd
 
 !win32 {
 	PKGCONFIG += xmms2-client xmms2-client-cpp
@@ -30,8 +34,8 @@ win32 {
 }
 
 # library files
-HEADERS += lib/playlistmodel.h lib/xmmsqt4.h  lib/xclient.h lib/browsemodel.h lib/medialibsearchmodel.h lib/xmediainfocache.h lib/qtmd5.h lib/growl.h
-SOURCES += lib/playlistmodel.cpp lib/xmmsqt4.cpp lib/xclient.cpp lib/browsemodel.cpp lib/medialibsearchmodel.cpp lib/xmediainfocache.cpp lib/qtmd5.cpp lib/growl.cpp
+HEADERS += lib/playlistmodel.h lib/xmmsqt4.h  lib/xclient.h lib/browsemodel.h lib/medialibsearchmodel.h lib/xmediainfocache.h lib/qtmd5.h lib/growl.h lib/mdns.h
+SOURCES += lib/playlistmodel.cpp lib/xmmsqt4.cpp lib/xclient.cpp lib/browsemodel.cpp lib/medialibsearchmodel.cpp lib/xmediainfocache.cpp lib/qtmd5.cpp lib/growl.cpp lib/mdns.cpp
 
 # Input
 HEADERS += ui/playlistview.h ui/playerwidget.h ui/progressframe.h ui/browsedialog.h ui/playerbutton.h ui/filedialog.h ui/medialibdialog.h ui/medialibview.h ui/serverdialog.h ui/preferences.h ui/progressindicator.h ui/volumebar.h ui/preferencessupport.h ui/textdialog.h ui/systemtray.h ui/infowindow.h ui/minimode.h

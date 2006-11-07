@@ -12,9 +12,12 @@
 #include <QErrorMessage>
 
 #include "playerbutton.h"
+#include "mdns.h"
 
-ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent)
+ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
 {
+	m_mdns = mdns;
+
 	QGridLayout *g = new QGridLayout (this);
 
 	QLabel *l = new QLabel (tr ("Welcome to an XMMS2 client\nPlease select the server to connect to.\nIt's possible to disable this dialog in preferences"), this);
@@ -26,7 +29,9 @@ ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent)
 	m_list->setSelectionMode (QAbstractItemView::SingleSelection);
 
 	QMap <QString, QVariant> def;
+#ifndef Q_WS_WIN32
 	def["local"] = QString ("local");
+#endif
 
 	QSettings s;
 	QMap<QString, QVariant> m = s.value ("serverbrowser/list", def).toMap ();
@@ -65,8 +70,37 @@ ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent)
 	g->addWidget (dummy, 3, 0, 1, 2);
 
 	connect (m_list, SIGNAL (itemDoubleClicked (QListWidgetItem *)), this, SLOT (accept ()));
+	connect (mdns, SIGNAL (serverlistChanged ()), this, SLOT (mdns_server_update ()));
+
+	mdns_server_update ();
 
 	resize (250, 300);
+}
+
+void
+ServerDialog::mdns_server_update ()
+{
+	QList<MDNSServer *>servers = m_mdns->serverlist ();
+	QSettings s;
+
+	while (m_mdns_servers.count ()) {
+		QListWidgetItem *item = m_mdns_servers.at (0);
+		m_mdns_servers.removeAll (item);
+		delete item;
+	}
+
+	for (int i = 0; i < servers.count (); i++) {
+		MDNSServer *serv = servers.at (i);
+		if (!serv->complete ())
+			continue;
+		QListWidgetItem *item = new QListWidgetItem (serv->name () + " (discovered)", m_list);
+		QString path = QString ("tcp://%1:%2").arg (serv->ip()).arg (serv->port ());
+		item->setData (Qt::ToolTipRole, path);
+		item->setData (Qt::UserRole, true);
+		if (item->text () == s.value ("serverbrowser/default").toString ())
+			m_list->setCurrentItem (item);
+		m_mdns_servers.append (item);
+	}
 }
 
 void
@@ -125,6 +159,13 @@ void
 ServerDialog::remove_server ()
 {
 	QListWidgetItem *item = m_list->currentItem ();
+
+	if (item->data (Qt::UserRole).toBool ()) {
+		QErrorMessage *err = new QErrorMessage (this);
+		err->showMessage (tr ("Eeep! Can't remove mDNS items!"));
+		err->exec ();
+		return;
+	}
 	if (item->text () == "local") {
 		QErrorMessage *err = new QErrorMessage (this);
 		err->showMessage (tr ("Eeep! Can't remove local item!"));
@@ -160,7 +201,8 @@ ServerDialog::get_path ()
 	QMap<QString, QVariant> m;
 	for (int i = 0; i < m_list->count (); i ++) {
 		QListWidgetItem *item = m_list->item (i);
-		m[item->text ()] = QVariant (item->toolTip ());
+		if (!item->data (Qt::UserRole).toBool ())
+			m[item->text ()] = QVariant (item->toolTip ());
 	}
 
 	s.setValue ("serverbrowser/list", m);
