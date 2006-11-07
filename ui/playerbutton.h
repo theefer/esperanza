@@ -3,6 +3,7 @@
 
 #include <QLabel>
 #include <QPixmap>
+#include <QImage>
 
 class PlayerButton : public QLabel
 {
@@ -21,6 +22,8 @@ class PlayerButton : public QLabel
 	private:
 		QPalette m_normal;
 		QPalette m_hoover;
+		QPixmap m_pixmap;
+		QPixmap m_pixmap_hoover;
 };
 
 #endif
