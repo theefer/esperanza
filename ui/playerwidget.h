@@ -29,6 +29,7 @@ class PlayerWidget : public QMainWindow
 
 		void resizeEvent (QResizeEvent *);
 		void moveEvent (QMoveEvent *);
+		void closeEvent (QCloseEvent *);
 
 		void hide_mini () const
 		{

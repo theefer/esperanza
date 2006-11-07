@@ -188,6 +188,12 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 }
 
 void
+PlayerWidget::closeEvent (QCloseEvent *ev)
+{
+	qApp->quit ();
+}
+
+void
 PlayerWidget::set_colors ()
 {
 }

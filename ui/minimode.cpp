@@ -12,6 +12,7 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 {
 	setWindowFlags (Qt::FramelessWindowHint);
 	setWindowTitle (tr ("Esperanza"));
+	setAttribute (Qt::WA_QuitOnClose, false);
 	m_client = client;
 	m_parent = parent;
 
