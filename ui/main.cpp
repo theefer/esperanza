@@ -27,10 +27,8 @@ main (int argc, char **argv)
 	QApplication::setWindowIcon (QIcon (":images/esperanza.png"));
 
 	PreferenceDialog::save_defaults ();
-
-
+	
 	XClient client (NULL, "Esperanza");
-	QSettings::setPath (QSettings::NativeFormat, QSettings::UserScope, QString::fromStdString (client.getUserConfDir ()) + "/clients");
 	QSettings s;
 
 	MDNSQuery mdns (NULL);
