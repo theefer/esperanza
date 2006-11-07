@@ -38,7 +38,7 @@ MedialibSearchModel::do_search (uint32_t p, const QString &s)
 			q.append (QString (" where m1.key = 'title' and lower(m1.value) like %0").arg (a));
 			break;
 		case SEARCH_YEAR:
-			q.append (QString (" where m1.key = 'title' and lower(m1.value) like %0").arg (a));
+			q.append (QString (" where m1.key = 'date' and lower(m1.value) like %0").arg (a));
 			break;
 	}
 
