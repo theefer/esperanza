@@ -24,7 +24,8 @@ PlayerButton::enterEvent (QEvent *ev)
 	p.setColor (QPalette::Text, p.color (QPalette::HighlightedText));
 	setPalette (p);
 
-	setPixmap (m_pixmap_hoover);
+	if (!m_pixmap_hoover.isNull ())
+		setPixmap (m_pixmap_hoover);
 
 	update ();
 }
@@ -35,7 +36,8 @@ PlayerButton::leaveEvent (QEvent *ev)
 	QPalette p (parentWidget ()->palette ());
 	setPalette (p);
 
-	setPixmap (m_pixmap);
+	if (!m_pixmap_hoover.isNull ())
+		setPixmap (m_pixmap);
 
 	update ();
 }
