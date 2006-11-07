@@ -28,9 +28,11 @@ main (int argc, char **argv)
 
 	PreferenceDialog::save_defaults ();
 
-	QSettings s;
 
 	XClient client (NULL, "Esperanza");
+	QSettings::setPath (QSettings::NativeFormat, QSettings::UserScope, QString::fromStdString (client.getUserConfDir ()) + "/clients");
+	QSettings s;
+
 	MDNSQuery mdns (NULL);
 	mdns.browse_service ("_xmms2._tcp");
 
