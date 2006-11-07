@@ -54,6 +54,8 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setRootIsDecorated (false);
 	setTabKeyNavigation (false);
 
+	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
+
 	setDragEnabled (false);
 	setAcceptDrops (false);
 	setDropIndicatorShown (true);
