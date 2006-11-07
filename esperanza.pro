@@ -5,6 +5,8 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 TEMPLATE = app
 TARGET = esperanza
 RESOURCES += esperanza.qrc
+esperanza.path = $$(INSTALLPATH)
+target.path = /usr/local/bin
 
 macx {
 	TARGET = Esperanza
@@ -13,6 +15,7 @@ macx {
 	HEADERS += lib/mac_growl.h
 	RC_FILE += images/esperanza.icns
 	DEFINES += HAVE_DNSSD
+	target.path = /Applications
 }
 
 ;DEFINES += HAVE_DNSSD
@@ -24,6 +27,7 @@ macx {
 	OBJECTS_DIR = qmake_build
 	MOC_DIR = qmake_build
 	RCC_DIR = qmake_build
+	INSTALLS += target
 }
 
 win32 {
@@ -31,6 +35,12 @@ win32 {
 	LIBPATH += c:/xmms2/lib
 	LIBS += -lxmmsclient -lxmmsclient++ -lboost_signals -lws2_32
 	RCFILE = esperanza.rc
+}
+
+INSTALLPATH = $$(INSTALLPATH)
+
+!isEmpty ( INSTALLPATH ) {
+	target.path = $$INSTALLPATH
 }
 
 # library files
