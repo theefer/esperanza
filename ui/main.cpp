@@ -55,8 +55,16 @@ browser:
 		path = QString::fromAscii (getenv ("XMMS_PATH"));
 	}
 
-	if (!client.connect (path.toStdString ()))
-		goto browser;
+	if (!client.connect (path.toStdString ())) {
+		if (!getenv ("XMMS_PATH")) {
+			goto browser;
+		} else {
+			QErrorMessage *err = new QErrorMessage (NULL);
+			err->showMessage ("Your XMMS_PATH enviroment sucks. Fix it and restart the Application");
+			err->exec ();
+			exit (EXIT_FAILURE);
+		}
+	}
 
 
 	pw->show ();

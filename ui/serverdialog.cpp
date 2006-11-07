@@ -57,6 +57,10 @@ ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
 	connect (c, SIGNAL(clicked (QMouseEvent *)), this, SLOT (accept ()));
 	hbox->addWidget (c);
 
+	c = new PlayerButton (dummy, tr ("quit"));
+	connect (c, SIGNAL(clicked (QMouseEvent *)), this, SLOT (reject ()));
+	hbox->addWidget (c);
+
 	hbox->addStretch (1);
 
 	PlayerButton *b = new PlayerButton (dummy, ":images/plus.png");
