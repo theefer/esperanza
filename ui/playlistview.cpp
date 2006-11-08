@@ -59,7 +59,6 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setDragEnabled (false);
 	setAcceptDrops (false);
 	setDropIndicatorShown (true);
-	setContextMenuPolicy (Qt::PreventContextMenu);
 
 	QHeaderView *head = header ();
 	QSettings s;
@@ -90,6 +89,17 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 			 this, SLOT (rows_inserted ()));
 
 	setIconSize (QSize (75, 75));
+}
+
+void
+PlaylistView::mousePressEvent (QMouseEvent *ev)
+{
+	if (ev->buttons () & Qt::RightButton || ev->buttons () & Qt::MidButton) {
+		ev->ignore ();
+		return;
+	}
+
+	QTreeView::mousePressEvent (ev);
 }
 
 void

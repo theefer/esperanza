@@ -28,6 +28,7 @@ class PlaylistView : public QTreeView
 		QModelIndexList getSelection ();
 
 		void keyPressEvent (QKeyEvent *);
+		void mousePressEvent (QMouseEvent *);
 
 	public slots:
 		void jump_pos (const QModelIndex &);
