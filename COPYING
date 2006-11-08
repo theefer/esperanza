@@ -1,6 +1,10 @@
 Esperanza is under the GPL license and copyrighted to Tobias Rundstroem.
+Except: ui/progressframe.*
+	Copyright: Christian Muehlhaeuser 
+			   Erik Jaelevik
+
 Please refer to the file COPYING.GPL for the full license text.
 
-The images/*.png is all under Creative Commons v2. And (c) to Tobias Rundstroem.
+The images/*.png is all under GPL v2. And copyrighted to Tobias Rundstroem.
 Except images/esperanza.icns, images/systray.png and images/esperanza.ico which are
 a part of nuovoX 0.4 icon pack and are under the GPL v2.

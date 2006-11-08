@@ -1,4 +1,4 @@
-Version 0.2 (N/A)
+Version 0.2.0 (2006-11-07)
 	* Added a systemtray icon with help of Gianluca Romanin
 	* Added a icon
 	* Added minimode
@@ -8,6 +8,7 @@ Version 0.2 (N/A)
 	* Bugfixes to the volumebar
 	* Bugfixes to the context line
 	* Reworked album-art caching
+	* Try to match colors to the current palette
 	* Speed scrolling in large playlists
 
 Version 0.1.1 (2006-11-01)
