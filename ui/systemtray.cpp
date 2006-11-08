@@ -8,6 +8,8 @@
 
 SystemTray::SystemTray (QObject *parent, XClient *client) : QSystemTrayIcon (parent)
 {
+	QSettings s;
+
 	m_client = client;
 
 	connect (this, SIGNAL (activated (QSystemTrayIcon::ActivationReason)),
@@ -26,14 +28,20 @@ SystemTray::SystemTray (QObject *parent, XClient *client) : QSystemTrayIcon (par
 	systray_menu->addSeparator ();
 
 	m_play_action = systray_menu->addAction (tr ("Play/Pause"), pw, SLOT (play_pressed ()));
-	m_play_action->setIcon (QIcon (":image/play.png"));
+	m_play_action->setIcon (QIcon (":images/play.png"));
+
+	if (s.value ("ui/showstop").toBool ()) {
+		a = systray_menu->addAction (tr ("Stop"), pw, SLOT (playstop_pressed ()));
+		a->setIcon (QIcon (":images/playstop.png"));
+	}
+
 	a = systray_menu->addAction (tr ("Next"), pw, SLOT (fwd_pressed ()));
-	a->setIcon (QIcon (":image/next.png"));
+	a->setIcon (QIcon (":images/forward.png"));
 	a = systray_menu->addAction (tr ("Previous"), pw, SLOT (back_pressed ()));
-	a->setIcon (QIcon (":image/back.png"));
+	a->setIcon (QIcon (":images/back.png"));
 	systray_menu->addSeparator ();
 	a = systray_menu->addAction (tr ("Exit"), qApp, SLOT (quit ()));
-	a->setIcon (QIcon (":image/stop.png"));
+	a->setIcon (QIcon (":images/stop.png"));
 
 	connect (systray_menu, SIGNAL (aboutToShow ()), this, SLOT (build_menu ()));
 
@@ -54,10 +62,10 @@ SystemTray::build_menu ()
 	qDebug ("showing!");
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
 	if (pw->status () != Xmms::Playback::PLAYING) {
-		m_play_action->setIcon (QIcon (":image/play.png"));
+		m_play_action->setIcon (QIcon (":images/play.png"));
 		m_play_action->setText (tr ("Play"));
 	} else {
-		m_play_action->setIcon (QIcon (":image/pause.png"));
+		m_play_action->setIcon (QIcon (":images/pause.png"));
 		m_play_action->setText (tr ("Pause"));
 	}
 
@@ -100,6 +108,7 @@ SystemTray::do_notification (const QString &title, const QString &message,
 			showMessage (title, message, icon, milliseconds);
 		}
 	}
+	setToolTip(message);
 }
 
 void 
