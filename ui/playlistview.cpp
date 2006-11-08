@@ -134,25 +134,12 @@ PlaylistView::changed_settings ()
 {
 	QSettings s;
 
-	collapse_all ();
+	collapseAll ();
 
 	if (!s.value ("playlist/compactmode").toBool ()) {
 		if (getSelection ().size () > 1)
 			return;
 		setExpanded (m_selections->currentIndex (), true);
-		m_explist.append (m_selections->currentIndex ().data (PlaylistModel::MedialibIdRole).toUInt ());
-	}
-}
-
-void
-PlaylistView::collapse_all ()
-{
-	while (m_explist.count ()) {
-		QModelIndexList ilst = m_model->get_idxlist_by_id (m_explist.at (0));
-		for (int j = 0; j < ilst.count (); j ++) {
-			setExpanded (ilst.at (j), false);
-		}
-		m_explist.removeAt (0);
 	}
 }
 
@@ -191,12 +178,11 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 	if (l.count () < 1) {
 		setCurrentIndex (old);
 	} else if (l.count () > 1) {
-		collapse_all ();
+		collapseAll ();
 	} else {
-		collapse_all ();
+		collapseAll ();
 
 		setExpanded (n, true);
-		m_explist.append (n.data (PlaylistModel::MedialibIdRole).toUInt ());
 
 		QModelIndex c = n.child (0, 0);
 		scrollTo (c);

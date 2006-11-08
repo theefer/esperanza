@@ -27,8 +27,6 @@ class PlaylistView : public QTreeView
 		PlaylistView (QWidget *parent, XClient *client);
 		QModelIndexList getSelection ();
 
-		void collapse_all ();
-
 		void keyPressEvent (QKeyEvent *);
 
 	public slots:
@@ -46,7 +44,6 @@ class PlaylistView : public QTreeView
 		XClient *m_client;
 		PlaylistModel *m_model;
 		QItemSelectionModel *m_selections;
-		QList<uint32_t> m_explist;
 		QWidget *m_parent;
 
 		bool handle_update_pos (const uint32_t &);
