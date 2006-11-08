@@ -34,12 +34,12 @@ Section "Esperanza" SecEsperanza
 	SetOutPath	"$INSTDIR"
 
 	File	"release\esperanza.exe"
-	File	"c:\mingw\bin\mingwm10.dll"
+	File	"c:\Qt\4.2.1\bin\mingwm10.dll"
 	File	"c:\xmms2\lib\libxmmsclient.dll"
 	File	"c:\xmms2\lib\xmmsclient++.dll"
 	File	"c:\xmms2\lib\libboost_signals.dll"
-	File	"c:\Qt\4.1.4\bin\QtCore4.dll"
-	File	"c:\Qt\4.1.4\bin\QtGui4.dll"
+	File	"c:\Qt\4.2.1\bin\QtCore4.dll"
+	File	"c:\Qt\4.2.1\bin\QtGui4.dll"
 	WriteRegStr HKCU "Software\XMMS2\Esperanza" "" $INSTDIR
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
