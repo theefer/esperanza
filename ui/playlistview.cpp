@@ -99,6 +99,11 @@ PlaylistView::mousePressEvent (QMouseEvent *ev)
 		return;
 	}
 
+	if (!indexAt (ev->pos ()).isValid ()) {
+		ev->ignore ();
+		return;
+	}
+
 	QTreeView::mousePressEvent (ev);
 }
 
