@@ -137,6 +137,18 @@ PlaylistModel::handle_list (const Xmms::List< unsigned int > &list)
 	return true;
 }
 
+QModelIndexList
+PlaylistModel::get_idxlist_by_id (uint32_t id)
+{
+	QModelIndexList ret;
+
+	QList<uint32_t> l = getPosById (id);
+	for (int i = 0; i < l.count (); i++) {
+		ret.append (index (l.at (i), 0));
+	}
+	return ret;
+}
+
 QList<uint32_t>
 PlaylistModel::getPosById (uint32_t id)
 {

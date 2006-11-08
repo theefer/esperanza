@@ -54,6 +54,8 @@ class PlaylistModel : public QAbstractItemModel
 			return m_cached_size[i];
 		};
 
+		QModelIndexList get_idxlist_by_id (uint32_t);
+
 	public slots:
 		void got_connection (XClient *);
 		void entry_changed (uint32_t);
