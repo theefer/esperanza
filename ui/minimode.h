@@ -15,7 +15,7 @@ class MiniMode : public QFrame
 		MiniMode (QWidget *, XClient *);
 		void update_playbutton (const QPixmap &p)
 		{
-			m_playbutt->setPixmap (p);
+			m_playbutt->setPx (p);
 		};
 
 		void setText (const QString &s)
