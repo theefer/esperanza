@@ -53,6 +53,7 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setItemsExpandable (false);
 	setRootIsDecorated (false);
 	setTabKeyNavigation (false);
+	setTextElideMode (Qt::ElideNone);
 
 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
 
