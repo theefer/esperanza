@@ -60,10 +60,10 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	
 	g->addWidget (fwd, 0, 3);
 
-	VolumeButton *volume = new VolumeButton (this, m_client);
-	g->addWidget (volume, 0, 4);
+	m_volume = new VolumeButton (this, m_client);
+	g->addWidget (m_volume, 0, 4);
 	if (!s.value ("ui/volumepopup").toBool ())
-		volume->hide ();
+		m_volume->hide ();
 
 	g->addWidget (sett, 0, 5);
 	g->addWidget (m_progress, 0, 6);
@@ -92,6 +92,11 @@ MiniMode::changed_settings ()
 		m_stop->hide ();
 	else
 		m_stop->show ();
+
+	if (!s.value ("ui/volumepopup").toBool ())
+		m_volume->hide ();
+	else
+		m_volume->show ();
 }
 
 void

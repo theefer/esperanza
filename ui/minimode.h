@@ -4,6 +4,7 @@
 #include "xclient.h"
 #include "progressframe.h"
 #include "playerbutton.h"
+#include "volumebar.h"
 
 #include <QWidget>
 #include <QFrame>
@@ -47,6 +48,7 @@ class MiniMode : public QFrame
 
 		PlayerButton *m_playbutt;
 		PlayerButton *m_stop;
+		VolumeButton *m_volume;
 };
 
 #endif
