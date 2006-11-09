@@ -2,6 +2,7 @@
 #include "minimode.h"
 #include "playerbutton.h"
 #include "progressframe.h"
+#include "volumebar.h"
 
 #include <QWidget>
 #include <QGridLayout>
@@ -56,12 +57,19 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	if (!s.value ("ui/showstop").toBool ())
 		m_stop->hide ();
 
+	
 	g->addWidget (fwd, 0, 3);
-	g->addWidget (sett, 0, 4);
-	g->addWidget (m_progress, 0, 5);
-	g->addWidget (minmax, 0, 6);
 
-	g->setColumnStretch (5, 1);
+	VolumeButton *volume = new VolumeButton (this, m_client);
+	g->addWidget (volume, 0, 4);
+	if (!s.value ("ui/volumepopup").toBool ())
+		volume->hide ();
+
+	g->addWidget (sett, 0, 5);
+	g->addWidget (m_progress, 0, 6);
+	g->addWidget (minmax, 0, 7);
+
+	g->setColumnStretch (6, 1);
 	g->setMargin (1);
 
 	connect (m_client->settings (), SIGNAL (settingsChanged ()),
