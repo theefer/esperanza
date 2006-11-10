@@ -72,11 +72,14 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	int32_t change = chg.get<int32_t> ("type");
 	int32_t pos = 0, npos = 0;
 	uint32_t id = 0;
-	try {
+
+	if (chg.contains ("position")) {
 		pos = chg.get<int32_t> ("position");
-		id = chg.get<uint32_t> ("id");
-	} catch (Xmms::no_such_key_error&) {
 	}
+	if (chg.contains ("id")) {
+		id = chg.get<uint32_t> ("id");
+	}
+
 
 	QModelIndex idx = QModelIndex ();
 
