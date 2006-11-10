@@ -42,6 +42,7 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 {
 	m_client = client;
 	m_parent = parent;
+	m_removed = false;
 
 	m_model = new PlaylistModel (this, m_client);
 	setModel (m_model);
