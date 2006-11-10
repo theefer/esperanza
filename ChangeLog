@@ -1,3 +1,10 @@
+Version 0.2.1 (N/A)
+	* Fixed the systemtray icons. (Auke Schrijnen)
+	* Add a volume bar in the minimode
+	* Fix annoying bug on PPC processors.
+	* Don't hide text in the playlist
+	* Fixed some problems with the playbuttons (Auke Schrijnen)
+
 Version 0.2.0 (2006-11-07)
 	* Added a systemtray icon with help of Gianluca Romanin
 	* Added a icon

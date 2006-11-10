@@ -257,6 +257,8 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
+			/* a little hack here */
+			m_playlist->set_removed (true);
 			remove_selected ();
 			break;
 		case Qt::Key_A:

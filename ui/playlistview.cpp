@@ -171,6 +171,11 @@ bool
 PlaylistView::handle_update_pos (const uint32_t &pos)
 {
 	QSettings s;
+	if (m_removed) {
+		m_removed = false;
+		return true;
+	}
+
 	if (s.value ("playlist/jumptocurrent").toBool ())
 		setCurrentIndex (m_model->index (pos, 0));
 	return true;
@@ -188,6 +193,8 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 		setCurrentIndex (n.parent ());
 		return;
 	}
+
+	setCurrentIndex (n);
 
 	QModelIndexList l = getSelection ();
 	

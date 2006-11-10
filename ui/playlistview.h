@@ -30,6 +30,10 @@ class PlaylistView : public QTreeView
 		void keyPressEvent (QKeyEvent *);
 		void mousePressEvent (QMouseEvent *);
 
+		void set_removed (bool b) {
+			m_removed = b;
+		};
+
 	public slots:
 		void jump_pos (const QModelIndex &);
 		void item_selected (const QModelIndex &, const QModelIndex &);
@@ -48,6 +52,7 @@ class PlaylistView : public QTreeView
 		QWidget *m_parent;
 
 		bool handle_update_pos (const uint32_t &);
+		bool m_removed;
 };
 
 

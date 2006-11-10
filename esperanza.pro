@@ -10,7 +10,7 @@ target.path = /usr/local/bin
 
 macx {
 	TARGET = Esperanza
-;	CONFIG += x86 ppc
+;	CONFIG += ppc x86
 	SOURCES += lib/mac_growl.mm
 	HEADERS += lib/mac_growl.h
 	RC_FILE += images/esperanza.icns
