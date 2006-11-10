@@ -21,7 +21,7 @@ PlayerButton::enterEvent (QEvent *ev)
 
 	QPalette p (palette ());
 	p.setColor (QPalette::Window, p.color (QPalette::Highlight));
-	p.setColor (QPalette::Text, p.color (QPalette::HighlightedText));
+	p.setColor (QPalette::WindowText, p.color (QPalette::HighlightedText));
 	setPalette (p);
 
 	if (!m_pixmap_hoover.isNull ())
