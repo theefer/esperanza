@@ -261,6 +261,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			m_playlist->set_removed (true);
 			remove_selected ();
 			break;
+		case Qt::Key_S:
+			shuffle_pressed ();
+			break;
 		case Qt::Key_A:
 			add_local_file ();
 			break;
@@ -375,6 +378,8 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 	QMenu m;
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
 	m.addSeparator ();
+	m.addAction (tr ("Shuffle"), this, SLOT (shuffle_pressed ()));
+	m.addSeparator ();
 	m.addAction (tr ("About"), this, SLOT (open_about ()));
 	m.addAction (tr ("Keyboard shortcuts"), this, SLOT (open_short_help ()));
 //	m.addAction (tr ("Short-cut editor"), this, SLOT (open_sceditor ()));
@@ -386,6 +391,12 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 	*/
 
 	m.exec (ev->globalPos ());
+}
+
+void
+PlayerWidget::shuffle_pressed ()
+{
+	m_client->playlist.shuffle (&XClient::log);
 }
 
 /*
