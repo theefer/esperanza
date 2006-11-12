@@ -195,8 +195,6 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 		return;
 	}
 
-	setCurrentIndex (n);
-
 	QModelIndexList l = getSelection ();
 	
 	if (l.count () < 1) {
@@ -204,6 +202,8 @@ PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
 	} else if (l.count () > 1) {
 		collapseAll ();
 	} else {
+		setCurrentIndex (n);
+
 		collapseAll ();
 
 		setExpanded (n, true);

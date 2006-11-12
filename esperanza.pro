@@ -9,6 +9,7 @@ esperanza.path = $$(INSTALLPATH)
 target.path = /usr/local/bin
 
 macx {
+	QMAKE_CXX = ccache g++
 	TARGET = Esperanza
 ;	CONFIG += ppc x86
 	SOURCES += lib/mac_growl.mm
