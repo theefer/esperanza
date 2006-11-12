@@ -138,7 +138,7 @@ PlaylistView::keyPressEvent (QKeyEvent *ev)
 			nidx = m_model->index (idx.row () + 1, idx.column (), QModelIndex ());
 			break;
 		default:
-			ev->ignore ();
+			QTreeView::keyPressEvent (ev);
 			return;
 	}
 
