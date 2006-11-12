@@ -12,6 +12,7 @@
 #include <QSettings>
 #include <QResizeEvent>
 #include <QMainWindow>
+#include <QCheckBox>
 
 MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -60,6 +61,10 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
 
 	g->setRowStretch (1, 1);
+
+	m_cb = new QCheckBox (tr ("Display non-available entries"), dummy);
+	hbox->addWidget (m_cb);
+	connect (m_cb, SIGNAL (stateChanged (int)), this, SLOT (do_search ()));
 
 	hbox->addStretch (1);
 
@@ -119,7 +124,7 @@ MedialibDialog::do_search ()
 	s.setValue ("medialib/searchdef", m_qb->currentIndex ());
 
 	m_list->do_search (m_qb->itemData (m_qb->currentIndex ()).toUInt (),
-					   m_le->displayText ());
+					   m_le->displayText (), m_cb->checkState () == Qt::Checked);
 	m_le->setEnabled (false);
 	m_indicator->setStatus (true);
 }

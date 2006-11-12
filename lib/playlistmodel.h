@@ -20,7 +20,8 @@ class PlaylistModel : public QAbstractItemModel
 			DisplayRole = Qt::DisplayRole,
 			ToolTipRole = Qt::ToolTipRole,
 			CurrentEntryRole = 200,
-			MedialibIdRole = 201
+			MedialibIdRole,
+			AvailableRole
 		};
 
 		int rowCount (const QModelIndex &parent) const;

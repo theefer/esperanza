@@ -19,7 +19,7 @@ class MedialibSearchModel : public PlaylistModel
 		};
 
 		MedialibSearchModel (QObject *parent, XClient *client);
-		void do_search (uint32_t, const QString &);
+		void do_search (uint32_t, const QString &, bool unav=false);
 		void got_connection (XClient *client);
 
 	signals:

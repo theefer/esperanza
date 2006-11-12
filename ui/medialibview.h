@@ -13,9 +13,9 @@ class MedialibView : public QTreeView
 	public:
 		MedialibView (QWidget *, XClient *);
 
-		void do_search (uint32_t p, const QString &s)
+		void do_search (uint32_t p, const QString &s, bool a)
 		{
-			m_model->do_search (p, s);
+			m_model->do_search (p, s, a);
 		};
 
 		QList<uint32_t> get_selection ();

@@ -414,8 +414,18 @@ PlaylistModel::flags (const QModelIndex &idx) const
 	if (!idx.isValid ())
 		return Qt::ItemIsEnabled;
 
-	if (idx.internalId () == -1)
-		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+	if (idx.internalId () == -1) {
+		unsigned int id = m_plist[idx.row ()];
+		PlaylistModel *fake = const_cast<PlaylistModel*> (this);
+		QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);
+
+		Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+		if (d["available"].toBool ()) {
+			f |= Qt::ItemIsEnabled;
+		}
+
+		return f;
+	}
 
 	return Qt::ItemIsEnabled;
 }

@@ -4,6 +4,7 @@
 #include "xclient.h"
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QMainWindow>
 
 #include "medialibview.h"
@@ -27,6 +28,7 @@ class MedialibDialog : public QMainWindow
 	private:
 		QLineEdit *m_le;
 		QComboBox *m_qb;
+		QCheckBox *m_cb;
 
 		MedialibView *m_list;
 
