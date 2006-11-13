@@ -10,9 +10,6 @@ class ProgressIndicator : public QLabel
 	public:
 		ProgressIndicator (QWidget *);
 		void setStatus (bool);
-		/*
-		QSize sizeHint () const;
-		*/
 	private:
 		QMovie *m_movie;
 };

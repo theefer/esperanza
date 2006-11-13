@@ -114,6 +114,7 @@ MedialibDialog::search_done ()
 	m_le->setEnabled (true);
 	m_indicator->setStatus (false);
 	m_le->setFocus (Qt::OtherFocusReason);
+	m_cb->setEnabled (true);
 }
 
 void
@@ -126,6 +127,7 @@ MedialibDialog::do_search ()
 	m_list->do_search (m_qb->itemData (m_qb->currentIndex ()).toUInt (),
 					   m_le->displayText (), m_cb->checkState () == Qt::Checked);
 	m_le->setEnabled (false);
+	m_cb->setEnabled (false);
 	m_indicator->setStatus (true);
 }
 

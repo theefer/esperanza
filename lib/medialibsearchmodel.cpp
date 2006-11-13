@@ -22,7 +22,11 @@ MedialibSearchModel::do_search (uint32_t p, const QString &s, bool unavailable)
 	QString a = QString ("%%%0%%").arg (s.toLower ());
 	a = QString::fromStdString (m_client->medialib.sqlitePrepareString (a.toStdString ()));
 
-	QString q ("select distinct m1.id as id from Media m1 join Media m2 on m1.id = m2.id and m2.key = 'resolved' and m2.value = 1 join Media m3 on m3.id = m1.id and m3.key = 'available'");
+	QString q ("select distinct m1.id as id from Media m1 left join Media m2 on m1.id = m2.id and m2.key = 'resolved' and m2.value = 1");
+	
+	if (!unavailable) {
+		q.append (" left join Media m3 on m3.id = m1.id and m3.key = 'available' ");
+	}
 
 	switch (p) {
 		case SEARCH_ALL:
