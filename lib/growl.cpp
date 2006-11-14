@@ -1,6 +1,5 @@
 
 #include "growl.h"
-#include "qtmd5.h"
 
 #include "mac_growl.h"
 
