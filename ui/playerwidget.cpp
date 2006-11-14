@@ -30,6 +30,7 @@
 #include "systemtray.h"
 #include "infowindow.h"
 #include "minimode.h"
+#include "jumptofiledialog.h"
 
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
@@ -305,6 +306,17 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			info_pressed (NULL);
 			break;
 			*/
+		case Qt::Key_J:
+			{
+				JumpToFileDialog d (this, m_playlist->model ());
+				if (d.exec ()) {
+					QModelIndex idx = d.first_item ();
+					if (idx.isValid ()) {
+						m_playlist->setCurrentIndex (idx);
+					}
+				}
+				break;
+			}
 		default:
 			ev->ignore ();
 			break;

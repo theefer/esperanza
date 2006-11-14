@@ -1,4 +1,3 @@
-
 #include "growl.h"
 
 #include "mac_growl.h"

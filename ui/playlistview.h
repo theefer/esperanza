@@ -30,6 +30,10 @@ class PlaylistView : public QTreeView
 		void keyPressEvent (QKeyEvent *);
 		void mousePressEvent (QMouseEvent *);
 
+		PlaylistModel *model () const {
+			return m_model;
+		};
+
 		void set_removed (bool b) {
 			m_removed = b;
 		};
