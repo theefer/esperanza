@@ -307,19 +307,23 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			break;
 			*/
 		case Qt::Key_J:
-			{
-				JumpToFileDialog d (this, m_playlist->model ());
-				if (d.exec ()) {
-					QModelIndex idx = d.first_item ();
-					if (idx.isValid ()) {
-						m_playlist->setCurrentIndex (idx);
-					}
-				}
-				break;
-			}
+			jump_pressed ();
+			break;
 		default:
 			ev->ignore ();
 			break;
+	}
+}
+
+void
+PlayerWidget::jump_pressed ()
+{
+	JumpToFileDialog d (this, m_playlist->model ());
+	if (d.exec ()) {
+		QModelIndex idx = d.first_item ();
+		if (idx.isValid ()) {
+			m_playlist->setCurrentIndex (idx);
+		}
 	}
 }
 

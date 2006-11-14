@@ -43,6 +43,7 @@ class PlayerWidget : public QMainWindow
 		void back_pressed ();
 		void shuffle_pressed ();
 		void snett_pressed (QMouseEvent *);
+		void jump_pressed ();
 
 	private slots:
 		void plus_pressed (QMouseEvent *);
