@@ -1,3 +1,8 @@
+Version 0.3.0 (N/A)
+	* Added jump to file dialog
+	* Make use of DrHouse's available flag
+	* Fix page-up/page-down in playlistview
+
 Version 0.2.1 (2006-11-10)
 	* Fixed the systemtray icons. (Auke Schrijnen)
 	* Add a volume bar in the minimode. (Anders Gustafsson)
