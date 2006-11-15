@@ -39,7 +39,6 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	m_qb->addItem (tr ("Year"), MedialibSearchModel::SEARCH_YEAR);
 
 	m_qb->setCurrentIndex (s.value ("medialib/searchdef", 0).toInt ());
-	load_compl_list (m_qb->currentIndex ());
 	connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
 	
 	g->addWidget (m_qb, 0, 0, 1, 1);
@@ -89,6 +88,8 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	resize (s.value ("medialibdialog/size", QSize (500, 350)).toSize ());
 
 	connect (m_list, SIGNAL (searchDone ()), this, SLOT (search_done ()));
+
+	load_compl_list (m_qb->currentIndex ());
 }
 
 void
@@ -96,21 +97,26 @@ MedialibDialog::load_compl_list (int i)
 {
 	int t = m_qb->itemData (i).toInt ();
 
-	if (t == MedialibSearchModel::SEARCH_ALL ||
-		t == MedialibSearchModel::SEARCH_TITLE)
-		return;
-
-	QString q ("select distinct value from Media where key='");
+	QString q ("select distinct value from Media where key=");
 	if (t == MedialibSearchModel::SEARCH_ARTIST) {
-		q.append ("artist");
+		q.append ("'artist'");
 	} else if (t == MedialibSearchModel::SEARCH_ALBUM) {
-		q.append ("album");
+		q.append ("'album'");
 	} else if (t == MedialibSearchModel::SEARCH_YEAR) {
-		q.append ("year");
+		q.append ("'date'");
+	} else if (t == MedialibSearchModel::SEARCH_TITLE) {
+		q.append ("'title'");
+	} else if (t == MedialibSearchModel::SEARCH_ALL) {
+		q.append ("'artist' or key = 'album'");
 	}
-	q.append ("' order by lower (value)");
+	q.append (" order by lower (value)");
 
 	m_client->medialib.select (q.toStdString (), Xmms::bind (&MedialibDialog::compl_reply, this));
+
+	m_le->setEnabled (false);
+	m_qb->setEnabled (false);
+	m_cb->setEnabled (false);
+	m_indicator->setStatus (true);
 }
 
 bool
@@ -129,6 +135,8 @@ MedialibDialog::compl_reply (const Xmms::List <Xmms::Dict> &list)
 	m_completer = new QCompleter (compl_list, this);
 	m_completer->setCaseSensitivity (Qt::CaseInsensitive);
 	m_le->setCompleter (m_completer);
+
+	search_done ();
 
 	return true;
 }
@@ -161,6 +169,7 @@ MedialibDialog::search_done ()
 	m_indicator->setStatus (false);
 	m_le->setFocus (Qt::OtherFocusReason);
 	m_cb->setEnabled (true);
+	m_qb->setEnabled (true);
 }
 
 void
@@ -174,6 +183,7 @@ MedialibDialog::do_search ()
 					   m_le->displayText (), m_cb->checkState () == Qt::Checked);
 	m_le->setEnabled (false);
 	m_cb->setEnabled (false);
+	m_qb->setEnabled (false);
 	m_indicator->setStatus (true);
 }
 
