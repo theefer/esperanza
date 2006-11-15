@@ -297,6 +297,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			open_pref ();
 			break;
 		case Qt::Key_Escape:
+			if (isHidden ())
+				return;
+
 			if (m_systray && s.value ("core/systray").toBool ()) {
 				hide ();
 			}

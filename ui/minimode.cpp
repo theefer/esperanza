@@ -2,11 +2,13 @@
 #include "minimode.h"
 #include "playerbutton.h"
 #include "progressframe.h"
+#include "playerwidget.h"
 #include "volumebar.h"
 
 #include <QWidget>
 #include <QGridLayout>
 #include <QMoveEvent>
+#include <QKeyEvent>
 #include <QVariant>
 
 MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
@@ -76,6 +78,13 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 			 this, SLOT (changed_settings ()));
 
 	move (s.value ("minimode/pos", parent->pos ()).toPoint ());
+}
+
+void
+MiniMode::keyPressEvent (QKeyEvent *ev)
+{
+	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
+	pw->keyPressEvent (ev);
 }
 
 void
