@@ -320,7 +320,7 @@ PlayerWidget::jump_pressed ()
 {
 	JumpToFileDialog d (this, m_playlist->model ());
 	if (d.exec ()) {
-		QModelIndex idx = d.first_item ();
+		QModelIndex idx = d.sel_item ();
 		if (idx.isValid ()) {
 			m_playlist->setCurrentIndex (idx);
 		}

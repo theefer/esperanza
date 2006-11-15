@@ -7,6 +7,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QModelIndex>
+#include <QKeyEvent>
 
 #include "playlistmodel.h"
 
@@ -20,8 +21,11 @@ JumpToFileFilterModel::filterAcceptsRow (int row, const QModelIndex &idx) const
 	QModelIndex index0 = sourceModel ()->index (row, 0, idx);
 	QModelIndex index1 = sourceModel ()->index (row, 1, idx);
 
-	return (sourceModel ()->data (index0).toString ().contains (filterRegExp ()) ||
-			sourceModel ()->data (index1).toString ().contains (filterRegExp ()));
+	QString s;
+	s.append (index0.data ().toString ());
+	s.append (index1.data ().toString ());
+
+	return s.contains (filterRegExp ());
 }
 
 JumpToFileDialog::JumpToFileDialog (QWidget *parent, PlaylistModel *model) :
@@ -33,17 +37,20 @@ JumpToFileDialog::JumpToFileDialog (QWidget *parent, PlaylistModel *model) :
 	m_model = new JumpToFileFilterModel (this);
 	m_model->setSourceModel (model);
 	m_model->setFilterCaseSensitivity (Qt::CaseInsensitive);
+	m_model->setDynamicSortFilter (true);
 
 	QGridLayout *grid = new QGridLayout (this);
 	setLayout (grid);
 
 	m_search = new QLineEdit (this);
 	connect (m_search, SIGNAL (textEdited (const QString &)),
-			 m_model, SLOT (setFilterWildcard (const QString &)));
+			 this, SLOT (set_filter (const QString &)));
 	grid->addWidget (m_search, 0, 0);
 	grid->setColumnStretch (0, 1);
 
-	QTreeView *m_view = new QTreeView (this);
+	setFocusProxy (m_search);
+
+	m_view = new JumpToFileView (this);
 	grid->addWidget (m_view, 1, 0);
 	grid->setRowStretch (1, 1);
 
@@ -54,6 +61,12 @@ JumpToFileDialog::JumpToFileDialog (QWidget *parent, PlaylistModel *model) :
 	m_view->setRootIsDecorated (false);
 	m_view->setTabKeyNavigation (false);
 	m_view->setTextElideMode (Qt::ElideNone);
+    m_view->setSelectionMode (QAbstractItemView::SingleSelection);
+    m_view->setSelectionBehavior (QAbstractItemView::SelectRows);
+
+    m_selections = new QItemSelectionModel (m_model);
+	m_view->setSelectionModel (m_selections);
+	m_view->setCurrentIndex (m_model->index (0, 0));
 	
 	QDialogButtonBox *bbox = new QDialogButtonBox (Qt::Horizontal, this);
 	bbox->addButton (QDialogButtonBox::Ok)->setDefault (true);
@@ -67,12 +80,35 @@ JumpToFileDialog::JumpToFileDialog (QWidget *parent, PlaylistModel *model) :
 	resize (400, 450);
 }
 
-QModelIndex
-JumpToFileDialog::first_item ()
+void
+JumpToFileDialog::keyPressEvent (QKeyEvent *ev)
 {
-	QModelIndex i = m_model->index (0, 0);
-	if (i.isValid ())
-		return m_model->mapToSource (i);
-	return QModelIndex ();
+	switch (ev->key ()) {
+		case Qt::Key_Up:
+			m_view->setFocus (Qt::OtherFocusReason);
+			m_view->keyPressEvent (ev);
+			break;
+		case Qt::Key_Down:
+			m_view->setFocus (Qt::OtherFocusReason);
+			m_view->keyPressEvent (ev);
+			break;
+		default:
+			QDialog::keyPressEvent (ev);
+			break;
+	}
+}
+
+void
+JumpToFileDialog::set_filter (const QString &f)
+{
+	QString s = f;
+	s.replace (" ", "*");
+	m_model->setFilterWildcard (s);
+}
+
+QModelIndex
+JumpToFileDialog::sel_item ()
+{
+	return m_model->mapToSource (m_selections->currentIndex ());
 }
 

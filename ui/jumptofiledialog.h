@@ -6,7 +6,10 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QTreeView>
+#include <QKeyEvent>
 #include <QSortFilterProxyModel>
+
+class JumpToFileView;
 
 class JumpToFileFilterModel : public QSortFilterProxyModel
 {
@@ -22,12 +25,47 @@ class JumpToFileDialog : public QDialog
 	public:
 		JumpToFileDialog (QWidget *, PlaylistModel *);
 
-		QModelIndex first_item ();
+		QModelIndex sel_item ();
+
+		void keyPressEvent (QKeyEvent *);
+
+	private slots:
+		void set_filter (const QString &);
 	
 	private:
 		QSortFilterProxyModel *m_model;
 		QLineEdit *m_search;
-		QTreeView *m_view;
+		JumpToFileView *m_view;
+		QItemSelectionModel *m_selections;
 };
+
+class JumpToFileView : public QTreeView
+{
+	Q_OBJECT
+	public:
+		JumpToFileView (JumpToFileDialog *parent) : QTreeView (parent) {
+			m_parent = parent;
+		};
+
+		void keyPressEvent (QKeyEvent *ev) {
+			switch (ev->key ()) {
+				case Qt::Key_Up:
+				case Qt::Key_Down:
+				case Qt::Key_Enter:
+				case Qt::Key_Return:
+					QTreeView::keyPressEvent (ev);
+					break;
+				default:
+					m_parent->setFocus ();
+					m_parent->keyPressEvent (ev);
+					break;
+			}
+		};
+
+	private:
+		JumpToFileDialog *m_parent;
+};
+
+
 
 #endif

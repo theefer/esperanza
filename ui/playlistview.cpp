@@ -137,8 +137,12 @@ PlaylistView::keyPressEvent (QKeyEvent *ev)
 		case Qt::Key_Down:
 			nidx = m_model->index (idx.row () + 1, idx.column (), QModelIndex ());
 			break;
-		default:
+		case Qt::Key_PageDown:
+		case Qt::Key_PageUp:
 			QTreeView::keyPressEvent (ev);
+			return;
+		default:
+			ev->ignore ();
 			return;
 	}
 
