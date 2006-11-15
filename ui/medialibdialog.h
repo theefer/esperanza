@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QMainWindow>
+#include <QCompleter>
 
 #include "medialibview.h"
 #include "progressindicator.h"
@@ -24,11 +25,15 @@ class MedialibDialog : public QMainWindow
 		void do_search ();
 		void search_done ();
 		void plus_pressed (QMouseEvent *);
+		void load_compl_list (int);
 
 	private:
+		bool compl_reply (const Xmms::List < Xmms::Dict > &);
+
 		QLineEdit *m_le;
 		QComboBox *m_qb;
 		QCheckBox *m_cb;
+		QCompleter *m_completer;
 
 		MedialibView *m_list;
 

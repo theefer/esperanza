@@ -13,6 +13,7 @@
 #include <QResizeEvent>
 #include <QMainWindow>
 #include <QCheckBox>
+#include <QCompleter>
 
 MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -28,6 +29,7 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	QGridLayout *g = new QGridLayout (base);
 
 	m_client = client;
+	m_completer = NULL;
 
 	m_qb = new QComboBox (base);
 	m_qb->addItem (tr ("All"), MedialibSearchModel::SEARCH_ALL);
@@ -37,6 +39,8 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	m_qb->addItem (tr ("Year"), MedialibSearchModel::SEARCH_YEAR);
 
 	m_qb->setCurrentIndex (s.value ("medialib/searchdef", 0).toInt ());
+	load_compl_list (m_qb->currentIndex ());
+	connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
 	
 	g->addWidget (m_qb, 0, 0, 1, 1);
 
@@ -85,6 +89,48 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	resize (s.value ("medialibdialog/size", QSize (500, 350)).toSize ());
 
 	connect (m_list, SIGNAL (searchDone ()), this, SLOT (search_done ()));
+}
+
+void
+MedialibDialog::load_compl_list (int i)
+{
+	int t = m_qb->itemData (i).toInt ();
+
+	if (t == MedialibSearchModel::SEARCH_ALL ||
+		t == MedialibSearchModel::SEARCH_TITLE)
+		return;
+
+	QString q ("select distinct value from Media where key='");
+	if (t == MedialibSearchModel::SEARCH_ARTIST) {
+		q.append ("artist");
+	} else if (t == MedialibSearchModel::SEARCH_ALBUM) {
+		q.append ("album");
+	} else if (t == MedialibSearchModel::SEARCH_YEAR) {
+		q.append ("year");
+	}
+	q.append ("' order by lower (value)");
+
+	m_client->medialib.select (q.toStdString (), Xmms::bind (&MedialibDialog::compl_reply, this));
+}
+
+bool
+MedialibDialog::compl_reply (const Xmms::List <Xmms::Dict> &list)
+{
+	QStringList compl_list;
+
+	for (list.first (); list.isValid (); ++ list) {
+		compl_list.append (QString::fromStdString ((*list).get<std::string> ("value")));
+	}
+
+	if (m_completer) {
+		delete m_completer;
+	}
+
+	m_completer = new QCompleter (compl_list, this);
+	m_completer->setCaseSensitivity (Qt::CaseInsensitive);
+	m_le->setCompleter (m_completer);
+
+	return true;
 }
 
 void
