@@ -111,7 +111,8 @@ MedialibDialog::load_compl_list (int i)
 	}
 	q.append (" order by lower (value)");
 
-	m_client->medialib.select (q.toStdString (), Xmms::bind (&MedialibDialog::compl_reply, this));
+	m_client->medialib.select (std::string (q.toUtf8 ()),
+							   Xmms::bind (&MedialibDialog::compl_reply, this));
 
 	m_le->setEnabled (false);
 	m_qb->setEnabled (false);
@@ -125,7 +126,7 @@ MedialibDialog::compl_reply (const Xmms::List <Xmms::Dict> &list)
 	QStringList compl_list;
 
 	for (list.first (); list.isValid (); ++ list) {
-		compl_list.append (QString::fromStdString ((*list).get<std::string> ("value")));
+		compl_list.append (QString::fromUtf8 ((*list).get<std::string> ("value").c_str ()));
 	}
 
 	if (m_completer) {
