@@ -35,6 +35,8 @@ LastFmDialog::LastFmDialog (QWidget *parent, XClient *client) : QDialog (parent)
 	m_artistl = new QLabel (tr ("None"), this);
 	m_artistl->setAlignment (Qt::AlignCenter);
 	grid->addWidget (m_artistl, 1, 1, 1, 3);
+	connect (m_artistl, SIGNAL (linkActivated (const QString &)),
+			 this, SLOT (link_context (const QString &)));
 
 	QFrame *f = new QFrame (this);
 	f->setFrameStyle (QFrame::Plain | QFrame::HLine);
@@ -91,13 +93,14 @@ LastFmDialog::link_context (const QString &l)
 	LastFmArtist a = m_artists[l];
 	QSettings s;
 
-	int num = s.value("core/numrandomsongs").toInt ();
-
 	QAction *ac;
 
 	QMenu m (this);
 	ac = m.addAction (tr ("Search for in Medialib"));
 	ac->setData (1);
+	if (!m_has_mlib.contains (l)) {
+		ac->setEnabled (false);
+	}
 /*	ac = m.addAction (tr ("Add %1 random songs by artist").arg (num));
 	ac->setData (2);*/
 	m.addSeparator ();
@@ -106,6 +109,10 @@ LastFmDialog::link_context (const QString &l)
 	if (a.contains ("mbid")) {
 		ac = m.addAction (tr ("Open artist at Musicbrainz"));
 		ac->setData (4);
+	}
+	if (s.value ("lastfm/showoink").toBool ()) {
+		ac = m.addAction (tr ("Search for artist on oink"));
+		ac->setData (5);
 	}
 
 	ac = m.exec (QCursor::pos ());
@@ -125,7 +132,10 @@ LastFmDialog::link_context (const QString &l)
 		QDesktopServices::openUrl (QUrl (a.prop ("url")));
 	} else if (ac->data ().toInt () == 4) {
 		QDesktopServices::openUrl (QUrl (QString ("http://musicbrainz.org/artist/%1.html").arg (a.prop ("mbid"))));
+	} else if (ac->data ().toInt () == 5) {
+		QDesktopServices::openUrl (QUrl (QString ("http://oink.me.uk/browse.php?incldead=1&search=%1&x=0&y=0").arg (a.name ())));
 	}
+
 
 }
 
@@ -150,6 +160,8 @@ LastFmDialog::update_artists (const QString &artist)
 	QList<LastFmArtist> l = m_parser->similar_artist (artist);
 
 	m_artists.clear ();
+	m_has_mlib.clear ();
+	m_has_mlib.append (artist);
 
 	for (int i = 0; i < 10; i ++) {
 		if (i >= l.count ()) {
@@ -157,9 +169,11 @@ LastFmDialog::update_artists (const QString &artist)
 			m_values[i]->setValue (0);
 		} else {
 			LastFmArtist a = l.at (i);
-			m_labels[i]->setText (QString ("<a href='%1'>%2</a>").arg (a.name ()).arg (a.name ()));
+			m_labels[i]->setText (QString ("<a href='%1'>%1</a>").arg (a.name ()));
 			m_values[i]->setValue (a.match ());
 			m_artists[a.name ()] = a;
+			QString s = QString ("select count(id) as num from Media where key='artist' and value='%1'").arg (a.name ());
+			m_client->medialib.select (std::string (s.toUtf8 ()), boost::bind (&LastFmDialog::num_reply, this, _1, a.name ()));
 		}
 	}
 
@@ -168,15 +182,39 @@ LastFmDialog::update_artists (const QString &artist)
 	m_pb->reset ();
 }
 
+bool
+LastFmDialog::num_reply (const Xmms::List<Xmms::Dict> &list, const QString &artist)
+{
+	int num = (*list).get<int> ("num");
+	if (num < 1)
+		return true;
+
+	QString s = QString ("<a href='%1'>%1</a>").arg (artist);
+
+	for (int i = 0; i < m_labels.count (); i ++) {
+		if (m_labels.at (i)->text () == s) {
+			m_labels[i]->setText ("<b>" + s + "</b>");
+			m_has_mlib.append (artist);
+		}
+	}
+	return true;
+}
+
 void
 LastFmDialog::new_id (uint32_t id)
 {
 	QHash<QString, QVariant> minfo = m_client->cache ()->get_info (id);
-
-	m_current = id;
+	if (m_current != id) {
+		m_current = id;
+	}
 
 	if (!minfo.contains ("artist"))
 		return;
+
+	if (m_current_artist != minfo["artist"].toString ()) {
+		m_parser->abort ();
+		m_current_artist = minfo["artist"].toString ();
+	}
 
 	QList<LastFmArtist> l = m_parser->similar_artist (minfo["artist"].toString ());
 	update_artists (minfo["artist"].toString ());
@@ -186,6 +224,6 @@ LastFmDialog::new_id (uint32_t id)
 		m_pl->setText (tr ("Loading data"));
 	}
 
-	m_artistl->setText (minfo["artist"].toString ());
+	m_artistl->setText (QString ("<a href='%1'>%1</a>").arg (minfo["artist"].toString ()));
 }
 

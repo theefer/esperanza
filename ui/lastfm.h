@@ -38,6 +38,11 @@ class LastFmDialog : public QDialog
 		QLabel *m_pl;
 
 		uint32_t m_current;
+
+		bool num_reply (const Xmms::List <Xmms::Dict> &, const QString &);
+
+		QStringList m_has_mlib;
+		QString m_current_artist;
 };
 
 #endif

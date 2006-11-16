@@ -46,6 +46,7 @@ PreferenceDialog::build_prefvalues ()
 //	PREF_VALUE("ui/currententry", "Color of the current playlist entry", T_COLOR, QColor (Qt::black));
 	PREF_VALUE("ui/volumepopup", "Show volume in a popup", T_BOOL, false);
 	PREF_VALUE("ui/volumeinteractive", "Change volume interactivly, could cause problems.", T_BOOL, false);
+	PREF_VALUE("lastfm/showoink", "Show oink search in last.fm context", T_BOOL, false);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
 		PREF_VALUE("core/systray", "Show system tray icon", T_BOOL, true);
 		PREF_VALUE("core/donotification", "Show notification on song change", T_BOOL, true);
@@ -181,12 +182,6 @@ PreferenceDialog::fill_list ()
 					m_table->setCellWidget (i, 1, le);
 					break;
 				}
-			case T_KEY:
-				{
-					KeyWidget *kw = new KeyWidget (m_base, s.value (val, def).toString ());
-					m_table->setCellWidget (i, 1, kw);
-					break;
-				}
 			default:
 				qDebug ("error!");
 				break;
@@ -225,13 +220,6 @@ PreferenceDialog::on_save ()
 				{
 					QLineEdit *le = dynamic_cast<QLineEdit *>(m_table->cellWidget (i, 1));
 					ret = QVariant (le->text ());
-					break;
-				}
-			case T_KEY:
-				{
-					KeyWidget *kw = dynamic_cast<KeyWidget *>(m_table->cellWidget (i, 1));
-					qDebug ("saving %s", qPrintable (kw->get_key ()));
-					ret = QVariant (kw->get_key ());
 					break;
 				}
 		}

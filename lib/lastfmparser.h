@@ -16,6 +16,10 @@ class LastFmParser : public QObject
 		LastFmParser (QObject *);
 		QList<LastFmArtist> similar_artist (const QString &artist);
 
+		void abort () {
+			m_http->abort ();
+		};
+
 	private slots:
 		void request_done (int, bool);
 
