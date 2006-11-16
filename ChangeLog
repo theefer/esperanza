@@ -1,4 +1,6 @@
 Version 0.3.0 (N/A)
+	* Medialib searches get's completed
+	* Added Last.fm context browser
 	* Added jump to file dialog
 	* Make use of DrHouse's available flag
 	* Fix page-up/page-down in playlistview
