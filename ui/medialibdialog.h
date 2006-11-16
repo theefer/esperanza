@@ -5,13 +5,13 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCheckBox>
-#include <QMainWindow>
+#include <QDialog>
 #include <QCompleter>
 
 #include "medialibview.h"
 #include "progressindicator.h"
 
-class MedialibDialog : public QMainWindow
+class MedialibDialog : public QDialog
 {
 	Q_OBJECT
 
@@ -20,6 +20,7 @@ class MedialibDialog : public QMainWindow
 
 		void resizeEvent (QResizeEvent *);
 		void keyPressEvent (QKeyEvent *);
+		void search (int, const QString &, bool a = false);
 
 	private slots:
 		void do_search ();

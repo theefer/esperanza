@@ -31,6 +31,7 @@
 #include "infowindow.h"
 #include "minimode.h"
 #include "jumptofiledialog.h"
+#include "lastfm.h"
 
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
@@ -181,6 +182,11 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_info, SLOT (set_current_id (uint32_t)));
 	*/
 
+	/* last.fm */
+	m_lastfm = new LastFmDialog (this, m_client);
+	m_lastfm->hide ();
+	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_lastfm, SLOT (new_id (uint32_t)));
+
 	m_mini = new MiniMode (this, m_client);
 	m_mini->hide ();
 	
@@ -312,10 +318,19 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 		case Qt::Key_J:
 			jump_pressed ();
 			break;
+		case Qt::Key_L:
+			lastfm_pressed ();
+			break;
 		default:
 			ev->ignore ();
 			break;
 	}
+}
+
+void
+PlayerWidget::lastfm_pressed ()
+{
+	m_lastfm->show ();
 }
 
 void

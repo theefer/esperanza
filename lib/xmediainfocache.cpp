@@ -35,6 +35,25 @@ XMediainfoCache::handle_medialib_info (const Xmms::PropDict &info)
 	return true;
 }
 
+void
+XMediainfoCache::extra_info_set (uint32_t id, const QString &name,
+							   const QVariant &value)
+{
+	m_extra_info[id][name] = value;
+}
+
+QVariant
+XMediainfoCache::extra_info_get (uint32_t id, const QString &name)
+{
+	return m_extra_info[id][name];
+}
+
+void
+XMediainfoCache::remove (uint32_t id)
+{
+	/* implement later */
+}
+
 bool
 XMediainfoCache::handle_bindata (const Xmms::bin &data, const QString &id)
 {

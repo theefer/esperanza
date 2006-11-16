@@ -15,23 +15,20 @@
 #include <QCheckBox>
 #include <QCompleter>
 
-MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
+MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QDialog (parent)
 {
 	QSettings s;
 
-	setWindowFlags (Qt::Dialog);
+	setModal (false);
 	setAttribute (Qt::WA_DeleteOnClose);
 	setWindowTitle ("Esperanza - Medialib");
 
-	QWidget *base = new QWidget (this);
-	setCentralWidget (base);
-	
-	QGridLayout *g = new QGridLayout (base);
+	QGridLayout *g = new QGridLayout (this);
 
 	m_client = client;
 	m_completer = NULL;
 
-	m_qb = new QComboBox (base);
+	m_qb = new QComboBox (this);
 	m_qb->addItem (tr ("All"), MedialibSearchModel::SEARCH_ALL);
 	m_qb->addItem (tr ("Artist"), MedialibSearchModel::SEARCH_ARTIST);
 	m_qb->addItem (tr ("Album"), MedialibSearchModel::SEARCH_ALBUM);
@@ -43,10 +40,10 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	
 	g->addWidget (m_qb, 0, 0, 1, 1);
 
-	QLabel *l = new QLabel (tr ("="), base);
+	QLabel *l = new QLabel (tr ("="), this);
 	g->addWidget (l, 0, 1, 1, 1);
 
-	m_le = new QLineEdit (base);
+	m_le = new QLineEdit (this);
 	m_le->setFocus (Qt::OtherFocusReason);
 	m_le->setFocusPolicy (Qt::StrongFocus);
 	connect (m_le, SIGNAL (returnPressed ()), this, SLOT (do_search ()));
@@ -54,13 +51,13 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	g->addWidget (m_le, 0, 2, 1, 1);
 	g->setColumnStretch (2, 1);
 
-	m_indicator = new ProgressIndicator (base);
+	m_indicator = new ProgressIndicator (this);
 	g->addWidget (m_indicator, 0, 3, 1, 1);
 
-	m_list = new MedialibView (base, client);
+	m_list = new MedialibView (this, client);
 	g->addWidget (m_list, 1, 0, 1, 4);
 
-	QWidget *dummy = new QWidget (base);
+	QWidget *dummy = new QWidget (this);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
 
 	g->setRowStretch (1, 1);
@@ -171,6 +168,15 @@ MedialibDialog::search_done ()
 	m_le->setFocus (Qt::OtherFocusReason);
 	m_cb->setEnabled (true);
 	m_qb->setEnabled (true);
+}
+
+void
+MedialibDialog::search (int type, const QString &q, bool avail)
+{
+	m_qb->setCurrentIndex (type);
+	m_le->setText (q);
+	m_cb->setCheckState (avail ? Qt::Checked : Qt::Unchecked);
+	do_search ();
 }
 
 void

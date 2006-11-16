@@ -14,6 +14,7 @@
 #include "systemtray.h"
 #include "infowindow.h"
 #include "minimode.h"
+#include "lastfm.h"
 
 class PlayerWidget : public QMainWindow
 {
@@ -38,6 +39,7 @@ class PlayerWidget : public QMainWindow
 
 	public slots:
 		void play_pressed ();
+		void lastfm_pressed ();
 		void playstop_pressed ();
 		void fwd_pressed ();
 		void back_pressed ();
@@ -91,6 +93,8 @@ class PlayerWidget : public QMainWindow
 		SystemTray *m_systray;
 		InfoWindow *m_info;
 		MiniMode *m_mini;
+
+		LastFmDialog *m_lastfm;
 
 };
 

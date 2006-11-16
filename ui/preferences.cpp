@@ -25,6 +25,7 @@ PreferenceDialog::build_prefvalues ()
 	QList < QMap < QString, QVariant > > ret;
 
 	PREF_VALUE("core/autostart", "Autostart xmms2d if not running", T_BOOL, true);
+	PREF_VALUE("core/numrandomsongs", "Number of songs to randomly add", T_NUM, 5);
 	PREF_VALUE("serverdialog/show", "Show serverbrowser on startup", T_BOOL, true);
 	PREF_VALUE("playlist/jumptocurrent", "Jump to current entry on song change", T_BOOL, true);
 	PREF_VALUE("playlist/compactmode", "Use compact (boring) playlist mode", T_BOOL, false);
