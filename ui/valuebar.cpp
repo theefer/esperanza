@@ -27,7 +27,7 @@ ValueBar::paintEvent (QPaintEvent *ev)
 	QColor cactivemiddle = cactivetop.dark ();
 	QColor cactivebottom = cactivemiddle.dark ();
 
-	QLinearGradient gradientActive (0, 0, 0, width ());
+	QLinearGradient gradientActive (0, 0, 0, height ());
 	gradientActive.setColorAt (0, cactivetop);
 	gradientActive.setColorAt (0.5, cactivemiddle);
 	gradientActive.setColorAt (1, cactivebottom);
