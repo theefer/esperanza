@@ -411,6 +411,7 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
+	m.addAction (tr ("Last.fm browser"), this, SLOT (lastfm_pressed ()));
 	m.addSeparator ();
 	m.addAction (tr ("Shuffle"), this, SLOT (shuffle_pressed ()));
 	m.addSeparator ();
