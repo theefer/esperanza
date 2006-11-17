@@ -1,4 +1,5 @@
 Version 0.3.0 (N/A)
+	* Make the playlist reordable with drag and drop
 	* Medialib searches get's completed
 	* Added Last.fm context browser
 	* Added jump to file dialog

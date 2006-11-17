@@ -13,6 +13,7 @@ MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (paren
 	setAlternatingRowColors (true);
 	setItemsExpandable (false);
 	setRootIsDecorated (false);
+	setDragEnabled (true);
 
     setSelectionMode (QAbstractItemView::ExtendedSelection);
     setSelectionBehavior (QAbstractItemView::SelectRows);

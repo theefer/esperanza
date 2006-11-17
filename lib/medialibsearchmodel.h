@@ -22,6 +22,16 @@ class MedialibSearchModel : public PlaylistModel
 		void do_search (uint32_t, const QString &, bool unav=false);
 		void got_connection (XClient *client);
 
+		QMimeData *mimeData (const QModelIndexList &list) const;
+
+		Qt::DropActions supportedDropActions () const {
+			return Qt::IgnoreAction;
+		};
+		QStringList mimeTypes () const {
+			return QStringList ("application/x-xmms2mlibid");
+		};
+
+
 	signals:
 		void searchDone ();
 

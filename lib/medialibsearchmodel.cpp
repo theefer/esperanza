@@ -1,5 +1,7 @@
 #include "medialibsearchmodel.h"
 
+#include <QMimeData>
+
 MedialibSearchModel::MedialibSearchModel (QObject *parent, XClient *client) :
 	PlaylistModel (parent, client)
 {
@@ -55,6 +57,28 @@ MedialibSearchModel::do_search (uint32_t p, const QString &s, bool unavailable)
 
 	m_client->medialib.select (std::string (q.toUtf8 ()), Xmms::bind (&MedialibSearchModel::handle_search, this));
 }
+
+QMimeData *
+MedialibSearchModel::mimeData (const QModelIndexList &list) const
+{
+	QMimeData *ret = new QMimeData ();
+	QByteArray ba;
+	QDataStream stream (&ba, QIODevice::WriteOnly);
+
+	QList<int> l;
+	for (int i = 0; i < list.size (); i ++) {
+		QModelIndex idx = list.at (i);
+		if (idx.column () != 0)
+			continue;
+		l.append (m_plist[idx.row ()]);
+	}
+
+	stream << l;
+	ret->setData ("application/x-xmms2mlibid", ba);
+
+	return ret;
+}
+
 
 void
 MedialibSearchModel::got_connection (XClient *client)

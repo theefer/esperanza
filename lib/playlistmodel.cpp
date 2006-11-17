@@ -360,7 +360,9 @@ PlaylistModel::playlist_data (const QModelIndex &index, int role) const
 QStringList
 PlaylistModel::mimeTypes () const
 {
-	return QStringList ("application/x-xmms2poslist");
+	QStringList l ("application/x-xmms2poslist");
+	l << "application/x-xmms2mlibid";
+	return l;
 }
 
 QMimeData *
@@ -413,7 +415,21 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 				target ++;
 			}
 		}
-
+		return true;
+	} else if (data->hasFormat ("application/x-xmms2mlibid")) {
+		QByteArray ba = data->data ("application/x-xmms2mlibid");
+		QDataStream stream (&ba, QIODevice::ReadOnly);
+		QList<int> l;
+		stream >> l;
+		int target = parent.row () + 1;
+		while (l.size ()) {
+			int id = l.takeAt (0);
+			if (target >= m_plist.size ()) {
+				m_client->playlist.addId (id, &XClient::log);
+			} else {
+				m_client->playlist.insertId (target ++, id, &XClient::log);
+			}
+		}
 		return true;
 	}
 	return false;
