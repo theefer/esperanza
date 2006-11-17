@@ -58,9 +58,10 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 
 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
 
-	setDragEnabled (false);
-	setAcceptDrops (false);
+	setDragEnabled (true);
+	setAcceptDrops (true);
 	setDropIndicatorShown (true);
+//	setDragDropMode (QAbstractItemView::DragDrop);
 
 	QHeaderView *head = header ();
 	QSettings s;
@@ -89,6 +90,9 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 
 	connect (m_model, SIGNAL (rowsInserted (const QModelIndex &, int, int)),
 			 this, SLOT (rows_inserted ()));
+
+	connect (m_model, SIGNAL (entryMoved (const QModelIndex &, const QModelIndex &)),
+			 this, SLOT (moved (const QModelIndex &, const QModelIndex &)));
 
 	setIconSize (QSize (75, 75));
 }
@@ -151,6 +155,17 @@ PlaylistView::keyPressEvent (QKeyEvent *ev)
 }
 
 void
+PlaylistView::moved (const QModelIndex &o, const QModelIndex &n)
+{
+	if (m_selections->isSelected (o)) {
+		/* why the fuc??? */
+//		m_selections->select (o, QItemSelectionModel::Deselect | QItemSelectionModel::Rows);
+//		m_selections->select (n, QItemSelectionModel::ClearAndSelect  | QItemSelectionModel::Rows);
+		setCurrentIndex (n);
+	}
+}
+
+void
 PlaylistView::changed_settings ()
 {
 	QSettings s;
@@ -168,21 +183,21 @@ void
 PlaylistView::got_connection (XClient *client)
 {
 	m_client = client;
-	client->playlist.broadcastCurrentPos (Xmms::bind (&PlaylistView::handle_update_pos, this));
-	client->playlist.currentPos (Xmms::bind (&PlaylistView::handle_update_pos, this));
+	client->playback.broadcastCurrentID (Xmms::bind (&PlaylistView::handle_update_pos, this));
+	client->playback.currentID (Xmms::bind (&PlaylistView::handle_update_pos, this));
 }
 
 bool
-PlaylistView::handle_update_pos (const uint32_t &pos)
+PlaylistView::handle_update_pos (const uint32_t &id)
 {
 	QSettings s;
-	if (m_removed) {
-		m_removed = false;
+	QModelIndex idx = m_model->current_playlist_pos ();
+	if (!idx.isValid ())
 		return true;
-	}
 
 	if (s.value ("playlist/jumptocurrent").toBool ())
-		setCurrentIndex (m_model->index (pos, 0));
+		setCurrentIndex (idx);
+
 	return true;
 }
 

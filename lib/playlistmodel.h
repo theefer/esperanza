@@ -35,6 +35,7 @@ class PlaylistModel : public QAbstractItemModel
 		QModelIndex index (int row, int column, const QModelIndex &idx = QModelIndex ()) const;
 		QMimeData *mimeData (const QModelIndexList &list) const;
 		bool dropMimeData (const QMimeData * data, Qt::DropAction action, int row, int column, const QModelIndex & parent);
+		Qt::DropActions supportedDropActions () const;
 		QStringList mimeTypes () const;
 		
 		void setColumns (const QList <QString> &);
@@ -56,6 +57,13 @@ class PlaylistModel : public QAbstractItemModel
 		};
 
 		QModelIndexList get_idxlist_by_id (uint32_t);
+
+		QModelIndex current_playlist_pos () const {
+			return index (m_current_pos, 0);
+		};
+
+	signals:
+		void entryMoved (const QModelIndex &, const QModelIndex &);
 
 	public slots:
 		void got_connection (XClient *);

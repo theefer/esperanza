@@ -95,14 +95,21 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 			endInsertRows ();
 			break;
 		case XMMS_PLAYLIST_CHANGED_MOVE:
+			npos = chg.get<int32_t> ("newposition");
+
 			beginRemoveRows (idx, pos, pos);
 			m_plist.removeAt (pos);
 			endRemoveRows ();
 
-			npos = chg.get<int32_t> ("newposition");
 			beginInsertRows (idx, npos, npos);
 			m_plist.insert (npos, id);
 			endInsertRows ();
+
+			if (pos < npos && pos)
+				pos --;
+
+			emit entryMoved (index (pos, 0), index (npos, 0));
+
 			break;
 		case XMMS_PLAYLIST_CHANGED_REMOVE:
 			beginRemoveRows (idx, pos, pos);
@@ -360,37 +367,62 @@ QMimeData *
 PlaylistModel::mimeData (const QModelIndexList &list) const
 {
 	QMimeData *ret = new QMimeData ();
-	QString s;
+	QByteArray ba;
+	QDataStream stream (&ba, QIODevice::WriteOnly);
+
+	QList<int> l;
 	for (int i = 0; i < list.size (); i ++) {
 		QModelIndex idx = list.at (i);
 		if (idx.column () != 0)
 			continue;
-		s += QString ("%0;").arg (idx.row ());
+		l.append (idx.row ());
 	}
-	ret->setData ("application/x-xmms2poslist", s.toAscii ());
-	
+
+	stream << l;
+	ret->setData ("application/x-xmms2poslist", ba);
+
 	return ret;
 }
 
 bool
 PlaylistModel::dropMimeData (const QMimeData *data,
-			  Qt::DropAction action,
-			  int row, int column,
-			  const QModelIndex & parent)
+							 Qt::DropAction action,
+							 int row, int column,
+							 const QModelIndex & parent)
 {
+	if (parent.internalId () != -1) {
+		qDebug ("don't want this!");
+		return false;
+	}
 	if (data->hasFormat ("application/x-xmms2poslist")) {
-		QString s = QString::fromAscii (data->data ("application/x-xmms2poslist"));
-		QStringList l = s.split (';', QString::SkipEmptyParts);
+		QByteArray ba = data->data ("application/x-xmms2poslist");
+		QDataStream stream (&ba, QIODevice::ReadOnly);
+		QList<int> l;
+		stream >> l;
 		qSort (l);
 		int target = parent.row ();
-		for (int i = 0; i < l.size (); i ++) {
-			int orow = l.at (i).toInt ();
-			qDebug ("moving %d to %d", orow, target);
-			m_client->playlist.move (orow, target ++, &XClient::log);
+
+		int mod = 0;
+
+		while (l.size ()) {
+			int orow = l.takeAt (0) - mod;
+			m_client->playlist.move (orow, target, &XClient::log);
+			if (orow < target) {
+				mod ++;
+			} else {
+				target ++;
+			}
 		}
+
 		return true;
 	}
 	return false;
+}
+
+Qt::DropActions
+PlaylistModel::supportedDropActions () const
+{
+	return Qt::CopyAction | Qt::MoveAction;
 }
 
 QVariant
@@ -419,7 +451,7 @@ PlaylistModel::flags (const QModelIndex &idx) const
 		PlaylistModel *fake = const_cast<PlaylistModel*> (this);
 		QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);
 
-		Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+		Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 		if (d["available"].toBool ()) {
 			f |= Qt::ItemIsEnabled;
 		}
