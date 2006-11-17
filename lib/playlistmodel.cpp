@@ -5,6 +5,8 @@
 #include <QIcon>
 #include <QMimeData>
 #include <QSettings>
+#include <QUrl>
+#include <QFileInfo>
 
 #include "playlistmodel.h"
 
@@ -362,6 +364,7 @@ PlaylistModel::mimeTypes () const
 {
 	QStringList l ("application/x-xmms2poslist");
 	l << "application/x-xmms2mlibid";
+	l << "text/uri-list";
 	return l;
 }
 
@@ -431,6 +434,23 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 			}
 		}
 		return true;
+	} else if (data->hasFormat ("text/uri-list")) {
+		int target = parent.row () + 1;
+
+		QList<QUrl> l = data->urls ();
+		for (int i = 0; i < l.size (); i++) {
+			QFileInfo fi (l.at (i).toLocalFile ());
+			if (fi.isFile ()) {
+				std::string s ("file:///");
+				s.append (fi.absoluteFilePath ().toLocal8Bit ());
+
+				if (target >= m_plist.size ()) {
+					m_client->playlist.addUrl (s, &XClient::log);
+				} else {
+					m_client->playlist.insertUrl (target ++, s, &XClient::log);
+				}
+			}
+		}
 	}
 	return false;
 }
