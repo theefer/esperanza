@@ -510,7 +510,7 @@ PlaylistModel::flags (const QModelIndex &idx) const
 		return f;
 	}
 
-	return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+	return Qt::ItemIsEnabled;
 }
 
 QList<uint32_t>
