@@ -395,11 +395,14 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 							 int row, int column,
 							 const QModelIndex & parent)
 {
-	if (parent.internalId () != -1) {
-		qDebug ("don't want this!");
+	if (parent.internalId () != -1 && parent.isValid ()) {
 		return false;
 	}
+
 	if (data->hasFormat ("application/x-xmms2poslist")) {
+		if (!parent.isValid ())
+			return false;
+
 		QByteArray ba = data->data ("application/x-xmms2poslist");
 		QDataStream stream (&ba, QIODevice::ReadOnly);
 		QList<int> l;
@@ -424,7 +427,14 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 		QDataStream stream (&ba, QIODevice::ReadOnly);
 		QList<int> l;
 		stream >> l;
-		int target = parent.row () + 1;
+
+		int target;
+
+		if (parent.isValid ())
+			target = parent.row () + 1;
+		else
+			target = m_plist.size () + 1;
+
 		while (l.size ()) {
 			int id = l.takeAt (0);
 			if (target >= m_plist.size ()) {
@@ -435,7 +445,12 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 		}
 		return true;
 	} else if (data->hasFormat ("text/uri-list")) {
-		int target = parent.row () + 1;
+		int target;
+
+		if (parent.isValid ())
+			target = parent.row () + 1;
+		else
+			target = m_plist.size () + 1;
 
 		QList<QUrl> l = data->urls ();
 		for (int i = 0; i < l.size (); i++) {
@@ -480,7 +495,7 @@ Qt::ItemFlags
 PlaylistModel::flags (const QModelIndex &idx) const
 {
 	if (!idx.isValid ())
-		return Qt::ItemIsEnabled;
+		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 
 	if (idx.internalId () == -1) {
 		unsigned int id = m_plist[idx.row ()];
@@ -495,7 +510,7 @@ PlaylistModel::flags (const QModelIndex &idx) const
 		return f;
 	}
 
-	return Qt::ItemIsEnabled;
+	return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 }
 
 QList<uint32_t>
