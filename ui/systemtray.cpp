@@ -97,18 +97,21 @@ SystemTray::do_notification (const QString &title, const QString &message,
 							 int milliseconds)
 {
 	QSettings s;
-	if (s.value ("core/donotification").toBool () && m_last_notif_str != message) {
+	if (m_last_notif_str != message) {
 		m_last_notif_str = message;
 		if (m_display_action) {
 			m_display_action->setText (message);
 		}
-		if (m_growl) {
-			m_growl->do_notification ("New song", title, message, img);
-		} else {
-			showMessage (title, message, icon, milliseconds);
+		setToolTip(message);
+		
+		if (s.value ("core/donotification").toBool ()) {
+			if (m_growl) {
+				m_growl->do_notification ("New song", title, message, img);
+			} else {
+				showMessage (title, message, icon, milliseconds);
+			}
 		}
 	}
-	setToolTip(message);
 }
 
 void 
