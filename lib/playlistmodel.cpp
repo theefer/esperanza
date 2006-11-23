@@ -466,6 +466,8 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 				}
 			}
 		}
+
+		return true;
 	}
 	return false;
 }
