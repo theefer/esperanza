@@ -453,17 +453,21 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 			target = m_plist.size () + 1;
 
 		QList<QUrl> l = data->urls ();
+
+		qSort (l);
+
 		for (int i = 0; i < l.size (); i++) {
 			QFileInfo fi (l.at (i).toLocalFile ());
+			std::string s ("file:///");
+			s.append (fi.absoluteFilePath ().toLocal8Bit ());
 			if (fi.isFile ()) {
-				std::string s ("file:///");
-				s.append (fi.absoluteFilePath ().toLocal8Bit ());
-
 				if (target >= m_plist.size ()) {
 					m_client->playlist.addUrl (s, &XClient::log);
 				} else {
 					m_client->playlist.insertUrl (target ++, s, &XClient::log);
 				}
+			} else if (fi.isDir ()) {
+				m_client->playlist.addRecursive (s, &XClient::log);
 			}
 		}
 
