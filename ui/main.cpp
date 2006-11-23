@@ -43,10 +43,18 @@ main (int argc, char **argv)
 
 	QApplication::setWindowIcon (QIcon (":images/esperanza.png"));
 
+	QString locale = QLocale::system ().name ();
+
 	PreferenceDialog::save_defaults ();
+	QSettings s;
+
+	QTranslator trans;
+	if (!s.value ("core/skiplocales").toBool ()) {
+		trans.load (QString ("esperanza_") + locale, ":translations");
+		app.installTranslator (&trans);
+	}
 	
 	XClient client (NULL, "Esperanza");
-	QSettings s;
 
 	MDNSQuery mdns (NULL);
 	mdns.browse_service ("_xmms2._tcp");

@@ -56,6 +56,7 @@ class KeyInputDialog : public QDialog
 
 class KeyWidget : public QLabel
 {
+	Q_OBJECT
 	public:
 		KeyWidget (QWidget *, const QString & = QString ());
 		void mouseDoubleClickEvent (QMouseEvent *);

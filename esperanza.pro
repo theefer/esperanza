@@ -3,6 +3,7 @@ INCLUDEPATH += ui lib /sw/include
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 QT += network xml
 
+TRANSLATIONS = esperanza_sv.ts
 TEMPLATE = app
 TARGET = esperanza
 RESOURCES += esperanza.qrc

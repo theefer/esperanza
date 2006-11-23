@@ -16,8 +16,11 @@
 		<file>images/info.png</file>
 		<file>images/minmax.png</file>
 		<file>images/lastfm.png</file>
+
 		<file>text/about.html</file>
 		<file>text/shortcuts.html</file>
 		<file>text/infobrowser.html</file>
+
+		<file>translations/esperanza_sv.qm</file>
 	</qresource>
 </RCC>
