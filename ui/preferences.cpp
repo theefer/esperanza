@@ -41,25 +41,25 @@ PreferenceDialog::build_prefvalues ()
 {
 	QList < QMap < QString, QVariant > > ret;
 
-	PREF_VALUE("core/autostart", "Autostart xmms2d if not running", T_BOOL, true);
-	PREF_VALUE("core/numrandomsongs", "Number of songs to randomly add", T_NUM, 5);
-	PREF_VALUE("core/skiplocales", "Ignore locale settings and use default language", T_BOOL, false);
-	PREF_VALUE("serverdialog/show", "Show serverbrowser on startup", T_BOOL, true);
-	PREF_VALUE("playlist/jumptocurrent", "Jump to current entry on song change", T_BOOL, true);
-	PREF_VALUE("playlist/compactmode", "Use compact (boring) playlist mode", T_BOOL, false);
-	PREF_VALUE("playlist/albumartplace", "Show albumart under artist", T_BOOL, true);
-	PREF_VALUE("ui/showstop", "Show a stop button as well", T_BOOL, false);
-	PREF_VALUE("ui/reverseplaytime", "Use reversed elapsed time", T_BOOL, true);
-	PREF_VALUE("core/pixmapcache", "Size of album art cache in kb", T_NUM, 12040);
-	PREF_VALUE("ui/contextvalues", "Values to be shown in context row (comma-separated)", T_STR, "album,timesplayed,duration");
-	PREF_VALUE("ui/contextareabright", "Draw the contextarea in a bright color", T_BOOL, true);
-	PREF_VALUE("ui/titlelighter", "Paint the progress in a lighter color", T_BOOL, false);
-	PREF_VALUE("ui/volumepopup", "Show volume in a popup", T_BOOL, false);
-	PREF_VALUE("ui/volumeinteractive", "Change volume interactivly, could cause problems.", T_BOOL, false);
-	PREF_VALUE("lastfm/showoink", "Show oink search in last.fm context", T_BOOL, false);
+	PREF_VALUE("core/autostart", tr ("Autostart xmms2d if not running"), T_BOOL, true);
+	PREF_VALUE("core/numrandomsongs", tr ("Number of songs to randomly add"), T_NUM, 5);
+	PREF_VALUE("core/skiplocales", tr ("Ignore locale settings and use default language"), T_BOOL, false);
+	PREF_VALUE("serverdialog/show", tr ("Show serverbrowser on startup"), T_BOOL, true);
+	PREF_VALUE("playlist/jumptocurrent", tr ("Jump to current entry on song change"), T_BOOL, true);
+	PREF_VALUE("playlist/compactmode", tr ("Use compact (boring) playlist mode"), T_BOOL, false);
+	PREF_VALUE("playlist/albumartplace", tr ("Show albumart under artist"), T_BOOL, true);
+	PREF_VALUE("ui/showstop", tr ("Show a stop button as well"), T_BOOL, false);
+	PREF_VALUE("ui/reverseplaytime", tr ("Use reversed elapsed time"), T_BOOL, true);
+	PREF_VALUE("core/pixmapcache", tr ("Size of album art cache in kb"), T_NUM, 12040);
+	PREF_VALUE("ui/contextvalues", tr ("Values to be shown in context row (comma-separated)"), T_STR, "album,timesplayed,duration");
+	PREF_VALUE("ui/contextareabright", tr ("Draw the contextarea in a bright color"), T_BOOL, true);
+	PREF_VALUE("ui/titlelighter", tr ("Paint the progress in a lighter color"), T_BOOL, false);
+	PREF_VALUE("ui/volumepopup", tr ("Show volume in a popup"), T_BOOL, false);
+	PREF_VALUE("ui/volumeinteractive", tr ("Change volume interactivly, could cause problems."), T_BOOL, false);
+	PREF_VALUE("lastfm/showoink", tr ("Show oink search in last.fm context"), T_BOOL, false);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
-		PREF_VALUE("core/systray", "Show system tray icon", T_BOOL, true);
-		PREF_VALUE("core/donotification", "Show notification on song change", T_BOOL, true);
+		PREF_VALUE("core/systray", tr ("Show system tray icon"), T_BOOL, true);
+		PREF_VALUE("core/donotification", tr ("Show notification on song change"), T_BOOL, true);
 	}
 
 	return ret;
