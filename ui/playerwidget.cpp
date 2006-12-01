@@ -113,11 +113,9 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (sett, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (snett_pressed (QMouseEvent *)));
 
-	/*
 	PlayerButton *info = new PlayerButton (dummy, ":images/info.png");
 	connect (info, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (info_pressed (QMouseEvent *)));
-			 */
 
 	VolumeButton *volume = new VolumeButton (dummy, m_client);
 
@@ -139,10 +137,8 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	hbox->addWidget (volume);
 	hbox->addWidget (plus);
 	hbox->addWidget (minus);
-	hbox->addWidget (sett);
-	/*
 	hbox->addWidget (info);
-	*/
+	hbox->addWidget (sett);
 
 	layout->addWidget (dummy, 2, 0, 1, 3);
 
@@ -416,11 +412,10 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 void
 PlayerWidget::info_pressed (QMouseEvent *ev)
 {
-	if (m_info->isVisible ()) {
-		m_info->hide ();
-	} else {
-		m_info->show ();
-	}
+	QMenu m;
+	m.addAction (tr ("Last.fm browser"), this, SLOT (lastfm_pressed ()));
+
+	m.exec (ev->globalPos ());
 }
 
 void
@@ -428,7 +423,6 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
-	m.addAction (tr ("Last.fm browser"), this, SLOT (lastfm_pressed ()));
 	m.addSeparator ();
 	m.addAction (tr ("Shuffle"), this, SLOT (shuffle_pressed ()));
 	m.addSeparator ();
