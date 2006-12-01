@@ -21,7 +21,8 @@
 		<file>text/shortcuts.html</file>
 		<file>text/infobrowser.html</file>
 
-		<file>translations/esperanza_sv.qm</file>
 		<file>translations/esperanza_fr.qm</file>
+		<file>translations/esperanza_nl.qm</file>
+		<file>translations/esperanza_sv.qm</file>
 	</qresource>
 </RCC>
