@@ -96,9 +96,15 @@ XClient::propDictToQHash (const std::string &key,
 		hash.insert (QString::fromLatin1 (key.c_str ()),
 		             QVariant (boost::get< uint32_t > (value)));
 	} else {
-		QString val = QString::fromUtf8 (boost::get< std::string > (value).c_str ());
+		QString val;
 		if (key == "url") {
+			/* This really is wrong ...*/
+			char *c = const_cast<char *>(xmmsc_result_decode_url (NULL, boost::get< std::string >(value).c_str ()));
+			val = QString::fromUtf8 (c);
 			val = val.mid (val.lastIndexOf ("/") + 1);
+			free (c);
+		} else {
+			val = QString::fromUtf8 (boost::get< std::string > (value).c_str ());
 		}
 
 		hash.insert (QString::fromLatin1 (key.c_str ()),

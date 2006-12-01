@@ -608,9 +608,15 @@ PlayerWidget::entry_changed (uint32_t id)
 void
 PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 {
-	QString s = QString ("%2 - %3")
-		.arg(h["artist"].toString ())
-		.arg(h["title"].toString ());
+	QString s;
+	if (!h.contains ("title")) {
+		s = h["url"].toString ();
+	} else {
+		s = QString ("%1 - %2")
+			.arg(h["artist"].toString ())
+			.arg(h["title"].toString ());
+	}
+
 	m_pf->setText (s);
 	m_mini->setText (s);
 
