@@ -81,6 +81,11 @@ XMediainfoCache::handle_bindata (const Xmms::bin &data, const QString &id)
 		return true;
 	}
 
+	/* conserve memory client side */
+	if (i.width () < 300) {
+		i = i.scaledToWidth (300, Qt::SmoothTransformation);
+	}
+
 	QPixmapCache::insert (id, i);
 
 	QList<uint32_t> ids = m_icon_map[id];
