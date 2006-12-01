@@ -66,7 +66,7 @@ MedialibSearchModel::do_search (uint32_t p, const QString &s, bool unavailable)
 	}
 
 	if (!unavailable) {
-		q.append (" and m3.value = 1");
+		q.append (" and m3.value = 1 or m3.value isnull");
 	}
 
 	q.append (" order by m1.id");

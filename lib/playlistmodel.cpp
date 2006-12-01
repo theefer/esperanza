@@ -526,7 +526,7 @@ PlaylistModel::flags (const QModelIndex &idx) const
 		QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);
 
 		Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
-		if (d["available"].toBool ()) {
+		if (d.contains ("available") && d["available"].toBool ()) {
 			f |= Qt::ItemIsEnabled;
 		}
 
