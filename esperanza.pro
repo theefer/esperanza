@@ -13,7 +13,7 @@ target.path = /usr/local/bin
 macx {
 	QMAKE_CXX = ccache g++
 	TARGET = Esperanza
-;	CONFIG += ppc x86
+	CONFIG += ppc x86
 	SOURCES += lib/mac_growl.mm
 	HEADERS += lib/mac_growl.h
 	RC_FILE += images/esperanza.icns

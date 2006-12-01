@@ -22,6 +22,24 @@ install_name_tool -id @executable_path/../Frameworks/QtGui.framework/Versions/4/
 install_name_tool -change /sw/qt4.2/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui Esperanza.app/Contents/MacOs/Esperanza
 install_name_tool -change /sw/qt4.2/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore Esperanza.app/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
 
+echo "QtNet"
+cp -R /sw/qt4.2/lib/QtNetwork.Framework Esperanza.app/Contents/Frameworks
+rm Esperanza.app/Contents/Frameworks/QtNetwork.Framework/Versions/4/QtNetwork_debug
+rm Esperanza.app/Contents/Frameworks/QtNetwork.Framework/QtNetwork_debug
+rm -rf Esperanza.app/Contents/Frameworks/QtNetwork.Framework/Versions/4/Headers
+install_name_tool -id @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork Esperanza.app/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
+install_name_tool -change /sw/qt4.2/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork Esperanza.app/Contents/MacOs/Esperanza
+install_name_tool -change /sw/qt4.2/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore Esperanza.app/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
+
+echo "QtXml"
+cp -R /sw/qt4.2/lib/QtXml.Framework Esperanza.app/Contents/Frameworks
+rm Esperanza.app/Contents/Frameworks/QtXml.Framework/Versions/4/QtXml_debug
+rm Esperanza.app/Contents/Frameworks/QtXml.Framework/QtXml_debug
+rm -rf Esperanza.app/Contents/Frameworks/QtXml.Framework/Versions/4/Headers
+install_name_tool -id @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml Esperanza.app/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
+install_name_tool -change /sw/qt4.2/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml Esperanza.app/Contents/MacOs/Esperanza
+install_name_tool -change /sw/qt4.2/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore Esperanza.app/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
+
 echo "xmmsclient"
 cp /sw/lib/libxmmsclient.dylib Esperanza.app/Contents/lib
 install_name_tool -id @executable_path/../lib/libxmmsclient.dylib Esperanza.app/Contents/MacOS/Esperanza

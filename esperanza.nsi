@@ -40,8 +40,6 @@ Section "Esperanza" SecEsperanza
 	File	"c:\xmms2\lib\libboost_signals.dll"
 	File	"c:\Qt\4.2.1\bin\QtCore4.dll"
 	File	"c:\Qt\4.2.1\bin\QtGui4.dll"
-	File	"c:\Qt\4.2.1\bin\QtNetwork4.dll"
-	File	"c:\Qt\4.2.1\bin\QtXml4.dll"
 	WriteRegStr HKCU "Software\XMMS2\Esperanza" "" $INSTDIR
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
