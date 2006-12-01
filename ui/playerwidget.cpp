@@ -414,6 +414,9 @@ PlayerWidget::info_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Last.fm browser"), this, SLOT (lastfm_pressed ()));
+	m.addSeparator ();
+	m.addAction (tr ("Keyboard shortcuts"), this, SLOT (open_short_help ()));
+	m.addAction (tr ("About Esperanza"), this, SLOT (open_about ()));
 
 	m.exec (ev->globalPos ());
 }
@@ -425,16 +428,6 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
 	m.addSeparator ();
 	m.addAction (tr ("Shuffle"), this, SLOT (shuffle_pressed ()));
-	m.addSeparator ();
-	m.addAction (tr ("About"), this, SLOT (open_about ()));
-	m.addAction (tr ("Keyboard shortcuts"), this, SLOT (open_short_help ()));
-//	m.addAction (tr ("Short-cut editor"), this, SLOT (open_sceditor ()));
-	/*
-	QMenu *pm = m.addMenu (tr ("Playlist Options"));
-	pm->addAction (tr ("Shuffle"));
-	pm->addAction (tr ("Random"))->setCheckable (true);
-	pm->addAction (tr ("Stop after play"))->setCheckable (true);
-	*/
 
 	m.exec (ev->globalPos ());
 }
