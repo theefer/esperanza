@@ -21,6 +21,7 @@
 #include "lastfmartist.h"
 #include "medialibdialog.h"
 #include "playerwidget.h"
+#include "playerbutton.h"
 
 #include <QDialog>
 #include <QSettings>
@@ -92,16 +93,74 @@ LastFmDialog::LastFmDialog (QWidget *parent, XClient *client) : QDialog (parent)
 	connect (m_client->cache (), SIGNAL (entryChanged (uint32_t)),
 			 this, SLOT (entry_update (uint32_t)));
 
-	m_pb = new QProgressBar (this);
+	QWidget *dummy = new QWidget (this);
+	//dummy->setMargin (1);
+	QHBoxLayout *h = new QHBoxLayout (dummy);
+	dummy->setLayout (h);
+
+	m_pb = new QProgressBar (dummy);
 	m_pb->setMaximum (1);
 	m_pb->setMinimum (0);
 
-	m_pl = new QLabel ("", this);
+	m_pl = new QLabel ("", dummy);
 
-	grid->addWidget (m_pb, 5, 0, 1, 2);
-	grid->addWidget (m_pl, 5, 2, 1, 2);
+	h->addWidget (m_pb);
+	h->addWidget (m_pl);
+
+	PlayerButton *settings = new PlayerButton (dummy, ":images/settings.png");
+	connect (settings, SIGNAL (clicked (QMouseEvent *)),
+			 this, SLOT (settings_pressed (QMouseEvent *)));
+
+	h->addWidget (settings);
+
+	PlayerButton *close = new PlayerButton (dummy, ":images/stop.png");
+	connect (close, SIGNAL (clicked (QMouseEvent *)),
+			 this, SLOT (close ()));
+	
+	h->addWidget (close);
+
+	grid->addWidget (dummy, 5, 0, 1, 4);
 
 	resize (300, 400);
+	m_current_type = 0;
+}
+
+void
+LastFmDialog::settings_pressed (QMouseEvent *ev)
+{
+	QAction *a;
+	QMenu m;
+	a = m.addAction (tr ("Artists that are similar to ..."),
+					 this, SLOT (set_artists ()));
+	a->setCheckable (true);
+	if (m_current_type == 0)
+		a->setChecked (true);
+	a = m.addAction (tr ("Most played tracks by ..."),
+					 this, SLOT (set_top_tracks ()));
+	a->setCheckable (true);
+	if (m_current_type == 1)
+		a->setChecked (true);
+	a = m.addAction (tr ("Most played albums by ..."),
+					 this, SLOT (set_top_albums ()));
+	a->setCheckable (true);
+	if (m_current_type == 2)
+		a->setChecked (true);
+	m.exec (ev->globalPos ());
+}
+
+void
+LastFmDialog::set_artists ()
+{
+}
+
+void
+LastFmDialog::set_top_tracks ()
+{
+}
+
+void
+LastFmDialog::set_top_albums ()
+{
 }
 
 void

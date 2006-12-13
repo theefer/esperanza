@@ -533,7 +533,7 @@ PlayerWidget::remove_selected ()
 
 	qSort (idlist);
 	for (int i = idlist.size () - 1; i > -1; i --) {
-		m_client->playlist.remove (idlist.at (i), &XClient::log);
+		m_client->playlist.removeEntry (idlist.at (i), &XClient::log);
 	}
 }
 

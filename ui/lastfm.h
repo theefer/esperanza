@@ -41,6 +41,11 @@ class LastFmDialog : public QDialog
 		void update_artists (const QString &);
 		void update_error (const QString &);
 		void link_context (const QString &);
+		void settings_pressed (QMouseEvent *);
+
+		void set_artists ();
+		void set_top_albums ();
+		void set_top_tracks ();
 
 	private:
 		QList< QLabel* > m_labels;
@@ -54,12 +59,13 @@ class LastFmDialog : public QDialog
 		QProgressBar *m_pb;
 		QLabel *m_pl;
 
-		uint32_t m_current;
-
 		bool num_reply (const Xmms::List <Xmms::Dict> &, const QString &);
 
 		QStringList m_has_mlib;
 		QString m_current_artist;
+
+		uint32_t m_current;
+		uint32_t m_current_type;
 };
 
 #endif

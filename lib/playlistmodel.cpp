@@ -48,7 +48,7 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client) : QAbstractItemM
 void
 PlaylistModel::got_connection (XClient *client)
 {
-	client->playlist.list (Xmms::bind (&PlaylistModel::handle_list, this));
+	client->playlist.listEntries (Xmms::bind (&PlaylistModel::handle_list, this));
 	client->playlist.currentPos (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
 	client->playlist.broadcastChanged (Xmms::bind (&PlaylistModel::handle_change, this));
@@ -138,7 +138,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 		case XMMS_PLAYLIST_CHANGED_SHUFFLE:
 		case XMMS_PLAYLIST_CHANGED_SORT:
 		case XMMS_PLAYLIST_CHANGED_CLEAR:
-			m_client->playlist.list (Xmms::bind (&PlaylistModel::handle_list, this));
+			m_client->playlist.listEntries (Xmms::bind (&PlaylistModel::handle_list, this));
 			break;
 	}
 
@@ -431,7 +431,7 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 
 		while (l.size ()) {
 			int orow = l.takeAt (0) - mod;
-			m_client->playlist.move (orow, target, &XClient::log);
+			m_client->playlist.moveEntry (orow, target, &XClient::log);
 			if (orow < target) {
 				mod ++;
 			} else {

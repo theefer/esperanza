@@ -38,8 +38,8 @@ MedialibSearchModel::MedialibSearchModel (QObject *parent, XClient *client) :
 void
 MedialibSearchModel::do_search (uint32_t p, const QString &s, bool unavailable)
 {
-	QString a = QString ("%%%0%%").arg (s.toLower ());
-	a = QString::fromUtf8 (m_client->medialib.sqlitePrepareString (std::string (a.toUtf8 ())).c_str ());
+	QString a = QString ("'%%%0%%'").arg (s.toLower ());
+	a = QString::fromUtf8 (std::string (a.toUtf8 ()).c_str ());
 
 	QString q ("select distinct m1.id as id from Media m1 left join Media m2 on m1.id = m2.id and m2.key = 'resolved' and m2.value = 1");
 	
