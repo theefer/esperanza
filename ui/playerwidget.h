@@ -77,7 +77,6 @@ class PlayerWidget : public QMainWindow
 		void remove_selected ();
 		void remove_all ();
 
-		void show_medialib ();
 		void entry_changed (uint32_t);
 
 		void open_pref ();

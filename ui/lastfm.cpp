@@ -19,7 +19,6 @@
 #include "lastfmparser.h"
 #include "valuebar.h"
 #include "lastfmartist.h"
-#include "medialibdialog.h"
 #include "playerwidget.h"
 #include "playerbutton.h"
 
@@ -172,11 +171,6 @@ LastFmDialog::link_context (const QString &l)
 	QAction *ac;
 
 	QMenu m (this);
-	ac = m.addAction (tr ("Search for in Medialib"));
-	ac->setData (1);
-	if (!m_has_mlib.contains (l)) {
-		ac->setEnabled (false);
-	}
 /*	ac = m.addAction (tr ("Add %1 random songs by artist").arg (num));
 	ac->setData (2);*/
 	m.addSeparator ();
@@ -198,11 +192,7 @@ LastFmDialog::link_context (const QString &l)
 
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*>(parent ());
 
-	if (ac->data ().toInt () == 1) {
-		MedialibDialog *mb = new MedialibDialog (pw, m_client);
-		mb->search (MedialibSearchModel::SEARCH_ARTIST, l);
-		mb->show ();
-	} else if (ac->data ().toInt () == 2) {
+	if (ac->data ().toInt () == 2) {
 //		pw->add_random (l);
 	} else if (ac->data ().toInt () == 3) {
 		QDesktopServices::openUrl (QUrl (a.prop ("url")));

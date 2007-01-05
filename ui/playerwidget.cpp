@@ -40,7 +40,6 @@
 #include "progressframe.h"
 #include "filedialog.h"
 #include "browsedialog.h"
-#include "medialibdialog.h"
 #include "preferences.h"
 #include "volumebar.h"
 #include "textdialog.h"
@@ -175,8 +174,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	m->addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
 	m->addSeparator ();
 	m->addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
-	m->addSeparator ();
-	m->addAction (tr ("Add files from medialib"), this, SLOT (show_medialib ()));
 	m = menuBar ()->addMenu (tr ("Help"));
 	m->addAction (tr ("Esperanza Help"), this, SLOT (open_short_help ()));
 #endif
@@ -296,9 +293,6 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 		case Qt::Key_C:
 			remove_all ();
 			break;
-		case Qt::Key_M:
-			show_medialib ();
-			break;
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
 			m_playlist->jump_pos (QModelIndex ());
@@ -388,13 +382,6 @@ PlayerWidget::back_pressed ()
 }
 
 void
-PlayerWidget::show_medialib ()
-{
-	MedialibDialog *mb = new MedialibDialog (this, m_client);
-	mb->show ();
-}
-
-void
 PlayerWidget::plus_pressed (QMouseEvent *ev)
 {
 	QMenu m;
@@ -403,8 +390,6 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 	m.addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
 	m.addSeparator ();
 	m.addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
-	m.addSeparator ();
-	m.addAction (tr ("Add files from medialib"), this, SLOT (show_medialib ()));
 
 	m.exec (ev->globalPos ());
 }
