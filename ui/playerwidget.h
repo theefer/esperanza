@@ -57,6 +57,7 @@ class PlayerWidget : public QMainWindow
 	public slots:
 		void play_pressed ();
 		void lastfm_pressed ();
+		void coll_pressed ();
 		void playstop_pressed ();
 		void fwd_pressed ();
 		void back_pressed ();
