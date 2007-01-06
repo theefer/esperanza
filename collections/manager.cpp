@@ -27,7 +27,6 @@
 #include <QFrame>
 
 #include "collections/collectionlist.h"
-#include "collections/playlistlist.h"
 #include "collections/collectionview.h"
 
 #include "playerbutton.h"
@@ -47,7 +46,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 
 	QVBoxLayout *vbox = new QVBoxLayout (dummy);
 	vbox->setMargin (1);
-	CollectionList *collist = new CollectionList (dummy, client);
+	CollectionList *collist = new CollectionList (dummy, Xmms::Collection::COLLECTIONS, client);
 	vbox->addWidget (collist, 1);
 
 	QHBoxLayout *hbox = new QHBoxLayout;
@@ -58,7 +57,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 
 	vbox->addLayout (hbox);
 
-	PlaylistList *playlist = new PlaylistList (dummy, client);
+	CollectionList *playlist = new CollectionList (dummy, Xmms::Collection::PLAYLISTS, client);
 	vbox->addWidget (playlist, 1);
 
 	hbox = new QHBoxLayout;

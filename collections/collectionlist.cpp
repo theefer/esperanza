@@ -20,7 +20,7 @@
 #include <QTableWidgetItem>
 #include <QHeaderView>
 
-CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget (parent)
+CollectionList::CollectionList (QWidget *parent, Xmms::Collection::Namespace ns, XClient *client) : QTreeWidget (parent)
 {
 	setColumnCount (1);
 	setHeaderLabels (QStringList ("Collections"));
@@ -36,7 +36,8 @@ CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget 
 	setSelectionMode (QAbstractItemView::SingleSelection);
 	setFrameShape (QFrame::NoFrame);
 
-	client->collection.list (Xmms::Collection::COLLECTIONS, Xmms::bind (&CollectionList::list_cb, this));
+	client->collection.list (ns, Xmms::bind (&CollectionList::list_cb, this));
+	m_ns = ns;
 }
 
 bool
@@ -45,11 +46,16 @@ CollectionList::list_cb (const Xmms::List<std::string> &list)
 	QTreeWidgetItem *i;
 	clear ();
 
-	i = new QTreeWidgetItem (QStringList ("Universe"));
-	addTopLevelItem (i);
+	if (m_ns == Xmms::Collection::COLLECTIONS) {
+		i = new QTreeWidgetItem (QStringList ("Universe"));
+		addTopLevelItem (i);
+	}
 
 	for (list.first (); list.isValid (); ++ list) {
-		i = new QTreeWidgetItem (QStringList (QString::fromUtf8 ((*list).c_str ())));
+		QString s = QString::fromUtf8 ((*list).c_str ());
+		if (s.startsWith ("_"))
+			continue;
+		i = new QTreeWidgetItem (QStringList (s));
 		addTopLevelItem (i);
 	}
 

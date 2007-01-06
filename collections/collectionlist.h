@@ -24,10 +24,11 @@ class CollectionList : public QTreeWidget
 {
 	Q_OBJECT
 	public:
-		CollectionList (QWidget *, XClient *);
+		CollectionList (QWidget *, Xmms::Collection::Namespace, XClient *);
 
 	private:
 		bool list_cb (const Xmms::List<std::string> &);
+		Xmms::Collection::Namespace m_ns;
 
 };
 
