@@ -26,6 +26,12 @@ class CollectionList : public QTreeWidget
 	public:
 		CollectionList (QWidget *, Xmms::Collection::Namespace, XClient *);
 
+	signals:
+		void switch_view (const Xmms::Collection::Namespace &, const QString &);
+
+	private slots:
+		void active_row (QTreeWidgetItem *, int);
+
 	private:
 		bool list_cb (const Xmms::List<std::string> &);
 		Xmms::Collection::Namespace m_ns;

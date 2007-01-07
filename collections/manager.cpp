@@ -74,10 +74,15 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	g->setMargin (0);
 	dummy->setFrameShape (QFrame::StyledPanel);
 
-	CollectionView *view = new CollectionView (dummy, client);
+	CollectionView *view = new CollectionView (this, client);
 	g->addWidget (view, 0, 0);
 
 	split->addWidget (dummy);
+
+	connect (collist, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
+			 this, SLOT (switch_view_proxy (const Xmms::Collection::Namespace &, const QString &)));
+	connect (playlist, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
+			 this, SLOT (switch_view_proxy (const Xmms::Collection::Namespace &, const QString &)));
 
 	QList<int> l;
 	l.append (200);
@@ -85,5 +90,13 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	split->setSizes (l);
 
 	resize (500, 400);
+
+}
+
+void
+CollectionManager::switch_view_proxy (const Xmms::Collection::Namespace &ns,
+									  const QString &str)
+{
+	emit switch_view (ns, str);
 }
 

@@ -63,6 +63,8 @@ main (int argc, char **argv)
 
 	PlayerWidget *pw = new PlayerWidget (NULL, &client);
 
+	char *p = NULL;
+
 browser:
 	if (!getenv ("XMMS_PATH")) {
 		ServerDialog sd (NULL, &mdns);
@@ -71,16 +73,19 @@ browser:
 		} else {
 			path = sd.get_path ();
 		}
-		if (path == "local") {
-			path = "";
-		} else if (path.isNull ()) {
-			return EXIT_FAILURE;
-		}
 	} else {
-		path = QString::fromAscii (getenv ("XMMS_PATH"));
+		p = getenv ("XMMS_PATH");
 	}
 
-	if (!client.connect (path.toStdString ())) {
+	if (path == "local") {
+		p = NULL;
+	} else if (path.isNull ()) {
+		return EXIT_FAILURE;
+	} else {
+		p = path.toAscii ().data ();
+	}
+
+	if (!client.connect (p)) {
 		if (!getenv ("XMMS_PATH")) {
 			goto browser;
 		} else {

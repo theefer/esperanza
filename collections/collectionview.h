@@ -27,8 +27,12 @@ class CollectionView : public QTreeView
 	Q_OBJECT
 	public:
 		CollectionView (QWidget *, XClient *);
+
 	private:
 		CollectionModel *m_model;
+
+	signals:
+		void switch_view (const Xmms::Collection::Namespace &, const QString &);
 
 };
 

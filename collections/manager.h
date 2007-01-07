@@ -32,8 +32,15 @@
 class CollectionManager : public QDialog
 {
 	Q_OBJECT
+
 	public:
 		CollectionManager (QWidget *, XClient *);
+
+	public slots:
+		void switch_view_proxy (const Xmms::Collection::Namespace &, const QString &);
+
+	signals:
+		void switch_view (const Xmms::Collection::Namespace &, const QString &);
 
 };
 

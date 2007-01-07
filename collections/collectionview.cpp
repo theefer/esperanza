@@ -24,5 +24,8 @@ CollectionView::CollectionView (QWidget *parent, XClient *client) : QTreeView (p
 {
 	m_model = new CollectionModel (this, client);
 	setModel (m_model);
+
+	connect (parent, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
+			 m_model, SLOT (view_switch (const Xmms::Collection::Namespace &, const QString &)));
 }
 

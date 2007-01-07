@@ -36,8 +36,17 @@ CollectionList::CollectionList (QWidget *parent, Xmms::Collection::Namespace ns,
 	setSelectionMode (QAbstractItemView::SingleSelection);
 	setFrameShape (QFrame::NoFrame);
 
+	connect (this, SIGNAL (itemClicked (QTreeWidgetItem *, int)),
+			 this, SLOT (active_row (QTreeWidgetItem *, int)));
+
 	client->collection.list (ns, Xmms::bind (&CollectionList::list_cb, this));
 	m_ns = ns;
+}
+
+void
+CollectionList::active_row (QTreeWidgetItem *item, int c)
+{
+	emit switch_view (m_ns, item->text (0));
 }
 
 bool

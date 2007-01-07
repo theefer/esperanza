@@ -46,7 +46,7 @@ class XClient : public QObject, public Xmms::Client
 		XClient (QObject *, const std::string &);
 
 		static bool log ();
-		bool connect (const std::string &ipcpath = "");
+		bool connect (const char *path = NULL);
 		static void propDictToQHash (const std::string &key,
 									 const Xmms::Dict::Variant &value,
 									 const std::string &source,

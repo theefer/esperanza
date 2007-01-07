@@ -49,7 +49,7 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 }
 
 bool
-XClient::connect (const std::string &ipcpath)
+XClient::connect (const char *ipcpath)
 {
 	bool tried_once = false;
 
@@ -59,7 +59,7 @@ try_again:
 		Xmms::Client::connect (ipcpath);
 	}
 	catch (Xmms::connection_error& e) {
-		if (ipcpath == "" && !tried_once) {
+		if (ipcpath == NULL && !tried_once) {
 			QSettings s;
 			if (s.value ("core/autostart", true).toBool ()) {
 				if (!system ("xmms2-launcher")) {

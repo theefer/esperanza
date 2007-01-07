@@ -34,6 +34,28 @@ class CollectionModel : public QAbstractItemModel
 		Qt::ItemFlags flags (const QModelIndex &) const;
 		QModelIndex parent (const QModelIndex &) const;
 		QModelIndex index (int row, int column, const QModelIndex &idx = QModelIndex ()) const;
+
+	public slots:
+		void view_switch (const Xmms::Collection::Namespace &, const QString &);
+
+	private slots:
+		void got_connection (XClient *);
+		void entry_changed (uint32_t);
+
+	private:
+		XClient *m_client;
+
+		bool id_list_get (Xmms::List<unsigned int> const &);
+		bool collptr_get (Xmms::Coll::Coll const &);
+
+		QList<unsigned int> m_plist;
+
+		QList<QSize> m_cached_size;
+		QList < QString > m_columns;
+
+		Xmms::Collection::Namespace m_ns;
+
+		QList < uint32_t > getPosById (uint32_t id);
 };
 
 #endif
