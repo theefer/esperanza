@@ -46,6 +46,7 @@ class XClient : public QObject, public Xmms::Client
 		XClient (QObject *, const std::string &);
 
 		static bool log ();
+		static bool dummy_uint (const uint32_t &);
 		bool connect (const char *path = NULL);
 		static void propDictToQHash (const std::string &key,
 									 const Xmms::Dict::Variant &value,
@@ -54,7 +55,7 @@ class XClient : public QObject, public Xmms::Client
 
 		static QHash<QString, QVariant> convert_propdict (const Xmms::PropDict &);
 
-		XMediainfoCache *cache () const {
+		XClientCache *cache () const {
 			return m_cache;
 		};
 
@@ -66,7 +67,7 @@ class XClient : public QObject, public Xmms::Client
 		void gotConnection (XClient *);
 
 	private:
-		XMediainfoCache *m_cache;
+		XClientCache *m_cache;
 		XSettings *m_settings;
 
 };

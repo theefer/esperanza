@@ -42,9 +42,16 @@ bool XClient::log ()
 	return false;
 }
 
+bool
+XClient::dummy_uint (const uint32_t &)
+{
+	return false;
+}
+
+
 XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), Xmms::Client (name)
 {
-	m_cache = new XMediainfoCache (this, this);
+	m_cache = new XClientCache (this, this);
 	m_settings = new XSettings (this);
 }
 

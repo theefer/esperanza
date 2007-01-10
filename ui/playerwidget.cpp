@@ -36,7 +36,7 @@
 
 #include "playerwidget.h"
 #include "playerbutton.h"
-#include "playlistview.h"
+#include "fancyplaylistview.h"
 #include "progressframe.h"
 #include "filedialog.h"
 #include "browsedialog.h"
@@ -69,7 +69,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	QWidget *dummy = new QWidget (main_w);
 
 	QGridLayout *layout = new QGridLayout (main_w);
-	m_playlist = new PlaylistView (this, client);
+	m_playlist = new FancyPlaylistView (this, client);
 	layout->addWidget (m_playlist, 1, 0, 1, 3);
 
 	QHBoxLayout *pflay = new QHBoxLayout ();
@@ -275,8 +275,6 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
-			/* a little hack here */
-			m_playlist->set_removed (true);
 			remove_selected ();
 			break;
 		case Qt::Key_S:
@@ -344,13 +342,14 @@ PlayerWidget::lastfm_pressed ()
 void
 PlayerWidget::jump_pressed ()
 {
+	/*
 	JumpToFileDialog d (this, m_playlist->model ());
 	if (d.exec ()) {
 		QModelIndex idx = d.sel_item ();
 		if (idx.isValid ()) {
 			m_playlist->setCurrentIndex (idx);
 		}
-	}
+	}*/
 }
 
 void

@@ -16,6 +16,7 @@
 
 
 #include "playlistview.h"
+#include "fancyplaylistmodel.h"
 #include "playlistmodel.h"
 #include "xclient.h"
 #include "playerwidget.h"
@@ -24,47 +25,10 @@
 #include <QPainter>
 #include <QSettings>
 
-PlaylistDelegate::PlaylistDelegate (QObject *parent, PlaylistModel *model) : QItemDelegate (parent)
-{
-	m_model = model;
-}
-
-void
-PlaylistDelegate::paint (QPainter *painter,
-						 const QStyleOptionViewItem &option,
-						 const QModelIndex &index) const
-{
-	QSettings s;
-
-	QStyleOptionViewItem o (option);
-	if (index.data (PlaylistModel::CurrentEntryRole).toBool ()) {
-		QFont f (o.font);
-		f.setBold (true);
-		o.font = f;
-	}
-	if (index.internalId() != -1) {
-		o.state |= QStyle::State_Selected;
-		if (s.value ("ui/contextareabright").toBool ()) {
-			QPalette p (o.palette);
-			p.setColor (QPalette::Highlight, p.highlight ().color ().light ());
-			o.palette = p;
-		}
-	} 
-
-	QItemDelegate::paint (painter, o, index);
-
-}
-
 PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (parent)
 {
 	m_client = client;
 	m_parent = parent;
-	m_removed = false;
-
-	m_model = new PlaylistModel (this, m_client);
-	setModel (m_model);
-
-	setItemDelegate (new PlaylistDelegate (this, m_model));
 
 	setIndentation (0);
 	setAlternatingRowColors (true);
@@ -90,20 +54,17 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
     setSelectionMode (QAbstractItemView::ExtendedSelection);
     setSelectionBehavior (QAbstractItemView::SelectRows);
 
-    m_selections = new QItemSelectionModel (m_model);
-	setSelectionModel (m_selections);
-
-	connect (m_selections, SIGNAL (currentRowChanged (const QModelIndex &, const QModelIndex &)),
-			 this, SLOT (item_selected (const QModelIndex &, const QModelIndex &)));
-
-	connect (this, SIGNAL (doubleClicked (const QModelIndex &)),
-			 this, SLOT (jump_pos (const QModelIndex &)));
-
 	connect (client, SIGNAL(gotConnection (XClient *)),
 			 this, SLOT (got_connection (XClient *))); 
 
-	connect (m_client->settings (), SIGNAL (settingsChanged ()),
-			 this, SLOT (changed_settings ()));
+	setIconSize (QSize (75, 75));
+}
+
+void
+PlaylistView::setModel (QAbstractItemModel *model)
+{
+	m_model = dynamic_cast<PlaylistModel *> (model);
+	QTreeView::setModel (m_model);
 
 	connect (m_model, SIGNAL (rowsInserted (const QModelIndex &, int, int)),
 			 this, SLOT (rows_inserted ()));
@@ -111,23 +72,9 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	connect (m_model, SIGNAL (entryMoved (const QModelIndex &, const QModelIndex &)),
 			 this, SLOT (moved (const QModelIndex &, const QModelIndex &)));
 
-	setIconSize (QSize (75, 75));
-}
+    m_selections = new QItemSelectionModel (m_model);
+	setSelectionModel (m_selections);
 
-void
-PlaylistView::mousePressEvent (QMouseEvent *ev)
-{
-	if (ev->buttons () & Qt::RightButton || ev->buttons () & Qt::MidButton) {
-		ev->ignore ();
-		return;
-	}
-
-	if (!indexAt (ev->pos ()).isValid ()) {
-		ev->ignore ();
-		return;
-	}
-
-	QTreeView::mousePressEvent (ev);
 }
 
 void
@@ -183,20 +130,6 @@ PlaylistView::moved (const QModelIndex &o, const QModelIndex &n)
 }
 
 void
-PlaylistView::changed_settings ()
-{
-	QSettings s;
-
-	collapseAll ();
-
-	if (!s.value ("playlist/compactmode").toBool ()) {
-		if (getSelection ().size () > 1)
-			return;
-		setExpanded (m_selections->currentIndex (), true);
-	}
-}
-
-void
 PlaylistView::got_connection (XClient *client)
 {
 	m_client = client;
@@ -216,80 +149,6 @@ PlaylistView::handle_update_pos (const uint32_t &id)
 		setCurrentIndex (idx);
 
 	return true;
-}
-
-void
-PlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
-{
-	QSettings s;
-
-	if (s.value ("playlist/compactmode").toBool ())
-		return;
-
-	if (n.internalId () != -1) {
-		setCurrentIndex (n.parent ());
-		return;
-	}
-
-	QModelIndexList l = getSelection ();
-	
-	if (l.count () < 1) {
-		setCurrentIndex (old);
-	} else if (l.count () > 1) {
-		collapseAll ();
-	} else {
-		setCurrentIndex (n);
-
-		collapseAll ();
-
-		setExpanded (n, true);
-
-		QModelIndex c = n.child (0, 0);
-		scrollTo (c);
-	}
-
-	/* emit current id */
-	if (l.count () > 1 || l.count () < 1) {
-		emit selectedID (0);
-	} else {
-		emit selectedID (l[0].data (PlaylistModel::MedialibIdRole).toUInt ());
-	}
-}
-
-static bool
-dummy_uint (const uint32_t &)
-{
-	return false;
-}
-
-void
-PlaylistView::jump_pos (const QModelIndex &i)
-{
-	QModelIndex idx = i;
-
-	if (!idx.isValid ())
-		idx = currentIndex ();
-
-	uint32_t row = idx.row ();
-	if (idx.internalId () != -1)
-		row = idx.parent ().row ();
-
-	m_client->playlist.setNext (row, &dummy_uint);
-	/* Note. tickle before checking status is a good
-	 * idea here. It seems to bork on linux platform
-	 * otherwise
-	 */
-	m_client->playback.tickle (&XClient::log);
-
-	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
-	if (pw->status () != Xmms::Playback::PLAYING) {
-		m_client->playback.start (&XClient::log);
-
-		if (pw->status () == Xmms::Playback::PAUSED) {
-			m_client->playback.tickle (&XClient::log);
-		}
-	}
-
 }
 
 QModelIndexList
@@ -316,5 +175,35 @@ PlaylistView::head_size (int c, int o, int n)
 		QSettings s;
 		s.setValue ("playlist/section0", n);
 	}
+}
+
+void
+PlaylistView::jump_pos (const QModelIndex &i)
+{
+	QModelIndex idx = i;
+
+	if (!idx.isValid ())
+		idx = currentIndex ();
+
+	uint32_t row = idx.row ();
+	if (idx.internalId () != -1)
+		row = idx.parent ().row ();
+
+	m_client->playlist.setNext (row, &XClient::dummy_uint);
+	/* Note. tickle before checking status is a good
+	 * idea here. It seems to bork on linux platform
+	 * otherwise
+	 */
+	m_client->playback.tickle (&XClient::log);
+
+	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
+	if (pw->status () != Xmms::Playback::PLAYING) {
+		m_client->playback.start (&XClient::log);
+
+		if (pw->status () == Xmms::Playback::PAUSED) {
+			m_client->playback.tickle (&XClient::log);
+		}
+	}
+
 }
 

@@ -24,7 +24,7 @@
 #include <QMouseEvent>
 #include <QAction>
 
-#include "playlistview.h"
+#include "fancyplaylistview.h"
 #include "progressframe.h"
 #include "playerbutton.h"
 #include "volumebar.h"
@@ -89,7 +89,7 @@ class PlayerWidget : public QMainWindow
 	private:
 		XClient *m_client;
 		Xmms::Playback::Status m_status;
-		PlaylistView *m_playlist;
+		FancyPlaylistView *m_playlist;
 		PlayerButton *m_playbutt;
 		PlayerButton *m_playstop;
 

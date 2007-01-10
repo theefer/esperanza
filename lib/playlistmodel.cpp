@@ -27,7 +27,7 @@
 
 #include "playlistmodel.h"
 
-PlaylistModel::PlaylistModel (QObject *parent, XClient *client) : QAbstractItemModel (parent)
+PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &name) : QAbstractItemModel (parent)
 {
 //	m_columns.append ("#");
 	m_columns.append ("Artist");
@@ -43,6 +43,8 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client) : QAbstractItemM
 
 	connect (client, SIGNAL(gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
 	connect (client->cache (), SIGNAL(entryChanged (uint32_t)), this, SLOT (entry_changed (uint32_t)));
+
+	m_name = name;
 }
 
 void
@@ -54,7 +56,19 @@ PlaylistModel::got_connection (XClient *client)
 	client->playlist.broadcastChanged (Xmms::bind (&PlaylistModel::handle_change, this));
 	client->playlist.broadcastCurrentPos (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
+	client->playlist.broadcastLoaded (Xmms::bind (&PlaylistModel::handle_pls_loaded, this));
+
 	m_client = client;
+}
+
+bool
+PlaylistModel::handle_pls_loaded (const std::string &name)
+{
+	if (m_name == "_active") {
+		m_client->playlist.listEntries (Xmms::bind (&PlaylistModel::handle_list, this));
+	}
+
+	return true;
 }
 
 bool
@@ -91,14 +105,23 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	int32_t change = chg.get<int32_t> ("type");
 	int32_t pos = 0, npos = 0;
 	uint32_t id = 0;
+	QString s;
 
 	if (chg.contains ("position")) {
 		pos = chg.get<int32_t> ("position");
 	}
+
 	if (chg.contains ("id")) {
 		id = chg.get<uint32_t> ("id");
 	}
 
+	if (chg.contains ("name")) {
+		s = QString::fromUtf8 (chg.get<std::string> ("name").c_str ());
+	}
+
+	if (s != m_name) {
+		return true;
+	}
 
 	QModelIndex idx = QModelIndex ();
 
@@ -200,11 +223,6 @@ PlaylistModel::entry_changed (uint32_t id)
 		QModelIndex idx1 = index (pos.at (i), 0);
 		QModelIndex idx2 = index (pos.at (i), m_columns.size ());
 		emit dataChanged(idx1, idx2);
-
-		/* and for the infobar under (child) */
-		idx1 = index (0, 0, idx1);
-		idx2 = index (0, m_columns.size (), idx1.parent ());
-		emit dataChanged (idx1, idx2);
 	}
 }
 
@@ -221,25 +239,17 @@ PlaylistModel::rowCount (const QModelIndex &parent) const
 		return m_plist.size ();
 	}
 
-	return 1;
+	return 0;
 }
 
 QModelIndex
 PlaylistModel::parent (const QModelIndex &idx) const
 {
-	if (!idx.isValid ())
-		return QModelIndex ();
-
-	if (idx.internalId () == -1) {
-		return QModelIndex ();
-	}
-
-	return createIndex (idx.internalId (), idx.column (), -1);
+	return QModelIndex ();
 }
 
 QModelIndex
-PlaylistModel::index (int row, int column,
-					  const QModelIndex &parent) const
+PlaylistModel::index (int row, int column, const QModelIndex &parent) const 
 {
 	if (!parent.isValid ()) {
 		if (row > (m_plist.size () - 1))
@@ -249,7 +259,7 @@ PlaylistModel::index (int row, int column,
 		return createIndex (row, column, -1);
 	}
 
-	return createIndex (row, column, parent.row ());
+	return QModelIndex ();
 }
 
 QVariant
@@ -259,78 +269,6 @@ PlaylistModel::data (const QModelIndex &index, int role) const
 		return QVariant ();
 	}
 
-	if (index.internalId () == -1) {
-		return playlist_data (index, role);
-	} else {
-		return decoration_data (index, role);
-	}
-
-	return QVariant ();
-}
-
-QVariant
-PlaylistModel::decoration_data (const QModelIndex &index, int role) const
-{
-	unsigned int r = index.parent ().row ();
-	unsigned int id = m_plist[r];
-	QHash<QString, QVariant> h = m_client->cache ()->get_info (id);
-
-	if (role == Qt::TextAlignmentRole) {
-		return QVariant (Qt::AlignVCenter);
-	}
-
-	if (role == Qt::DisplayRole) {
-		if (index.column () == m_columns.size () - 1) {
-			QString str;
-			QSettings s;
-
-			QStringList val = s.value ("ui/contextvalues").toString ().split (",");
-
-			str.append ("\n");
-			for (int i = 0; i < val.count (); i ++) {
-				if (val.at (i) == "bitrate") {
-					str.append (QString ("Bitrate: %0kbps\n").arg (h["bitrate"].toUInt () / 1000));
-				} else if (val.at (i) == "duration") {
-					unsigned int dur = h["duration"].toUInt ();
-					QString m;
-					m.sprintf ("%02d:%02d", (dur / 60000), (dur/1000)%60);
-					str.append (QString ("Duration: %0\n").arg (m));
-				} else if (val.at (i) == "timesplayed") {
-					str.append (QString ("Times played: %0\n").arg (h["timesplayed"].toUInt ()));
-				} else if (val.at (i) == "album") {
-					str.append (QString ("Album: %0\n").arg (h["album"].toString ()));
-				} else if (val.at (i) == "artist") {
-					str.append (QString ("Artist: %0\n").arg (h["artist"].toString ()));
-				} else if (val.at (i) == "title") {
-					str.append (QString ("Title: %0\n").arg (h["title"].toString ()));
-				} else if (val.at (i) == "genre") {
-					str.append (QString ("Genre: %0\n").arg (h["genre"].toString ()));
-				} else if (val.at (i) == "tracknr") {
-					str.append (QString ("Track Number: %0\n").arg (h["tracknr"].toUInt ()));
-				}
-			}
-			return QVariant (str);
-		}
-		
-	}
-	if (role == Qt::DecorationRole) {
-		QSettings s;
-		int c = 0;
-
-		if (!s.value ("playlist/albumartplace").toBool ())
-			c = 1;
-		
-		if (index.column () == c) {
-			QIcon i = m_client->cache ()->get_icon (id);
-			return i;
-		}
-	}
-	return QVariant ();
-}
-
-QVariant
-PlaylistModel::playlist_data (const QModelIndex &index, int role) const
-{
 	if (index.row () >= m_plist.size ()) {
 		return QVariant ();
 	}
@@ -517,23 +455,16 @@ PlaylistModel::headerData (int section, Qt::Orientation orientation, int role) c
 Qt::ItemFlags
 PlaylistModel::flags (const QModelIndex &idx) const
 {
-	if (!idx.isValid ())
-		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+	unsigned int id = m_plist[idx.row ()];
+	PlaylistModel *fake = const_cast<PlaylistModel*> (this);
+	QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);
 
-	if (idx.internalId () == -1) {
-		unsigned int id = m_plist[idx.row ()];
-		PlaylistModel *fake = const_cast<PlaylistModel*> (this);
-		QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);
-
-		Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
-		if (d.contains ("available") && d["available"].toBool ()) {
-			f |= Qt::ItemIsEnabled;
-		}
-
-		return f;
+	Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+	if (d.contains ("available") && d["available"].toBool ()) {
+		f |= Qt::ItemIsEnabled;
 	}
 
-	return Qt::ItemIsEnabled;
+	return f;
 }
 
 QList<uint32_t>

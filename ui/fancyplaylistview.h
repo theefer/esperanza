@@ -15,8 +15,8 @@
  */
 
 
-#ifndef __PLAYLIST_VIEW_H__
-#define __PLAYLIST_VIEW_H__
+#ifndef __FANCY_PLAYLIST_VIEW_H__
+#define __FANCY_PLAYLIST_VIEW_H__
 
 #include <xmmsclient/xmmsclient++.h>
 
@@ -24,45 +24,36 @@
 #include <QItemDelegate>
 #include <QDropEvent>
 
-#include "playlistmodel.h"
+#include "playlistview.h"
+#include "fancyplaylistmodel.h"
 #include "xclient.h"
 
-class PlaylistView : public QTreeView
+class PlaylistDelegate : public QItemDelegate
+{
+	public:
+		PlaylistDelegate (QObject *parent, PlaylistModel *model);
+		void paint (QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+	private:
+		PlaylistModel *m_model;
+};
+
+class FancyPlaylistView : public PlaylistView
 {
 	Q_OBJECT
 	public:
-		PlaylistView (QWidget *parent, XClient *client);
-		QModelIndexList getSelection ();
-
-		void keyPressEvent (QKeyEvent *);
-		void setModel (QAbstractItemModel *);
-
-		/*
-		PlaylistModel *model () const {
-			return m_model;
-		};
-		*/
+		FancyPlaylistView (QWidget *parent, XClient *client);
+		void mousePressEvent (QMouseEvent *ev);
 
 	public slots:
-		void got_connection (XClient *client);
-		void rows_inserted ();
-		void head_size (int, int, int);
-		void moved (const QModelIndex &, const QModelIndex &);
-		void jump_pos (const QModelIndex &);
+		void changed_settings ();
+
+	private slots:
+		void item_selected (const QModelIndex &n, const QModelIndex &old);
 
 	signals:
 		void selectedID (uint32_t);
 
-	protected:
-		XClient *m_client;
-
-	private:
-		QWidget *m_parent;
-		PlaylistModel *m_model;
-		QItemSelectionModel *m_selections;
-
-		bool handle_update_pos (const uint32_t &);
 };
-
 
 #endif

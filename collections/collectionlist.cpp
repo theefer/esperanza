@@ -23,7 +23,11 @@
 CollectionList::CollectionList (QWidget *parent, Xmms::Collection::Namespace ns, XClient *client) : QTreeWidget (parent)
 {
 	setColumnCount (1);
-	setHeaderLabels (QStringList ("Collections"));
+	if (ns == Xmms::Collection::COLLECTIONS) {
+		setHeaderLabels (QStringList ("Collections"));
+	} else {
+		setHeaderLabels (QStringList ("Playlists"));
+	}
 	setIndentation (0);
 	setAlternatingRowColors (true);
 	setItemsExpandable (false);

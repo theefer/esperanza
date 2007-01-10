@@ -31,7 +31,7 @@ class PlaylistModel : public QAbstractItemModel
 {
 	Q_OBJECT
 	public:
-		PlaylistModel (QObject *parent, XClient *client);
+		PlaylistModel (QObject *parent, XClient *client, const QString &n = "_active");
 
 		enum {
 			DisplayRole = Qt::DisplayRole,
@@ -44,8 +44,6 @@ class PlaylistModel : public QAbstractItemModel
 		int rowCount (const QModelIndex &parent) const;
 		int columnCount (const QModelIndex &parent) const;
 		QVariant data (const QModelIndex &index, int role = DisplayRole) const;
-		QVariant playlist_data (const QModelIndex &index, int role = DisplayRole) const;
-		QVariant decoration_data (const QModelIndex &index, int role = DisplayRole) const;
 		QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 		Qt::ItemFlags flags (const QModelIndex &) const;
 		QModelIndex parent (const QModelIndex &) const;
@@ -59,10 +57,6 @@ class PlaylistModel : public QAbstractItemModel
 		void setColumnFallback (const QList <QString> &);
 
 		QList<QString> columns () const;
-
-		XClient *m_client;
-		QList < unsigned int > m_plist;
-
 		QList<uint32_t> get_all_id ();
 
 		void set_cached_size (int i, const QSize &size) {
@@ -79,6 +73,13 @@ class PlaylistModel : public QAbstractItemModel
 			return index (m_current_pos, 0);
 		};
 
+	protected:
+		XClient *m_client;
+		QList < unsigned int > m_plist;
+		QList < uint32_t > getPosById (uint32_t id);
+		QList < QString > m_columns;
+		QList < QString > m_colfallback;
+		
 	signals:
 		void entryMoved (const QModelIndex &, const QModelIndex &);
 
@@ -90,16 +91,16 @@ class PlaylistModel : public QAbstractItemModel
 		bool handle_list (const Xmms::List< unsigned int > &list);
 		bool handle_change (const Xmms::Dict &chg);
 		bool handle_update_pos (const unsigned int &pos);
+		bool handle_pls_loaded (const std::string &);
 
 		void getInfo (unsigned int id) const;
-		QList < uint32_t > getPosById (uint32_t id);
 
-		QList < QString > m_columns;
-		QList < QString > m_colfallback;
 
 		uint32_t m_current_pos;
 
 		QList<QSize> m_cached_size;
+
+		QString m_name;
 
 };
 

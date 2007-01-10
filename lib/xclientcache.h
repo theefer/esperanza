@@ -15,10 +15,10 @@
  */
 
 
-#ifndef __XMEDIAINFOCACHE_H__
-#define __XMEDIAINFOCACHE_H__
+#ifndef __XCLIENTCACHE_H__
+#define __XCLIENTCACHE_H__
 
-class XMediainfoCache;
+class XClientCache;
 
 #include "xclient.h"
 
@@ -30,11 +30,11 @@ class XMediainfoCache;
 #include <QVariant>
 #include <QPixmapCache>
 
-class XMediainfoCache : public QObject
+class XClientCache : public QObject
 {
 	Q_OBJECT
 	public:
-		XMediainfoCache (QObject *, XClient *);
+		XClientCache (QObject *, XClient *);
 
 		QHash<QString, QVariant> get_info (uint32_t id);
 		QIcon get_icon (uint32_t id);

@@ -71,8 +71,12 @@ CollectionModel::view_switch (const Xmms::Collection::Namespace &ns,
 {
 	m_ns = ns;
 
-	Xmms::Coll::Reference ref (name.toStdString (), ns);
-	m_client->collection.queryIds (ref, Xmms::bind (&CollectionModel::id_list_get, this));
+	if (ns == Xmms::Collection::COLLECTIONS) {
+		Xmms::Coll::Reference ref (name.toStdString (), ns);
+		m_client->collection.queryIds (ref, Xmms::bind (&CollectionModel::id_list_get, this));
+	} else if (ns == Xmms::Collection::PLAYLISTS) {
+		m_client->playlist.listEntries (Xmms::bind (&CollectionModel::id_list_get, this));
+	}
 }
 
 bool
@@ -115,6 +119,8 @@ QVariant
 CollectionModel::data (const QModelIndex &index, int role) const
 {
 	if (index.row () >= m_plist.size ()) {
+		return QVariant ();
+	} else if (index.row () < 0) {
 		return QVariant ();
 	}
 
