@@ -26,7 +26,7 @@ class XClient;
 #include <QHash>
 #include <QVariant>
 
-#include "xmediainfocache.h"
+#include "xclientcache.h"
 
 class XSettings : public QObject
 {

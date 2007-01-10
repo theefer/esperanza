@@ -15,7 +15,7 @@
  */
 
 
-#include "xmediainfocache.h"
+#include "xclientcache.h"
 
 #include <QObject>
 #include <QIcon>
