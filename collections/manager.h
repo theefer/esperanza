@@ -18,6 +18,7 @@
 #define __MANAGER_H__
 
 #include "xclient.h"
+#include "playlistmodel.h"
 
 #include <QWidget>
 #include <QDialog>
@@ -28,6 +29,7 @@
 #include <QVBoxLayout>
 #include <QListWidget>
 #include <QFrame>
+#include <QStackedWidget>
 
 class CollectionManager : public QDialog
 {
@@ -41,6 +43,10 @@ class CollectionManager : public QDialog
 
 	signals:
 		void switch_view (const Xmms::Collection::Namespace &, const QString &);
+
+	private:
+		QStackedWidget *m_stacked;
+		PlaylistModel *m_plsmodel;
 
 };
 

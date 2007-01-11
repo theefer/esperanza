@@ -48,9 +48,16 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &n
 }
 
 void
+PlaylistModel::set_playlist (const QString &name)
+{
+	m_name = name;
+	m_client->playlist.listEntries (XClient::qToStd (name), Xmms::bind (&PlaylistModel::handle_list, this));
+}
+
+void
 PlaylistModel::got_connection (XClient *client)
 {
-	client->playlist.listEntries (Xmms::bind (&PlaylistModel::handle_list, this));
+	client->playlist.listEntries (XClient::qToStd (m_name), Xmms::bind (&PlaylistModel::handle_list, this));
 	client->playlist.currentPos (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
 	client->playlist.broadcastChanged (Xmms::bind (&PlaylistModel::handle_change, this));
@@ -65,7 +72,8 @@ bool
 PlaylistModel::handle_pls_loaded (const std::string &name)
 {
 	if (m_name == "_active") {
-		m_client->playlist.listEntries (Xmms::bind (&PlaylistModel::handle_list, this));
+		m_client->playlist.listEntries (name,
+										Xmms::bind (&PlaylistModel::handle_list, this));
 	}
 
 	return true;
@@ -116,7 +124,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	}
 
 	if (chg.contains ("name")) {
-		s = QString::fromUtf8 (chg.get<std::string> ("name").c_str ());
+		s = XClient::stdToQ (chg.get<std::string> ("name"));
 	}
 
 	if (s != m_name) {

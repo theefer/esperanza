@@ -48,6 +48,18 @@ XClient::dummy_uint (const uint32_t &)
 	return false;
 }
 
+QString
+XClient::stdToQ (const std::string &str)
+{
+	return QString::fromUtf8 (str.c_str ());
+}
+
+std::string
+XClient::qToStd (const QString &str)
+{
+	return std::string (str.toUtf8 ().data ());
+}
+
 
 XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), Xmms::Client (name)
 {

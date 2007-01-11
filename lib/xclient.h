@@ -63,6 +63,9 @@ class XClient : public QObject, public Xmms::Client
 			return m_settings;
 		};
 
+		static QString stdToQ (const std::string &);
+		static std::string qToStd (const QString &);
+
 	signals:
 		void gotConnection (XClient *);
 

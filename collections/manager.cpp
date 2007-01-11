@@ -30,6 +30,8 @@
 #include "collections/collectionview.h"
 
 #include "playerbutton.h"
+#include "playlistview.h"
+#include "playlistmodel.h"
 
 CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialog (parent)
 {
@@ -74,8 +76,18 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	g->setMargin (0);
 	dummy->setFrameShape (QFrame::StyledPanel);
 
+	m_stacked = new QStackedWidget (this);
+	g->addWidget (m_stacked, 0, 0);
+
 	CollectionView *view = new CollectionView (this, client);
-	g->addWidget (view, 0, 0);
+	m_stacked->addWidget (view);
+
+	PlaylistView *plsview = new PlaylistView (this, client);
+	m_stacked->addWidget (plsview);
+
+	m_plsmodel = new PlaylistModel (this, client);
+	m_plsmodel->got_connection (client);
+	plsview->setModel (m_plsmodel);
 
 	split->addWidget (dummy);
 
@@ -89,7 +101,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	l.append (split->size ().width () - 200);
 	split->setSizes (l);
 
-	resize (500, 400);
+	resize (600, 400);
 
 }
 
@@ -97,6 +109,12 @@ void
 CollectionManager::switch_view_proxy (const Xmms::Collection::Namespace &ns,
 									  const QString &str)
 {
-	emit switch_view (ns, str);
+	if (ns == Xmms::Collection::COLLECTIONS) {
+		m_stacked->setCurrentIndex (0); /* switch to collections */
+		emit switch_view (ns, str);
+	} else {
+		m_stacked->setCurrentIndex (1); /* switch to playlists */
+		m_plsmodel->set_playlist (str);
+	}
 }
 

@@ -73,6 +73,8 @@ class PlaylistModel : public QAbstractItemModel
 			return index (m_current_pos, 0);
 		};
 
+		void set_playlist (const QString &);
+
 	protected:
 		XClient *m_client;
 		QList < unsigned int > m_plist;
