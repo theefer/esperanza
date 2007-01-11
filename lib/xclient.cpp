@@ -121,6 +121,9 @@ XClient::propDictToQHash (const std::string &key,
 			char *c = const_cast<char *>(xmmsc_result_decode_url (NULL, boost::get< std::string >(value).c_str ()));
 			val = QString::fromUtf8 (c);
 			val = val.mid (val.lastIndexOf ("/") + 1);
+			if (val.isEmpty ()) {
+				val = QString::fromUtf8 (c);
+			}
 			free (c);
 		} else {
 			val = QString::fromUtf8 (boost::get< std::string > (value).c_str ());

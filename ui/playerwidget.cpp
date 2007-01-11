@@ -390,6 +390,7 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 	m.addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
 	m.addSeparator ();
 	m.addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
+	m.addAction (tr ("Add URL"), this, SLOT (add_url ()));
 
 	m.exec (ev->globalPos ());
 }
@@ -461,6 +462,17 @@ PlayerWidget::open_pref ()
 {
 	PreferenceDialog *pd = new PreferenceDialog (this, m_client);
 	pd->show ();
+}
+
+void
+PlayerWidget::add_url ()
+{
+	bool ok;
+	QString url = QInputDialog::getText (this, tr ("URL dialog"), tr ("Enter URL:"),
+										 QLineEdit::Normal, "http://", &ok);
+	if (ok && !url.isEmpty ()) {
+		m_client->playlist.addUrl (XClient::qToStd (url), &XClient::log);
+	}
 }
 
 void

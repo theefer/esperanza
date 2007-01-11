@@ -73,6 +73,7 @@ class PlayerWidget : public QMainWindow
 		void add_remote_file ();
 		void add_local_file ();
 		void add_local_dir ();
+		void add_url ();
 		void min_pressed ();
 
 		void remove_selected ();
