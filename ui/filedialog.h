@@ -25,8 +25,8 @@ class FileDialog : public QFileDialog
 	Q_OBJECT
 	public:
 		FileDialog (QWidget *parent, const QString &name);
-		QString getDirectory ();
-		QStringList getFiles ();
+		QString get_dir ();
+		QStringList get_files ();
 
 	private:
 		QString m_name;
