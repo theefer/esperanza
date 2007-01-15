@@ -27,34 +27,37 @@ FileDialog::FileDialog (QWidget *parent, const QString &name) : QFileDialog (par
 	QSettings s;
 	m_name = name;
 
-	if (!s.contains("filedialog/" + name))
+	if (!s.contains ("filedialog/" + name))
 		s.setValue ("filedialog/" + name, QDir::homePath ());
 
-	setDirectory (s.value("filedialog/" + name).toString ());
+	setDirectory (s.value ("filedialog/" + name).toString ());
 }
 
 QStringList
 FileDialog::getFiles ()
 {
 	QSettings s;
-	QStringList ret = getOpenFileNames (NULL, "Choose files");
-	if (ret.size() > 0)
-		s.setValue ("filedialog/" + m_name, directory ().absolutePath ());
+
+	setFileMode (ExistingFiles);
+	if (!exec())
+		return QStringList ();
+	QStringList ret = selectedFiles ();
+	s.setValue ("filedialog/" + m_name, directory ().absolutePath ());
 
 	qSort (ret);
 
 	return ret;
-
 }
 
 QString
 FileDialog::getDirectory ()
 {
 	QSettings s;
-	QString ret = getExistingDirectory (NULL, "Choose directory");
-	if (!ret.isNull())
-		s.setValue ("filedialog/" + m_name, directory ().absolutePath ());
-
+	setFileMode (DirectoryOnly);
+	if (!exec ())
+		return QString();
+	QString ret = directory ().absolutePath ();
+	s.setValue ("filedialog/" + m_name, ret);
 	return ret;
 
 }
