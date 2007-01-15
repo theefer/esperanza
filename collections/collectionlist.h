@@ -20,11 +20,30 @@
 #include "xclient.h"
 #include <QTreeWidget>
 
+class CollectionListItem : public QTreeWidgetItem
+{
+	public:
+		CollectionListItem (QTreeWidgetItem *parent,
+							const Xmms::Collection::Namespace &ns,
+							const QString &name) :
+			QTreeWidgetItem (parent, QStringList (name))
+		{
+			m_ns = ns;
+		};
+
+		Xmms::Collection::Namespace ns () const {
+			return m_ns;
+		};
+
+	private:
+		Xmms::Collection::Namespace m_ns;
+};
+
 class CollectionList : public QTreeWidget
 {
 	Q_OBJECT
 	public:
-		CollectionList (QWidget *, Xmms::Collection::Namespace, XClient *);
+		CollectionList (QWidget *, XClient *);
 
 	signals:
 		void switch_view (const Xmms::Collection::Namespace &, const QString &);
@@ -33,8 +52,11 @@ class CollectionList : public QTreeWidget
 		void active_row (QTreeWidgetItem *, int);
 
 	private:
-		bool list_cb (const Xmms::List<std::string> &);
-		Xmms::Collection::Namespace m_ns;
+		bool list_cb (const Xmms::Collection::Namespace &,
+					  const Xmms::List<std::string> &);
+
+		QTreeWidgetItem *m_collections;
+		QTreeWidgetItem *m_playlists;
 
 };
 

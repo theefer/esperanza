@@ -20,20 +20,13 @@
 #include <QTableWidgetItem>
 #include <QHeaderView>
 
-CollectionList::CollectionList (QWidget *parent, Xmms::Collection::Namespace ns, XClient *client) : QTreeWidget (parent)
+CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget (parent)
 {
 	setColumnCount (1);
-	if (ns == Xmms::Collection::COLLECTIONS) {
-		setHeaderLabels (QStringList ("Collections"));
-	} else {
-		setHeaderLabels (QStringList ("Playlists"));
-	}
-	setIndentation (0);
+	setHeaderLabels (QStringList ("Collections"));
 	setAlternatingRowColors (true);
-	setItemsExpandable (false);
-	setRootIsDecorated (false);
+	setRootIsDecorated (true);
 	setTabKeyNavigation (false);
-	setTextElideMode (Qt::ElideNone);
 
 	header ()->setResizeMode (0, QHeaderView::Stretch);
 	header ()->setClickable (false);
@@ -43,33 +36,54 @@ CollectionList::CollectionList (QWidget *parent, Xmms::Collection::Namespace ns,
 	connect (this, SIGNAL (itemClicked (QTreeWidgetItem *, int)),
 			 this, SLOT (active_row (QTreeWidgetItem *, int)));
 
-	client->collection.list (ns, Xmms::bind (&CollectionList::list_cb, this));
-	m_ns = ns;
+	m_collections = new QTreeWidgetItem (this, QStringList (tr ("Collections")));
+
+	m_playlists = new QTreeWidgetItem (this, QStringList (tr ("Playlists")));
+
+	client->collection.list (Xmms::Collection::COLLECTIONS,
+							 boost::bind (&CollectionList::list_cb, this,
+										  Xmms::Collection::COLLECTIONS, _1));
+
+	client->collection.list (Xmms::Collection::PLAYLISTS,
+							 boost::bind (&CollectionList::list_cb, this,
+										  Xmms::Collection::PLAYLISTS, _1));
 }
 
 void
 CollectionList::active_row (QTreeWidgetItem *item, int c)
 {
-	emit switch_view (m_ns, item->text (0));
+	CollectionListItem *i = dynamic_cast<CollectionListItem *> (item);
+	emit switch_view (i->ns (), i->text (0));
 }
 
 bool
-CollectionList::list_cb (const Xmms::List<std::string> &list)
+CollectionList::list_cb (const Xmms::Collection::Namespace &ns,
+						 const Xmms::List<std::string> &list)
 {
 	QTreeWidgetItem *i;
-	clear ();
 
-	if (m_ns == Xmms::Collection::COLLECTIONS) {
-		i = new QTreeWidgetItem (QStringList ("Universe"));
-		addTopLevelItem (i);
+	if (ns == Xmms::Collection::COLLECTIONS) {
+		while ((i = m_collections->takeChild (0))) {
+			delete i;
+		}
+	} else {
+		while ((i = m_playlists->takeChild (0))) {
+			delete i;
+		}
 	}
+
+	i = NULL;
 
 	for (list.first (); list.isValid (); ++ list) {
 		QString s = QString::fromUtf8 ((*list).c_str ());
 		if (s.startsWith ("_"))
 			continue;
-		i = new QTreeWidgetItem (QStringList (s));
-		addTopLevelItem (i);
+
+		if (ns == Xmms::Collection::COLLECTIONS) {
+			i = new CollectionListItem (m_collections, ns, s);
+		} else {
+			i = new CollectionListItem (m_playlists, ns, s);
+		}
 	}
 
 	return true;

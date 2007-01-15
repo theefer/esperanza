@@ -48,7 +48,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 
 	QVBoxLayout *vbox = new QVBoxLayout (dummy);
 	vbox->setMargin (1);
-	CollectionList *collist = new CollectionList (dummy, Xmms::Collection::COLLECTIONS, client);
+	CollectionList *collist = new CollectionList (dummy, client);
 	vbox->addWidget (collist, 1);
 
 	QHBoxLayout *hbox = new QHBoxLayout;
@@ -58,17 +58,6 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	hbox->addWidget (new PlayerButton (dummy, ":images/settings.png"));
 
 	vbox->addLayout (hbox);
-
-	CollectionList *playlist = new CollectionList (dummy, Xmms::Collection::PLAYLISTS, client);
-	vbox->addWidget (playlist, 1);
-
-	hbox = new QHBoxLayout;
-	hbox->addStretch (1);
-	hbox->addWidget (new PlayerButton (dummy, ":images/plus.png"));
-	hbox->addWidget (new PlayerButton (dummy, ":images/minus.png"));
-	hbox->addWidget (new PlayerButton (dummy, ":images/settings.png"));
-	vbox->addLayout (hbox);
-
 	split->addWidget (dummy);
 
 	dummy = new QFrame;
@@ -92,8 +81,6 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	split->addWidget (dummy);
 
 	connect (collist, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
-			 this, SLOT (switch_view_proxy (const Xmms::Collection::Namespace &, const QString &)));
-	connect (playlist, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
 			 this, SLOT (switch_view_proxy (const Xmms::Collection::Namespace &, const QString &)));
 
 	QList<int> l;
