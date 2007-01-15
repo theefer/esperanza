@@ -34,7 +34,7 @@ FileDialog::FileDialog (QWidget *parent, const QString &name) : QFileDialog (par
 }
 
 QStringList
-FileDialog::get_files ()
+FileDialog::getFiles ()
 {
 	QSettings s;
 	QStringList ret = getOpenFileNames (NULL, "Choose files");
@@ -48,7 +48,7 @@ FileDialog::get_files ()
 }
 
 QString
-FileDialog::get_dir ()
+FileDialog::getDirectory ()
 {
 	QSettings s;
 	QString ret = getExistingDirectory (NULL, "Choose directory");
