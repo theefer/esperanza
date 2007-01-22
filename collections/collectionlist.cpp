@@ -40,11 +40,11 @@ CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget 
 
 	m_playlists = new QTreeWidgetItem (this, QStringList (tr ("Playlists")));
 
-	client->collection.list (Xmms::Collection::COLLECTIONS,
+	client->collection.list (Xmms::Collection::COLLECTIONS)(
 							 boost::bind (&CollectionList::list_cb, this,
 										  Xmms::Collection::COLLECTIONS, _1));
 
-	client->collection.list (Xmms::Collection::PLAYLISTS,
+	client->collection.list (Xmms::Collection::PLAYLISTS)(
 							 boost::bind (&CollectionList::list_cb, this,
 										  Xmms::Collection::PLAYLISTS, _1));
 }

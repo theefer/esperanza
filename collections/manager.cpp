@@ -65,8 +65,11 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	g->setMargin (0);
 	dummy->setFrameShape (QFrame::StyledPanel);
 
+	m_propeditor = new PropertyEditor (this);
+	g->addWidget (m_propeditor, 0, 0);
+
 	m_stacked = new QStackedWidget (this);
-	g->addWidget (m_stacked, 0, 0);
+	g->addWidget (m_stacked, 1, 0);
 
 	CollectionView *view = new CollectionView (this, client);
 	m_stacked->addWidget (view);
@@ -89,7 +92,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	split->setSizes (l);
 
 	resize (600, 400);
-
+	
 }
 
 void

@@ -55,7 +55,7 @@ void
 BrowseModel::setPath (const QModelIndex &index)
 {
 	BrowseModelItem *item = m_list.at (index.row ());
-	m_client->xform.browse (item->data("path").toStdString (),
+	m_client->xform.browse (item->data("path").toStdString ())(
 							Xmms::bind (&BrowseModel::list_cb, this));
 	m_current_dir = item->data ("path");
 }
@@ -66,7 +66,7 @@ BrowseModel::setPath (const QString &path)
 	if (path.isEmpty())
 		list_root ();
 
-	m_client->xform.browse (path.toStdString (),
+	m_client->xform.browse (path.toStdString ())(
 							Xmms::bind (&BrowseModel::list_cb, this),
 							Xmms::bind (&BrowseModel::list_err, this));
 	m_current_dir = path;

@@ -239,7 +239,7 @@ LastFmDialog::update_artists (const QString &artist)
 			m_values[i]->setValue (a.match ());
 			m_artists[a.name ()] = a;
 			QString s = QString ("select count(id) as num from Media where key='artist' and value='%1'").arg (a.name ());
-			m_client->medialib.select (XClient::qToStd (s), boost::bind (&LastFmDialog::num_reply, this, _1, a.name ()));
+			m_client->medialib.select (XClient::qToStd (s)) (boost::bind (&LastFmDialog::num_reply, this, _1, a.name ()));
 		}
 	}
 
