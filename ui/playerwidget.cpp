@@ -361,12 +361,6 @@ PlayerWidget::play_pressed ()
 		m_client->playback.start () ();
 }
 
-static bool
-dummy_uint (const uint32_t &)
-{
-	return false;
-}
-
 void
 PlayerWidget::fwd_pressed ()
 {

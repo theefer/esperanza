@@ -14,13 +14,7 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef __MANAGER_H__
-#define __MANAGER_H__
-
-#include "xclient.h"
-#include "playlistmodel.h"
 #include "collections/propertyeditor.h"
-#include "collections/collectionlist.h"
 
 #include <QWidget>
 #include <QDialog>
@@ -29,35 +23,19 @@
 #include <QListWidget>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QListWidget>
+#include <QTableWidget>
 #include <QFrame>
-#include <QStackedWidget>
 
-class CollectionManager : public QDialog
+PropertyEditor::PropertyEditor (QWidget *parent, XClient *client) : QScrollArea (parent)
 {
-	Q_OBJECT
+	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+	m_vbox = new QVBoxLayout (this);
+}
 
-	public:
-		CollectionManager (QWidget *, XClient *);
-
-	public slots:
-		void switch_view_proxy (const Xmms::Collection::Namespace &, const QString &);
-
-	signals:
-		void switch_view (const Xmms::Collection::Namespace &, const QString &);
-		
-	private slots:
-	    void plus_pressed ();
-	    void minus_pressed ();
-	    
-	private:
-	    CollectionList *m_collist;
-		QStackedWidget *m_stacked;
-		PlaylistModel *m_plsmodel;
-		PropertyEditor *m_propeditor;
-		XClient *m_client;
-
-};
-
-#endif
+void
+PropertyEditor::add_row (PropertyRow *row)
+{
+    m_properties.append (row);
+    m_vbox->addWidget (row);
+}
 

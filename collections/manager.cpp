@@ -28,6 +28,7 @@
 
 #include "collections/collectionlist.h"
 #include "collections/collectionview.h"
+#include "collections/propertyeditor.h"
 
 #include "playerbutton.h"
 #include "playlistview.h"
@@ -37,6 +38,8 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 {
 	QGridLayout *grid = new QGridLayout (this);
 	QSplitter *split = new QSplitter;
+	
+	m_client = client;
 
 	setWindowTitle ("Esperanza - Collection Manager");
 
@@ -48,13 +51,21 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 
 	QVBoxLayout *vbox = new QVBoxLayout (dummy);
 	vbox->setMargin (1);
-	CollectionList *collist = new CollectionList (dummy, client);
-	vbox->addWidget (collist, 1);
+	m_collist = new CollectionList (dummy, client);
+	vbox->addWidget (m_collist, 1);
 
 	QHBoxLayout *hbox = new QHBoxLayout;
 	hbox->addStretch (1);
-	hbox->addWidget (new PlayerButton (dummy, ":images/plus.png"));
-	hbox->addWidget (new PlayerButton (dummy, ":images/minus.png"));
+	
+	/* button for adding playlists / collections */
+	PlayerButton *plus = new PlayerButton (dummy, ":images/plus.png");
+	hbox->addWidget (plus);
+	connect (plus, SIGNAL (clicked (QMouseEvent *)), this, SLOT (plus_pressed ()));
+	
+	PlayerButton *minus = new PlayerButton (dummy, ":images/minus.png");
+	hbox->addWidget (minus);
+	connect (minus, SIGNAL (clicked (QMouseEvent *)), this, SLOT (minus_pressed ()));
+
 	hbox->addWidget (new PlayerButton (dummy, ":images/settings.png"));
 
 	vbox->addLayout (hbox);
@@ -65,7 +76,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 	g->setMargin (0);
 	dummy->setFrameShape (QFrame::StyledPanel);
 
-	m_propeditor = new PropertyEditor (this);
+	m_propeditor = new PropertyEditor (this, client);
 	g->addWidget (m_propeditor, 0, 0);
 
 	m_stacked = new QStackedWidget (this);
@@ -83,7 +94,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 
 	split->addWidget (dummy);
 
-	connect (collist, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
+	connect (m_collist, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
 			 this, SLOT (switch_view_proxy (const Xmms::Collection::Namespace &, const QString &)));
 
 	QList<int> l;
@@ -93,6 +104,28 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 
 	resize (600, 400);
 	
+}
+
+void
+CollectionManager::minus_pressed ()
+{
+    CollectionListItem *item = dynamic_cast<CollectionListItem *> (m_collist->currentItem ());
+    
+    m_client->collection.remove (XClient::qToStd (item->text (0)), item->ns ()) ();
+}
+
+void
+CollectionManager::plus_pressed ()
+{
+    QTreeWidgetItem *parent = m_collist->currentItem ();
+    if (!parent) return; /* not selected */
+    /* get parent */
+    while (parent->parent ()) parent = parent->parent ();
+    
+    QTreeWidgetItem *item = new QTreeWidgetItem (parent, QStringList (tr ("New")));
+    item->setFlags (Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    m_collist->setCurrentItem (item);
+    m_collist->editItem (item, 0);
 }
 
 void

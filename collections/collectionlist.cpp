@@ -36,9 +36,10 @@ CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget 
 	connect (this, SIGNAL (itemClicked (QTreeWidgetItem *, int)),
 			 this, SLOT (active_row (QTreeWidgetItem *, int)));
 
-	m_collections = new QTreeWidgetItem (this, QStringList (tr ("Collections")));
+	m_collections = new CollectionListItem (this, Xmms::Collection::COLLECTIONS, tr ("Collections"));
+	m_playlists = new CollectionListItem (this, Xmms::Collection::PLAYLISTS, tr ("Playlists"));
 
-	m_playlists = new QTreeWidgetItem (this, QStringList (tr ("Playlists")));
+	client->collection.broadcastCollectionChanged () (Xmms::bind (&CollectionList::coll_changed, this));
 
 	client->collection.list (Xmms::Collection::COLLECTIONS)(
 							 boost::bind (&CollectionList::list_cb, this,
@@ -47,13 +48,83 @@ CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget 
 	client->collection.list (Xmms::Collection::PLAYLISTS)(
 							 boost::bind (&CollectionList::list_cb, this,
 										  Xmms::Collection::PLAYLISTS, _1));
+	m_client = client;
+
+    connect (this, SIGNAL (itemChanged (QTreeWidgetItem *, int)), this, SLOT (item_changed (QTreeWidgetItem *, int)));
 }
+
+bool
+CollectionList::coll_changed (const Xmms::Dict &d)
+{
+    QString name;
+    int type;
+    Xmms::Collection::Namespace ns;
+    
+    if (d.contains ("name")) {
+        name = XClient::stdToQ (d.get<std::string> ("name"));
+    } else {
+        qWarning ("No name in dict!");
+        return true;
+    }
+    
+    if (d.contains ("type")) {
+        type = d.get<int32_t> ("type");
+    } else {
+        qWarning ("no type in dict!");
+        return true;
+    }
+    
+    if (d.contains ("namespace")) {
+        std::string s = d.get<std::string> ("namespace");
+        if (s == "Collections")
+            ns = Xmms::Collection::COLLECTIONS;
+        else
+            ns = Xmms::Collection::PLAYLISTS;
+    } else {
+        qWarning ("no namespace in dict!");
+        return true;
+    }
+    
+    if (type == XMMS_COLLECTION_CHANGED_ADD ||
+        type == XMMS_COLLECTION_CHANGED_RENAME ||
+        type == XMMS_COLLECTION_CHANGED_REMOVE) {
+            /*
+             * It's ok for now to just reload the whole list.
+             * THe numbers of collections and playlists shouldn't 
+             * be that many and it won't affect performance that much.
+             */
+            m_client->collection.list (ns) (
+                                       boost::bind (&CollectionList::list_cb, this,
+                                       ns, _1));
+    }
+        
+    return true;
+}
+
+void
+CollectionList::item_changed (QTreeWidgetItem *item, int c)
+{
+    CollectionListItem *p = dynamic_cast<CollectionListItem *> (currentItem ());
+    if (p && p->parent ()) { 
+        p = p->parent ();
+    } else { 
+        return;
+    }
+        
+    Xmms::Coll::Universe coll;
+    
+    m_client->collection.save (coll, XClient::qToStd (item->text (0)), p->ns ()) ();
+//    delete item;
+}
+
 
 void
 CollectionList::active_row (QTreeWidgetItem *item, int c)
 {
 	CollectionListItem *i = dynamic_cast<CollectionListItem *> (item);
-	emit switch_view (i->ns (), i->text (0));
+	if (i) {
+	    emit switch_view (i->ns (), i->text (0));
+    }
 }
 
 bool

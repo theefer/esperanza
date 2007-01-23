@@ -30,6 +30,18 @@ class CollectionListItem : public QTreeWidgetItem
 		{
 			m_ns = ns;
 		};
+		
+		CollectionListItem (QTreeWidget *parent,
+		                    const Xmms::Collection::Namespace &ns,
+		                    const QString &name) :
+	        QTreeWidgetItem (parent, QStringList (name))
+	    {
+	        m_ns = ns;
+	    };
+	    
+	    CollectionListItem *parent () const {
+	        return dynamic_cast<CollectionListItem *> (QTreeWidgetItem::parent ());
+	    };
 
 		Xmms::Collection::Namespace ns () const {
 			return m_ns;
@@ -50,13 +62,17 @@ class CollectionList : public QTreeWidget
 
 	private slots:
 		void active_row (QTreeWidgetItem *, int);
+		void item_changed (QTreeWidgetItem *, int);
 
 	private:
 		bool list_cb (const Xmms::Collection::Namespace &,
 					  const Xmms::List<std::string> &);
+					  
+		bool coll_changed (const Xmms::Dict &);
 
-		QTreeWidgetItem *m_collections;
-		QTreeWidgetItem *m_playlists;
+		CollectionListItem *m_collections;
+		CollectionListItem *m_playlists;
+		XClient *m_client;
 
 };
 
