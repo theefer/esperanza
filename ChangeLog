@@ -7,7 +7,7 @@ Version 0.3.0 (TBA)
 
 Version 0.2.2 (2006-12-01)
 	* Make the playlist reordable with drag and drop
-	* Media library searches get's completed
+	* Media library searches gets completed
 	* Added Last.fm context browser
 	* Added jump to file dialog
 	* Make use of DrHouse's available flag
