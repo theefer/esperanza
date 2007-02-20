@@ -23,6 +23,12 @@
 class CollectionListItem : public QTreeWidgetItem
 {
 	public:
+	    CollectionListItem (QTreeWidgetItem *parent,
+	                        const QString &name) :
+	        QTreeWidgetItem (parent, QStringList (name))
+	    {
+	    };
+	    
 		CollectionListItem (QTreeWidgetItem *parent,
 							const Xmms::Collection::Namespace &ns,
 							const QString &name) :
@@ -59,10 +65,12 @@ class CollectionList : public QTreeWidget
 
 	signals:
 		void switch_view (const Xmms::Collection::Namespace &, const QString &);
+		void deleteItem (CollectionListItem *);
 
 	private slots:
 		void active_row (QTreeWidgetItem *, int);
 		void item_changed (QTreeWidgetItem *, int);
+		void delete_item (CollectionListItem *);
 
 	private:
 		bool list_cb (const Xmms::Collection::Namespace &,

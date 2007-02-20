@@ -96,7 +96,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 
 	connect (m_collist, SIGNAL (switch_view (const Xmms::Collection::Namespace &, const QString &)),
 			 this, SLOT (switch_view_proxy (const Xmms::Collection::Namespace &, const QString &)));
-
+			 
 	QList<int> l;
 	l.append (200);
 	l.append (split->size ().width () - 200);
@@ -122,7 +122,7 @@ CollectionManager::plus_pressed ()
     /* get parent */
     while (parent->parent ()) parent = parent->parent ();
     
-    QTreeWidgetItem *item = new QTreeWidgetItem (parent, QStringList (tr ("New")));
+    CollectionListItem *item = new CollectionListItem (parent, "New");
     item->setFlags (Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     m_collist->setCurrentItem (item);
     m_collist->editItem (item, 0);

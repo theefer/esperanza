@@ -51,6 +51,14 @@ CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget 
 	m_client = client;
 
     connect (this, SIGNAL (itemChanged (QTreeWidgetItem *, int)), this, SLOT (item_changed (QTreeWidgetItem *, int)));
+    connect (this, SIGNAL (deleteItem (CollectionListItem *)), this, SLOT (delete_item (CollectionListItem *)), Qt::QueuedConnection);
+}
+
+void
+CollectionList::delete_item (CollectionListItem *i)
+{
+    qDebug ("in the callback slot!");
+    delete i;
 }
 
 bool
@@ -104,17 +112,20 @@ CollectionList::coll_changed (const Xmms::Dict &d)
 void
 CollectionList::item_changed (QTreeWidgetItem *item, int c)
 {
-    CollectionListItem *p = dynamic_cast<CollectionListItem *> (currentItem ());
-    if (p && p->parent ()) { 
-        p = p->parent ();
-    } else { 
+    CollectionListItem *p = dynamic_cast<CollectionListItem *> (item);
+    qDebug ("item = %s", qPrintable (item->text (0)));
+    if (!p) {
+        qWarning ("p is not defined!");
         return;
     }
         
     Xmms::Coll::Universe coll;
     
     m_client->collection.save (coll, XClient::qToStd (item->text (0)), p->ns ()) ();
-//    delete item;
+    
+    qDebug ("emitting deleteItem");
+    
+    emit deleteItem (p);
 }
 
 

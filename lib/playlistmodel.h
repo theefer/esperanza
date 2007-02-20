@@ -27,10 +27,23 @@
 
 #include "xclient.h"
 
+/**
+ * @class PlaylistModel playlistmodel.h
+ * @brief A model that represents a playlist on the server
+ *
+ * This model will show the playlist and update it according to the
+ * changes from the server. This can be subclassed to be customized.
+**/
 class PlaylistModel : public QAbstractItemModel
 {
 	Q_OBJECT
 	public:
+	    /**
+	     * The constructor for the PlaylistModel.
+	     * @param parent The parent QObject for this model
+	     * @param client The XClient object to be used in order to get the updates
+	     * @param n The name of the playlist that this model should show
+	    **/
 		PlaylistModel (QObject *parent, XClient *client, const QString &n = "_active");
 
 		enum {
@@ -40,7 +53,7 @@ class PlaylistModel : public QAbstractItemModel
 			MedialibIdRole,
 			AvailableRole
 		};
-
+		
 		int rowCount (const QModelIndex &parent) const;
 		int columnCount (const QModelIndex &parent) const;
 		QVariant data (const QModelIndex &index, int role = DisplayRole) const;
@@ -53,10 +66,27 @@ class PlaylistModel : public QAbstractItemModel
 		Qt::DropActions supportedDropActions () const;
 		QStringList mimeTypes () const;
 		
-		void setColumns (const QList <QString> &);
-		void setColumnFallback (const QList <QString> &);
+		/**
+		 * Set the columns that should be shown in the view.
+		 * @param columns A list of property keys. i.e. "artist", "album"
+		**/
+		void setColumns (const QList <QString> &columns);
+		
+		/**
+		 * Set fallback columns. A fallback column is what should be shown
+		 * if the first column is not available for that entry.
+		 * @param columns A list of property keys.
+		**/
+		void setColumnFallback (const QList <QString> &columns);
 
+        /**
+         * Return the current columns.
+        **/
 		QList<QString> columns () const;
+		
+		/**
+		 * Return a list of all entry ids that are currently in the list.
+		**/
 		QList<uint32_t> get_all_id ();
 
 		void set_cached_size (int i, const QSize &size) {
@@ -66,7 +96,13 @@ class PlaylistModel : public QAbstractItemModel
 		QSize cached_size (int i) const {
 			return m_cached_size[i];
 		};
-
+        
+        /**
+         * Return a list of QModelIndex for the entry. Since one
+         * entry can be in the Playlist multiple times we need to
+         * return a list of indexes.
+         * @ 
+        **/
 		QModelIndexList get_idxlist_by_id (uint32_t);
 
 		QModelIndex current_playlist_pos () const {
