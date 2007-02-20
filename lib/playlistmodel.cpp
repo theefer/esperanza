@@ -468,7 +468,7 @@ PlaylistModel::flags (const QModelIndex &idx) const
 	QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);
 
 	Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
-	if (d.contains ("available") && d["available"].toBool ()) {
+	if (d.contains ("status") && d["status"] == XMMS_MEDIALIB_ENTRY_STATUS_OK) {
 		f |= Qt::ItemIsEnabled;
 	}
 
