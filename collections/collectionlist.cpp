@@ -51,14 +51,6 @@ CollectionList::CollectionList (QWidget *parent, XClient *client) : QTreeWidget 
 	m_client = client;
 
     connect (this, SIGNAL (itemChanged (QTreeWidgetItem *, int)), this, SLOT (item_changed (QTreeWidgetItem *, int)));
-    connect (this, SIGNAL (deleteItem (CollectionListItem *)), this, SLOT (delete_item (CollectionListItem *)), Qt::QueuedConnection);
-}
-
-void
-CollectionList::delete_item (CollectionListItem *i)
-{
-    qDebug ("in the callback slot!");
-    delete i;
 }
 
 bool
@@ -110,22 +102,37 @@ CollectionList::coll_changed (const Xmms::Dict &d)
 }
 
 void
+CollectionList::item_add ()
+{
+    QTreeWidgetItem *parent = currentItem ();
+    if (!parent) return; /* not selected */
+    /* get parent */
+    while (parent->parent ()) parent = parent->parent ();
+    
+    qDebug ("parent = %s", qPrintable (parent->text(0)));
+    
+    CollectionListItem *item = new CollectionListItem (dynamic_cast<CollectionListItem *> (parent), "New");
+    item->setFlags (Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    setCurrentItem (item);
+    editItem (item, 0);
+}
+
+void
 CollectionList::item_changed (QTreeWidgetItem *item, int c)
 {
     CollectionListItem *p = dynamic_cast<CollectionListItem *> (item);
-    qDebug ("item = %s", qPrintable (item->text (0)));
+    
+    if (item->text (0) == "New") {
+        return;
+    }
+    
     if (!p) {
         qWarning ("p is not defined!");
         return;
     }
         
-    Xmms::Coll::Universe coll;
-    
-    m_client->collection.save (coll, XClient::qToStd (item->text (0)), p->ns ()) ();
-    
-    qDebug ("emitting deleteItem");
-    
-    emit deleteItem (p);
+    Xmms::Coll::Idlist coll;
+    m_client->collection.save (coll, XClient::qToStd (p->text (0)), p->ns ()) ();
 }
 
 

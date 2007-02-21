@@ -110,6 +110,7 @@ void
 CollectionManager::minus_pressed ()
 {
     CollectionListItem *item = dynamic_cast<CollectionListItem *> (m_collist->currentItem ());
+    qDebug ("%s", qPrintable (item->text (0)));
     
     m_client->collection.remove (XClient::qToStd (item->text (0)), item->ns ()) ();
 }
@@ -117,15 +118,7 @@ CollectionManager::minus_pressed ()
 void
 CollectionManager::plus_pressed ()
 {
-    QTreeWidgetItem *parent = m_collist->currentItem ();
-    if (!parent) return; /* not selected */
-    /* get parent */
-    while (parent->parent ()) parent = parent->parent ();
-    
-    CollectionListItem *item = new CollectionListItem (parent, "New");
-    item->setFlags (Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-    m_collist->setCurrentItem (item);
-    m_collist->editItem (item, 0);
+    m_collist->item_add ();
 }
 
 void

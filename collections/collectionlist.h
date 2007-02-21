@@ -23,10 +23,11 @@
 class CollectionListItem : public QTreeWidgetItem
 {
 	public:
-	    CollectionListItem (QTreeWidgetItem *parent,
+	    CollectionListItem (CollectionListItem *parent,
 	                        const QString &name) :
 	        QTreeWidgetItem (parent, QStringList (name))
 	    {
+	        m_ns = parent->ns ();
 	    };
 	    
 		CollectionListItem (QTreeWidgetItem *parent,
@@ -62,15 +63,14 @@ class CollectionList : public QTreeWidget
 	Q_OBJECT
 	public:
 		CollectionList (QWidget *, XClient *);
+		void item_add ();
 
 	signals:
 		void switch_view (const Xmms::Collection::Namespace &, const QString &);
-		void deleteItem (CollectionListItem *);
 
 	private slots:
 		void active_row (QTreeWidgetItem *, int);
 		void item_changed (QTreeWidgetItem *, int);
-		void delete_item (CollectionListItem *);
 
 	private:
 		bool list_cb (const Xmms::Collection::Namespace &,
