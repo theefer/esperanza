@@ -109,9 +109,7 @@ CollectionManager::CollectionManager (QWidget *parent, XClient *client) : QDialo
 void
 CollectionManager::minus_pressed ()
 {
-    CollectionListItem *item = dynamic_cast<CollectionListItem *> (m_collist->currentItem ());
-    qDebug ("%s", qPrintable (item->text (0)));
-    
+    CollectionListItem *item = dynamic_cast<CollectionListItem *> (m_collist->currentItem ());    
     m_client->collection.remove (XClient::qToStd (item->text (0)), item->ns ()) ();
 }
 

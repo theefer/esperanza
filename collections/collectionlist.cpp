@@ -109,8 +109,6 @@ CollectionList::item_add ()
     /* get parent */
     while (parent->parent ()) parent = parent->parent ();
     
-    qDebug ("parent = %s", qPrintable (parent->text(0)));
-    
     CollectionListItem *item = new CollectionListItem (dynamic_cast<CollectionListItem *> (parent), "New");
     item->setFlags (Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     setCurrentItem (item);
