@@ -48,7 +48,7 @@
 #include "minimode.h"
 #include "jumptofiledialog.h"
 #include "lastfm.h"
-#include "collections/manager.h"
+/*#include "collections/manager.h"*/
 
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
@@ -394,7 +394,7 @@ PlayerWidget::info_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Last.fm browser"), this, SLOT (lastfm_pressed ()));
-	m.addAction (tr ("Collection Manager"), this, SLOT (coll_pressed ()));
+/*	m.addAction (tr ("Collection Manager"), this, SLOT (coll_pressed ()));*/
 	m.addSeparator ();
 	m.addAction (tr ("Keyboard shortcuts"), this, SLOT (open_short_help ()));
 	m.addAction (tr ("About Esperanza"), this, SLOT (open_about ()));
@@ -405,8 +405,10 @@ PlayerWidget::info_pressed (QMouseEvent *ev)
 void
 PlayerWidget::coll_pressed ()
 {
+	/*
 	CollectionManager *coll = new CollectionManager (this, m_client);
 	coll->show ();
+	*/
 }
 
 void

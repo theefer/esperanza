@@ -56,6 +56,6 @@ HEADERS += ui/playlistview.h ui/playerwidget.h ui/progressframe.h ui/browsedialo
 SOURCES += ui/main.cpp ui/playlistview.cpp ui/playerwidget.cpp ui/progressframe.cpp ui/browsedialog.cpp ui/playerbutton.cpp ui/filedialog.cpp ui/serverdialog.cpp ui/preferences.cpp ui/progressindicator.cpp ui/volumebar.cpp ui/preferencessupport.cpp ui/textdialog.cpp ui/systemtray.cpp ui/infowindow.cpp ui/minimode.cpp ui/jumptofiledialog.cpp ui/lastfm.cpp ui/valuebar.cpp ui/fancyplaylistview.cpp
 
 # Collection manager
-HEADERS += collections/manager.h collections/collectionlist.h collections/collectionview.h collections/collectionmodel.h collections/propertyeditor.h collections/propertyrow.h
-SOURCES += collections/manager.cpp collections/collectionlist.cpp collections/collectionview.cpp collections/collectionmodel.cpp collections/propertyeditor.cpp collections/propertyrow.cpp
+#HEADERS += collections/manager.h collections/collectionlist.h collections/collectionview.h collections/collectionmodel.h collections/propertyeditor.h collections/propertyrow.h
+#SOURCES += collections/manager.cpp collections/collectionlist.cpp collections/collectionview.cpp collections/collectionmodel.cpp collections/propertyeditor.cpp collections/propertyrow.cpp
 
