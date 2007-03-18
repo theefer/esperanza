@@ -61,7 +61,7 @@ XClient::qToStd (const QString &str)
 }
 
 
-XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), Xmms::Client (name)
+XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), Xmms::Client (name), m_sync (name + "-sync")
 {
 	m_cache = new XClientCache (this, this);
 	m_settings = new XSettings (this);
@@ -96,6 +96,13 @@ try_again:
 	}
 
 	setMainloop (new XmmsQT4 (getConnection ()));
+
+	try {
+		m_sync.connect (ipcpath);
+	}
+	catch (Xmms::connection_error &e) {
+		qWarning ("Couldn't establish sync connection!");
+	}
 
 	emit gotConnection (this);
 

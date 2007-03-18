@@ -161,6 +161,9 @@ FancyPlaylistModel::decoration_data (const QModelIndex &index, int role) const
 Qt::ItemFlags
 FancyPlaylistModel::flags (const QModelIndex &idx) const
 {
+	if (!idx.isValid ())
+		return Qt::ItemIsEnabled;
+
 	if (idx.internalId () == -1) {
 		return PlaylistModel::flags (idx);
 	}

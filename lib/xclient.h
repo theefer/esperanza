@@ -63,6 +63,10 @@ class XClient : public QObject, public Xmms::Client
 			return m_settings;
 		};
 
+		const Xmms::Client *sync () const {
+			return &m_sync;
+		};
+
 		static QString stdToQ (const std::string &);
 		static std::string qToStd (const QString &);
 
@@ -72,6 +76,8 @@ class XClient : public QObject, public Xmms::Client
 	private:
 		XClientCache *m_cache;
 		XSettings *m_settings;
+
+		Xmms::Client m_sync;
 
 };
 

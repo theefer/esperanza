@@ -467,7 +467,11 @@ PlaylistModel::flags (const QModelIndex &idx) const
 	PlaylistModel *fake = const_cast<PlaylistModel*> (this);
 	QHash<QString, QVariant> d = fake->m_client->cache ()->get_info (id);
 
-	Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+	Qt::ItemFlags f = Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+
+	if (idx.isValid ()) {
+		f |= Qt::ItemIsDropEnabled;
+	}
 	if (d.contains ("status") && d["status"] == XMMS_MEDIALIB_ENTRY_STATUS_OK) {
 		f |= Qt::ItemIsEnabled;
 	}

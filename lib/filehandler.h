@@ -14,23 +14,30 @@
  *  GNU General Public License for more details.
  */
 
+#ifndef __FILEHANDLER_H__
+#define __FILEHANDLER_H__
 
-#ifndef __FILEDIALOG_H__
-#define __FILEDIALOG_H__
+#include "xclient.h"
 
-#include <QFileDialog>
+class RemoteFileHandler;
 
-class FileDialog : public QFileDialog
+#include "fileengine.h"
+
+#include <QAbstractFileEngineHandler>
+
+class RemoteFileHandler : public QAbstractFileEngineHandler
 {
-	Q_OBJECT
 	public:
-		FileDialog (QWidget *parent, const QString &name, const bool &remote=false);
-		QString getDirectory ();
-		QStringList getFiles ();
+		RemoteFileHandler (XClient *);
+		QAbstractFileEngine *create (const QString &fileName) const;
+
+		void set_filemap (const QHash<QString, RemoteFileItem> &map) {
+			m_filemap = map;
+		};
 
 	private:
-		QString m_name;
-
+		XClient *m_client;
+		QHash<QString, RemoteFileItem> m_filemap;
 };
 
 #endif

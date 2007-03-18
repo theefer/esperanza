@@ -22,15 +22,25 @@
 #include <QString>
 
 
-FileDialog::FileDialog (QWidget *parent, const QString &name) : QFileDialog (parent)
+FileDialog::FileDialog (QWidget *parent, const QString &name, const bool &remote) : QFileDialog (parent)
 {
 	QSettings s;
+	QString dir;
 	m_name = name;
 
-	if (!s.contains ("filedialog/" + name))
-		s.setValue ("filedialog/" + name, QDir::homePath ());
+	if (s.contains ("filedialog/" + name)) {
+		setDirectory (s.value ("filedialog/" + name).toString ());
+		return;
+	}
 
-	setDirectory (s.value ("filedialog/" + name).toString ());
+	if (remote) {
+		dir = "/_xmms2/";
+	} else {
+		dir = QDir::homePath ();
+	}
+
+	s.setValue ("filedialog/" + name, dir);
+	setDirectory (dir);
 }
 
 QStringList

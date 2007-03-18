@@ -39,7 +39,6 @@
 #include "fancyplaylistview.h"
 #include "progressframe.h"
 #include "filedialog.h"
-#include "browsedialog.h"
 #include "preferences.h"
 #include "volumebar.h"
 #include "textdialog.h"
@@ -474,8 +473,8 @@ PlayerWidget::add_url ()
 void
 PlayerWidget::add_remote_file ()
 {
-	BrowseDialog bd (window (), m_client);
-	QStringList files = bd.getFiles ();
+	FileDialog fd (this, "remote_file", true);
+	QStringList files = fd.getFiles ();
 
 	for (int i = 0; i < files.count(); i++) {
 		m_client->playlist.addUrlEncoded (files.value (i).toStdString ()) ();
