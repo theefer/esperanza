@@ -44,13 +44,6 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 	setDropIndicatorShown (true);
 //	setDragDropMode (QAbstractItemView::DragDrop);
 
-	QHeaderView *head = header ();
-	QSettings s;
-
-	head->resizeSection (0, s.value ("playlist/section0", 180).toInt ());
-	head->setResizeMode (0, QHeaderView::Interactive);
-	connect (head, SIGNAL (sectionResized (int, int, int)), this, SLOT (head_size (int, int, int)));
-
     setSelectionMode (QAbstractItemView::ExtendedSelection);
     setSelectionBehavior (QAbstractItemView::SelectRows);
 
@@ -58,6 +51,9 @@ PlaylistView::PlaylistView (QWidget *parent, XClient *client) : QTreeView (paren
 			 this, SLOT (got_connection (XClient *))); 
 
 	setIconSize (QSize (75, 75));
+
+	QHeaderView *head = header ();
+	connect (head, SIGNAL (sectionResized (int, int, int)), this, SLOT (head_size (int, int, int)));
 }
 
 void
@@ -75,6 +71,10 @@ PlaylistView::setModel (QAbstractItemModel *model)
     m_selections = new QItemSelectionModel (m_model);
 	setSelectionModel (m_selections);
 
+	QHeaderView *head = header ();
+	QSettings s;
+	head->setResizeMode (0, QHeaderView::Interactive);
+	head->resizeSection (0, s.value ("playlist/section0", 180).toInt ());
 }
 
 void
