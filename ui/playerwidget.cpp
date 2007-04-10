@@ -173,7 +173,9 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	m->addAction (tr ("Add local file"), this, SLOT (add_local_file ()));
 	m->addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
 	m->addSeparator ();
+	/*
 	m->addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
+	*/
 	m = menuBar ()->addMenu (tr ("Help"));
 	m->addAction (tr ("Esperanza Help"), this, SLOT (open_short_help ()));
 #endif
@@ -283,7 +285,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			add_local_file ();
 			break;
 		case Qt::Key_R:
+			/*
 			add_remote_file ();
+			*/
 			break;
 		case Qt::Key_D:
 			add_local_dir ();
@@ -382,7 +386,9 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 	m.addAction (tr ("Add local file"), this, SLOT (add_local_file ()));
 	m.addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
 	m.addSeparator ();
+	/*
 	m.addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
+	*/
 	m.addAction (tr ("Add URL"), this, SLOT (add_url ()));
 
 	m.exec (ev->globalPos ());
