@@ -97,12 +97,14 @@ try_again:
 
 	setMainloop (new XmmsQT4 (getConnection ()));
 
+	/*
 	try {
 		m_sync.connect (ipcpath);
 	}
 	catch (Xmms::connection_error &e) {
 		qWarning ("Couldn't establish sync connection!");
 	}
+	*/
 
 	emit gotConnection (this);
 
