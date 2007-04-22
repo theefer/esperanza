@@ -47,6 +47,7 @@
 #include "minimode.h"
 #include "jumptofiledialog.h"
 #include "lastfm.h"
+#include "medialibdialog.h"
 /*#include "collections/manager.h"*/
 
 
@@ -275,6 +276,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 	
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
+		case Qt::Key_M:
+			mlib_pressed ();
+			break;
 		case Qt::Key_Delete:
 			remove_selected ();
 			break;
@@ -337,6 +341,13 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 }
 
 void
+PlayerWidget::mlib_pressed ()
+{
+	MedialibDialog *d = new MedialibDialog (this, m_client);
+	d->show ();
+}
+
+void
 PlayerWidget::lastfm_pressed ()
 {
 	m_lastfm->show ();
@@ -385,6 +396,7 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 
 	m.addAction (tr ("Add local file"), this, SLOT (add_local_file ()));
 	m.addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
+	m.addAction (tr ("Search medialib"), this, SLOT (mlib_pressed ()));
 	m.addSeparator ();
 	/*
 	m.addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
@@ -641,7 +653,6 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		m_systray->do_notification (tr("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (m_current_id));
 	}
 }
-
 
 bool
 PlayerWidget::handle_playtime (const unsigned int &tme)
