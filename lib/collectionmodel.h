@@ -25,6 +25,11 @@ class CollectionModel : public QAbstractItemModel
 {
 	Q_OBJECT
 	public:
+	    
+	    enum {
+            MedialibIdRole = Qt::UserRole
+        };
+        
 		CollectionModel (QObject *parent, XClient *client);
 
 		int rowCount (const QModelIndex &parent) const;
@@ -34,6 +39,13 @@ class CollectionModel : public QAbstractItemModel
 		Qt::ItemFlags flags (const QModelIndex &) const;
 		QModelIndex parent (const QModelIndex &) const;
 		QModelIndex index (int row, int column, const QModelIndex &idx = QModelIndex ()) const;
+		
+        QList<unsigned int> get_idlist () const {
+            return m_plist;
+        };
+
+    signals:
+        void searchDone ();
 
 	public slots:
 		void set_collection (const Xmms::Coll::Coll &ref);

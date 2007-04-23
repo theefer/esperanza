@@ -17,14 +17,14 @@
 
 
 #include "medialibview.h"
-#include "collectionmodel.h"
+#include "medialibsearchmodel.h"
 #include <QSettings>
 #include <QHeaderView>
 
 MedialibView::MedialibView (QWidget *parent, XClient *client) : QTreeView (parent)
 {
 	m_client = client;
-	m_model = new CollectionModel (this, client);
+	m_model = new MedialibSearchModel (this, client);
 	setModel (m_model);
 
 	setIndentation (0);
@@ -63,10 +63,8 @@ MedialibView::head_size (int c, int o, int n)
 void
 MedialibView::add_id (const QModelIndex &idx)
 {
-	/*
-	uint32_t id = idx.data (MedialibSearchModel::MedialibIdRole).toUInt ();
-	m_client->playlist.addId (id, &XClient::log);
-	*/
+	uint32_t id = idx.data (CollectionModel::MedialibIdRole).toUInt ();
+    m_client->playlist.addId (id) ();
 }
 
 void
@@ -78,7 +76,6 @@ MedialibView::search_done ()
 QList<uint32_t>
 MedialibView::get_selection ()
 {
-	/*
 	QList<uint32_t> ret;
 
 	QModelIndexList lst = m_selections->selectedIndexes ();
@@ -87,17 +84,14 @@ MedialibView::get_selection ()
 		if (idx.column () != 0)
 			continue;
 
-		ret.append (idx.data (MedialibSearchModel::MedialibIdRole).toUInt ());
+		ret.append (idx.data (CollectionModel::MedialibIdRole).toUInt ());
 	}
 
 	return ret;
-	*/
 }
 
 QList<uint32_t>
 MedialibView::get_all ()
 {
-	/*
-	return m_model->get_all_id ();
-	*/
+    return m_model->get_idlist ();
 }

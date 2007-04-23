@@ -14,43 +14,27 @@
  *  GNU General Public License for more details.
  */
 
-
-
-#ifndef __MEDIALIBVIEW_H__
-#define __MEDIALIBVIEW_H__
+#ifndef __MEDIALIB_SEARCH_MODEL_H__
+#define __MEDIALIB_SEARCH_MODEL_H__
 
 #include "xclient.h"
-#include "medialibsearchmodel.h"
+#include "collectionmodel.h"
 
-#include <QTreeView>
-#include <QEvent>
-
-class MedialibView : public QTreeView
+class MedialibSearchModel : public CollectionModel
 {
 	Q_OBJECT
 	public:
-		MedialibView (QWidget *, XClient *);
-
-		void search (uint32_t p, const QString &s, bool a)
-		{
-            m_model->search (p, s, a);
-		};
-
-		QList<uint32_t> get_selection ();
-		QList<uint32_t> get_all ();
-
-	private slots:
-		void search_done ();
-		void add_id (const QModelIndex &);
-		void head_size (int, int, int);
-
-	signals:
-		void searchDone ();
-
-	private:
-		XClient *m_client;
-		MedialibSearchModel *m_model;
-		QItemSelectionModel *m_selections;
+	    enum Key {
+            ARTIST,
+            ALBUM,
+            TITLE,
+            YEAR,
+            ALL
+        };
+		MedialibSearchModel (QObject *parent, XClient *client);
+        void search (uint32_t key, const QString &, const bool &);
+    private:
+        std::string key_as_string (uint32_t);
 };
 
 #endif

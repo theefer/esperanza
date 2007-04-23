@@ -21,6 +21,7 @@
 
 #include "playerbutton.h"
 #include "progressindicator.h"
+#include "medialibsearchmodel.h"
 
 #include <QLabel>
 #include <QSettings>
@@ -50,11 +51,11 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	m_completer = NULL;
 
 	m_qb = new QComboBox (base);
-	m_qb->addItem (tr ("All"), MedialibView::SEARCH_ALL);
-	m_qb->addItem (tr ("Artist"), MedialibView::SEARCH_ARTIST);
-	m_qb->addItem (tr ("Album"), MedialibView::SEARCH_ALBUM);
-	m_qb->addItem (tr ("Title"), MedialibView::SEARCH_TITLE);
-	m_qb->addItem (tr ("Year"), MedialibView::SEARCH_YEAR);
+	m_qb->addItem (tr ("All"), MedialibSearchModel::ALL);
+	m_qb->addItem (tr ("Artist"), MedialibSearchModel::ARTIST);
+	m_qb->addItem (tr ("Album"), MedialibSearchModel::ALBUM);
+	m_qb->addItem (tr ("Title"), MedialibSearchModel::TITLE);
+	m_qb->addItem (tr ("Year"), MedialibSearchModel::YEAR);
 
 	
 	g->addWidget (m_qb, 0, 0, 1, 1);
@@ -123,15 +124,21 @@ MedialibDialog::load_compl_list (int i)
 
 	s.setValue ("medialib/searchdef", m_qb->currentIndex ());
 
-	if (t == MedialibView::SEARCH_ALL ||
-		t == MedialibView::SEARCH_TITLE)
-		return;
+	if (t == MedialibSearchModel::ALL ||
+		t == MedialibSearchModel::TITLE) {
+		    if (m_completer) {
+                delete m_completer;
+            }
+            m_completer = new QCompleter (this);
+            m_le->setCompleter (m_completer);
+            return;
+	}
 
-	if (t == MedialibView::SEARCH_ARTIST) {
+	if (t == MedialibSearchModel::ARTIST) {
 		str = std::string ("artist");
-	} else if (t == MedialibView::SEARCH_ALBUM) {
+	} else if (t == MedialibSearchModel::ALBUM) {
 		str = std::string ("album");
-	} else if (t == MedialibView::SEARCH_YEAR) {
+	} else if (t == MedialibSearchModel::YEAR) {
 		str = std::string ("year");
 	}
 
@@ -208,14 +215,11 @@ MedialibDialog::search_done ()
 void
 MedialibDialog::do_search ()
 {
-
-	/*
-	m_list->do_search (m_qb->itemData (m_qb->currentIndex ()).toUInt (),
-					   m_le->displayText (), m_cb->checkState () == Qt::Checked);
+	m_list->search (m_qb->itemData (m_qb->currentIndex ()).toUInt (),
+				    m_le->displayText (), m_cb->checkState () == Qt::Checked);
 	m_le->setEnabled (false);
 	m_cb->setEnabled (false);
 	m_indicator->setStatus (true);
-	*/
 }
 
 void

@@ -69,7 +69,7 @@ void
 CollectionModel::set_collection (const Xmms::Coll::Coll &ref)
 {
 	qDebug ("requesting data...");
-	m_client->collection.queryIds (ref)(Xmms::bind (&CollectionModel::id_list_get, this));
+	m_client->collection.queryIds (ref) (Xmms::bind (&CollectionModel::id_list_get, this));
 }
 
 bool
@@ -89,6 +89,8 @@ CollectionModel::id_list_get (Xmms::List<unsigned int> const &list)
 		m_plist.append (*list);
 	}
 	endInsertRows ();
+	
+    emit searchDone ();
 
 	return true;
 }
@@ -115,6 +117,10 @@ CollectionModel::data (const QModelIndex &index, int role) const
 		return QVariant ();
 	} else if (index.row () < 0) {
 		return QVariant ();
+	}
+	
+	if (role == MedialibIdRole) {
+        return QVariant (m_plist[index.row ()]);
 	}
 
 	if (role == Qt::SizeHintRole) {
