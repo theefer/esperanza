@@ -190,8 +190,6 @@ LastFmDialog::link_context (const QString &l)
 	if (!ac)
 		return;
 
-	PlayerWidget *pw = dynamic_cast<PlayerWidget*>(parent ());
-
 	if (ac->data ().toInt () == 2) {
 //		pw->add_random (l);
 	} else if (ac->data ().toInt () == 3) {
@@ -238,8 +236,11 @@ LastFmDialog::update_artists (const QString &artist)
 			m_labels[i]->setText (QString ("<a href='%1'>%1</a>").arg (a.name ()));
 			m_values[i]->setValue (a.match ());
 			m_artists[a.name ()] = a;
-			QString s = QString ("select count(id) as num from Media where key='artist' and value='%1'").arg (a.name ());
-			m_client->medialib.select (XClient::qToStd (s)) (boost::bind (&LastFmDialog::num_reply, this, _1, a.name ()));
+			
+			/* When collections support it we want to use some aggregation here instead */
+            Xmms::Coll::Universe univ;
+            Xmms::Coll::Match m (univ, "artist", XClient::qToStd (a.name ()));
+            m_client->collection.queryIds (m) (boost::bind (&LastFmDialog::num_reply, this, _1, a.name ()));
 		}
 	}
 
@@ -249,12 +250,14 @@ LastFmDialog::update_artists (const QString &artist)
 }
 
 bool
-LastFmDialog::num_reply (const Xmms::List<Xmms::Dict> &list, const QString &artist)
+LastFmDialog::num_reply (Xmms::List<unsigned int> const &list, const QString &artist)
 {
-	int num = (*list).get<int> ("num");
-	if (num < 1)
-		return true;
-
+    int num = 0;
+    /* we have to loop the list inorder to get the lenght :-( */
+	for (list.first (); list.isValid (); ++list) {
+		num ++;
+	}
+	
 	QString s = QString ("<a href='%1'>%1</a>").arg (artist);
 
 	for (int i = 0; i < m_labels.count (); i ++) {

@@ -59,7 +59,7 @@ class LastFmDialog : public QDialog
 		QProgressBar *m_pb;
 		QLabel *m_pl;
 
-		bool num_reply (const Xmms::List <Xmms::Dict> &, const QString &);
+        bool num_reply (Xmms::List<unsigned int> const &list, const QString &artist);
 
 		QStringList m_has_mlib;
 		QString m_current_artist;
