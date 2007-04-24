@@ -130,11 +130,13 @@ class PlaylistModel : public QAbstractItemModel
 		bool handle_change (const Xmms::Dict &chg);
 		bool handle_update_pos (const unsigned int &pos);
 		bool handle_pls_loaded (const std::string &);
+        bool handle_current_pls (const std::string &);
 
 		void getInfo (unsigned int id) const;
 
 
 		uint32_t m_current_pos;
+        bool m_isactive;
 
 		QList<QSize> m_cached_size;
 

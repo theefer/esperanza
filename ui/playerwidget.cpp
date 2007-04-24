@@ -276,11 +276,11 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 	
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
-		case Qt::Key_M:
-			mlib_pressed ();
-			break;
 		case Qt::Key_Delete:
 			remove_selected ();
+			break;
+		case Qt::Key_M:
+			mlib_pressed ();
 			break;
 		case Qt::Key_S:
 			shuffle_pressed ();

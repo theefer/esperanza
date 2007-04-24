@@ -43,20 +43,44 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &n
 
 	connect (client, SIGNAL(gotConnection (XClient *)), this, SLOT (got_connection (XClient *))); 
 	connect (client->cache (), SIGNAL(entryChanged (uint32_t)), this, SLOT (entry_changed (uint32_t)));
-
-	m_name = name;
+	
+	if (name == QLatin1String ("_active")) {
+        m_isactive = true;
+	}
+	
+    m_name = name;
 }
 
 void
 PlaylistModel::set_playlist (const QString &name)
 {
+    if (name == QLatin1String ("_active")) {
+        m_isactive = true;
+        m_client->playlist.currentActive () (Xmms::bind (&PlaylistModel::handle_current_pls, this));
+    } else {
+        m_isactive = false;
+    }
 	m_name = name;
 	m_client->playlist.listEntries (XClient::qToStd (name)) (Xmms::bind (&PlaylistModel::handle_list, this));
+}
+
+bool
+PlaylistModel::handle_current_pls (const std::string &name)
+{
+    if (m_name == QLatin1String ("_active")) {
+        m_name = XClient::stdToQ (name);
+    }
+    
+    return true;
 }
 
 void
 PlaylistModel::got_connection (XClient *client)
 {
+    if (m_isactive) {
+        client->playlist.currentActive () (Xmms::bind (&PlaylistModel::handle_current_pls, this));
+    }
+    
 	client->playlist.listEntries (XClient::qToStd (m_name)) (Xmms::bind (&PlaylistModel::handle_list, this));
 	client->playlist.currentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
@@ -71,9 +95,10 @@ PlaylistModel::got_connection (XClient *client)
 bool
 PlaylistModel::handle_pls_loaded (const std::string &name)
 {
-	if (m_name == "_active") {
+	if (m_isactive) {
 		m_client->playlist.listEntries (name)
 									   (Xmms::bind (&PlaylistModel::handle_list, this));
+        m_name = XClient::stdToQ (name);
 	}
 
 	return true;
@@ -162,6 +187,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 
 			break;
 		case XMMS_PLAYLIST_CHANGED_REMOVE:
+            qDebug ("removing %d", pos);
 			beginRemoveRows (idx, pos, pos);
 			m_plist.removeAt (pos);
 			endRemoveRows ();
