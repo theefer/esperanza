@@ -51,17 +51,18 @@ MedialibSearchModel::search (uint32_t key, const QString &search, const bool &ac
     
     /* create a collection */
     Xmms::Coll::Universe un;
-    Xmms::Coll::Equals univ (un);
+    Xmms::Coll::Coll *univ = &un;
+    Xmms::Coll::Equals eq (un, "status", "1");
+    
     if (!active) {
-        univ.setAttribute ("field", "status");
-        univ.setAttribute ("value", "1");
+        univ = &eq;
     }
     
     if (key == ALL) {
         Xmms::Coll::Union uni;
-        Xmms::Coll::Match mart (univ, "artist", val);
-        Xmms::Coll::Match malb (univ, "album", val);
-        Xmms::Coll::Match mtit (univ, "title", val);
+        Xmms::Coll::Match mart (*univ, "artist", val);
+        Xmms::Coll::Match malb (*univ, "album", val);
+        Xmms::Coll::Match mtit (*univ, "title", val);
         
         uni.addOperand (mart);
         uni.addOperand (malb);
@@ -69,7 +70,7 @@ MedialibSearchModel::search (uint32_t key, const QString &search, const bool &ac
             
         set_collection (uni);
     } else {
-        Xmms::Coll::Match match (univ, key_as_string (key), val);
+        Xmms::Coll::Match match (*univ, key_as_string (key), val);
         set_collection (match);
     }
     
