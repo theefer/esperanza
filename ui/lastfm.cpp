@@ -171,8 +171,7 @@ LastFmDialog::link_context (const QString &l)
 	QAction *ac;
 
 	QMenu m (this);
-/*	ac = m.addAction (tr ("Add %1 random songs by artist").arg (num));
-	ac->setData (2);*/
+	
 	m.addSeparator ();
 	ac = m.addAction (tr ("Open artist at Last.fm"));
 	ac->setData (3);
