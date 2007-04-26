@@ -107,10 +107,12 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	connect (m_list, SIGNAL (searchDone ()), this, SLOT (search_done ()));
 
 
-	/* set the current index in the combobox and request the completion list */
 	m_qb->setCurrentIndex (s.value ("medialib/searchdef", 0).toInt ());
-	load_compl_list (m_qb->currentIndex ());
-	connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
+    
+    if (s.value ("medialib/completion").toBool ()) {
+	    load_compl_list (m_qb->currentIndex ());
+	    connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
+    }
 }
 
 void

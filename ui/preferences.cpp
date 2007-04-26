@@ -57,6 +57,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/volumepopup", tr ("Show volume in a popup"), T_BOOL, false);
 	PREF_VALUE("ui/volumeinteractive", tr ("Change volume interactivly, could cause problems."), T_BOOL, false);
 	PREF_VALUE("lastfm/showoink", tr ("Show oink search in last.fm context"), T_BOOL, false);
+    PREF_VALUE("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), T_BOOL, true);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
 		PREF_VALUE("core/systray", tr ("Show system tray icon"), T_BOOL, true);
 		PREF_VALUE("core/donotification", tr ("Show notification on song change"), T_BOOL, true);
