@@ -73,14 +73,23 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	m_indicator = new ProgressIndicator (base);
 	g->addWidget (m_indicator, 0, 3, 1, 1);
+	
+    PlayerButton *expand = new PlayerButton (base, ":images/minmax.png");
+    g->addWidget (expand, 0, 4, 1, 1);
+    connect (expand, SIGNAL (clicked (QMouseEvent *)),
+             this, SLOT (expand_clicked ()));
+    
+    m_browser = new MedialibPaneBrowser (this, m_client);
+    m_browser->hide ();
+    g->addWidget (m_browser, 1, 0, 1, 5);
 
 	m_list = new MedialibView (base, client);
-	g->addWidget (m_list, 1, 0, 1, 4);
+	g->addWidget (m_list, 2, 0, 1, 5);
 
 	QWidget *dummy = new QWidget (base);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
 
-	g->setRowStretch (1, 1);
+	g->setRowStretch (2, 1);
 
 	m_cb = new QCheckBox (tr ("Display non-available entries"), dummy);
 	hbox->addWidget (m_cb);
@@ -99,19 +108,28 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	hbox->addWidget (plus);
 	hbox->addWidget (stop);
-	g->addWidget (dummy, 2, 0, 1, 4);
+	g->addWidget (dummy, 3, 0, 1, 5);
 	g->setMargin (1);
 
 	resize (s.value ("medialibdialog/size", QSize (500, 350)).toSize ());
 
 	connect (m_list, SIGNAL (searchDone ()), this, SLOT (search_done ()));
 
-
 	m_qb->setCurrentIndex (s.value ("medialib/searchdef", 0).toInt ());
     
     if (s.value ("medialib/completion").toBool ()) {
 	    load_compl_list (m_qb->currentIndex ());
 	    connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
+    }
+}
+
+void
+MedialibDialog::expand_clicked ()
+{
+    if (m_browser->isVisible ()) {
+        m_browser->hide ();
+    } else {
+        m_browser->show ();
     }
 }
 
@@ -212,6 +230,14 @@ MedialibDialog::search_done ()
 	m_indicator->setStatus (false);
 	m_le->setFocus (Qt::OtherFocusReason);
 	m_cb->setEnabled (true);
+}
+
+void
+MedialibDialog::extern_search (const uint32_t mode, const QString &search)
+{
+    m_qb->setCurrentIndex (m_qb->findData (QVariant (mode)));
+    m_le->setText (search);
+    do_search ();
 }
 
 void

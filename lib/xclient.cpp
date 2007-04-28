@@ -112,6 +112,38 @@ try_again:
 }
 
 void
+XClient::dictToQHash (const std::string &key,
+					  const Xmms::Dict::Variant &value,
+					  QHash<QString, QVariant> &hash)
+{
+	if (value.type () == typeid (int32_t)) {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QVariant (boost::get< int32_t > (value)));
+	} else if (value.type () == typeid (uint32_t)) {
+		hash.insert (QString::fromLatin1 (key.c_str ()),
+		             QVariant (boost::get< uint32_t > (value)));
+	} else {
+		QString val;
+		val = QString::fromUtf8 (boost::get< std::string > (value).c_str ());
+        hash.insert (stdToQ (key), QVariant (val));
+	}
+}
+
+/**
+ * convert a Xmms::Dict to a QHash<QString, QVariant>
+**/
+QHash<QString, QVariant>
+XClient::convert_dict (const Xmms::Dict &dict)
+{
+	QHash<QString, QVariant> hash;
+	dict.each (boost::bind (&XClient::dictToQHash,
+							_1, _2, boost::ref (hash)));
+
+	return hash;
+}
+
+
+void
 XClient::propDictToQHash (const std::string &key,
 						  const Xmms::Dict::Variant &value,
 						  const std::string &source,
@@ -138,11 +170,13 @@ XClient::propDictToQHash (const std::string &key,
 			val = QString::fromUtf8 (boost::get< std::string > (value).c_str ());
 		}
 
-		hash.insert (QString::fromLatin1 (key.c_str ()),
-		             QVariant (val));
+		hash.insert (stdToQ (key), QVariant (val));
 	}
 }
 
+/**
+ * convert a Xmms::PropDict to a QHash<QString, QVariant>
+**/
 QHash<QString, QVariant>
 XClient::convert_propdict (const Xmms::PropDict &dict)
 {

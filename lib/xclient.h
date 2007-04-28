@@ -52,8 +52,13 @@ class XClient : public QObject, public Xmms::Client
 									 const Xmms::Dict::Variant &value,
 									 const std::string &source,
 									 QHash<QString, QVariant> &hash);
+									 
+ 		static void dictToQHash (const std::string &key,
+                                 const Xmms::Dict::Variant &value,
+                         		 QHash<QString, QVariant> &hash);
 
 		static QHash<QString, QVariant> convert_propdict (const Xmms::PropDict &);
+		static QHash<QString, QVariant> convert_dict (const Xmms::Dict &);
 
 		XClientCache *cache () const {
 			return m_cache;

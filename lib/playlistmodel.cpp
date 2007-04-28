@@ -187,7 +187,6 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 
 			break;
 		case XMMS_PLAYLIST_CHANGED_REMOVE:
-            qDebug ("removing %d", pos);
 			beginRemoveRows (idx, pos, pos);
 			m_plist.removeAt (pos);
 			endRemoveRows ();

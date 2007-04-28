@@ -28,6 +28,7 @@
 
 #include "medialibview.h"
 #include "progressindicator.h"
+#include "medialibpanebrowser.h"
 
 class MedialibDialog : public QMainWindow
 {
@@ -38,12 +39,14 @@ class MedialibDialog : public QMainWindow
 
 		void resizeEvent (QResizeEvent *);
 		void keyPressEvent (QKeyEvent *);
-
+        void extern_search (const uint32_t mode, const QString &search);
+        
 	private slots:
 		void do_search ();
 		void search_done ();
 		void plus_pressed (QMouseEvent *);
 		void load_compl_list (int);
+        void expand_clicked ();
 
 	private:
 		bool compl_reply (const Xmms::List < Xmms::Dict > &);
@@ -58,6 +61,7 @@ class MedialibDialog : public QMainWindow
 		XClient *m_client;
 
 		ProgressIndicator *m_indicator;
+        MedialibPaneBrowser *m_browser;
 
 		std::string m_currentsel;
 };
