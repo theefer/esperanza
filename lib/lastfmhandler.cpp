@@ -15,16 +15,16 @@
  */
 
 
-#include "xmlhandler.h"
+#include "lastfmhandler.h"
 
 #include <QXmlContentHandler>
 
-XmlHandler::XmlHandler () : QXmlDefaultHandler ()
+LastFmHandler::LastFmHandler () : QXmlDefaultHandler ()
 {
 }
 
 bool
-XmlHandler::characters (const QString &s)
+LastFmHandler::characters (const QString &s)
 {
 	if (m_type == SIMILARARTIST) {
 		m_artist.setNextAttrib (s);
@@ -34,13 +34,13 @@ XmlHandler::characters (const QString &s)
 }
 
 bool
-XmlHandler::endDocument ()
+LastFmHandler::endDocument ()
 {
 	return true;
 }
 
 bool
-XmlHandler::endElement (const QString &namespaceURI, const QString &localName, const QString &qName)
+LastFmHandler::endElement (const QString &namespaceURI, const QString &localName, const QString &qName)
 {
 	if (qName == "artist") {
 		m_artists.append (m_artist);
@@ -53,10 +53,10 @@ XmlHandler::endElement (const QString &namespaceURI, const QString &localName, c
 }
 
 bool
-XmlHandler::startElement (const QString &namespaceURI,
-						  const QString &localName,
-						  const QString &qName,
-						  const QXmlAttributes &atts)
+LastFmHandler::startElement (const QString &namespaceURI,
+							 const QString &localName,
+							 const QString &qName,
+							 const QXmlAttributes &atts)
 {
 	if (qName == "similarartists") {
 		m_type = SIMILARARTIST;

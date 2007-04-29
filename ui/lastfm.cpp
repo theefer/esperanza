@@ -233,7 +233,7 @@ LastFmDialog::update_artists (const QString &artist)
 		} else {
 			LastFmArtist a = l.at (i);
 			m_labels[i]->setText (QString ("<a href='%1'>%1</a>").arg (a.name ()));
-			m_values[i]->setValue (a.match ());
+			m_values[i]->setValue ((uint32_t)a.match ());
 			m_artists[a.name ()] = a;
 			
 			/* When collections support it we want to use some aggregation here instead */

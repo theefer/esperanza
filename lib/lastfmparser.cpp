@@ -16,7 +16,7 @@
 
 
 #include "lastfmparser.h"
-#include "xmlhandler.h"
+#include "lastfmhandler.h"
 #include "lastfmartist.h"
 
 #include <QHttp>
@@ -27,7 +27,7 @@ LastFmParser::LastFmParser (QObject *parent) : QObject (parent)
 {
 	m_http = new QHttp (this);
 	connect (m_http, SIGNAL (requestFinished (int, bool)), this, SLOT (request_done (int, bool)));
-	m_xml.setContentHandler (new XmlHandler ());
+	m_xml.setContentHandler (new LastFmHandler ());
 }
 
 void
@@ -52,7 +52,7 @@ LastFmParser::request_done (int id, bool err)
 bool
 LastFmParser::parse_xml (const QByteArray &b, int id)
 {
-	XmlHandler *x = dynamic_cast<XmlHandler*> (m_xml.contentHandler ());
+	LastFmHandler *x = dynamic_cast<LastFmHandler*> (m_xml.contentHandler ());
 	QXmlInputSource s;
 	s.setData (b);
 
@@ -60,7 +60,7 @@ LastFmParser::parse_xml (const QByteArray &b, int id)
 
 	m_xml.parse (s);
 
-	if (x->type () == XmlHandler::SIMILARARTIST) {
+	if (x->type () == LastFmHandler::SIMILARARTIST) {
 		QList<LastFmArtist> l = x->artist_list ();
 		m_cache[m_cache_map[id]] = l;
 		emit gotData (m_cache_map[id]);

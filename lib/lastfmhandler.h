@@ -15,16 +15,16 @@
  */
 
 
-#ifndef __XMLHANDLER_H__
-#define __XMLHANDLER_H__
+#ifndef __LASTFMHANDLER_H__
+#define __LASTFMHANDLER_H__
 
 #include <QXmlDefaultHandler>
 #include "lastfmartist.h"
 
-class XmlHandler : public QXmlDefaultHandler
+class LastFmHandler : public QXmlDefaultHandler
 {
 	public:
-		XmlHandler ();
+		LastFmHandler ();
 
 		enum {
 			NONE,
