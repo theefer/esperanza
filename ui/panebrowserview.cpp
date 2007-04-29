@@ -14,6 +14,8 @@
  *  GNU General Public License for more details.
  */
 
+#include "xclient.h"
+
 #include "panebrowserview.h"
 #include "collectioninfomodel.h"
 
@@ -29,6 +31,7 @@ PaneBrowserView::PaneBrowserView (QWidget *parent, XClient *client, const QStrin
 	setTextElideMode (Qt::ElideNone);
 	
     m_view = view;
+    m_client = client;
 
 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
 	
@@ -39,28 +42,50 @@ PaneBrowserView::PaneBrowserView (QWidget *parent, XClient *client, const QStrin
     m_selection = new QItemSelectionModel (m_model);
     setSelectionModel (m_selection);
     
+    m_parentcoll = &m_univ;
+        
     connect (this, SIGNAL (clicked (const QModelIndex &)), this, SLOT (item_clicked (const QModelIndex &)));
+    connect (this, SIGNAL (doubleClicked (const QModelIndex &)), this, SLOT (item_dbclicked (const QModelIndex &)));
+}
+
+void
+PaneBrowserView::item_dbclicked (const QModelIndex &idx)
+{
+    const char * const order[] = {"artist", "album", "tracknr", "id"};
+    static std::list<std::string> o (order, order + 4);
+    
+    QString val = idx.data(0).toString ();
+    if (val == tr ("[ All ]")) {
+        Xmms::Coll::Equals eq (*m_parentcoll, "status", "1");
+        m_client->playlist.addCollection (eq, o) ();
+    } else {
+        Xmms::Coll::Equals eq (*m_parentcoll, XClient::qToStd (m_view),
+                               XClient::qToStd (val));    
+        m_client->playlist.addCollection (eq, o) ();                   
+    }
 }
 
 void
 PaneBrowserView::item_clicked (const QModelIndex &idx)
 {
-    emit filter (idx.data(0).toString ());
+    QString val = idx.data(0).toString ();
+    if (val == tr ("[ All ]")) {
+        Xmms::Coll::Equals eq (*m_parentcoll, "status", "1");
+        emit filter (eq);
+    } else {
+        Xmms::Coll::Equals eq (*m_parentcoll, XClient::qToStd (m_view),
+                               XClient::qToStd (val));                       
+        emit filter (eq);
+    }
 }
 
 void
-PaneBrowserView::item_filter (const QString &filter)
+PaneBrowserView::item_filter (const Xmms::Coll::Equals &coll)
 {
-    QString f (filter);
-    f.push_front ("%");
-    f.push_back ("%");
+    QStringList sl (m_view);
     
-    Xmms::Coll::Universe un;
-    /* FIXME: shortcut fulhack */
-    if (filter != tr ("[ All ]")) {
-        Xmms::Coll::Match match (un, "artist", XClient::qToStd (f));
-        m_model->set_collection (match, QStringList (m_view), QStringList (m_view), QStringList (m_view));
-    } else {
-        m_model->set_collection (un, QStringList (m_view), QStringList (m_view), QStringList (m_view));
-    }
+    m_equals = coll;
+    m_parentcoll = &m_equals;
+    
+    m_model->set_collection (coll, sl, sl, sl);
 }

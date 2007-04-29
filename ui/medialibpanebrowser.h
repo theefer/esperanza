@@ -22,7 +22,6 @@
 class MedialibPaneBrowser;
  
 #include "medialibdialog.h"
-
 #include "panebrowserview.h"
 
 #include <QWidget>
@@ -35,8 +34,7 @@ class MedialibPaneBrowser : public QWidget
         MedialibPaneBrowser (QWidget *, XClient *);
         
     private slots:
-        void artist_filter (const QString &filter);
-        void album_filter (const QString &filter);
+        void set_filter (const Xmms::Coll::Equals &);
         
     private:
         XClient *m_client;
@@ -44,8 +42,7 @@ class MedialibPaneBrowser : public QWidget
         QHBoxLayout *m_box;
         PaneBrowserView *m_artists;
         PaneBrowserView *m_albums;
-        MedialibDialog *m_parent;
-        
+        MedialibDialog *m_parent;        
 };
 
 #endif

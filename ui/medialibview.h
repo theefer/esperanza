@@ -38,6 +38,11 @@ class MedialibView : public QTreeView
 
 		QList<uint32_t> get_selection ();
 		QList<uint32_t> get_all ();
+		
+        void set_collection (const Xmms::Coll::Coll &coll)
+        {
+            m_model->set_collection (coll);
+        };
 
 	private slots:
 		void search_done ();

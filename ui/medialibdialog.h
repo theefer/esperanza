@@ -26,6 +26,8 @@
 #include <QMainWindow>
 #include <QCompleter>
 
+class MedialibDialog;
+
 #include "medialibview.h"
 #include "progressindicator.h"
 #include "medialibpanebrowser.h"
@@ -39,7 +41,10 @@ class MedialibDialog : public QMainWindow
 
 		void resizeEvent (QResizeEvent *);
 		void keyPressEvent (QKeyEvent *);
-        void extern_search (const uint32_t mode, const QString &search);
+        void set_list_coll (const Xmms::Coll::Coll &coll)
+        {
+            m_list->set_collection (coll);
+        };
         
 	private slots:
 		void do_search ();

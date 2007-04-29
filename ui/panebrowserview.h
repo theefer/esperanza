@@ -19,6 +19,7 @@
 
 #include "xclient.h"
 
+class PaneBrowserView; 
 #include "collectioninfomodel.h"
 
 #include <QWidget>
@@ -31,11 +32,12 @@ class PaneBrowserView : public QTreeView
         PaneBrowserView (QWidget *, XClient *, const QString &);
     
     public slots:
-        void item_filter (const QString &);
+        void item_filter (const Xmms::Coll::Equals &);
         void item_clicked (const QModelIndex &);
+        void item_dbclicked (const QModelIndex &);
         
     signals:
-        void filter (const QString &);
+        void filter (const Xmms::Coll::Equals &);
         
     private:
         XClient *m_client;
@@ -43,6 +45,10 @@ class PaneBrowserView : public QTreeView
         QItemSelectionModel *m_selection;
         QString m_view;
         
+        Xmms::Coll::Universe m_univ;
+        Xmms::Coll::Equals m_equals;
+
+        Xmms::Coll::Coll *m_parentcoll;
 };
 
 #endif

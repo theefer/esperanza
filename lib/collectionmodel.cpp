@@ -68,7 +68,6 @@ CollectionModel::got_connection (XClient *client)
 void
 CollectionModel::set_collection (const Xmms::Coll::Coll &ref)
 {
-	qDebug ("requesting data...");
 	m_client->collection.queryIds (ref) (Xmms::bind (&CollectionModel::id_list_get, this));
 }
 

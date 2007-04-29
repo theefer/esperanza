@@ -33,19 +33,18 @@ MedialibPaneBrowser::MedialibPaneBrowser (QWidget *parent, XClient *client) :
     m_albums = new PaneBrowserView (this, m_client, "album");
     m_box->addWidget (m_albums);
     
-    connect (m_artists, SIGNAL (filter (const QString &)), m_albums, SLOT (item_filter (const QString &)));
-    connect (m_artists, SIGNAL (filter (const QString &)), this, SLOT (artist_filter (const QString &)));
-    connect (m_albums, SIGNAL (filter (const QString &)), this, SLOT (album_filter (const QString &)));
+    connect (m_artists, SIGNAL (filter (const Xmms::Coll::Equals &)),
+             m_albums, SLOT (item_filter (const Xmms::Coll::Equals &)));
+             
+    connect (m_artists, SIGNAL (filter (const Xmms::Coll::Equals &)),
+             this, SLOT (set_filter (const Xmms::Coll::Equals &)));
+             
+    connect (m_albums, SIGNAL (filter (const Xmms::Coll::Equals &)),
+             this, SLOT (set_filter (const Xmms::Coll::Equals &)));
 }
 
 void
-MedialibPaneBrowser::artist_filter (const QString &filter)
+MedialibPaneBrowser::set_filter (const Xmms::Coll::Equals &coll)
 {
-    m_parent->extern_search (MedialibSearchModel::ARTIST, filter);
-}
-
-void
-MedialibPaneBrowser::album_filter (const QString &filter)
-{
-    m_parent->extern_search (MedialibSearchModel::ALBUM, filter);
+    m_parent->set_list_coll (coll);
 }

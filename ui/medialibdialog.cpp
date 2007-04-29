@@ -80,7 +80,12 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
              this, SLOT (expand_clicked ()));
     
     m_browser = new MedialibPaneBrowser (this, m_client);
-    m_browser->hide ();
+    if (!s.value ("medialib/paneopen", false).toBool ()) {
+        m_browser->hide ();
+    } else {
+        m_le->setEnabled (false);
+        m_qb->setEnabled (false);
+    }
     g->addWidget (m_browser, 1, 0, 1, 5);
 
 	m_list = new MedialibView (base, client);
@@ -117,30 +122,46 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	m_qb->setCurrentIndex (s.value ("medialib/searchdef", 0).toInt ());
     
-    if (s.value ("medialib/completion").toBool ()) {
-	    load_compl_list (m_qb->currentIndex ());
-	    connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
-    }
+	load_compl_list (m_qb->currentIndex ());
+    connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
 }
 
 void
 MedialibDialog::expand_clicked ()
 {
+    QSettings s;
+    
     if (m_browser->isVisible ()) {
         m_browser->hide ();
+        m_le->setEnabled (true);
+        m_qb->setEnabled (true);
+        load_compl_list (m_qb->currentIndex ());
+        s.setValue ("medialib/paneopen", QVariant (false));
     } else {
         m_browser->show ();
+        m_le->setEnabled (false);
+        m_qb->setEnabled (false);
+        s.setValue ("medialib/paneopen", QVariant (true));
     }
 }
 
 void
 MedialibDialog::load_compl_list (int i)
 {
+    QSettings s;
+    
+    if (s.value ("medialib/paneopen").toBool ()) {
+        return;
+    }
+        
+    if (!s.value ("medialib/completion").toBool ()) {
+        return;
+    }
+
 	int t = m_qb->itemData (i).toInt ();
 	Xmms::Coll::Universe univ;
 	std::list <std::string> arg;
 	std::string str;
-	QSettings s;
 
 	s.setValue ("medialib/searchdef", m_qb->currentIndex ());
 
@@ -226,18 +247,12 @@ MedialibDialog::plus_pressed (QMouseEvent *ev)
 void
 MedialibDialog::search_done ()
 {
-	m_le->setEnabled (true);
-	m_indicator->setStatus (false);
-	m_le->setFocus (Qt::OtherFocusReason);
-	m_cb->setEnabled (true);
-}
-
-void
-MedialibDialog::extern_search (const uint32_t mode, const QString &search)
-{
-    m_qb->setCurrentIndex (m_qb->findData (QVariant (mode)));
-    m_le->setText (search);
-    do_search ();
+    if (!m_browser->isVisible ()) {
+	    m_le->setEnabled (true);
+	    m_indicator->setStatus (false);
+	    m_le->setFocus (Qt::OtherFocusReason);
+	    m_cb->setEnabled (true);
+    }
 }
 
 void
