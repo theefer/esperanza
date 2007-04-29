@@ -77,16 +77,16 @@ browser:
 		} else {
 			path = sd.get_path ();
 		}
+		
+		if (path == "local") {
+			p = NULL;
+		} else if (path.isNull ()) {
+			return EXIT_FAILURE;
+		} else {
+			p = path.toAscii ().data ();
+		}
 	} else {
 		p = getenv ("XMMS_PATH");
-	}
-
-	if (path == "local") {
-		p = NULL;
-	} else if (path.isNull ()) {
-		return EXIT_FAILURE;
-	} else {
-		p = path.toAscii ().data ();
 	}
 
 	if (!client.connect (p)) {
