@@ -20,6 +20,12 @@
 #include <QSettings>
 #include <QFileDialog>
 #include <QString>
+#include <QFileInfo>
+
+/**
+ * TODO: this code might not be very smart, because it parses the
+ * return strings and takes the last directory from the filenames.
+ */
 
 
 FileDialog::FileDialog (QWidget *parent, const QString &name, const bool &remote) : QFileDialog (parent)
@@ -47,15 +53,16 @@ QStringList
 FileDialog::getFiles ()
 {
 	QSettings s;
+	QStringList ret;
 
-	setFileMode (ExistingFiles);
-	if (!exec())
-		return QStringList ();
-	QStringList ret = selectedFiles ();
-	s.setValue ("filedialog/" + m_name, directory ().absolutePath ());
+	ret = getOpenFileNames (NULL, tr ("Select music files"),
+							directory ().absolutePath ());
+	if (ret.size () > 0) { 
+        QString d = QFileInfo (ret[0]).absolutePath ();
+        s.setValue ("filedialog/" + m_name, d);
+    }
 
 	qSort (ret);
-
 	return ret;
 }
 
@@ -63,11 +70,11 @@ QString
 FileDialog::getDirectory ()
 {
 	QSettings s;
-	setFileMode (DirectoryOnly);
-	if (!exec ())
-		return QString();
-	QString ret = directory ().absolutePath ();
-	s.setValue ("filedialog/" + m_name, ret);
+    QString ret;
+    
+	ret = getExistingDirectory (NULL, tr ("Select music directory"),
+							     directory ().absolutePath ());
+    QString d = QFileInfo (ret).absolutePath ();
+    s.setValue ("filedialog/" + m_name, d);
 	return ret;
-
 }

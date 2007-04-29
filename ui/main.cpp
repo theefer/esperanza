@@ -60,8 +60,9 @@ main (int argc, char **argv)
 	MDNSQuery mdns (NULL);
 	mdns.browse_service ("_xmms2._tcp");
 
-	/* init our fileengine */
+	/*
 	RemoteFileHandler handler (&client);
+	*/
 
 	QString path;
 
