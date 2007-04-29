@@ -47,6 +47,8 @@ class LastFmDialog : public QDialog
 		void set_top_albums ();
 		void set_top_tracks ();
 
+		void showEvent (QShowEvent *);
+
 	private:
 		QList< QLabel* > m_labels;
 		QList< ValueBar* > m_values;

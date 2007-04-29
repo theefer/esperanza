@@ -269,11 +269,21 @@ LastFmDialog::num_reply (Xmms::List<unsigned int> const &list, const QString &ar
 }
 
 void
+LastFmDialog::showEvent (QShowEvent *ev)
+{
+	new_id (m_current);
+}
+
+void
 LastFmDialog::new_id (uint32_t id)
 {
 	QHash<QString, QVariant> minfo = m_client->cache ()->get_info (id);
 	if (m_current != id) {
 		m_current = id;
+	}
+
+	if (!isVisible ()) {
+		return;
 	}
 
 	if (!minfo.contains ("artist"))
