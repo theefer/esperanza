@@ -43,8 +43,8 @@ class LastFmArtist
 			return m_attribs["name"];
 		};
 		
-		int match () const {
-			return m_attribs["match"].toInt ();
+		float match () const {
+			return m_attribs["match"].toFloat ();
 		};
 
 		QString prop (const QString &s) const {

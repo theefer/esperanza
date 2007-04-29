@@ -44,7 +44,7 @@ LastFmParser::request_done (int id, bool err)
 	if (!b) {
 		return;
 	}
-
+	
 	parse_xml (b->buffer (), id);
 	delete b;
 }
@@ -59,7 +59,6 @@ LastFmParser::parse_xml (const QByteArray &b, int id)
 	x->reset ();
 
 	m_xml.parse (s);
-
 
 	if (x->type () == XmlHandler::SIMILARARTIST) {
 		QList<LastFmArtist> l = x->artist_list ();
