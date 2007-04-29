@@ -52,3 +52,4 @@ class PaneBrowserView : public QTreeView
 };
 
 #endif
+

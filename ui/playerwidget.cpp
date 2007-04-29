@@ -75,7 +75,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	QHBoxLayout *pflay = new QHBoxLayout ();
 	pflay->setMargin (0);
 
-	m_pf = new ProgressFrame (this);
+	m_pf = new ProgressFrame (this, client);
 	pflay->addWidget (m_pf);
 	pflay->setStretchFactor (m_pf, 1);
 

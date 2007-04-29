@@ -89,3 +89,4 @@ CollectionInfoModel::info_callback (const Xmms::List<Xmms::Dict> &list)
 	
     return true;
 }
+

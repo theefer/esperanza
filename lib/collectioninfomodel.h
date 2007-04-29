@@ -42,3 +42,4 @@ class CollectionInfoModel : public QStandardItemModel
 };
 
 #endif
+

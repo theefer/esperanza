@@ -40,7 +40,7 @@
 #include <QPainter>
 
 
-ProgressFrame::ProgressFrame( QWidget *parent ) :
+ProgressFrame::ProgressFrame (QWidget *parent, XClient *client) :
     QFrame( parent ),
     m_drawBackground( true ),
     m_drawTime( false ),
@@ -63,6 +63,7 @@ ProgressFrame::ProgressFrame( QWidget *parent ) :
     setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
     setLineWidth( 1 );
 
+	m_client = client;
 }
 
 
@@ -284,6 +285,11 @@ ProgressFrame::mousePressEvent (QMouseEvent *event)
 	QPoint p = mapTo (window (), event->pos ());
 	m_diffx = p.x ();
 	m_diffy = p.y ();
+
+	float pro = (float) m_diffx / (float) width ();
+	uint32_t m = (uint32_t) (pro * m_maxValue * 1000);
+
+	m_client->playback.seekMs (m) ();
 }
 
 void

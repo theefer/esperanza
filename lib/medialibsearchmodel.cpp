@@ -75,3 +75,4 @@ MedialibSearchModel::search (uint32_t key, const QString &search, const bool &ac
     }
     
 }
+

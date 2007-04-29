@@ -72,3 +72,4 @@ class MedialibDialog : public QMainWindow
 };
 
 #endif
+

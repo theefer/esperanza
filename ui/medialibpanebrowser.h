@@ -46,3 +46,4 @@ class MedialibPaneBrowser : public QWidget
 };
 
 #endif
+

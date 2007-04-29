@@ -39,6 +39,8 @@
 #ifndef PROGRESSFRAME_H
 #define PROGRESSFRAME_H
 
+#include "xclient.h"
+
 #include <QtGui>
 
 class ProgressFrame : public QFrame
@@ -46,7 +48,7 @@ class ProgressFrame : public QFrame
     Q_OBJECT
 
     public:
-        ProgressFrame( QWidget *parent = 0 );
+        ProgressFrame (QWidget *parent, XClient *client);
 
         void clear() { stop(); setText( "" ); m_timerText = ""; }
 
@@ -125,6 +127,8 @@ class ProgressFrame : public QFrame
 		bool m_move;
 		uint32_t m_diffx;
 		uint32_t m_diffy;
+
+		XClient *m_client;
 
     private slots:
         void updateTimer() { setValue( value() + 1 ); }
