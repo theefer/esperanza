@@ -41,6 +41,15 @@ XClientCache::got_connection (XClient *client)
 }
 
 bool
+XClientCache::handle_medialib_info_error (const std::string &error, uint32_t id)
+{
+    /* we probably couldn't find that entry, let's remove it */
+    m_info.remove (id);
+    emit entryRemoved (id);
+    return true;
+}
+
+bool
 XClientCache::handle_medialib_info (const Xmms::PropDict &info)
 {
 	int32_t id = info.get<int32_t> ("id");
@@ -66,9 +75,15 @@ XClientCache::extra_info_get (uint32_t id, const QString &name)
 }
 
 void
-XClientCache::remove (uint32_t id)
+XClientCache::invalidate (uint32_t id)
 {
-	/* implement later */
+    m_info.remove (id);
+}
+
+void
+XClientCache::invalidate_all ()
+{
+    m_info.clear ();
 }
 
 bool
@@ -125,7 +140,8 @@ QHash<QString, QVariant>
 XClientCache::get_info (uint32_t id)
 {
 	if (!m_info.contains (id)) {
-		m_client->medialib.getInfo (id) (Xmms::bind (&XClientCache::handle_medialib_info, this));
+		m_client->medialib.getInfo (id) (Xmms::bind (&XClientCache::handle_medialib_info, this),
+		                                 boost::bind (&XClientCache::handle_medialib_info_error, this, _1, id));
 		m_info[id] = QHash<QString, QVariant> ();
 	}
 

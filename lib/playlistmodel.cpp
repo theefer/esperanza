@@ -187,13 +187,15 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 
 			break;
 		case XMMS_PLAYLIST_CHANGED_REMOVE:
+            m_client->cache ()->invalidate (m_plist[pos]);
 			beginRemoveRows (idx, pos, pos);
 			m_plist.removeAt (pos);
-			endRemoveRows ();
+			endRemoveRows ();			
 			break;
 		case XMMS_PLAYLIST_CHANGED_SHUFFLE:
 		case XMMS_PLAYLIST_CHANGED_SORT:
 		case XMMS_PLAYLIST_CHANGED_CLEAR:
+            m_client->cache ()->invalidate_all ();
 			m_client->playlist.listEntries () (Xmms::bind (&PlaylistModel::handle_list, this));
 			break;
 	}

@@ -42,7 +42,8 @@ class XClientCache : public QObject
 		QVariant extra_info_get (uint32_t, const QString &);
 
 		void extra_info_set (uint32_t, const QString &, const QVariant &);
-		void remove (uint32_t);
+		void invalidate (uint32_t);
+        void invalidate_all ();
 
 		bool extra_info_has (uint32_t id, const QString &s) {
 			if (m_extra_info.contains (id))
@@ -53,12 +54,15 @@ class XClientCache : public QObject
 
 	signals:
 		void entryChanged (uint32_t);
+        void entryRemoved (uint32_t);
 
 	public slots:
 		void got_connection (XClient *);
 
 	private:
 		bool handle_medialib_info (const Xmms::PropDict &info);
+        bool handle_medialib_info_error (const std::string &, uint32_t);
+        
 		bool handle_mlib_entry_changed (const uint32_t &id);
 		bool handle_bindata (const Xmms::bin &, const QString &);
 
