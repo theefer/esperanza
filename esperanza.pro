@@ -61,13 +61,13 @@ HEADERS += ui/playlistview.h ui/playerwidget.h ui/progressframe.h ui/playerbutto
 	       ui/serverdialog.h ui/preferences.h ui/progressindicator.h ui/volumebar.h ui/preferencessupport.h \
 		   ui/textdialog.h ui/systemtray.h ui/infowindow.h ui/minimode.h ui/jumptofiledialog.h ui/lastfm.h \
 		   ui/valuebar.h ui/fancyplaylistview.h ui/medialibdialog.h ui/medialibview.h ui/medialibpanebrowser.h \
-		   ui/panebrowserview.h
+		   ui/panebrowserview.h ui/streamingdialog.h
 
 SOURCES += ui/main.cpp ui/playlistview.cpp ui/playerwidget.cpp ui/progressframe.cpp ui/playerbutton.cpp \
 	       ui/filedialog.cpp ui/serverdialog.cpp ui/preferences.cpp ui/progressindicator.cpp ui/volumebar.cpp \
 		   ui/preferencessupport.cpp ui/textdialog.cpp ui/systemtray.cpp ui/infowindow.cpp ui/minimode.cpp \
 		   ui/jumptofiledialog.cpp ui/lastfm.cpp ui/valuebar.cpp ui/fancyplaylistview.cpp ui/medialibdialog.cpp \
-		   ui/medialibview.cpp ui/medialibpanebrowser.cpp ui/panebrowserview.cpp
+		   ui/medialibview.cpp ui/medialibpanebrowser.cpp ui/panebrowserview.cpp ui/streamingdialog.cpp
 
 # Collection manager
 #HEADERS += collections/manager.h collections/collectionlist.h collections/collectionview.h collections/collectionmodel.h collections/propertyeditor.h collections/propertyrow.h

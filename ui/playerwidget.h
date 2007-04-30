@@ -76,6 +76,7 @@ class PlayerWidget : public QMainWindow
 		void add_url ();
 		void min_pressed ();
 		void mlib_pressed ();
+		void streaming_pressed ();
 
 		void remove_selected ();
 		void remove_all ();
