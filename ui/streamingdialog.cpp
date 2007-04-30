@@ -23,6 +23,8 @@
 #include <QGridLayout>
 #include <QResizeEvent>
 #include <QInputDialog>
+#include <QDateTime>
+#include <QHeaderView>
 
 StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -64,8 +66,6 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 	resize (s.value ("streamingdialog/size", QSize (500, 350)).toSize ());
 }
 
-Q_DECLARE_METATYPE(QList<quint32>)
-
 void
 StreamingDialog::add_pressed ()
 {
@@ -74,14 +74,22 @@ StreamingDialog::add_pressed ()
 										 tr ("URL:"), QLineEdit::Normal,
 										 "http://", &ok);
 	if (ok) {
-		m_client->medialib.addEntry (XClient::qToStd (url)) ();
-		m_client->medialib.getID (XClient::qToStd (url)) (Xmms::bind (&StreamingDialog::handle_id, this));
+		m_client->medialib.addEntry (XClient::qToStd (url)) (boost::bind (&StreamingDialog::added_cb, this, url));
 	}
+}
+
+bool
+StreamingDialog::added_cb (const QString &url)
+{
+	qDebug ("url added!");
+	m_client->medialib.getID (XClient::qToStd (url)) (Xmms::bind (&StreamingDialog::handle_id, this));
+	return true;
 }
 
 bool
 StreamingDialog::handle_id (uint32_t id)
 {
+	qDebug ("adding bookmark!");
 	m_bookmarks->add_bookmark (id);
 	return true;
 }
@@ -102,10 +110,14 @@ StreamingBookmarks::StreamingBookmarks (QWidget *parent, XClient *client) : QTre
 	setTabKeyNavigation (false);
 	setTextElideMode (Qt::ElideNone);
 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
+	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+	setTextElideMode (Qt::ElideRight);
 
 	m_client = client;
 	connect (m_client->cache (), SIGNAL (entryChanged (uint32_t)), this, SLOT (entry_update (uint32_t)));
 	m_model = new QStandardItemModel (this);
+	setModel (m_model);
+	fill_bookmarks ();
 }
 
 void
@@ -115,32 +127,92 @@ StreamingBookmarks::fill_bookmarks ()
 
 	m_model->clear ();
 
-	m_model->setColumnCount (3);
+	m_model->setColumnCount (4);
 	QStringList headers;
 	headers.append (QString ("Name"));
+	headers.append (QString ("Track"));
 	headers.append (QString ("Play count"));
-	headers.append (QString ("Last time played"));
+	headers.append (QString ("Last played"));
 	m_model->setHorizontalHeaderLabels (headers);
 
-	setModel (m_model);
+	header ()->setResizeMode (0, QHeaderView::Stretch);
+	header ()->setResizeMode (1, QHeaderView::Stretch);
+	header ()->setStretchLastSection (false);
 
-	QList<quint32> list = s.value ("streamingdialog/bookmarks").value<QList < quint32 > > ();
+	QStringList list = s.value ("streamingdialog/bookmarks").toStringList ();
 	for (int i = 0; i < list.size (); i++) {
-		add_bookmark (list.value (i));
+		add_bookmark (list.value (i).toUInt ());
 	}
 }
 
 void
 StreamingBookmarks::add_bookmark (uint32_t id)
 {
-	QStandardItem *item;
-	QHash<QString, QVariant> h = m_client->cache ()->get_info (id);
-	if (h.contains ("channel")) {
-		item = new QStandardItem (h["channel"].toString ());
-	} else {
-		item = new QStandardItem (QString::number (id));
+	QSettings s;
+
+	QStringList l = s.value("streamingdialog/bookmarks").toStringList ();
+	if (!l.contains (QString::number (id))) {
+		l.append (QString::number (id));
+		s.setValue ("streamingdialog/bookmarks", l);
 	}
-	m_items[id] = item;
+
+	QList<QStandardItem *> list;
+	QStandardItem *text, *track, *playcount, *ltime;
+	QHash<QString, QVariant> h = m_client->cache ()->get_info (id);
+
+	text = new QStandardItem;
+	track = new QStandardItem;
+	playcount = new QStandardItem;
+	ltime = new QStandardItem;
+
+	list.append (text);
+	list.append (track);
+	list.append (playcount);
+	list.append (ltime);
+
+	set_attributes (h, list);
+
+	m_items[id] = list;
+
+	m_model->appendRow (list);
+}
+
+void
+StreamingBookmarks::set_attributes (const QHash<QString, QVariant> &h, const QList<QStandardItem *> &list)
+{
+	QStandardItem *text = list[0];
+	QStandardItem *track = list[1];
+	QStandardItem *playcount = list[2];
+	QStandardItem *ltime = list[3];
+
+	if (h.contains ("channel")) {
+		text->setText (h["channel"].toString ());
+	} else {
+		if (h.contains ("url")) {
+			text->setText (h["url"].toString ());
+		} else {
+			text->setText (tr ("Getting info..."));
+		}
+	}
+	if (h.contains ("title")) {
+		track->setText (h["title"].toString ());
+	} else {
+		track->setText (tr ("N/A"));
+	}
+	if (h.contains ("timesplayed") && h["timesplayed"].toUInt () > 0) {
+		playcount->setText (h["timesplayed"].toString ());
+	} else {
+		playcount->setText (tr ("Never"));
+	}
+	if (h.contains ("laststarted")) {
+		QDateTime dt = QDateTime::fromTime_t (h["laststarted"].toUInt ());
+		ltime->setText (dt.toString ("yy.MM.dd hh:mm"));
+	} else {
+		ltime->setText (tr ("Never"));
+	}
+
+	playcount->setTextAlignment (Qt::AlignRight);
+	ltime->setTextAlignment (Qt::AlignRight);
 }
 
 void
@@ -148,11 +220,7 @@ StreamingBookmarks::entry_update (uint32_t id)
 {
 	if (m_items.contains (id)) {
 		QHash<QString, QVariant> h = m_client->cache ()->get_info (id);
-		QStandardItem *item = m_items[id];
-		if (h.contains ("channel")) {
-			item->setText (h["channel"].toString ());
-		} else if (h.contains ("url")) {
-			item->setText (h["url"].toString ());
-		}
+		QList<QStandardItem *> list = m_items[id];
+		set_attributes (h, list);
 	}
 }

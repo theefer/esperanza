@@ -39,11 +39,12 @@ class StreamingBookmarks : public QTreeView
 
 	private:
 		void fill_bookmarks ();
+		void set_attributes (const QHash<QString, QVariant> &, const QList<QStandardItem *> &);
 
 		XClient *m_client;
 		QStandardItemModel *m_model;
 
-		QHash<uint32_t, QStandardItem*> m_items;
+		QHash<uint32_t, QList <QStandardItem*> > m_items;
 };
 
 class StreamingDialog : public QMainWindow
@@ -54,12 +55,14 @@ class StreamingDialog : public QMainWindow
 
 		void resizeEvent (QResizeEvent *);
 
-		bool handle_id (uint32_t);
 
 	private slots:
 		void add_pressed ();
 
 	private:
+		bool added_cb (const QString &);
+		bool handle_id (uint32_t);
+
 		QTabWidget *m_tab;
 		XClient *m_client;
 		StreamingBookmarks *m_bookmarks;
