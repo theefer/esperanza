@@ -25,6 +25,7 @@ class XClient;
 #include <QObject>
 #include <QHash>
 #include <QVariant>
+#include <QDir>
 
 #include "xclientcache.h"
 
@@ -45,9 +46,7 @@ class XClient : public QObject, public Xmms::Client
 	public:
 		XClient (QObject *, const std::string &);
 
-		static bool log ();
-		static bool dummy_uint (const uint32_t &);
-		bool connect (const char *path = NULL);
+		bool connect (const char *path = NULL, const bool &sync = false);
 		static void propDictToQHash (const std::string &key,
 									 const Xmms::Dict::Variant &value,
 									 const std::string &source,
@@ -74,6 +73,12 @@ class XClient : public QObject, public Xmms::Client
 
 		static QString stdToQ (const std::string &);
 		static std::string qToStd (const QString &);
+		
+		bool isConnected () const {
+            return m_isconnected;
+        };
+        
+        static QDir esperanza_dir ();
 
 	signals:
 		void gotConnection (XClient *);
@@ -81,6 +86,7 @@ class XClient : public QObject, public Xmms::Client
 	private:
 		XClientCache *m_cache;
 		XSettings *m_settings;
+        bool m_isconnected;
 
 		Xmms::Client m_sync;
 

@@ -49,6 +49,10 @@ PlaylistModel::PlaylistModel (QObject *parent, XClient *client, const QString &n
 	}
 	
     m_name = name;
+    
+    if (client->isConnected ()) {
+        got_connection (client);
+    }
 }
 
 void
@@ -151,7 +155,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 	if (chg.contains ("name")) {
 		s = XClient::stdToQ (chg.get<std::string> ("name"));
 	}
-
+    
 	if (s != m_name) {
 		return true;
 	}

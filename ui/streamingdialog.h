@@ -20,31 +20,68 @@
 
 #include "xclient.h"
 
+#include "playlistmodel.h"
+#include "icecasthandler.h"
+
 #include <QMainWindow>
 #include <QTabWidget>
 #include <QSettings>
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QTreeView>
+#include <QKeyEvent>
+#include <QTimer>
+#include <QHttp>
+#include <QTemporaryFile>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QSortFilterProxyModel>
+
+class StreamingIcecast : public QWidget
+{
+    Q_OBJECT
+    public:
+        StreamingIcecast (QWidget *parent, XClient *client);
+        
+    private slots:
+        void req_start ();
+        void req_finished (int, bool);
+        void req_progress (int, int);
+        void refresh ();
+        void parse_xml ();
+        void add_channels (const QList<IcecastChannel> &);
+        void sort (int);
+        void do_filter (const QString &);
+        void dbclicked (const QModelIndex &);
+        
+    private:
+        QHttp m_http;
+        QFile m_file;
+        QProgressBar *m_progress;
+        QTreeView *m_tree;
+        QPushButton *m_refresh;
+        QStandardItemModel *m_model;
+        QSortFilterProxyModel *m_proxy;
+        QLineEdit *m_le;
+        XClient *m_client;
+};
 
 class StreamingBookmarks : public QTreeView
 {
 	Q_OBJECT
 	public:
 		StreamingBookmarks (QWidget *parent, XClient *client);
-		void add_bookmark (uint32_t);
 
-	private slots:
-		void entry_update (uint32_t);
-
-	private:
-		void fill_bookmarks ();
-		void set_attributes (const QHash<QString, QVariant> &, const QList<QStandardItem *> &);
-
+        void keyPressEvent (QKeyEvent *);
+    private slots:
+        void dbclicked (const QModelIndex &);
+        void update_list ();
+    private:
+        bool handle_list (const Xmms::List<std::string> &);
 		XClient *m_client;
-		QStandardItemModel *m_model;
+        PlaylistModel *m_model;
+        QTimer *m_timer;
 
-		QHash<uint32_t, QList <QStandardItem*> > m_items;
 };
 
 class StreamingDialog : public QMainWindow
@@ -58,6 +95,7 @@ class StreamingDialog : public QMainWindow
 
 	private slots:
 		void add_pressed ();
+        void set_current (int);
 
 	private:
 		bool added_cb (const QString &);

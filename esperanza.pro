@@ -50,11 +50,13 @@ INSTALLPATH = $$(INSTALLPATH)
 # library files
 HEADERS += lib/playlistmodel.h lib/xmmsqt4.h  lib/xclient.h lib/xclientcache.h lib/growl.h lib/mdns.h \
 		   lib/lastfmhandler.h lib/lastfmparser.h lib/lastfmartist.h lib/fancyplaylistmodel.h \
-		   lib/collectionmodel.h lib/medialibsearchmodel.h lib/collectioninfomodel.h
+		   lib/collectionmodel.h lib/medialibsearchmodel.h lib/collectioninfomodel.h \
+		   lib/icecasthandler.h
 		
 SOURCES += lib/playlistmodel.cpp lib/xmmsqt4.cpp lib/xclient.cpp lib/xclientcache.cpp lib/growl.cpp \
 		   lib/mdns.cpp lib/lastfmhandler.cpp lib/lastfmparser.cpp lib/fancyplaylistmodel.cpp \
-		   lib/collectionmodel.cpp lib/medialibsearchmodel.cpp lib/collectioninfomodel.cpp
+		   lib/collectionmodel.cpp lib/medialibsearchmodel.cpp lib/collectioninfomodel.cpp \
+		   lib/icecasthandler.cpp
 
 # Input
 HEADERS += ui/playlistview.h ui/playerwidget.h ui/progressframe.h ui/playerbutton.h ui/filedialog.h \

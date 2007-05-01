@@ -32,6 +32,7 @@
 #include "infowindow.h"
 #include "minimode.h"
 #include "lastfm.h"
+#include "streamingdialog.h"
 
 class PlayerWidget : public QMainWindow
 {
@@ -115,6 +116,7 @@ class PlayerWidget : public QMainWindow
 		MiniMode *m_mini;
 
 		LastFmDialog *m_lastfm;
+        StreamingDialog *m_streaming;
 
 };
 

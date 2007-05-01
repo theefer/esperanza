@@ -18,6 +18,7 @@
 #include "streamingdialog.h"
 
 #include "playerbutton.h"
+#include "icecasthandler.h"
 
 #include <QTabWidget>
 #include <QGridLayout>
@@ -25,6 +26,9 @@
 #include <QInputDialog>
 #include <QDateTime>
 #include <QHeaderView>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -33,7 +37,6 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 	m_client = client;
 
 	setWindowFlags (Qt::Dialog);
-	setAttribute (Qt::WA_DeleteOnClose);
 	setWindowTitle (tr ("Esperanza - Streaming directory"));
 
 	QWidget *base = new QWidget (this);
@@ -45,7 +48,11 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 	m_bookmarks = new StreamingBookmarks (base, client);
 	m_tab->addTab (m_bookmarks, tr ("My bookmarks"));
 	m_tab->addTab (new QWidget, tr ("Last.Fm radio"));
-	m_tab->addTab (new QWidget, tr ("Icecast directory"));
+	m_tab->addTab (new StreamingIcecast (this, client), tr ("Icecast directory"));
+	
+    m_tab->setCurrentIndex (s.value ("streamingdialog/tab", 0).toInt ());
+	
+	connect (m_tab, SIGNAL (currentChanged (int)), this, SLOT (set_current (int)));
 
 	g->addWidget (m_tab, 0, 0, 4, 4);
 	g->setRowStretch (0, 1);
@@ -58,6 +65,7 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 	PlayerButton *add = new PlayerButton (dummy, ":images/plus.png");
 	connect (add, SIGNAL (clicked (QMouseEvent *)), this, SLOT (add_pressed ()));
 	PlayerButton *close = new PlayerButton (dummy, ":images/stop.png");
+	connect (close, SIGNAL (clicked (QMouseEvent *)), this, SLOT (close ()));
 
 	hbox->addStretch (1);
 	hbox->addWidget (add);
@@ -67,31 +75,25 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 }
 
 void
+StreamingDialog::set_current (int i)
+{
+    QSettings s;
+    s.setValue ("streamingdialog/tab", i);
+}
+
+void
 StreamingDialog::add_pressed ()
 {
-	bool ok;
-	QString url = QInputDialog::getText (this, tr ("Bookmark this URL"),
-										 tr ("URL:"), QLineEdit::Normal,
-										 "http://", &ok);
-	if (ok) {
-		m_client->medialib.addEntry (XClient::qToStd (url)) (boost::bind (&StreamingDialog::added_cb, this, url));
+    if (m_tab->currentIndex () == 0) {
+	    bool ok;
+	    QString url = QInputDialog::getText (this, tr ("Bookmark this URL"),
+										    tr ("URL:"), QLineEdit::Normal,
+										    "http://", &ok);
+	    if (ok) {
+            m_client->playlist.addUrl (XClient::qToStd (url), "_esperanza_bookmarks") ();
+	    }
+	} else if (m_tab->currentIndex () == 2) {
 	}
-}
-
-bool
-StreamingDialog::added_cb (const QString &url)
-{
-	qDebug ("url added!");
-	m_client->medialib.getID (XClient::qToStd (url)) (Xmms::bind (&StreamingDialog::handle_id, this));
-	return true;
-}
-
-bool
-StreamingDialog::handle_id (uint32_t id)
-{
-	qDebug ("adding bookmark!");
-	m_bookmarks->add_bookmark (id);
-	return true;
 }
 
 void
@@ -101,6 +103,207 @@ StreamingDialog::resizeEvent (QResizeEvent *ev)
 	s.setValue ("streamingdialog/size", ev->size ());
 }
 
+/***********************
+* Icecast directory below
+************************/
+
+StreamingIcecast::StreamingIcecast (QWidget *parent, XClient *client) : QWidget (parent)
+{
+    m_client = client;
+    
+    QGridLayout *g = new QGridLayout (this);
+    
+    m_progress = new QProgressBar (this);
+    m_progress->setTextVisible (true);
+    g->addWidget (m_progress, 5, 0);
+    
+    m_model = new QStandardItemModel (this);
+    m_proxy = new QSortFilterProxyModel (this);
+    m_proxy->setSourceModel (m_model);
+    m_proxy->setFilterCaseSensitivity (Qt::CaseInsensitive);
+    m_proxy->setFilterKeyColumn (0); /* WTF ? */
+    
+    m_tree = new QTreeView (this);
+    m_tree->setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
+	m_tree->setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+	m_tree->setIndentation (0);
+	m_tree->setAlternatingRowColors (true);
+	m_tree->setItemsExpandable (false);
+	m_tree->setRootIsDecorated (false);
+    m_tree->setModel (m_proxy);
+    m_tree->header ()->setClickable (true);
+    m_tree->header ()->setSortIndicator (0, Qt::AscendingOrder);
+    
+    connect (m_tree->header (), SIGNAL (sectionClicked (int)), this, SLOT (sort (int)));
+    connect (m_tree, SIGNAL (doubleClicked (const QModelIndex &)), this, SLOT (dbclicked (const QModelIndex &)));
+    
+    g->addWidget (m_tree, 0, 0, 4, 2);
+    g->setRowStretch (0, 1);
+    
+    m_refresh = new QPushButton (tr ("Refresh"), this);
+    connect (m_refresh, SIGNAL (clicked ()), this, SLOT (refresh ()));
+    g->addWidget (m_refresh, 5, 1);
+    g->setColumnStretch (0, 1);
+    
+    m_le = new QLineEdit (this);
+    m_le->setFocus (Qt::OtherFocusReason);
+    m_le->setFocusPolicy (Qt::StrongFocus);
+    QPushButton *reset = new QPushButton (tr ("Reset"), this);
+    
+    connect (reset, SIGNAL (clicked ()), m_le, SLOT (clear ()));
+    connect (m_le, SIGNAL (textChanged (const QString &)), this, SLOT (do_filter (const QString &)));
+    
+    g->addWidget (m_le, 4, 0, 1, 1);
+    g->addWidget (reset, 4, 1);
+    
+    connect (&m_http, SIGNAL (requestStarted (int)), this, SLOT (req_start ()));
+    connect (&m_http, SIGNAL (requestFinished (int, bool)), this, SLOT (req_finished (int, bool)));
+    connect (&m_http, SIGNAL (dataReadProgress (int, int)), this, SLOT (req_progress (int, int)));
+    
+    QString fname = XClient::esperanza_dir ().absoluteFilePath ("icecast.xml");
+    m_file.setFileName (fname);
+    m_http.setHost ("dir.xiph.org");
+    
+    parse_xml ();
+}
+
+void
+StreamingIcecast::dbclicked (const QModelIndex &idx)
+{
+    m_client->playlist.addUrl (XClient::qToStd (idx.data (Qt::UserRole + 1).toString ())) ();
+}
+
+void
+StreamingIcecast::do_filter (const QString &text)
+{
+    m_proxy->setFilterRegExp (text);
+}
+
+void
+StreamingIcecast::sort (int i)
+{
+    int current = m_tree->header ()->sortIndicatorSection ();
+    Qt::SortOrder order = m_tree->header ()->sortIndicatorOrder ();
+    Qt::SortOrder norder = (i == current && order == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;
+    
+    m_model->sort (i, norder);
+    
+    m_tree->header ()->setSortIndicator (i, norder);
+}
+
+void
+StreamingIcecast::add_channels (const QList<IcecastChannel> &list)
+{
+    m_model->clear ();
+    
+    m_model->setColumnCount (3);
+    QStringList heads;
+    heads.append (tr ("Name"));
+    heads.append (tr ("Genre"));
+    heads.append (tr ("Bitrate"));
+    m_tree->header ()->setStretchLastSection (false);
+    m_tree->header ()->setResizeMode (0, QHeaderView::Stretch);
+    m_tree->header ()->setResizeMode (1, QHeaderView::Stretch);
+    m_model->setHorizontalHeaderLabels (heads);
+    
+    for (int i = 0; i < list.size (); i ++) {
+        QList<QStandardItem *> l;
+        
+        QStandardItem *item = new QStandardItem (list.value (i).name ());
+        item->setData (list.value (i).url ());
+        item->setEditable (false);
+        l.append (item);
+        
+        item = new QStandardItem (list.value (i).genre ());
+        item->setData (list.value (i).url ());
+        item->setEditable (false);
+        l.append (item);
+        
+        item = new QStandardItem (list.value (i).bitrate ());
+        item->setData (list.value (i).url ());
+        item->setEditable (false);
+        l.append (item);
+        
+        m_model->appendRow (l);
+    }
+    m_le->setFocus (Qt::OtherFocusReason);
+}
+
+void
+StreamingIcecast::parse_xml ()
+{
+    if (!m_file.open (QIODevice::ReadOnly)) {
+        return;
+    }
+    
+    QXmlSimpleReader r;
+    QXmlInputSource *source = new QXmlInputSource (&m_file);
+    IcecastHandler *handler = new IcecastHandler;
+    r.setContentHandler (handler);
+    
+    r.parse (source);
+    
+    add_channels (handler->channel_list ());
+    
+    m_file.close ();
+    
+    delete source;
+    delete handler;
+}
+
+void
+StreamingIcecast::refresh ()
+{
+    if (m_file.isOpen ()) {
+        qDebug ("file is open!");
+        return;
+    }
+    
+    if (!m_file.open (QIODevice::Truncate | QIODevice::ReadWrite)) {
+        qDebug ("couldn't open icecast.xml!");
+    }
+    
+    m_http.get ("/yp.xml", &m_file);
+}
+
+void
+StreamingIcecast::req_progress (int value, int max)
+{
+    m_progress->setMaximum (max);
+    m_progress->setValue (value);
+}
+
+void
+StreamingIcecast::req_start ()
+{
+    m_refresh->setText (tr ("Downloading"));
+    m_refresh->setEnabled (false);
+}
+
+void
+StreamingIcecast::req_finished (int id, bool ok)
+{
+    m_progress->reset ();
+    m_refresh->setText (tr ("Refresh"));
+    m_refresh->setEnabled (true);
+    
+    if (m_file.isOpen ()) {
+        m_file.close ();
+    } else {
+        return;
+    }
+    
+    if (!ok && m_http.error () != QHttp::NoError) {
+        qDebug ("failed the download! %d", m_http.error ());
+    } else {
+        parse_xml ();
+    }
+}
+
+/***********************
+ * Bookmarks tab below
+ ***********************/
+
 StreamingBookmarks::StreamingBookmarks (QWidget *parent, XClient *client) : QTreeView (parent)
 {
 	setIndentation (0);
@@ -108,119 +311,92 @@ StreamingBookmarks::StreamingBookmarks (QWidget *parent, XClient *client) : QTre
 	setItemsExpandable (false);
 	setRootIsDecorated (false);
 	setTabKeyNavigation (false);
-	setTextElideMode (Qt::ElideNone);
 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 	setTextElideMode (Qt::ElideRight);
+	
+    m_client = client;
 
-	m_client = client;
-	connect (m_client->cache (), SIGNAL (entryChanged (uint32_t)), this, SLOT (entry_update (uint32_t)));
-	m_model = new QStandardItemModel (this);
-	setModel (m_model);
-	fill_bookmarks ();
+    connect (this, SIGNAL (doubleClicked (const QModelIndex &)), this, SLOT (dbclicked (const QModelIndex &)));
+    
+    m_client->playlist.list () (Xmms::bind (&StreamingBookmarks::handle_list, this));
+    
+    m_timer = new QTimer ();
+    connect (m_timer, SIGNAL (timeout ()), this, SLOT (update_list ()));    
 }
 
 void
-StreamingBookmarks::fill_bookmarks ()
+StreamingBookmarks::update_list ()
 {
-	QSettings s;
-
-	m_model->clear ();
-
-	m_model->setColumnCount (4);
-	QStringList headers;
-	headers.append (QString ("Name"));
-	headers.append (QString ("Track"));
-	headers.append (QString ("Play count"));
-	headers.append (QString ("Last played"));
-	m_model->setHorizontalHeaderLabels (headers);
-
-	header ()->setResizeMode (0, QHeaderView::Stretch);
-	header ()->setResizeMode (1, QHeaderView::Stretch);
-	header ()->setStretchLastSection (false);
-
-	QStringList list = s.value ("streamingdialog/bookmarks").toStringList ();
-	for (int i = 0; i < list.size (); i++) {
-		add_bookmark (list.value (i).toUInt ());
-	}
+    QList<quint32> l = m_model->get_all_id ();
+    for (int i = 0; i < l.size (); i ++) {
+        m_client->medialib.rehash (l.value (i));
+    }
+    
+    m_timer->start (1000 * 60);
 }
 
 void
-StreamingBookmarks::add_bookmark (uint32_t id)
+StreamingBookmarks::keyPressEvent (QKeyEvent *ev)
 {
-	QSettings s;
+    uint32_t id = currentIndex ().data (PlaylistModel::MedialibIdRole).toUInt ();
+    uint32_t pos = currentIndex ().row ();
+	switch (ev->key ()) {
+		case Qt::Key_Backspace:
+		case Qt::Key_Delete:
+            m_client->playlist.removeEntry (pos, "_esperanza_bookmarks") ();
+            break;
+        case Qt::Key_Return:
+            m_client->playlist.addId (id) ();
+            break;
+        default:
+            ev->ignore ();
+            break;
+    }
 
-	QStringList l = s.value("streamingdialog/bookmarks").toStringList ();
-	if (!l.contains (QString::number (id))) {
-		l.append (QString::number (id));
-		s.setValue ("streamingdialog/bookmarks", l);
-	}
-
-	QList<QStandardItem *> list;
-	QStandardItem *text, *track, *playcount, *ltime;
-	QHash<QString, QVariant> h = m_client->cache ()->get_info (id);
-
-	text = new QStandardItem;
-	track = new QStandardItem;
-	playcount = new QStandardItem;
-	ltime = new QStandardItem;
-
-	list.append (text);
-	list.append (track);
-	list.append (playcount);
-	list.append (ltime);
-
-	set_attributes (h, list);
-
-	m_items[id] = list;
-
-	m_model->appendRow (list);
 }
 
 void
-StreamingBookmarks::set_attributes (const QHash<QString, QVariant> &h, const QList<QStandardItem *> &list)
+StreamingBookmarks::dbclicked (const QModelIndex &idx)
 {
-	QStandardItem *text = list[0];
-	QStandardItem *track = list[1];
-	QStandardItem *playcount = list[2];
-	QStandardItem *ltime = list[3];
-
-	if (h.contains ("channel")) {
-		text->setText (h["channel"].toString ());
-	} else {
-		if (h.contains ("url")) {
-			text->setText (h["url"].toString ());
-		} else {
-			text->setText (tr ("Getting info..."));
-		}
-	}
-	if (h.contains ("title")) {
-		track->setText (h["title"].toString ());
-	} else {
-		track->setText (tr ("N/A"));
-	}
-	if (h.contains ("timesplayed") && h["timesplayed"].toUInt () > 0) {
-		playcount->setText (h["timesplayed"].toString ());
-	} else {
-		playcount->setText (tr ("Never"));
-	}
-	if (h.contains ("laststarted")) {
-		QDateTime dt = QDateTime::fromTime_t (h["laststarted"].toUInt ());
-		ltime->setText (dt.toString ("yy.MM.dd hh:mm"));
-	} else {
-		ltime->setText (tr ("Never"));
-	}
-
-	playcount->setTextAlignment (Qt::AlignRight);
-	ltime->setTextAlignment (Qt::AlignRight);
+    m_client->playlist.addId (idx.data (PlaylistModel::MedialibIdRole).toUInt ());
 }
 
-void
-StreamingBookmarks::entry_update (uint32_t id)
+bool
+StreamingBookmarks::handle_list (const Xmms::List<std::string> &list)
 {
-	if (m_items.contains (id)) {
-		QHash<QString, QVariant> h = m_client->cache ()->get_info (id);
-		QList<QStandardItem *> list = m_items[id];
-		set_attributes (h, list);
+    bool r = false;
+    for (list.first (); list.isValid (); ++list) {
+        if (*list == "_esperanza_bookmarks") {
+            r = true;
+            break;
+        }
 	}
+	
+	if (!r) {
+        m_client->playlist.create ("_esperanza_bookmarks") ();
+	}
+	
+    m_model = new PlaylistModel (this, m_client, "_esperanza_bookmarks");
+
+    QStringList l;
+    l.append ("Channel");
+    l.append ("Title");
+    m_model->setColumns (l);
+
+    l.clear ();
+
+    l.append ("url");
+    l.append ("");
+    m_model->setColumnFallback (l);
+
+    setModel (m_model);
+    
+    header ()->setResizeMode (0, QHeaderView::Stretch);
+    header ()->setResizeMode (1, QHeaderView::Stretch);
+    header ()->setStretchLastSection (false);
+    
+    update_list ();
+    
+    return true;
 }

@@ -37,17 +37,6 @@ XSettings::change_settings ()
 	emit settingsChanged ();
 }
 
-bool XClient::log ()
-{
-	return false;
-}
-
-bool
-XClient::dummy_uint (const uint32_t &)
-{
-	return false;
-}
-
 QString
 XClient::stdToQ (const std::string &str)
 {
@@ -60,15 +49,31 @@ XClient::qToStd (const QString &str)
 	return std::string (str.toUtf8 ().data ());
 }
 
+QDir
+XClient::esperanza_dir ()
+{
+    QDir c (stdToQ (Xmms::getUserConfDir ()));
+    if (!c.cd ("clients/Esperanza")) {
+        c.mkpath ("clients/Esperanza");
+        if (!c.cd ("clients/Esperanza")) {
+            qDebug ("couldn't open dir");
+        }
+        return c;
+    } else {
+        return c;
+    }
+    return QDir ();
+}
 
 XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), Xmms::Client (name), m_sync (name + "-sync")
 {
+    m_isconnected = false;
 	m_cache = new XClientCache (this, this);
 	m_settings = new XSettings (this);
 }
 
 bool
-XClient::connect (const char *ipcpath)
+XClient::connect (const char *ipcpath, const bool &sync)
 {
 	bool tried_once = false;
 
@@ -97,15 +102,16 @@ try_again:
 
 	setMainloop (new XmmsQT4 (getConnection ()));
 
-	/*
-	try {
-		m_sync.connect (ipcpath);
-	}
-	catch (Xmms::connection_error &e) {
-		qWarning ("Couldn't establish sync connection!");
-	}
-	*/
-
+    if (sync) {
+	    try {
+		    m_sync.connect (ipcpath);
+	    }
+	    catch (Xmms::connection_error &e) {
+		    qWarning ("Couldn't establish sync connection!");
+	    }
+    }
+    
+    m_isconnected = true;
 	emit gotConnection (this);
 
 	return true;

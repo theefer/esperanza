@@ -204,6 +204,8 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	m_mini = new MiniMode (this, m_client);
 	m_mini->hide ();
 	
+    m_streaming = NULL;
+	
 	/* run it once first time */
 	changed_settings ();
 }
@@ -424,8 +426,16 @@ PlayerWidget::info_pressed (QMouseEvent *ev)
 void
 PlayerWidget::streaming_pressed ()
 {
-	StreamingDialog *d = new StreamingDialog (this, m_client);
-	d->show ();
+    if (m_streaming) {
+        if (!m_streaming->isVisible ()) {
+            m_streaming->show ();
+        } else {
+            m_streaming->hide ();
+        }
+    } else {
+	    m_streaming = new StreamingDialog (this, m_client);
+	    m_streaming->show ();
+    }
 }
 
 void
