@@ -68,7 +68,9 @@ CollectionModel::got_connection (XClient *client)
 void
 CollectionModel::set_collection (const Xmms::Coll::Coll &ref)
 {
-	m_client->collection.queryIds (ref) (Xmms::bind (&CollectionModel::id_list_get, this));
+    static const char *o[] = {"artist", "album", "tracknr", "id"};
+    std::list<std::string> order (o, o+4);
+	m_client->collection.queryIds (ref, order) (Xmms::bind (&CollectionModel::id_list_get, this));
 }
 
 bool
