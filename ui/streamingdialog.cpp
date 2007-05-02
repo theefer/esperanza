@@ -29,6 +29,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QMenu>
 
 StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -63,7 +64,7 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 	g->addWidget (dummy, 4, 0, 1, 4);
 
 	PlayerButton *add = new PlayerButton (dummy, ":images/plus.png");
-	connect (add, SIGNAL (clicked (QMouseEvent *)), this, SLOT (add_pressed ()));
+	connect (add, SIGNAL (clicked (QMouseEvent *)), this, SLOT (add_pressed (QMouseEvent *)));
 	PlayerButton *close = new PlayerButton (dummy, ":images/stop.png");
 	connect (close, SIGNAL (clicked (QMouseEvent *)), this, SLOT (close ()));
 
@@ -82,7 +83,7 @@ StreamingDialog::set_current (int i)
 }
 
 void
-StreamingDialog::add_pressed ()
+StreamingDialog::add_pressed (QMouseEvent *ev)
 {
     if (m_tab->currentIndex () == 0) {
 	    bool ok;
@@ -93,6 +94,8 @@ StreamingDialog::add_pressed ()
             m_client->playlist.addUrl (XClient::qToStd (url), "_esperanza_bookmarks") ();
 	    }
 	} else if (m_tab->currentIndex () == 2) {
+		StreamingIcecast *ice = dynamic_cast<StreamingIcecast*> (m_tab->currentWidget ());
+		ice->context_menu (ev->globalPos ());
 	}
 }
 
@@ -115,6 +118,8 @@ StreamingIcecast::StreamingIcecast (QWidget *parent, XClient *client) : QWidget 
     
     m_progress = new QProgressBar (this);
     m_progress->setTextVisible (true);
+	m_progress->setRange (0, 1);
+	m_progress->reset ();
     g->addWidget (m_progress, 5, 0);
     
     m_model = new QStandardItemModel (this);
@@ -132,10 +137,13 @@ StreamingIcecast::StreamingIcecast (QWidget *parent, XClient *client) : QWidget 
 	m_tree->setRootIsDecorated (false);
     m_tree->setModel (m_proxy);
     m_tree->header ()->setClickable (true);
-    m_tree->header ()->setSortIndicator (0, Qt::AscendingOrder);
+	m_tree->header ()->setSortIndicatorShown (true);
+	m_tree->setContextMenuPolicy (Qt::CustomContextMenu);
+	m_order = Qt::AscendingOrder;
     
     connect (m_tree->header (), SIGNAL (sectionClicked (int)), this, SLOT (sort (int)));
     connect (m_tree, SIGNAL (doubleClicked (const QModelIndex &)), this, SLOT (dbclicked (const QModelIndex &)));
+	connect (m_tree, SIGNAL (customContextMenuRequested (const QPoint &)), this, SLOT (custom_context (const QPoint &)));
     
     g->addWidget (m_tree, 0, 0, 4, 2);
     g->setRowStretch (0, 1);
@@ -168,6 +176,34 @@ StreamingIcecast::StreamingIcecast (QWidget *parent, XClient *client) : QWidget 
 }
 
 void
+StreamingIcecast::custom_context (const QPoint &p)
+{
+	context_menu (m_tree->viewport ()->mapToGlobal (p));
+}
+
+void
+StreamingIcecast::context_menu (const QPoint &p)
+{
+	QMenu m;
+	m.addAction (tr ("Add to playlist"), this, SLOT (add_to_pls ()));
+	m.addAction (tr ("Add to bookmarks"), this, SLOT (add_to_bookmarks ()));
+	m.exec (p);
+}
+
+void
+StreamingIcecast::add_to_pls ()
+{
+	dbclicked (m_tree->currentIndex ());
+}
+
+void
+StreamingIcecast::add_to_bookmarks ()
+{
+	QModelIndex idx = m_tree->currentIndex ();
+    m_client->playlist.addUrl (XClient::qToStd (idx.data (Qt::UserRole + 1).toString ()), "_esperanza_bookmarks") ();
+}
+
+void
 StreamingIcecast::dbclicked (const QModelIndex &idx)
 {
     m_client->playlist.addUrl (XClient::qToStd (idx.data (Qt::UserRole + 1).toString ())) ();
@@ -183,10 +219,10 @@ void
 StreamingIcecast::sort (int i)
 {
     int current = m_tree->header ()->sortIndicatorSection ();
-    Qt::SortOrder order = m_tree->header ()->sortIndicatorOrder ();
-    Qt::SortOrder norder = (i == current && order == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;
+    Qt::SortOrder norder = (i == current && m_order == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;
     
     m_model->sort (i, norder);
+	m_order = norder;
     
     m_tree->header ()->setSortIndicator (i, norder);
 }
@@ -205,6 +241,7 @@ StreamingIcecast::add_channels (const QList<IcecastChannel> &list)
     m_tree->header ()->setResizeMode (0, QHeaderView::Stretch);
     m_tree->header ()->setResizeMode (1, QHeaderView::Stretch);
     m_model->setHorizontalHeaderLabels (heads);
+    m_tree->header ()->setSortIndicator (0, Qt::AscendingOrder);
     
     for (int i = 0; i < list.size (); i ++) {
         QList<QStandardItem *> l;

@@ -42,6 +42,9 @@ class StreamingIcecast : public QWidget
     Q_OBJECT
     public:
         StreamingIcecast (QWidget *parent, XClient *client);
+
+	public slots:
+		void context_menu (const QPoint &);
         
     private slots:
         void req_start ();
@@ -53,8 +56,12 @@ class StreamingIcecast : public QWidget
         void sort (int);
         void do_filter (const QString &);
         void dbclicked (const QModelIndex &);
+		void add_to_pls ();
+		void add_to_bookmarks ();
+		void custom_context (const QPoint &);
         
     private:
+
         QHttp m_http;
         QFile m_file;
         QProgressBar *m_progress;
@@ -64,6 +71,7 @@ class StreamingIcecast : public QWidget
         QSortFilterProxyModel *m_proxy;
         QLineEdit *m_le;
         XClient *m_client;
+		Qt::SortOrder m_order;
 };
 
 class StreamingBookmarks : public QTreeView
@@ -94,7 +102,7 @@ class StreamingDialog : public QMainWindow
 
 
 	private slots:
-		void add_pressed ();
+		void add_pressed (QMouseEvent *);
         void set_current (int);
 
 	private:
