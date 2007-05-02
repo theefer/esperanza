@@ -90,7 +90,7 @@ ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
 
 	g->addWidget (dummy, 3, 0, 1, 2);
 
-	connect (m_list, SIGNAL (itemDoubleClicked (QListWidgetItem *)), this, SLOT (accept ()));
+	connect (m_list, SIGNAL (itemActivated (QListWidgetItem *)), this, SLOT (accept ()));
 	connect (mdns, SIGNAL (serverlistChanged ()), this, SLOT (mdns_server_update ()));
 
 	mdns_server_update ();
