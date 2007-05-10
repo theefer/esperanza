@@ -48,7 +48,9 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 	m_tab = new QTabWidget (base);
 	m_bookmarks = new StreamingBookmarks (base, client);
 	m_tab->addTab (m_bookmarks, tr ("My bookmarks"));
+#if 0
 	m_tab->addTab (new QWidget, tr ("Last.Fm radio"));
+#endif
 	m_tab->addTab (new StreamingIcecast (this, client), tr ("Icecast directory"));
 	
     m_tab->setCurrentIndex (s.value ("streamingdialog/tab", 0).toInt ());
