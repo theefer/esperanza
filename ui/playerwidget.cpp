@@ -525,7 +525,7 @@ PlayerWidget::add_local_dir ()
 	FileDialog fd (this, "playlist_add_dir");
 	QString dir = fd.getDirectory ();
 	if (!dir.isNull ())
-		m_client->playlist.addRecursive (("file://" + dir).toStdString ()) ();
+		m_client->playlist.addRecursive (XClient::qToStd ("file://" + dir)) ();
 }
 
 void
@@ -538,7 +538,7 @@ PlayerWidget::add_local_file ()
 
 	for (int i = 0; i < files.count(); i++) {
 		QString s = "file://" + files.at (i);
-		m_client->playlist.addUrl (s.toStdString ()) ();
+		m_client->playlist.addUrl (XClient::qToStd (s)) ();
 	}
 
 }
