@@ -1,3 +1,10 @@
+Version 0.4.0 (TBA)
+    * Rewrite of playerwidget.cpp (pending) 
+    * Reorganization of sources (pending)
+    * First-time wizard (pending)
+    * Last.FM controls (pending)
+    * merge last.fm dialog into info dialog (pending)
+
 Version 0.3.0 (TBA)
 	* Rewrite of the playlist models
 	* Optimizations for cover art
