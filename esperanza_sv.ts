@@ -33,32 +33,53 @@
     <message>
         <location filename="ui/browsedialog.cpp" line="75"/>
         <source>Parent Directory</source>
-        <translation>Föregånde katalog</translation>
+        <translation type="obsolete">Föregånde katalog</translation>
     </message>
     <message>
         <location filename="ui/browsedialog.cpp" line="83"/>
         <source>List View</source>
-        <translation>Lista</translation>
+        <translation type="obsolete">Lista</translation>
     </message>
     <message>
         <location filename="ui/browsedialog.cpp" line="91"/>
         <source>Detail View</source>
-        <translation>Detaljer</translation>
+        <translation type="obsolete">Detaljer</translation>
     </message>
     <message>
         <location filename="ui/browsedialog.cpp" line="99"/>
         <source>Look in:</source>
-        <translation>Visa adress:</translation>
+        <translation type="obsolete">Visa adress:</translation>
     </message>
     <message>
         <location filename="ui/browsedialog.cpp" line="104"/>
         <source>Open</source>
-        <translation>Öppna</translation>
+        <translation type="obsolete">Öppna</translation>
     </message>
     <message>
         <location filename="ui/browsedialog.cpp" line="109"/>
         <source>Cancel</source>
-        <translation>Avbryt</translation>
+        <translation type="obsolete">Avbryt</translation>
+    </message>
+</context>
+<context>
+    <name>CollectionInfoModel</name>
+    <message>
+        <location filename="lib/collectioninfomodel.cpp" line="73"/>
+        <source>[ All ]</source>
+        <translation>[ Alla ]</translation>
+    </message>
+</context>
+<context>
+    <name>FileDialog</name>
+    <message>
+        <location filename="ui/filedialog.cpp" line="58"/>
+        <source>Select music files</source>
+        <translation>Välj musik filer</translation>
+    </message>
+    <message>
+        <location filename="ui/filedialog.cpp" line="75"/>
+        <source>Select music directory</source>
+        <translation>Välj musik katalog</translation>
     </message>
 </context>
 <context>
@@ -79,17 +100,17 @@
     <message>
         <location filename="ui/preferencessupport.cpp" line="94"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingen</translation>
     </message>
     <message>
         <location filename="ui/preferencessupport.cpp" line="69"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ui/preferencessupport.cpp" line="70"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Avbryt</translation>
     </message>
 </context>
 <context>
@@ -120,68 +141,83 @@
     <message>
         <location filename="ui/lastfm.cpp" line="116"/>
         <source>Search for in Medialib</source>
-        <translation>Leta efter i biblioteket</translation>
+        <translation type="obsolete">Leta efter i biblioteket</translation>
     </message>
     <message>
-        <location filename="ui/lastfm.cpp" line="124"/>
+        <location filename="ui/lastfm.cpp" line="176"/>
         <source>Open artist at Last.fm</source>
         <translation>Öppna artistens Last.fm sida</translation>
     </message>
     <message>
-        <location filename="ui/lastfm.cpp" line="127"/>
+        <location filename="ui/lastfm.cpp" line="179"/>
         <source>Open artist at Musicbrainz</source>
         <translation>Öppna artistens Musicbrainz sida</translation>
     </message>
     <message>
-        <location filename="ui/lastfm.cpp" line="131"/>
+        <location filename="ui/lastfm.cpp" line="183"/>
         <source>Search for artist on oink</source>
         <translation>Sök efter artisten på oink</translation>
     </message>
     <message>
-        <location filename="ui/lastfm.cpp" line="171"/>
+        <location filename="ui/lastfm.cpp" line="217"/>
         <source>Error - try again</source>
         <translation>Fel - Försök igen</translation>
     </message>
     <message>
-        <location filename="ui/lastfm.cpp" line="241"/>
+        <location filename="ui/lastfm.cpp" line="302"/>
         <source>Loading data</source>
         <translation>Laddar data</translation>
+    </message>
+    <message>
+        <location filename="ui/lastfm.cpp" line="132"/>
+        <source>Artists that are similar to ...</source>
+        <translation>Artister som liknar ...</translation>
+    </message>
+    <message>
+        <location filename="ui/lastfm.cpp" line="137"/>
+        <source>Most played tracks by ...</source>
+        <translation>Mest spelade spår av ...</translation>
+    </message>
+    <message>
+        <location filename="ui/lastfm.cpp" line="142"/>
+        <source>Most played albums by ...</source>
+        <translation>Mest spelade album av ...</translation>
     </message>
 </context>
 <context>
     <name>MedialibDialog</name>
     <message>
-        <location filename="ui/medialibdialog.cpp" line="49"/>
+        <location filename="ui/medialibdialog.cpp" line="54"/>
         <source>All</source>
         <translation>Alla</translation>
     </message>
     <message>
-        <location filename="ui/medialibdialog.cpp" line="50"/>
+        <location filename="ui/medialibdialog.cpp" line="55"/>
         <source>Artist</source>
         <translation>Artist</translation>
     </message>
     <message>
-        <location filename="ui/medialibdialog.cpp" line="51"/>
+        <location filename="ui/medialibdialog.cpp" line="56"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="ui/medialibdialog.cpp" line="52"/>
+        <location filename="ui/medialibdialog.cpp" line="57"/>
         <source>Title</source>
         <translation>Titel</translation>
     </message>
     <message>
-        <location filename="ui/medialibdialog.cpp" line="53"/>
+        <location filename="ui/medialibdialog.cpp" line="58"/>
         <source>Year</source>
         <translation>År</translation>
     </message>
     <message>
-        <location filename="ui/medialibdialog.cpp" line="60"/>
+        <location filename="ui/medialibdialog.cpp" line="63"/>
         <source>=</source>
         <translation>=</translation>
     </message>
     <message>
-        <location filename="ui/medialibdialog.cpp" line="82"/>
+        <location filename="ui/medialibdialog.cpp" line="99"/>
         <source>Display non-available entries</source>
         <translation>Visa icke tillgängliga poster</translation>
     </message>
@@ -195,137 +231,175 @@
     </message>
 </context>
 <context>
+    <name>PaneBrowserView</name>
+    <message>
+        <location filename="ui/panebrowserview.cpp" line="72"/>
+        <source>[ All ]</source>
+        <translation>[ Alla ]</translation>
+    </message>
+</context>
+<context>
     <name>PlayerWidget</name>
     <message>
-        <location filename="ui/playerwidget.cpp" line="174"/>
+        <location filename="ui/playerwidget.cpp" line="171"/>
         <source>&amp;File</source>
         <translation>&amp;Arkiv</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="430"/>
+        <location filename="ui/playerwidget.cpp" line="454"/>
         <source>Preferences</source>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="435"/>
+        <location filename="ui/playerwidget.cpp" line="173"/>
         <source>About</source>
         <translation>Om</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="177"/>
+        <location filename="ui/playerwidget.cpp" line="174"/>
         <source>Playlist</source>
         <translation>Spellista</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="406"/>
+        <location filename="ui/playerwidget.cpp" line="400"/>
         <source>Add local file</source>
         <translation>Lägg till lokal fil</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="407"/>
+        <location filename="ui/playerwidget.cpp" line="401"/>
         <source>Add local dir</source>
         <translation>Lägg till lokal katalog</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="409"/>
         <source>Add remote file</source>
-        <translation>Lägg till fjärrfil</translation>
+        <translation type="obsolete">Lägg till fjärrfil</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="411"/>
         <source>Add files from medialib</source>
-        <translation>Lägg till filer från biblioteket</translation>
+        <translation type="obsolete">Lägg till filer från biblioteket</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="184"/>
+        <location filename="ui/playerwidget.cpp" line="181"/>
         <source>Help</source>
         <translation>Hjälp</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="185"/>
+        <location filename="ui/playerwidget.cpp" line="182"/>
         <source>Esperanza Help</source>
         <translation>Esperanza - Hjälp</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="431"/>
+        <location filename="ui/playerwidget.cpp" line="416"/>
         <source>Last.fm browser</source>
         <translation>Last.fm bläddrare</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="433"/>
+        <location filename="ui/playerwidget.cpp" line="456"/>
         <source>Shuffle</source>
         <translation>Blanda</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="436"/>
+        <location filename="ui/playerwidget.cpp" line="420"/>
         <source>Keyboard shortcuts</source>
         <translation>Tangentbords kommandon</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="527"/>
+        <location filename="ui/playerwidget.cpp" line="551"/>
         <source>Remove selected files</source>
         <translation>Ta bort markerade filer</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="528"/>
+        <location filename="ui/playerwidget.cpp" line="552"/>
         <source>Clear playlist</source>
         <translation>Töm spellista</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="591"/>
+        <location filename="ui/playerwidget.cpp" line="615"/>
         <source>Server died. The application will now quit.</source>
         <translation>Servern slutade svara. Esperanza kommer nu avslutas.</translation>
     </message>
     <message>
-        <location filename="ui/playerwidget.cpp" line="642"/>
+        <location filename="ui/playerwidget.cpp" line="672"/>
         <source>Esperanza is now playing:</source>
         <translation>Esperanza spelar nu:</translation>
+    </message>
+    <message>
+        <location filename="ui/playerwidget.cpp" line="402"/>
+        <source>Search medialib</source>
+        <translation>Sök i biblioteket</translation>
+    </message>
+    <message>
+        <location filename="ui/playerwidget.cpp" line="407"/>
+        <source>Add URL</source>
+        <translation>Lägg till URL</translation>
+    </message>
+    <message>
+        <location filename="ui/playerwidget.cpp" line="417"/>
+        <source>Streaming directory</source>
+        <translation>Radiostaioner</translation>
+    </message>
+    <message>
+        <location filename="ui/playerwidget.cpp" line="421"/>
+        <source>About Esperanza</source>
+        <translation>Om Esperanza</translation>
+    </message>
+    <message>
+        <location filename="ui/playerwidget.cpp" line="503"/>
+        <source>URL dialog</source>
+        <translation>URL dialog</translation>
+    </message>
+    <message>
+        <location filename="ui/playerwidget.cpp" line="503"/>
+        <source>Enter URL:</source>
+        <translation>Mata in URL:</translation>
     </message>
 </context>
 <context>
     <name>PreferenceDialog</name>
     <message>
-        <location filename="ui/preferences.cpp" line="100"/>
+        <location filename="ui/preferences.cpp" line="102"/>
         <source>Name</source>
         <translation>Namn</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="101"/>
+        <location filename="ui/preferences.cpp" line="103"/>
         <source>Value</source>
         <translation>Värde</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="116"/>
+        <location filename="ui/preferences.cpp" line="118"/>
         <source>Save</source>
         <translation>Spara</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="120"/>
+        <location filename="ui/preferences.cpp" line="122"/>
         <source>Discard</source>
         <translation>Kasta</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="123"/>
+        <location filename="ui/preferences.cpp" line="125"/>
         <source>Reset</source>
         <translation>Återställ</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="257"/>
+        <location filename="ui/preferences.cpp" line="259"/>
         <source>Reset settings?</source>
         <translation>Återställ inställningar?</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="258"/>
+        <location filename="ui/preferences.cpp" line="260"/>
         <source>Are your sure you want to reset program to standard values?</source>
         <translation>Är du säker på att du vill återställa programmet till standard inställningar?</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="259"/>
+        <location filename="ui/preferences.cpp" line="261"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="259"/>
+        <location filename="ui/preferences.cpp" line="261"/>
         <source>No</source>
         <translation>Nej</translation>
     </message>
@@ -335,89 +409,99 @@
         <translation>Autostarta xmms2d om den inte körs</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="45"/>
+        <location filename="ui/preferences.cpp" line="46"/>
         <source>Number of songs to randomly add</source>
         <translation>Nummer av sånger att lägga till slumpmässigt</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="46"/>
+        <location filename="ui/preferences.cpp" line="47"/>
         <source>Ignore locale settings and use default language</source>
         <translation>Hoppa över språk inställningar och använd standard språk</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="47"/>
+        <location filename="ui/preferences.cpp" line="48"/>
         <source>Show serverbrowser on startup</source>
         <translation>Visa serverbläddrare vid uppstart</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="48"/>
+        <location filename="ui/preferences.cpp" line="49"/>
         <source>Jump to current entry on song change</source>
         <translation>Hoppa till aktuell sång vid sångbyte</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="49"/>
+        <location filename="ui/preferences.cpp" line="50"/>
         <source>Use compact (boring) playlist mode</source>
         <translation>Använd kompakt (tråkigt) spelliste läge</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="50"/>
+        <location filename="ui/preferences.cpp" line="51"/>
         <source>Show albumart under artist</source>
         <translation>Visa album omslag under artisten</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="51"/>
+        <location filename="ui/preferences.cpp" line="52"/>
         <source>Show a stop button as well</source>
         <translation>Visa en stoppknapp också</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="52"/>
+        <location filename="ui/preferences.cpp" line="53"/>
         <source>Use reversed elapsed time</source>
         <translation>Använd omvänd uppspelad tid</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="53"/>
+        <location filename="ui/preferences.cpp" line="54"/>
         <source>Size of album art cache in kb</source>
         <translation>Storlek på album omslags cache i kb</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="54"/>
+        <location filename="ui/preferences.cpp" line="55"/>
         <source>Values to be shown in context row (comma-separated)</source>
         <translation>Värden att visa i kontextraden (kommaseparerat)</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="55"/>
+        <location filename="ui/preferences.cpp" line="56"/>
         <source>Draw the contextarea in a bright color</source>
         <translation>Rita kontextraden i en ljus färg</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="56"/>
+        <location filename="ui/preferences.cpp" line="57"/>
         <source>Paint the progress in a lighter color</source>
         <translation>Rita uppspelad tid i en ljusare färg</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="57"/>
+        <location filename="ui/preferences.cpp" line="58"/>
         <source>Show volume in a popup</source>
         <translation>Visa volymkontrollen i en popup</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="58"/>
+        <location filename="ui/preferences.cpp" line="59"/>
         <source>Change volume interactivly, could cause problems.</source>
         <translation>Ändra volymen interaktivt, kan skapa problem.</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="59"/>
+        <location filename="ui/preferences.cpp" line="60"/>
         <source>Show oink search in last.fm context</source>
         <translation>Visa oink sökruta i last.fm bläddraren</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="61"/>
+        <location filename="ui/preferences.cpp" line="63"/>
         <source>Show system tray icon</source>
         <translation>Visa system ikon</translation>
     </message>
     <message>
-        <location filename="ui/preferences.cpp" line="62"/>
+        <location filename="ui/preferences.cpp" line="64"/>
         <source>Show notification on song change</source>
         <translation>Notifiera användare vid sångbyte</translation>
+    </message>
+    <message>
+        <location filename="ui/preferences.cpp" line="45"/>
+        <source>Ignore the desktop settings, use this if everything is black</source>
+        <translation>Hoppa över skrivbordets inställningar, använd det här om allt är svart</translation>
+    </message>
+    <message>
+        <location filename="ui/preferences.cpp" line="61"/>
+        <source>Load artists and albums for completion in Medialib window</source>
+        <translation>Ladda artister och album för kompletering i biblioteks fönstret</translation>
     </message>
 </context>
 <context>
@@ -458,6 +542,82 @@ Det är möjligt att stänga av den här dialogen under iställningar</translati
     </message>
 </context>
 <context>
+    <name>StreamingDialog</name>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="41"/>
+        <source>Esperanza - Streaming directory</source>
+        <translation>Esperanza - Radiostationer</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="50"/>
+        <source>My bookmarks</source>
+        <translation>Mina bokmärken</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="52"/>
+        <source>Last.Fm radio</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="54"/>
+        <source>Icecast directory</source>
+        <translation>Icecast katalog</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="92"/>
+        <source>Bookmark this URL</source>
+        <translation>Lägg till som bokmärke</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="93"/>
+        <source>URL:</source>
+        <translation>URL:</translation>
+    </message>
+</context>
+<context>
+    <name>StreamingIcecast</name>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="326"/>
+        <source>Refresh</source>
+        <translation>Uppdatera</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="161"/>
+        <source>Reset</source>
+        <translation>Återställ</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="190"/>
+        <source>Add to playlist</source>
+        <translation>Lägg till i spellistan</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="191"/>
+        <source>Add to bookmarks</source>
+        <translation>Lägg till som bokmärke</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="239"/>
+        <source>Name</source>
+        <translation>Namn</translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="240"/>
+        <source>Genre</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="241"/>
+        <source>Bitrate</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ui/streamingdialog.cpp" line="318"/>
+        <source>Downloading</source>
+        <translation>Laddar ner</translation>
+    </message>
+</context>
+<context>
     <name>SystemTray</name>
     <message>
         <location filename="ui/systemtray.cpp" line="42"/>
@@ -482,40 +642,40 @@ Det är möjligt att stänga av den här dialogen under iställningar</translati
     <message>
         <location filename="ui/systemtray.cpp" line="55"/>
         <source>Next</source>
-        <translation type="unfinished">Nästa</translation>
+        <translation>Nästa</translation>
     </message>
     <message>
         <location filename="ui/systemtray.cpp" line="57"/>
         <source>Previous</source>
-        <translation type="unfinished">Föregående</translation>
+        <translation>Föregående</translation>
     </message>
     <message>
         <location filename="ui/systemtray.cpp" line="60"/>
         <source>Exit</source>
-        <translation type="unfinished">Avsluta</translation>
+        <translation>Avsluta</translation>
     </message>
     <message>
         <location filename="ui/systemtray.cpp" line="83"/>
         <source>Play</source>
-        <translation type="unfinished">Spela</translation>
+        <translation>Spela</translation>
     </message>
     <message>
         <location filename="ui/systemtray.cpp" line="86"/>
         <source>Pause</source>
-        <translation type="unfinished">Pausa</translation>
+        <translation>Pausa</translation>
     </message>
     <message>
         <location filename="ui/systemtray.cpp" line="107"/>
         <source>Show main window</source>
-        <translation type="unfinished">Visa huvudfönster</translation>
+        <translation>Visa huvudfönster</translation>
     </message>
 </context>
 <context>
     <name>TextDialog</name>
     <message>
-        <location filename="ui/textdialog.cpp" line="35"/>
+        <location filename="ui/textdialog.cpp" line="33"/>
         <source>Close</source>
-        <translation type="unfinished">Stäng</translation>
+        <translation>Stäng</translation>
     </message>
 </context>
 </TS>
