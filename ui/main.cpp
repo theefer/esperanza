@@ -47,6 +47,13 @@ main (int argc, char **argv)
     }
 
 	QApplication app(argc, argv);
+	
+#if QT_VERSION >= 0x040200 && QT_VERSION < 0x040300
+	if (app.style ()->objectName () == "motif") {
+	    qWarning ("4.2 running and motifstyle is selected. we switch to plastique so you won't hate us.");
+	    app.setStyle(new QPlastiqueStyle());
+	}
+#endif
 
 	QApplication::setWindowIcon (QIcon (":images/esperanza.png"));
 
