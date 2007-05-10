@@ -1,4 +1,4 @@
-Version 0.3.0 (TBA)
+Version 0.3.0rc1 (2007-04-10)
 	* Rewrite of the playlist models
 	* Optimizations for cover art
 	* Add a 'Add URL' button in the main view
@@ -6,6 +6,7 @@ Version 0.3.0 (TBA)
 	* Updated to collections API
 	* Browser support in medialib window
 	* Fix bug with non-ascii chars in filenames
+	* Translation updates (sv)
 	* bugfixes
 
 Version 0.2.2 (2006-12-01)
