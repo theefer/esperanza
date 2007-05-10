@@ -36,18 +36,23 @@
 int
 main (int argc, char **argv)
 {
-	QApplication app(argc, argv);
-
-	QCoreApplication::setOrganizationName ("xmms2");
+    QCoreApplication::setOrganizationName ("xmms2");
 	QCoreApplication::setOrganizationDomain ("xmms.org");
 	QCoreApplication::setApplicationName ("Esperanza");
+	
+    QSettings s;
+    
+    if (s.value("core/ignoredesktopsettings", false).toBool ()) {
+        QApplication::setDesktopSettingsAware (false);
+    }
+
+	QApplication app(argc, argv);
 
 	QApplication::setWindowIcon (QIcon (":images/esperanza.png"));
 
 	QString locale = QLocale::system ().name ();
 
 	PreferenceDialog::save_defaults ();
-	QSettings s;
 
 	QTranslator trans;
 	if (!s.value ("core/skiplocales").toBool ()) {

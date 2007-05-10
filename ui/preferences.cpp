@@ -42,6 +42,7 @@ PreferenceDialog::build_prefvalues ()
 	QList < QMap < QString, QVariant > > ret;
 
 	PREF_VALUE("core/autostart", tr ("Autostart xmms2d if not running"), T_BOOL, true);
+	PREF_VALUE("core/ignoredesktopsettings", tr ("Ignore the desktop settings, use this if everything is black"), T_BOOL, false);
 	PREF_VALUE("core/numrandomsongs", tr ("Number of songs to randomly add"), T_NUM, 5);
 	PREF_VALUE("core/skiplocales", tr ("Ignore locale settings and use default language"), T_BOOL, false);
 	PREF_VALUE("serverdialog/show", tr ("Show serverbrowser on startup"), T_BOOL, true);
