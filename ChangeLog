@@ -1,9 +1,12 @@
 Version 0.3.0 (TBA)
 	* Rewrite of the playlist models
-	* (Collections manager)
 	* Optimizations for cover art
 	* Add a 'Add URL' button in the main view
 	* Make the file dialog remember the last open directory
+	* Updated to collections API
+	* Browser support in medialib window
+	* Fix bug with non-ascii chars in filenames
+	* bugfixes
 
 Version 0.2.2 (2006-12-01)
 	* Make the playlist reordable with drag and drop
