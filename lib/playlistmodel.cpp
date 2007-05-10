@@ -503,7 +503,7 @@ PlaylistModel::flags (const QModelIndex &idx) const
 	if (idx.isValid ()) {
 		f |= Qt::ItemIsDropEnabled;
 	}
-	if (d.contains ("status") && d["status"] == XMMS_MEDIALIB_ENTRY_STATUS_OK) {
+	if (d.contains ("status") && d["status"] != XMMS_MEDIALIB_ENTRY_STATUS_NOT_AVAILABLE) {
 		f |= Qt::ItemIsEnabled;
 	}
 
