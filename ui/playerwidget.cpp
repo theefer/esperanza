@@ -630,6 +630,10 @@ PlayerWidget::handle_status (const Xmms::Playback::Status &st)
 		m_playbutt->setPx (":images/pause.png");
 		m_mini->update_playbutton (":images/pause.png");
 	}
+	
+	if (st == Xmms::Playback::STOPPED) {
+		m_pf->setValue (0);
+	}
 
 	return true;
 }
