@@ -1,3 +1,9 @@
+Version 0.3.0 (TBA):
+    * Fix so that rehashing entries are not greyed out.
+    * Make sure the stop button resets the playback frame
+    * Added german translation
+    * Fix hide/show/max/min logic
+
 Version 0.3.0rc1 (2007-04-10)
 	* Rewrite of the playlist models
 	* Optimizations for cover art
