@@ -43,7 +43,7 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 
 	QGridLayout *g = new QGridLayout (this);
 	setLayout (g);
-	m_progress = new ProgressFrame (this, client);
+	m_progress = new ProgressFrame (this, client, false);
 	m_progress->setMove (true);
 	
 	m_playbutt = new PlayerButton (this, ":images/play.png");

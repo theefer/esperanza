@@ -48,7 +48,7 @@ class ProgressFrame : public QFrame
     Q_OBJECT
 
     public:
-        ProgressFrame (QWidget *parent, XClient *client);
+        ProgressFrame (QWidget *parent, XClient *client, bool seek = true);
 
         void clear() { stop(); setText( "" ); m_timerText = ""; }
 
@@ -129,6 +129,7 @@ class ProgressFrame : public QFrame
 		uint32_t m_diffy;
 
 		XClient *m_client;
+		bool m_seek;
 
     private slots:
         void updateTimer() { setValue( value() + 1 ); }
