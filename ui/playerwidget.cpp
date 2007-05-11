@@ -202,12 +202,23 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_lastfm, SLOT (new_id (uint32_t)));
 
 	m_mini = new MiniMode (this, m_client);
-	m_mini->hide ();
-	
+		
     m_streaming = NULL;
 	
 	/* run it once first time */
 	changed_settings ();
+}
+
+void
+PlayerWidget::toggle_mini () const
+{
+	QSettings s;
+	
+	if (m_mini->isVisible ()) {
+		m_mini->hide ();
+	} else {
+		m_mini->show ();
+	}
 }
 
 void
@@ -224,6 +235,8 @@ PlayerWidget::set_colors ()
 void
 PlayerWidget::min_pressed ()
 {
+	QSettings s;
+	s.setValue ("ui/minimode", true);
 	m_mini->show ();
 	hide ();
 }

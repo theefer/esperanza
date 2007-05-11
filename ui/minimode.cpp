@@ -22,6 +22,8 @@
 #include "playerwidget.h"
 #include "volumebar.h"
 
+
+#include <QHideEvent>
 #include <QWidget>
 #include <QGridLayout>
 #include <QMoveEvent>
@@ -135,6 +137,8 @@ MiniMode::moveEvent (QMoveEvent *ev)
 void
 MiniMode::min_pressed ()
 {
+	QSettings s;
+	s.setValue ("ui/minimode", false);
 	m_parent->show ();
 	hide ();
 }

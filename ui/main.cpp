@@ -113,8 +113,11 @@ browser:
 		}
 	}
 
-
-	pw->show ();
+	if (!s.value("ui/minimode", false).toBool ()) {
+		pw->show ();
+	} else {
+		pw->toggle_mini ();
+	}
 
 	return app.exec ();
 }

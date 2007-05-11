@@ -76,7 +76,8 @@ SystemTray::SystemTray (QObject *parent, XClient *client) : QSystemTrayIcon (par
 void
 SystemTray::build_menu ()
 {
-	qDebug ("showing!");
+	QSettings s;
+	
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
 	if (pw->status () != Xmms::Playback::PLAYING) {
 		m_play_action->setIcon (QIcon (":images/play.png"));
@@ -86,25 +87,40 @@ SystemTray::build_menu ()
 		m_play_action->setText (tr ("Pause"));
 	}
 
-	if (pw->isHidden ()) {
-		m_hide_action->setText (tr ("Show main window"));
-	} else {
-		m_hide_action->setText (tr ("Hide main window"));
-	}
+	QString show = tr ("Show main window");
+	QString hide = tr ("Hide main window");
+	QString st;
 
+	if (s.value ("ui/minimode", false).toBool ()) {
+		if (pw->mini_isvisible ()) {
+			st = hide;
+		} else {
+			st = show;
+		}
+	} else {
+		if (pw->isVisible ()) {
+			st = hide;
+		} else {
+			st = show;
+		}
+	}
+	
+	m_hide_action->setText (st);
 }
 
 void
 SystemTray::toggle_hide ()
 {
+	QSettings s;
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
-	if (pw->isHidden ()) {
-		pw->hide_mini ();
-		pw->show ();
-		m_hide_action->setText (tr ("Hide main window"));
+	if (s.value ("ui/minimode", false).toBool ()) {
+		pw->toggle_mini ();
 	} else {
-		pw->hide ();
-		m_hide_action->setText (tr ("Show main window"));
+		if (pw->isVisible ()) {
+			pw->hide ();
+		} else {
+			pw->show ();
+		}
 	}
 }
 

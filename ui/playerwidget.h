@@ -49,10 +49,12 @@ class PlayerWidget : public QMainWindow
 		void resizeEvent (QResizeEvent *);
 		void moveEvent (QMoveEvent *);
 		void closeEvent (QCloseEvent *);
+		
+		void toggle_mini () const;
 
-		void hide_mini () const
+		bool mini_isvisible () const
 		{
-			m_mini->hide ();
+			return m_mini->isVisible ();
 		};
 
 	public slots:
