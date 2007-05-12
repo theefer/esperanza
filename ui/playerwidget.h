@@ -52,6 +52,11 @@ class PlayerWidget : public QMainWindow
 		
 		void toggle_mini () const;
 
+		bool mini_isactive () const
+		{
+			return m_mini->isActiveWindow ();
+		};
+
 		bool mini_isvisible () const
 		{
 			return m_mini->isVisible ();

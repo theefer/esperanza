@@ -92,13 +92,13 @@ SystemTray::build_menu ()
 	QString st;
 
 	if (s.value ("ui/minimode", false).toBool ()) {
-		if (pw->mini_isvisible ()) {
+		if (pw->mini_isvisible () && pw->mini_isactive ()) {
 			st = hide;
 		} else {
 			st = show;
 		}
 	} else {
-		if (pw->isVisible ()) {
+		if (pw->isVisible () && pw->isActiveWindow ()) {
 			st = hide;
 		} else {
 			st = show;
@@ -116,9 +116,10 @@ SystemTray::toggle_hide ()
 	if (s.value ("ui/minimode", false).toBool ()) {
 		pw->toggle_mini ();
 	} else {
-		if (pw->isVisible ()) {
+		if (pw->isVisible () && pw->isActiveWindow ()) {
 			pw->hide ();
 		} else {
+			pw->hide ();
 			pw->show ();
 		}
 	}
@@ -152,13 +153,20 @@ SystemTray::systray_trigger (QSystemTrayIcon::ActivationReason reason)
 {
 #ifndef Q_WS_MACX
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
+	QSettings s;
 
 	if (reason == QSystemTrayIcon::Trigger)
 	{
-		if (pw->isHidden())
-			pw->show();
-		else
-			pw->hide();
+		if (s.value ("ui/minimode", false).toBool ()) {
+			pw->toggle_mini ();
+		} else {
+			if (pw->isHidden() || !pw->isActiveWindow ()) {
+				pw->hide();
+				pw->show();
+			}
+			else
+				pw->hide();
+		}
 	}
 #endif
 }

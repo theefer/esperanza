@@ -214,9 +214,10 @@ PlayerWidget::toggle_mini () const
 {
 	QSettings s;
 	
-	if (m_mini->isVisible ()) {
+	if (m_mini->isVisible () && m_mini->isActiveWindow ()) {
 		m_mini->hide ();
 	} else {
+		m_mini->hide ();
 		m_mini->show ();
 	}
 }
