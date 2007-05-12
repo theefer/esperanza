@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -57,7 +57,7 @@ ColorButton::current_color () const
 KeyInputDialog::KeyInputDialog (QWidget *parent, const QString &key) : QDialog (parent)
 {
 	QGridLayout *g = new QGridLayout (this);
-	QLabel *l = new QLabel (tr ("Press key to act as shortcut:"), this);
+	QLabel *l = new QLabel (tr ("Press a key:"), this);
 	m_l = new QLabel (this);
 	if (!key.isEmpty ())
 		m_l->setText (key);

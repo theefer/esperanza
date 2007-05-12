@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -39,18 +39,18 @@ main (int argc, char **argv)
     QCoreApplication::setOrganizationName ("xmms2");
 	QCoreApplication::setOrganizationDomain ("xmms.org");
 	QCoreApplication::setApplicationName ("Esperanza");
-	
+
     QSettings s;
-    
+
     if (s.value("core/ignoredesktopsettings", false).toBool ()) {
         QApplication::setDesktopSettingsAware (false);
     }
 
 	QApplication app(argc, argv);
-	
+
 #if QT_VERSION >= 0x040200 && QT_VERSION < 0x040300
 	if (app.style ()->objectName () == "motif") {
-	    qWarning ("4.2 running and motifstyle is selected. we switch to plastique so you won't hate us.");
+	    qWarning ("Qt 4.2 is running and the Motif style is selected. We'll switch to plastique so you won't hate us.");
 	    app.setStyle(new QPlastiqueStyle());
 	}
 #endif
@@ -66,7 +66,7 @@ main (int argc, char **argv)
 		trans.load (QString ("esperanza_") + locale, ":translations");
 		app.installTranslator (&trans);
 	}
-	
+
 	XClient client (NULL, "Esperanza");
 
 	MDNSQuery mdns (NULL);
@@ -90,7 +90,7 @@ browser:
 		} else {
 			path = sd.get_path ();
 		}
-		
+
 		if (path == "local") {
 			p = NULL;
 		} else if (path.isNull ()) {
