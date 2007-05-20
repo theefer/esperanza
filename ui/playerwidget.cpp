@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -154,7 +154,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	m_current_id = 0;
 	connect (client, SIGNAL (gotConnection (XClient *)),
-			 this, SLOT (got_connection (XClient *))); 
+			 this, SLOT (got_connection (XClient *)));
 
 	resize (s.value ("player/windowsize", QSize (550, 350)).toSize());
 	if (s.contains ("player/position"))
@@ -202,12 +202,24 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_lastfm, SLOT (new_id (uint32_t)));
 
 	m_mini = new MiniMode (this, m_client);
-	m_mini->hide ();
-	
+
     m_streaming = NULL;
-	
+
 	/* run it once first time */
 	changed_settings ();
+}
+
+void
+PlayerWidget::toggle_mini () const
+{
+	QSettings s;
+
+	if (m_mini->isVisible () && m_mini->isActiveWindow ()) {
+		m_mini->hide ();
+	} else {
+		m_mini->hide ();
+		m_mini->show ();
+	}
 }
 
 void
@@ -224,6 +236,8 @@ PlayerWidget::set_colors ()
 void
 PlayerWidget::min_pressed ()
 {
+	QSettings s;
+	s.setValue ("ui/minimode", true);
 	m_mini->show ();
 	hide ();
 }
@@ -242,7 +256,7 @@ PlayerWidget::changed_settings ()
 
 	if (s.value ("ui/reverseplaytime").toBool ())
 		m_pf->setReverse (true);
-	
+
 	if (m_systray) {
 		if ( s.value ("core/systray").toBool ())
 			m_systray->show();
@@ -276,7 +290,7 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 		ev->ignore ();
 		return;
 	}
-	
+
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
@@ -414,7 +428,7 @@ PlayerWidget::info_pressed (QMouseEvent *ev)
 {
 	QMenu m;
 	m.addAction (tr ("Last.fm browser"), this, SLOT (lastfm_pressed ()));
-	m.addAction (tr ("Streaming directory"), this, SLOT (streaming_pressed ()));
+	m.addAction (tr ("Stream directory"), this, SLOT (streaming_pressed ()));
 /*	m.addAction (tr ("Collection Manager"), this, SLOT (coll_pressed ()));*/
 	m.addSeparator ();
 	m.addAction (tr ("Keyboard shortcuts"), this, SLOT (open_short_help ()));
@@ -612,7 +626,7 @@ void
 PlayerWidget::handle_disconnect ()
 {
 	QErrorMessage *err = new QErrorMessage (this);
-	err->showMessage (tr ("Server died. The application will now quit."));
+	err->showMessage (tr ("Server died. Esperanza will close."));
 	err->exec ();
 	QApplication::quit ();
 }
@@ -630,7 +644,7 @@ PlayerWidget::handle_status (const Xmms::Playback::Status &st)
 		m_playbutt->setPx (":images/pause.png");
 		m_mini->update_playbutton (":images/pause.png");
 	}
-	
+
 	if (st == Xmms::Playback::STOPPED) {
 		m_pf->setValue (0);
 	}
@@ -673,7 +687,7 @@ PlayerWidget::new_info (const QHash<QString,QVariant> &h)
 		m_current_id == h["id"].toUInt () &&
         m_status == Xmms::Playback::PLAYING &&
         h["id"].toUInt () != 0) {
-		m_systray->do_notification (tr("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (m_current_id));
+		m_systray->do_notification (tr ("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (m_current_id));
 	}
 }
 

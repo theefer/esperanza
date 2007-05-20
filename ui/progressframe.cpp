@@ -40,7 +40,7 @@
 #include <QPainter>
 
 
-ProgressFrame::ProgressFrame (QWidget *parent, XClient *client) :
+ProgressFrame::ProgressFrame (QWidget *parent, XClient *client, bool seek) :
     QFrame( parent ),
     m_drawBackground( true ),
     m_drawTime( false ),
@@ -57,6 +57,7 @@ ProgressFrame::ProgressFrame (QWidget *parent, XClient *client) :
 
     m_maxValue = 0;
     m_value = 0;
+	m_seek = seek;
 
     setMinimumHeight( 22 );
     setMinimumWidth( 22 );
@@ -286,10 +287,13 @@ ProgressFrame::mousePressEvent (QMouseEvent *event)
 	m_diffx = p.x ();
 	m_diffy = p.y ();
 
-	float pro = (float) m_diffx / (float) width ();
-	uint32_t m = (uint32_t) (pro * m_maxValue * 1000);
+	/* some windows showing this don't want to seek */
+	if (m_seek) {
+		float pro = (float) m_diffx / (float) width ();
+		uint32_t m = (uint32_t) (pro * m_maxValue * 1000);
 
-	m_client->playback.seekMs (m) ();
+		m_client->playback.seekMs (m) ();
+	}
 }
 
 void

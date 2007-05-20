@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -58,7 +58,7 @@ BrowseDialog::BrowseDialog (QWidget *parent, XClient *client) : QDialog (parent)
 			 this, SLOT (dirChanged(const QString &)));
 
     grid->addWidget(m_list, 1, 0, 1, 6);
-    connect (m_list, SIGNAL (activated (QModelIndex)), 
+    connect (m_list, SIGNAL (activated (QModelIndex)),
 	         this, SLOT (setPath(const QModelIndex &)));
 	/*
     QObject::connect(m_list, SIGNAL(customContextMenuRequested(QPoint)),
@@ -72,7 +72,7 @@ BrowseDialog::BrowseDialog (QWidget *parent, XClient *client) : QDialog (parent)
 
     QToolButton *toParentButton = new QToolButton (this);
     toParentButton->setIcon (style ()->standardPixmap (QStyle::SP_FileDialogToParent));
-    toParentButton->setToolTip (tr("Parent Directory"));
+    toParentButton->setToolTip (tr ("Parent Directory"));
     toParentButton->setAutoRaise (true);
     toParentButton->setFixedSize (tools);
     QObject::connect (toParentButton, SIGNAL(clicked ()), this, SLOT (navigateToPrevious ()));
@@ -80,7 +80,7 @@ BrowseDialog::BrowseDialog (QWidget *parent, XClient *client) : QDialog (parent)
 
     QToolButton *listModeButton = new QToolButton (this);
     listModeButton->setIcon (style ()->standardPixmap (QStyle::SP_FileDialogListView));
-    listModeButton->setToolTip (tr("List View"));
+    listModeButton->setToolTip (tr ("List View"));
     listModeButton->setAutoRaise (true);
     listModeButton->setDown (true);
     listModeButton->setFixedSize (tools);
@@ -88,7 +88,7 @@ BrowseDialog::BrowseDialog (QWidget *parent, XClient *client) : QDialog (parent)
 
     QToolButton *detailModeButton = new QToolButton (this);
     detailModeButton->setIcon(style ()->standardPixmap (QStyle::SP_FileDialogDetailedView));
-    detailModeButton->setToolTip (tr("Detail View"));
+    detailModeButton->setToolTip (tr ("Detail View"));
     detailModeButton->setAutoRaise (true);
     detailModeButton->setFixedSize (tools);
     box->addWidget (detailModeButton);

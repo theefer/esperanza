@@ -22,6 +22,8 @@
 #include "playerwidget.h"
 #include "volumebar.h"
 
+
+#include <QHideEvent>
 #include <QWidget>
 #include <QGridLayout>
 #include <QMoveEvent>
@@ -43,7 +45,7 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 
 	QGridLayout *g = new QGridLayout (this);
 	setLayout (g);
-	m_progress = new ProgressFrame (this, client);
+	m_progress = new ProgressFrame (this, client, false);
 	m_progress->setMove (true);
 	
 	m_playbutt = new PlayerButton (this, ":images/play.png");
@@ -135,6 +137,8 @@ MiniMode::moveEvent (QMoveEvent *ev)
 void
 MiniMode::min_pressed ()
 {
+	QSettings s;
+	s.setValue ("ui/minimode", false);
 	m_parent->show ();
 	hide ();
 }
