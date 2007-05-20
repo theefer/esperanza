@@ -1,4 +1,4 @@
-Version 0.3.0 (TBA):
+Version 0.3.0 (2007-04-20):
     * Fix so that rehashing entries are not greyed out.
     * Make sure the stop button resets the playback frame
     * Added german translation
