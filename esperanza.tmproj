@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>ui/streamingdialog.cpp</string>
+	<string>text/about.html</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -21,6 +21,20 @@
 	<integer>224</integer>
 	<key>metaData</key>
 	<dict>
+		<key>ChangeLog</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>33</integer>
+				<key>line</key>
+				<integer>4</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>collections/collectionlist.h</key>
 		<dict>
 			<key>caret</key>
@@ -354,14 +368,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>1</integer>
+				<integer>44</integer>
 				<key>line</key>
-				<integer>112</integer>
+				<integer>505</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>103</integer>
+			<integer>472</integer>
 		</dict>
 		<key>lib/playlistmodel.h</key>
 		<dict>
@@ -375,7 +389,21 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>73</integer>
+			<integer>84</integer>
+		</dict>
+		<key>lib/version.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
 		<key>lib/xclient.cpp</key>
 		<dict>
@@ -433,6 +461,34 @@
 			<key>firstVisibleLine</key>
 			<integer>32</integer>
 		</dict>
+		<key>text/about.html</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>109</integer>
+				<key>line</key>
+				<integer>10</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>ui/browsedialog.cpp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>8</integer>
+		</dict>
 		<key>ui/fancyplaylistview.cpp</key>
 		<dict>
 			<key>caret</key>
@@ -452,14 +508,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>24</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>59</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>27</integer>
+			<integer>35</integer>
 		</dict>
 		<key>ui/infowindow.cpp</key>
 		<dict>
@@ -508,14 +564,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>2</integer>
+				<integer>14</integer>
 				<key>line</key>
-				<integer>89</integer>
+				<integer>116</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>58</integer>
+			<integer>79</integer>
 		</dict>
 		<key>ui/medialibdialog.cpp</key>
 		<dict>
@@ -608,12 +664,12 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>113</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>95</integer>
+			<integer>99</integer>
 		</dict>
 		<key>ui/minimode.h</key>
 		<dict>
@@ -622,12 +678,12 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>61</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>28</integer>
 		</dict>
 		<key>ui/panebrowserview.cpp</key>
 		<dict>
@@ -676,44 +732,28 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>37</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>62</integer>
+				<integer>220</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>49</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>62</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>63</integer>
-			</dict>
+			<integer>191</integer>
 		</dict>
 		<key>ui/playerwidget.h</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>27</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>34</integer>
+				<integer>54</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>72</integer>
+			<integer>33</integer>
 		</dict>
 		<key>ui/playlistview.cpp</key>
 		<dict>
@@ -787,6 +827,34 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>ui/progressframe.cpp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>15</integer>
+				<key>line</key>
+				<integer>59</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>23</integer>
+		</dict>
+		<key>ui/progressframe.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>14</integer>
+				<key>line</key>
+				<integer>131</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>93</integer>
+		</dict>
 		<key>ui/shortcuteditor.h</key>
 		<dict>
 			<key>caret</key>
@@ -808,12 +876,12 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>52</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>89</integer>
+			<integer>0</integer>
 		</dict>
 		<key>ui/streamingdialog.h</key>
 		<dict>
@@ -829,64 +897,58 @@
 			<key>firstVisibleLine</key>
 			<integer>48</integer>
 		</dict>
+		<key>ui/systemtray.cpp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>27</integer>
+				<key>line</key>
+				<integer>115</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>99</integer>
+		</dict>
+		<key>ui/systemtray.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>20</integer>
+				<key>line</key>
+				<integer>46</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>5</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>ui/medialibdialog.cpp</string>
-		<string>ui/medialibdialog.h</string>
-		<string>ui/medialibpanebrowser.cpp</string>
-		<string>ui/medialibpanebrowser.h</string>
-		<string>ui/panebrowserview.cpp</string>
-		<string>ui/filedialog.cpp</string>
 		<string>ui/streamingdialog.cpp</string>
-		<string>esperanza.qrc</string>
-		<string>lib/icecasthandler.cpp</string>
-		<string>lib/lastfmhandler.h</string>
-		<string>lib/icecasthandler.h</string>
-		<string>lib/lastfmhandler.cpp</string>
+		<string>ui/progressframe.cpp</string>
+		<string>ui/progressframe.h</string>
+		<string>ui/filedialog.cpp</string>
 		<string>ui/playerwidget.cpp</string>
+		<string>ui/main.cpp</string>
 		<string>ui/playerwidget.h</string>
-		<string>ui/shortcuteditor.h</string>
+		<string>ChangeLog</string>
+		<string>text/about.html</string>
+		<string>lib/version.h</string>
+		<string>ui/systemtray.cpp</string>
+		<string>ui/systemtray.h</string>
 		<string>lib/playlistmodel.h</string>
-		<string>lib/lastfmparser.cpp</string>
-		<string>ui/lastfm.cpp</string>
-		<string>ui/infowindow.cpp</string>
-		<string>lib/fileengine.cpp</string>
-		<string>lib/fileengine.h</string>
+		<string>lib/playlistmodel.cpp</string>
 		<string>ui/minimode.cpp</string>
 		<string>ui/minimode.h</string>
-		<string>lib/lastfmartist.h</string>
-		<string>ui/jumptofiledialog.h</string>
-		<string>ui/playlistview.cpp</string>
-		<string>ui/panebrowserview.h</string>
-		<string>lib/collectioninfomodel.h</string>
-		<string>lib/collectioninfomodel.cpp</string>
-		<string>lib/fancyplaylistmodel.h</string>
-		<string>lib/xclientcache.cpp</string>
-		<string>ui/streamingdialog.h</string>
-		<string>lib/xclientcache.h</string>
-		<string>lib/xclient.cpp</string>
-		<string>lib/xclient.h</string>
-		<string>esperanza.pro</string>
-		<string>ui/main.cpp</string>
-		<string>lib/collectionmodel.cpp</string>
-		<string>lib/collectionmodel.h</string>
-		<string>lib/medialibsearchmodel.h</string>
-		<string>ui/playerbutton.cpp</string>
-		<string>ui/medialibview.cpp</string>
-		<string>ui/medialibview.h</string>
-		<string>lib/medialibsearchmodel.cpp</string>
-		<string>lib/playlistmodel.cpp</string>
-		<string>ui/playlistview.h</string>
-		<string>ui/fancyplaylistview.cpp</string>
-		<string>lib/fancyplaylistmodel.cpp</string>
-		<string>ui/preferencessupport.cpp</string>
-		<string>ui/preferences.cpp</string>
-		<string>collections/collectionlist.h</string>
+		<string>ui/browsedialog.cpp</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{240, 42}, {852, 731}}</string>
+	<string>{{45, 46}, {852, 731}}</string>
 </dict>
 </plist>
