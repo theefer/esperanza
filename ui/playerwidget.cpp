@@ -32,6 +32,7 @@
 #include <QErrorMessage>
 #include <QTimer>
 #include <QIcon>
+#include <QShortcut>
 
 
 #include "playerwidget.h"
@@ -84,6 +85,8 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (min, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (min_pressed ()));
 	pflay->addWidget (min);
+	QShortcut *minmaxShort = new QShortcut(QKeySequence("Ctrl+M"), min);
+	connect( minmaxShort, SIGNAL (activated ()), this, SLOT (min_pressed ()));
 
 	layout->addLayout (pflay, 0, 0, 1, 3);
 

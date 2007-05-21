@@ -29,6 +29,7 @@
 #include <QMoveEvent>
 #include <QKeyEvent>
 #include <QVariant>
+#include <QShortcut>
 
 MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 {
@@ -70,6 +71,8 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 
 	PlayerButton *minmax = new PlayerButton (this, ":images/minmax.png");
 	connect (minmax, SIGNAL (clicked (QMouseEvent *)), this, SLOT (min_pressed ()));
+	QShortcut *minmaxShort = new QShortcut(QKeySequence("Ctrl+M"), minmax);
+	connect( minmaxShort, SIGNAL (activated ()), this, SLOT (min_pressed ()));
 
 	g->addWidget (back, 0, 0);
 	g->addWidget (m_playbutt, 0, 1);
