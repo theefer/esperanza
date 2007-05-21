@@ -9,9 +9,18 @@
 	Var MUI_TEMP
 	Var STARTMENU_FOLDER
 
+	!define MUI_ICON "images\esperanza.ico"
+	!define MUI_UNICON "images\esperanza.ico"
 	!define MUI_HEADERIMAGE
-#	!define MUI_HEADERIMAGE_BITMAP "netintact.bmp"
+	!define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
+	!define MUI_HEADERIMAGE_BITMAP "images\logo.bmp"
 	!define MUI_ABORTWARNING
+
+Function .onInit
+	SetOutPath $TEMP
+	File /oname=splash.bmp "images\splash.bmp"
+	AdvSplash::show 3000 1000 1000 0xAA9D84 $TEMP\splash
+FunctionEnd
 
 	!insertmacro MUI_PAGE_LICENSE "COPYING"
 ;	!insertmacro MUI_PAGE_COMPONENTS
@@ -34,12 +43,14 @@ Section "Esperanza" SecEsperanza
 	SetOutPath	"$INSTDIR"
 
 	File	"release\esperanza.exe"
-	File	"c:\Qt\4.2.1\bin\mingwm10.dll"
-	File	"c:\xmms2\lib\libxmmsclient.dll"
-	File	"c:\xmms2\lib\xmmsclient++.dll"
-	File	"c:\xmms2\lib\libboost_signals.dll"
-	File	"c:\Qt\4.2.1\bin\QtCore4.dll"
-	File	"c:\Qt\4.2.1\bin\QtGui4.dll"
+	File	"dlls\mingwm10.dll"
+	File	"dlls\libxmmsclient.dll"
+	File	"dlls\libxmmsclient++.dll"
+	File	"dlls\libboost_signals.dll"
+	File	"dlls\QtCore4.dll"
+	File	"dlls\QtGui4.dll"
+	File	"dlls\QtNetwork4.dll"
+	File	"dlls\QtXml4.dll"
 	WriteRegStr HKCU "Software\XMMS2\Esperanza" "" $INSTDIR
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
@@ -74,13 +85,13 @@ Section	"Uninstall"
 		ClearErrors
     	RMDir $MUI_TEMP
     	GetFullPathName $MUI_TEMP "$MUI_TEMP\.."
-    
+
     	IfErrors startMenuDeleteLoopDone
-  
+
     	StrCmp $MUI_TEMP $SMPROGRAMS startMenuDeleteLoopDone startMenuDeleteLoop
 	startMenuDeleteLoopDone:
 
 	DeleteRegKey /ifempty HKCU "Software\XMMS2\Esperanza"
 
 SectionEnd
-	
+
