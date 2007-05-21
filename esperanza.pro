@@ -35,10 +35,12 @@ macx {
 }
 
 win32 {
-	INCLUDEPATH += c:/xmms2/includes
-	LIBPATH += c:/xmms2/lib
+	INCLUDEPATH += /c/temp/include/xmms2
+	INCLUDEPATH += /include
+	LIBPATH += /c/temp/lib
+	LIBPATH += /lib
 	LIBS += -lxmmsclient -lxmmsclient++ -lboost_signals -lws2_32
-	RCFILE = esperanza.rc
+	RC_FILE = esperanza.rc
 }
 
 INSTALLPATH = $$(INSTALLPATH)
