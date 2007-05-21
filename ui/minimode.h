@@ -61,6 +61,7 @@ class MiniMode : public QFrame
 		void changed_settings ();
 
 	private:
+		void setWindowFlags ();
 		XClient *m_client;
 		ProgressFrame *m_progress;
 		QWidget *m_parent;

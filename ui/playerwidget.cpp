@@ -217,7 +217,12 @@ PlayerWidget::toggle_mini () const
 {
 	QSettings s;
 
-	if (m_mini->isVisible () && m_mini->isActiveWindow ()) {
+	if (m_mini->isVisible () &&
+			(
+				!s.value("ui/alwaysontop").toBool () && m_mini->isActiveWindow () ||
+				s.value("ui/alwaysontop").toBool ()
+			)
+		) {
 		m_mini->hide ();
 	} else {
 		m_mini->hide ();
@@ -266,6 +271,8 @@ PlayerWidget::changed_settings ()
 		else
 			m_systray->hide();
 	}
+
+	setWindowFlags ();
 
 	update ();
 }
@@ -710,4 +717,17 @@ PlayerWidget::handle_current_id (const unsigned int &id)
 	return true;
 }
 
+void
+PlayerWidget::setWindowFlags()
+{
+	QSettings s;
+	Qt::WindowFlags f;
 
+	if(s.value("ui/alwaysontop").toBool ())
+		f |= Qt::WindowStaysOnTopHint;
+
+	QMainWindow::setWindowFlags (f);
+
+	if(!s.value("ui/minimode").toBool ())
+		show();
+}

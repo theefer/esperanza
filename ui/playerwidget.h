@@ -62,6 +62,8 @@ class PlayerWidget : public QMainWindow
 			return m_mini->isVisible ();
 		};
 
+		void setWindowFlags ();
+
 	public slots:
 		void play_pressed ();
 		void lastfm_pressed ();

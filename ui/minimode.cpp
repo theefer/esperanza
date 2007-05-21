@@ -33,7 +33,6 @@
 
 MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 {
-	setWindowFlags (Qt::FramelessWindowHint);
 	setWindowTitle (tr ("Esperanza"));
 	setAttribute (Qt::WA_QuitOnClose, false);
 	m_client = client;
@@ -100,6 +99,9 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 			 this, SLOT (changed_settings ()));
 
 	move (s.value ("minimode/pos", parent->pos ()).toPoint ());
+
+	/* run it once first time */
+	changed_settings ();
 }
 
 void
@@ -128,6 +130,8 @@ MiniMode::changed_settings ()
 		m_volume->hide ();
 	else
 		m_volume->show ();
+
+	setWindowFlags ();
 }
 
 void
@@ -144,4 +148,20 @@ MiniMode::min_pressed ()
 	s.setValue ("ui/minimode", false);
 	m_parent->show ();
 	hide ();
+}
+
+void
+MiniMode::setWindowFlags ()
+{
+	QSettings s;
+	Qt::WindowFlags f;
+	f = Qt::FramelessWindowHint;
+
+	if(s.value("ui/alwaysontop").toBool ())
+		 f |= Qt::WindowStaysOnTopHint;
+
+	QFrame::setWindowFlags (f);
+	
+	if(s.value("ui/minimode").toBool ())
+		show();
 }

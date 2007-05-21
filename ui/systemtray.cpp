@@ -92,13 +92,23 @@ SystemTray::build_menu ()
 	QString st;
 
 	if (s.value ("ui/minimode", false).toBool ()) {
-		if (pw->mini_isvisible () && pw->mini_isactive ()) {
+		if (pw->mini_isvisible () &&
+			(
+				!s.value("ui/alwaysontop").toBool () && pw->mini_isactive () ||
+				s.value("ui/alwaysontop").toBool ()
+			)
+		) {
 			st = hide;
 		} else {
 			st = show;
 		}
 	} else {
-		if (pw->isVisible () && pw->isActiveWindow ()) {
+		if (pw->isVisible () &&
+			(
+				!s.value("ui/alwaysontop").toBool () && pw->isActiveWindow () ||
+				s.value("ui/alwaysontop").toBool ()
+			)
+		) {
 			st = hide;
 		} else {
 			st = show;
@@ -116,7 +126,12 @@ SystemTray::toggle_hide ()
 	if (s.value ("ui/minimode", false).toBool ()) {
 		pw->toggle_mini ();
 	} else {
-		if (pw->isVisible () && pw->isActiveWindow ()) {
+		if (pw->isVisible () &&
+			(
+				!s.value("ui/alwaysontop").toBool () && pw->isActiveWindow () ||
+				s.value("ui/alwaysontop").toBool ()
+			)
+		) {
 			pw->hide ();
 		} else {
 			pw->hide ();
@@ -160,7 +175,7 @@ SystemTray::systray_trigger (QSystemTrayIcon::ActivationReason reason)
 		if (s.value ("ui/minimode", false).toBool ()) {
 			pw->toggle_mini ();
 		} else {
-			if (pw->isHidden() || !pw->isActiveWindow ()) {
+			if (pw->isHidden() || (!pw->isActiveWindow () && !s.value("ui/alwaysontop").toBool ())) {
 				pw->hide();
 				pw->show();
 			}

@@ -57,6 +57,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), T_BOOL, false);
 	PREF_VALUE("ui/volumepopup", tr ("Show the volume slider in a popup"), T_BOOL, false);
 	PREF_VALUE("ui/volumeinteractive", tr ("Change volume interactively (could cause problems)"), T_BOOL, false);
+	PREF_VALUE("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), T_BOOL, true);
 	PREF_VALUE("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), T_BOOL, false);
 	PREF_VALUE("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), T_BOOL, true);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
