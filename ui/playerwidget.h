@@ -39,7 +39,6 @@ class PlayerWidget : public QMainWindow
 	Q_OBJECT
 	public:
 		PlayerWidget (QWidget *parent, XClient *client);
-		void keyPressEvent (QKeyEvent *);
 
 		Xmms::Playback::Status status () const
 		{

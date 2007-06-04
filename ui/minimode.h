@@ -54,8 +54,6 @@ class MiniMode : public QFrame
 		void moveEvent (QMoveEvent *);
 		void showEvent (QShowEvent *);
 
-		void keyPressEvent (QKeyEvent *);
-
 	private slots:
 		void min_pressed ();
 		void changed_settings ();
