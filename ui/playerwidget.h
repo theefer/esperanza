@@ -74,6 +74,12 @@ class PlayerWidget : public QMainWindow
 		void shuffle_pressed ();
 		void snett_pressed (QMouseEvent *);
 		void jump_pressed ();
+		void mlib_pressed ();
+		void add_local_file ();
+		void add_local_dir ();
+		void jump_pos ();
+		void check_hide ();
+		void open_pref ();
 
 	private slots:
 		void plus_pressed (QMouseEvent *);
@@ -81,11 +87,8 @@ class PlayerWidget : public QMainWindow
 		void minus_pressed (QMouseEvent *);
 		void got_connection (XClient *);
 		void add_remote_file ();
-		void add_local_file ();
-		void add_local_dir ();
 		void add_url ();
 		void min_pressed ();
-		void mlib_pressed ();
 		void streaming_pressed ();
 
 		void remove_selected ();
@@ -93,7 +96,6 @@ class PlayerWidget : public QMainWindow
 
 		void entry_changed (uint32_t);
 
-		void open_pref ();
 		void open_about ();
 		void open_short_help ();
 

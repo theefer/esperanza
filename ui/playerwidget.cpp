@@ -32,8 +32,6 @@
 #include <QErrorMessage>
 #include <QTimer>
 #include <QIcon>
-#include <QShortcut>
-
 
 #include "playerwidget.h"
 #include "playerbutton.h"
@@ -50,6 +48,7 @@
 #include "lastfm.h"
 #include "medialibdialog.h"
 #include "streamingdialog.h"
+#include "shortcutmanager.h"
 /*#include "collections/manager.h"*/
 
 
@@ -85,8 +84,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (min, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (min_pressed ()));
 	pflay->addWidget (min);
-	QShortcut *minmaxShort = new QShortcut(QKeySequence("Ctrl+M"), min);
-	connect( minmaxShort, SIGNAL (activated ()), this, SLOT (min_pressed ()));
 
 	layout->addLayout (pflay, 0, 0, 1, 3);
 
@@ -210,6 +207,23 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	/* run it once first time */
 	changed_settings ();
+	ShortcutManager *sm = ShortcutManager::instance ();
+
+	sm->connect (this, "shortcuts/remove", "Del", SLOT (remove_selected ()));
+	sm->connect (this, "shortcuts/openmedialib", "M", SLOT (mlib_pressed ()));
+	sm->connect (this, "shortcuts/shuffle", "S", SLOT (shuffle_pressed ()));
+	sm->connect (this, "shortcuts/addfile", "A", SLOT (add_local_file ()));
+	sm->connect (this, "shortcuts/adddir", "D", SLOT (add_local_dir ()));
+	sm->connect (this, "shortcuts/removeall", "C", SLOT (remove_all ()));
+	sm->connect (this, "shortcuts/play", "Space", SLOT (play_pressed ()));
+	sm->connect (this, "shortcuts/forward", "B", SLOT (fwd_pressed ()));
+	sm->connect (this, "shortcuts/back", "V", SLOT (back_pressed ()));
+	sm->connect (this, "shortcuts/openpref", "P", SLOT (open_pref ()));
+	sm->connect (this, "shortcuts/jump", "J", SLOT (jump_pressed ()));
+	sm->connect (this, "shortcuts/lastfm", "L", SLOT (lastfm_pressed ()));
+	sm->connect (this, "shortcuts/hide", "Esc", SLOT (check_hide ()));
+	sm->connect (this, "shortcuts/jumppos", "Return", SLOT (jump_pos ()));
+	sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
 }
 
 void
@@ -300,13 +314,13 @@ PlayerWidget::resizeEvent (QResizeEvent *ev)
 void
 PlayerWidget::keyPressEvent (QKeyEvent *ev)
 {
+/*
 	QSettings s;
 
 	if (ev->modifiers () != Qt::NoModifier) {
 		ev->ignore ();
 		return;
 	}
-
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
@@ -322,9 +336,7 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			add_local_file ();
 			break;
 		case Qt::Key_R:
-			/*
 			add_remote_file ();
-			*/
 			break;
 		case Qt::Key_D:
 			add_local_dir ();
@@ -356,11 +368,9 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 				hide ();
 			}
 			break;
-			/*
 		case Qt::Key_I:
 			info_pressed (NULL);
 			break;
-			*/
 		case Qt::Key_J:
 			jump_pressed ();
 			break;
@@ -371,6 +381,26 @@ PlayerWidget::keyPressEvent (QKeyEvent *ev)
 			ev->ignore ();
 			break;
 	}
+*/
+}
+
+void
+PlayerWidget::check_hide ()
+{
+	if (isHidden ())
+		return;
+
+	QSettings s;
+
+	if (m_systray && s.value ("core/systray").toBool ()) {
+		hide ();
+	}
+}
+
+void
+PlayerWidget::jump_pos ()
+{
+	m_playlist->jump_pos (QModelIndex ());
 }
 
 void
