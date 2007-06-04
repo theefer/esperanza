@@ -59,6 +59,17 @@ class MiniMode : public QFrame
 	private slots:
 		void min_pressed ();
 		void changed_settings ();
+		void play_pressed ();
+		void lastfm_pressed ();
+		void fwd_pressed ();
+		void back_pressed ();
+		void shuffle_pressed ();
+		void jump_pressed ();
+		void mlib_pressed ();
+		void add_local_file ();
+		void add_local_dir ();
+		void check_hide ();
+		void open_pref ();
 
 	private:
 		void setWindowFlags ();
