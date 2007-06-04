@@ -63,6 +63,7 @@ PreferenceDialog::build_prefvalues ()
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
 		PREF_VALUE("core/systray", tr ("Show icon in system tray"), T_BOOL, true);
 		PREF_VALUE("core/donotification", tr ("Show popup notification on song change"), T_BOOL, true);
+		PREF_VALUE("ui/hideOnClose", tr ("Do not quit esperanza on close, rather then hide it (needs System tray active)."), T_BOOL, true);
 	}
 
 	return ret;

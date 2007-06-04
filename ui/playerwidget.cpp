@@ -233,7 +233,13 @@ PlayerWidget::toggle_mini () const
 void
 PlayerWidget::closeEvent (QCloseEvent *ev)
 {
-	qApp->quit ();
+	QSettings s;
+	if( !s.value("ui/hideOnClose").toBool () || !s.value("core/systray").toBool () )
+		qApp->quit ();
+	else {
+		hide ();
+		ev->ignore ();
+	}
 }
 
 void
