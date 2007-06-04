@@ -182,15 +182,6 @@ MiniMode::open_pref () {
 }
 
 void
-MiniMode::keyPressEvent (QKeyEvent *ev)
-{
-	/*
- 	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
-	pw->keyPressEvent (ev);
-	*/
-}
-
-void
 MiniMode::showEvent (QShowEvent *sh)
 {
 	resize (m_parent->size ().width (), 22);
