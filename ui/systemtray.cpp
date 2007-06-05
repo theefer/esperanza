@@ -170,7 +170,7 @@ SystemTray::systray_trigger (QSystemTrayIcon::ActivationReason reason)
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
 	QSettings s;
 
-	if (reason == QSystemTrayIcon::Trigger)
+	if (reason == s.value ("ui/activateTray").toInt () && reason != QSystemTrayIcon::Unknown) 
 	{
 		if (s.value ("ui/minimode", false).toBool ()) {
 			pw->toggle_mini ();
