@@ -684,7 +684,12 @@ void
 PlayerWidget::setWindowFlags()
 {
 	QSettings s;
-	Qt::WindowFlags f;
+	Qt::WindowFlags f = 0;
+
+	if(s.value("ui/toolwindow").toBool ())
+		f |= Qt::Tool;
+	else
+		f |= Qt::Window;
 
 	if(s.value("ui/alwaysontop").toBool ())
 		f |= Qt::WindowStaysOnTopHint;

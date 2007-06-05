@@ -60,6 +60,7 @@ PreferenceDialog::build_prefvalues ()
 	PREF_VALUE("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), T_BOOL, true);
 	PREF_VALUE("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), T_BOOL, false);
 	PREF_VALUE("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), T_BOOL, true);
+	PREF_VALUE("ui/toolwindow", tr ("Show the playerwindow as a toolwindow (no windowlist entry)."), T_BOOL, false);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
 		PREF_VALUE("core/systray", tr ("Show icon in system tray"), T_BOOL, true);
 		PREF_VALUE("core/donotification", tr ("Show popup notification on song change"), T_BOOL, true);
