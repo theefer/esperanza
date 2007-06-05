@@ -686,7 +686,7 @@ PlayerWidget::setWindowFlags()
 	QSettings s;
 	Qt::WindowFlags f = 0;
 
-	if(s.value("ui/toolwindow").toBool ())
+	if(s.value ("ui/toolwindow").toBool () && s.value ("core/systray").toBool ())
 		f |= Qt::Tool;
 	else
 		f |= Qt::Window;
