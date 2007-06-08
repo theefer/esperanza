@@ -11,7 +11,7 @@ class FTWManager : public QObject {
 	Q_OBJECT
 public:
 	FTWManager(XClient *client_);
-	void show();
+	bool show();
 
 protected slots:
 	void lastPageFinished(bool Canceled);
@@ -27,5 +27,6 @@ protected:
 	AbstractPage* firstPage;
 	AbstractPage* lastPage;
 	QList<AbstractPage*> pages;
+	bool Canceled;
 };
 #endif

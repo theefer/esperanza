@@ -8,6 +8,5 @@ class Page : public AbstractPage, public Ui::DefaultPage {
 	Q_OBJECT
 public:
 	Page(QWidget *parent = NULL);
-
 };
 #endif

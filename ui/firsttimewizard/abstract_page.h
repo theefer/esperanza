@@ -6,9 +6,10 @@
 class AbstractPage : public QWidget {
 	Q_OBJECT
 public:
-	AbstractPage(QWidget *parent = NULL)
-	: QWidget(parent)
+	AbstractPage(QWidget *parent_ = NULL)
+	: QWidget(parent_)
 	{
+		parent = parent_;
 		prev = NULL;
 		next = NULL;
 	};
@@ -27,6 +28,7 @@ public slots:
 	}
 	virtual void previousPage() { if(prev) { prev->show(); hide(); } }
 	virtual void saveSettings() { };
+	virtual void showEvent(QShowEvent *ev) { parent->setWindowTitle(""); }
 
 signals:
 	void lastClosed(bool Canceled = false);
@@ -34,5 +36,6 @@ signals:
 protected:
 	AbstractPage *prev;
 	AbstractPage *next;
+	QWidget* parent;
 };
 #endif

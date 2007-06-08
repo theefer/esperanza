@@ -15,6 +15,7 @@ FTWManager::FTWManager(XClient *client_)
 	addPage(new GuiPage(ftwDlg));
 	addPage(new Page(ftwDlg));
 	addPage(new Finish(ftwDlg));
+	Canceled = true;
 }
 
 void FTWManager::addPage(AbstractPage *p)
@@ -31,17 +32,20 @@ void FTWManager::addPage(AbstractPage *p)
 	p->hide();
 }
 
-void FTWManager::show()
+bool FTWManager::show()
 {
 	if(firstPage) {
 		firstPage->show();
 		ftwDlg->exec();
 	}
+	return !Canceled;
 }
 
-void FTWManager::lastPageFinished(bool Canceled)
+void FTWManager::lastPageFinished(bool Canceled_)
 {
 	AbstractPage *p;
+	Canceled = Canceled_;
+
 	if(!Canceled)
 		while (!pages.isEmpty()) {
 			p = pages.takeFirst();

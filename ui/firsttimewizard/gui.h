@@ -9,5 +9,8 @@ class GuiPage : public Page, public Ui::content {
 public:
 	GuiPage(QWidget *parent = NULL);
 	void saveSettings();
+
+public slots:
+	void showEvent(QShowEvent *ev); 
 };
 #endif

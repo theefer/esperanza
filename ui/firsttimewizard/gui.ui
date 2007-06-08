@@ -24,6 +24,9 @@
    <property name="text" >
     <string>Ignore the desktop settings (use this if everything is black)</string>
    </property>
+   <property name="checked" >
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QCheckBox" name="showServerBrowser" >
    <property name="geometry" >
@@ -57,7 +60,7 @@
     <bool>true</bool>
    </property>
    <property name="checked" >
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <widget class="QCheckBox" name="doQuitOnClose" >
     <property name="geometry" >

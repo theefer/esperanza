@@ -7,8 +7,6 @@ GuiPage::GuiPage(QWidget *parent)
 : Page(parent)
 {
 	Ui::content::setupUi(this->Content);
-	// QSystemTrayIcon::DoubleClick == DoubleClick
-	// QSystemTrayIcon::Trigger == SingleClick
 }
 
 /*
@@ -21,7 +19,7 @@ void GuiPage::saveSettings()
 	bool bTmp;
 	int iTmp;
 
-	bTmp = (bool)(IgnoreDesktopSettings->checkState() == Qt::Checked);
+	bTmp = !((bool)(IgnoreDesktopSettings->checkState() == Qt::Checked));
 	s.setValue("core/ignoredesktopsettings", QVariant(bTmp));
 
 	bTmp = (bool)(showServerBrowser->checkState() == Qt::Checked);
@@ -29,11 +27,18 @@ void GuiPage::saveSettings()
 
 	bTmp = (bool)groupTray->isChecked();
 	s.setValue("core/systray", QVariant(bTmp));
+	if(bTmp) {
+		bTmp = !((bool)doQuitOnClose->checkState() == Qt::Checked);
+		s.setValue("ui/hideOnClose", QVariant(bTmp));
 
-	bTmp = (bool)singleOrDoubleClick->checkState() == Qt::Checked;
-	s.setValue("ui/activateTray", QVariant(bTmp));
+		iTmp = ((bool)singleOrDoubleClick->checkState() == Qt::Checked) ?
+						QSystemTrayIcon::DoubleClick : QSystemTrayIcon::Trigger;
+		s.setValue("ui/activateTray", QVariant(iTmp));
+	}
+}
 
-	iTmp = ((bool)doQuitOnClose->checkState() == Qt::Checked) ?
-					QSystemTrayIcon::DoubleClick : QSystemTrayIcon::Trigger;
-	s.setValue("ui/hideOnClose", QVariant(iTmp));
+void GuiPage::showEvent(QShowEvent *ev)
+{
+	parent->setWindowTitle("Some Interfacesettings");
+	this->header->setText("<b>Here you can set some esperanza interface settings.</b>");
 }

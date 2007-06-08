@@ -78,10 +78,11 @@ main (int argc, char **argv)
 	*/
 	QString path;
 	PlayerWidget *pw = new PlayerWidget (NULL, &client);
-	if (!s.value("core/firsttimewizardshowen", 0).toBool ()) {
+	if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
+	{
 		FTWManager *ftwMan =  new FTWManager (&client);
-		ftwMan->show ();
-		//s.setValue ("core/firsttimewizardshowen", 1);
+		if(ftwMan->show())
+			s.setValue ("core/firsttimewizardshowen", QVariant(true));
 	}
 
 	char *p = NULL;
