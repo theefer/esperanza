@@ -28,10 +28,10 @@ macx {
 !win32 {
 	PKGCONFIG += xmms2-client xmms2-client-cpp
 	CONFIG += link_pkgconfig debug
-	OBJECTS_DIR = qmake_build
-	MOC_DIR = qmake_build
-	RCC_DIR = qmake_build
-	UI_DIR = qmake_build
+	OBJECTS_DIR = qmake_build/obj
+	MOC_DIR = qmake_build/moc
+	RCC_DIR = qmake_build/rcc
+	UI_DIR = qmake_build/ui
 	INSTALLS += target
 }
 
