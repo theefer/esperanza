@@ -205,8 +205,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
     m_streaming = NULL;
 
-	/* run it once first time */
-	changed_settings ();
 	ShortcutManager *sm = ShortcutManager::instance ();
 
 	sm->connect (this, "shortcuts/remove", "Del", SLOT (remove_selected ()));
@@ -293,7 +291,6 @@ PlayerWidget::changed_settings ()
 	}
 
 	setWindowFlags ();
-
 	update ();
 }
 

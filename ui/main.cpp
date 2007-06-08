@@ -32,6 +32,7 @@
 #include "minimode.h"
 #include "mdns.h"
 #include "filehandler.h"
+#include "firsttimewizard/ftwmanager.h"
 
 int
 main (int argc, char **argv)
@@ -75,10 +76,13 @@ main (int argc, char **argv)
 	/*
 	RemoteFileHandler handler (&client);
 	*/
-
 	QString path;
-
 	PlayerWidget *pw = new PlayerWidget (NULL, &client);
+	if (!s.value("core/firsttimewizardshowen", 0).toBool ()) {
+		FTWManager *ftwMan =  new FTWManager (&client);
+		ftwMan->show ();
+		//s.setValue ("core/firsttimewizardshowen", 1);
+	}
 
 	char *p = NULL;
 
@@ -122,6 +126,8 @@ browser:
 	}
     */
 
+	// SHOWS THE PLAYERWINDOW respectivly minimode window
+	client.settings()->change_settings();
 	return app.exec ();
 }
 
