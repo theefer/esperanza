@@ -16,6 +16,17 @@ ServerPage::ServerPage(QWidget *parent)
 void ServerPage::saveSettings()
 {
 	QSettings s;
+	QString sDefName;
+	QMap<QString, QVariant> m;
+
+	sDefName = "default";
+	m[sDefName] = QVariant(serverConPath->text());
+
+	if(serverConPath->text() == "")
+		m[sDefName] = "local";
+
+	s.setValue ("serverbrowser/default", sDefName);
+	s.setValue ("serverbrowser/list", m);
 }
 
 void ServerPage::showEvent(QShowEvent *ev)

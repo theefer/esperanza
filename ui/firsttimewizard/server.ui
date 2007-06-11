@@ -25,19 +25,6 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit" >
-   <property name="geometry" >
-    <rect>
-     <x>130</x>
-     <y>150</y>
-     <width>181</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>local</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label" >
    <property name="geometry" >
     <rect>
@@ -55,6 +42,19 @@
    </property>
    <property name="alignment" >
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="serverConPath" >
+   <property name="geometry" >
+    <rect>
+     <x>130</x>
+     <y>150</y>
+     <width>181</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>local</string>
    </property>
   </widget>
  </widget>
