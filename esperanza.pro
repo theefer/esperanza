@@ -68,7 +68,7 @@ HEADERS += ui/playlistview.h ui/playerwidget.h ui/progressframe.h ui/playerbutto
 		   ui/valuebar.h ui/fancyplaylistview.h ui/medialibdialog.h ui/medialibview.h ui/medialibpanebrowser.h \
 		   ui/panebrowserview.h ui/streamingdialog.h ui/shortcutmanager.h ui/firsttimewizard/abstract_page.h \
 		   ui/firsttimewizard/ftwmanager.h ui/firsttimewizard/welcome.h ui/firsttimewizard/finish.h ui/firsttimewizard/page.h \
-		   ui/firsttimewizard/gui.h ui/firsttimewizard/ftwdialog.h
+		   ui/firsttimewizard/ftwdialog.h ui/firsttimewizard/gui.h ui/firsttimewizard/server.h
 
 SOURCES += ui/main.cpp ui/playlistview.cpp ui/playerwidget.cpp ui/progressframe.cpp ui/playerbutton.cpp \
 	       ui/filedialog.cpp ui/serverdialog.cpp ui/preferences.cpp ui/progressindicator.cpp ui/volumebar.cpp \
@@ -76,10 +76,10 @@ SOURCES += ui/main.cpp ui/playlistview.cpp ui/playerwidget.cpp ui/progressframe.
 		   ui/jumptofiledialog.cpp ui/lastfm.cpp ui/valuebar.cpp ui/fancyplaylistview.cpp ui/medialibdialog.cpp \
 		   ui/medialibview.cpp ui/medialibpanebrowser.cpp ui/panebrowserview.cpp ui/streamingdialog.cpp \
 		   ui/shortcutmanager.cpp ui/firsttimewizard/ftwmanager.cpp ui/firsttimewizard/page.cpp \
-		   ui/firsttimewizard/gui.cpp
+		   ui/firsttimewizard/gui.cpp ui/firsttimewizard/server.cpp
 
 INTERFACES += ui/firsttimewizard/welcome.ui ui/firsttimewizard/page.ui ui/firsttimewizard/finish.ui \
-			  ui/firsttimewizard/gui.ui ui/firsttimewizard/ftwdialog.ui
+			  ui/firsttimewizard/ftwdialog.ui ui/firsttimewizard/gui.ui ui/firsttimewizard/server.ui
 
 # Collection manager
 #HEADERS += collections/manager.h collections/collectionlist.h collections/collectionview.h collections/collectionmodel.h collections/propertyeditor.h collections/propertyrow.h

@@ -2,8 +2,9 @@
 
 // pages
 #include "welcome.h"
-#include "finish.h"
+#include "server.h"
 #include "gui.h"
+#include "finish.h"
 
 FTWManager::FTWManager(XClient *client_)
 {
@@ -12,8 +13,8 @@ FTWManager::FTWManager(XClient *client_)
 	lastPage = NULL;
 	ftwDlg = new FTWDialog();
 	addPage(new Welcome(ftwDlg));
+	addPage(new ServerPage(ftwDlg));
 	addPage(new GuiPage(ftwDlg));
-	addPage(new Page(ftwDlg));
 	addPage(new Finish(ftwDlg));
 	Canceled = true;
 }
