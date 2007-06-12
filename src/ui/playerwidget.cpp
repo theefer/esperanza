@@ -40,17 +40,9 @@
 #include "filedialog.h"
 #include "preferences.h"
 #include "volumebar.h"
-#include "textdialog.h"
 #include "systemtray.h"
-#include "infowindow.h"
 #include "minimode.h"
-#include "jumptofiledialog.h"
-#include "lastfm.h"
-#include "medialibdialog.h"
-#include "streamingdialog.h"
 #include "shortcutmanager.h"
-/*#include "collections/manager.h"*/
-
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -61,8 +53,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
 	setAttribute (Qt::WA_DeleteOnClose);
-
-	set_colors ();
 
 	QWidget *main_w = new QWidget (this);
 	setCentralWidget (main_w);
@@ -189,28 +179,13 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 		m_systray = NULL;
 	}
 
-	/* create the info window */
-	/*
-	m_info = new InfoWindow (this, m_client);
-	m_info->hide ();
-	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_info, SLOT (set_current_id (uint32_t)));
-	*/
-
-	/* last.fm */
-	m_lastfm = new LastFmDialog (this, m_client);
-	m_lastfm->hide ();
-	connect (m_playlist, SIGNAL (selectedID (uint32_t)), m_lastfm, SLOT (new_id (uint32_t)));
-
 	m_mini = new MiniMode (this, m_client);
-
-    m_streaming = NULL;
 
 	/* run it once first time */
 	changed_settings ();
 	ShortcutManager *sm = ShortcutManager::instance ();
 
 	sm->connect (this, "shortcuts/remove", "Del", SLOT (remove_selected ()));
-	sm->connect (this, "shortcuts/openmedialib", "M", SLOT (mlib_pressed ()));
 	sm->connect (this, "shortcuts/shuffle", "S", SLOT (shuffle_pressed ()));
 	sm->connect (this, "shortcuts/addfile", "A", SLOT (add_local_file ()));
 	sm->connect (this, "shortcuts/adddir", "D", SLOT (add_local_dir ()));
@@ -218,9 +193,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	sm->connect (this, "shortcuts/play", "Space", SLOT (play_pressed ()));
 	sm->connect (this, "shortcuts/forward", "B", SLOT (fwd_pressed ()));
 	sm->connect (this, "shortcuts/back", "V", SLOT (back_pressed ()));
-	sm->connect (this, "shortcuts/openpref", "P", SLOT (open_pref ()));
 	sm->connect (this, "shortcuts/jump", "J", SLOT (jump_pressed ()));
-	sm->connect (this, "shortcuts/lastfm", "L", SLOT (lastfm_pressed ()));
 	sm->connect (this, "shortcuts/hide", "Esc", SLOT (check_hide ()));
 	sm->connect (this, "shortcuts/jumppos", "Return", SLOT (jump_pos ()));
 	sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
@@ -257,11 +230,6 @@ PlayerWidget::closeEvent (QCloseEvent *ev)
 }
 
 void
-PlayerWidget::set_colors ()
-{
-}
-
-void
 PlayerWidget::min_pressed ()
 {
 	QSettings s;
@@ -274,8 +242,6 @@ void
 PlayerWidget::changed_settings ()
 {
 	QSettings s;
-
-	set_colors ();
 
 	if (!s.value ("ui/showstop").toBool ())
 		m_playstop->hide ();
@@ -331,32 +297,6 @@ PlayerWidget::jump_pos ()
 }
 
 void
-PlayerWidget::mlib_pressed ()
-{
-	MedialibDialog *d = new MedialibDialog (this, m_client);
-	d->show ();
-}
-
-void
-PlayerWidget::lastfm_pressed ()
-{
-	m_lastfm->show ();
-}
-
-void
-PlayerWidget::jump_pressed ()
-{
-	/*
-	JumpToFileDialog d (this, m_playlist->model ());
-	if (d.exec ()) {
-		QModelIndex idx = d.sel_item ();
-		if (idx.isValid ()) {
-			m_playlist->setCurrentIndex (idx);
-		}
-	}*/
-}
-
-void
 PlayerWidget::play_pressed ()
 {
 	if (m_status == Xmms::Playback::PLAYING)
@@ -399,88 +339,17 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 void
 PlayerWidget::info_pressed (QMouseEvent *ev)
 {
-	QMenu m;
-	m.addAction (tr ("Last.fm browser"), this, SLOT (lastfm_pressed ()));
-	m.addAction (tr ("Stream directory"), this, SLOT (streaming_pressed ()));
-/*	m.addAction (tr ("Collection Manager"), this, SLOT (coll_pressed ()));*/
-	m.addSeparator ();
-	m.addAction (tr ("Keyboard shortcuts"), this, SLOT (open_short_help ()));
-	m.addAction (tr ("About Esperanza"), this, SLOT (open_about ()));
-
-	m.exec (ev->globalPos ());
-}
-
-void
-PlayerWidget::streaming_pressed ()
-{
-    if (m_streaming) {
-        if (!m_streaming->isVisible ()) {
-            m_streaming->show ();
-        } else {
-            m_streaming->hide ();
-        }
-    } else {
-	    m_streaming = new StreamingDialog (this, m_client);
-	    m_streaming->show ();
-    }
-}
-
-void
-PlayerWidget::coll_pressed ()
-{
-	/*
-	CollectionManager *coll = new CollectionManager (this, m_client);
-	coll->show ();
-	*/
 }
 
 void
 PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
-	QMenu m;
-	m.addAction (tr ("Preferences"), this, SLOT (open_pref ()));
-	m.addSeparator ();
-	m.addAction (tr ("Shuffle"), this, SLOT (shuffle_pressed ()));
-
-	m.exec (ev->globalPos ());
 }
 
 void
 PlayerWidget::shuffle_pressed ()
 {
 	m_client->playlist.shuffle () ();
-}
-
-/*
-void
-PlayerWidget::open_sceditor ()
-{
-	ShortCutEditor *sc = new ShortCutEditor (this, m_client);
-	sc->show ();
-}
-*/
-
-void
-PlayerWidget::open_about ()
-{
-	TextDialog dia (this);
-	dia.read_file (":text/about.html");
-	dia.exec ();
-}
-
-void
-PlayerWidget::open_short_help ()
-{
-	TextDialog dia (this);
-	dia.read_file (":text/shortcuts.html");
-	dia.exec ();
-}
-
-void
-PlayerWidget::open_pref ()
-{
-	PreferenceDialog *pd = new PreferenceDialog (this, m_client);
-	pd->show ();
 }
 
 void
@@ -578,21 +447,10 @@ PlayerWidget::got_connection (XClient *client)
 {
 	m_client = client;
 
-	client->playback.signalPlaytime () (Xmms::bind (&PlayerWidget::handle_playtime, this));
-	client->playback.getPlaytime () (Xmms::bind (&PlayerWidget::handle_playtime, this));
-
 	client->playback.getStatus () (Xmms::bind (&PlayerWidget::handle_status, this));
 	client->playback.broadcastStatus () (Xmms::bind (&PlayerWidget::handle_status, this));
 
 	client->setDisconnectCallback (boost::bind (&PlayerWidget::handle_disconnect, this));
-
-	client->playback.broadcastCurrentID () (Xmms::bind (&PlayerWidget::handle_current_id, this));
-	client->playback.currentID () (Xmms::bind (&PlayerWidget::handle_current_id, this));
-
-	/* XXX: broken in c++ bindings
-	client->stats.broadcastMediainfoReaderStatus (Xmms::bind (&PlayerWidget::handle_index_status, this));
-	client->stats.signalMediainfoReaderUnindexed (Xmms::bind (&PlayerWidget::handle_unindexed, this));
-	*/
 }
 
 void
@@ -618,65 +476,6 @@ PlayerWidget::handle_status (const Xmms::Playback::Status &st)
 		m_mini->update_playbutton (":images/pause.png");
 	}
 
-	if (st == Xmms::Playback::STOPPED) {
-		m_pf->setValue (0);
-	}
-
-	return true;
-}
-
-void
-PlayerWidget::entry_changed (uint32_t id)
-{
-	if (id == m_current_id) {
-		new_info (m_client->cache ()->get_info (id));
-	}
-}
-
-void
-PlayerWidget::new_info (const QHash<QString,QVariant> &h)
-{
-	QString s;
-	if (!h.contains ("title")) {
-		s = h["url"].toString ();
-	} else {
-		s = QString ("%1 - %2")
-			.arg(h["artist"].toString ())
-			.arg(h["title"].toString ());
-	}
-
-	m_pf->setText (s);
-	m_mini->setText (s);
-
-	if (h.contains ("duration")) {
-		uint32_t dur = h["duration"].toUInt ();
-		m_pf->setMaximum (dur / 1000);
-		m_pf->setValue (0);
-
-		m_mini->setMaximum (dur / 1000);
-		m_mini->setValue (0);
-	}
-	if (m_systray &&
-		m_current_id == h["id"].toUInt () &&
-        m_status == Xmms::Playback::PLAYING &&
-        h["id"].toUInt () != 0) {
-		m_systray->do_notification (tr ("Esperanza is now playing:"), s, m_client->cache ()->get_pixmap (m_current_id));
-	}
-}
-
-bool
-PlayerWidget::handle_playtime (const unsigned int &tme)
-{
-	m_pf->setValue (tme / 1000);
-	m_mini->setValue (tme / 1000);
-	return true;
-}
-
-bool
-PlayerWidget::handle_current_id (const unsigned int &id)
-{
-	m_current_id = id;
-	new_info (m_client->cache ()->get_info (id));
 	return true;
 }
 

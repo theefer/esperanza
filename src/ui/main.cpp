@@ -27,11 +27,16 @@
 
 #include "xclient.h"
 #include "playerwidget.h"
+#include "minimode.h"
 #include "serverdialog.h"
 #include "preferences.h"
-#include "minimode.h"
-#include "mdns.h"
-#include "filehandler.h"
+
+/*
+Q_IMPORT_PLUGIN(lastfm)
+Q_IMPORT_PLUGIN(aboutdialog)
+Q_IMPORT_PLUGIN(medialibdialog)
+Q_IMPORT_PLUGIN(streamingdialog)
+*/
 
 int
 main (int argc, char **argv)
@@ -69,13 +74,6 @@ main (int argc, char **argv)
 
 	XClient client (NULL, "Esperanza");
 
-	MDNSQuery mdns (NULL);
-	mdns.browse_service ("_xmms2._tcp");
-
-	/*
-	RemoteFileHandler handler (&client);
-	*/
-
 	QString path;
 
 	PlayerWidget *pw = new PlayerWidget (NULL, &client);
@@ -84,7 +82,7 @@ main (int argc, char **argv)
 
 browser:
 	if (!getenv ("XMMS_PATH")) {
-		ServerDialog sd (NULL, &mdns);
+		ServerDialog sd (NULL);
 		if (!s.value ("serverdialog/show").toBool ()) {
 			path = sd.get_default ();
 		} else {
@@ -112,16 +110,7 @@ browser:
 			exit (EXIT_FAILURE);
 		}
 	}
-
-	/*
-     * They show themselves if they should be visible ...
-    if (!s.value("ui/minimode", false).toBool ()) {
-		pw->show ();
-	} else {
-		pw->toggle_mini ();
-	}
-    */
-
+	
 	return app.exec ();
 }
 

@@ -40,7 +40,7 @@ class ServerDialog : public QDialog
 {
 	Q_OBJECT
 	public:
-		ServerDialog (QWidget *, MDNSQuery *);
+		ServerDialog (QWidget *);
 		QString get_path ();
 		QString get_default ();
 
@@ -53,7 +53,7 @@ class ServerDialog : public QDialog
 
 	private:
 		QListWidget *m_list;
-		MDNSQuery *m_mdns;
+		MDNSQuery m_mdns;
 		QList<QListWidgetItem *> m_mdns_servers;
 };
 

@@ -31,9 +31,9 @@
 #include "playerbutton.h"
 #include "mdns.h"
 
-ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
+ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent), m_mdns (NULL)
 {
-	m_mdns = mdns;
+	m_mdns.browse_service ("_xmms2._tcp");
 
 	QGridLayout *g = new QGridLayout (this);
 
@@ -91,7 +91,7 @@ ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
 	g->addWidget (dummy, 3, 0, 1, 2);
 
 	connect (m_list, SIGNAL (itemActivated (QListWidgetItem *)), this, SLOT (accept ()));
-	connect (mdns, SIGNAL (serverlistChanged ()), this, SLOT (mdns_server_update ()));
+	connect (&m_mdns, SIGNAL (serverlistChanged ()), this, SLOT (mdns_server_update ()));
 
 	mdns_server_update ();
 
@@ -101,7 +101,7 @@ ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
 void
 ServerDialog::mdns_server_update ()
 {
-	QList<MDNSServer *>servers = m_mdns->serverlist ();
+	QList<MDNSServer *>servers = m_mdns.serverlist ();
 	QSettings s;
 
 	while (m_mdns_servers.count ()) {

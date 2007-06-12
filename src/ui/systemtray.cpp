@@ -79,6 +79,7 @@ SystemTray::build_menu ()
 	QSettings s;
 	
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
+	#if 0
 	if (pw->status () != Xmms::Playback::PLAYING) {
 		m_play_action->setIcon (QIcon (":images/play.png"));
 		m_play_action->setText (tr ("Play"));
@@ -86,6 +87,7 @@ SystemTray::build_menu ()
 		m_play_action->setIcon (QIcon (":images/pause.png"));
 		m_play_action->setText (tr ("Pause"));
 	}
+	#endif
 
 	QString show = tr ("Show main window");
 	QString hide = tr ("Hide main window");

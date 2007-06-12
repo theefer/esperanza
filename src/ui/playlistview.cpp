@@ -19,7 +19,6 @@
 #include "fancyplaylistmodel.h"
 #include "playlistmodel.h"
 #include "xclient.h"
-#include "playerwidget.h"
 
 #include <QHeaderView>
 #include <QPainter>
@@ -135,6 +134,16 @@ PlaylistView::got_connection (XClient *client)
 	m_client = client;
 	client->playback.broadcastCurrentID () (Xmms::bind (&PlaylistView::handle_update_pos, this));
 	client->playback.currentID () (Xmms::bind (&PlaylistView::handle_update_pos, this));
+	
+	client->playback.getStatus () (Xmms::bind (&PlaylistView::handle_status, this));
+	client->playback.broadcastStatus () (Xmms::bind (&PlaylistView::handle_status, this));
+}
+
+bool
+PlaylistView::handle_status (const Xmms::Playback::Status &st)
+{
+	m_status = st;
+	return true;
 }
 
 bool
@@ -196,11 +205,10 @@ PlaylistView::jump_pos (const QModelIndex &i)
 	 */
 	m_client->playback.tickle () ();
 
-	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
-	if (pw->status () != Xmms::Playback::PLAYING) {
+	if (m_status != Xmms::Playback::PLAYING) {
 		m_client->playback.start () ();
 
-		if (pw->status () == Xmms::Playback::PAUSED) {
+		if (m_status == Xmms::Playback::PAUSED) {
 			m_client->playback.tickle () ();
 		}
 	}

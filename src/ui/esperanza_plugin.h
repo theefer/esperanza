@@ -14,30 +14,37 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef __FILEHANDLER_H__
-#define __FILEHANDLER_H__
+#ifndef __ESPERANZA_PLUGIN_H__
+#define __ESPERANZA_PLUGIN_H__
 
 #include "xclient.h"
 
-class RemoteFileHandler;
+#include <QWidget>
 
-#include "fileengine.h"
+namespace EsperanzaMain {
+	enum DialogItem {
+		DialogNone,
+		DialogInfo,
+		DialogPlaylist,
+		DialogSettings
+	};
+	
+	class EsperanzaDialog : public QObject
+	{
+		Q_OBJECT
+		public:
+			virtual ~EsperanzaDialog () { };
+			virtual QString label () const = 0;
+			virtual DialogItem item () const = 0;
+			virtual Qt::Key shortcut () const = 0;
+			
+			virtual QDialog create (QWidget *parent) const = 0;
+			
+		protected:
+			XClient *m_client;
+	};
+}
 
-#include <QAbstractFileEngineHandler>
-
-class RemoteFileHandler : public QAbstractFileEngineHandler
-{
-	public:
-		RemoteFileHandler (XClient *);
-		QAbstractFileEngine *create (const QString &fileName) const;
-
-		void set_filemap (const QHash<QString, RemoteFileItem> &map) {
-			m_filemap = map;
-		};
-
-	private:
-		XClient *m_client;
-		QHash<QString, RemoteFileItem> m_filemap;
-};
+Q_DECLARE_INTERFACE(EsperanzaMain::EsperanzaDialog, "org.xmms.clients.Esperanza.EsperanzaDialog/0.4")
 
 #endif

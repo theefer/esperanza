@@ -50,7 +50,7 @@ class ProgressFrame : public QFrame
     public:
         ProgressFrame (QWidget *parent, XClient *client, bool seek = true);
 
-        void clear() { stop(); setText( "" ); m_timerText = ""; }
+        void clear() { setText( "" ); }
 
         int maximum() { return m_maxValue; }
         void setMaximum( int value ) { m_maxValue = value; }
@@ -58,33 +58,11 @@ class ProgressFrame : public QFrame
 
         QString text() { return m_text; }
         void setText( const QString& text );
-
-        // Temporary message that should only be displayed for a few seconds
-        void pushText( const QString& text );
     
-        QPixmap icon() { return m_pixmap; }
-        void setIcon( QPixmap pixmap ) { m_pixmap = pixmap; }
-
-        void start() { setValue( 0 ); m_timer->start(); }
-        void stop() { setMaximum( 0 ); setValue( 0 ); m_timer->stop(); }
-        void resume() { m_timer->start(); }
-        void pause() { m_timer->stop(); }
-        bool isActive() { return m_timer->isActive(); }
-
-        void useInternalTimer();
-        void setTimerText( QString text );
-
-        void setBackgroundEnabled( bool drawBackground ) { m_drawBackground = drawBackground; }
         void setReverse( bool reverse ) { m_reverse = reverse; }
-        void setEnabled( bool enabled );
-
-        QHash<QString, QString> itemData() { return m_itemData; }
-        void setItemData( QHash<QString, QString> data ) { m_itemData = data; }
 
         int itemType() { return m_itemType; }
         void setItemType( int type ) { m_itemType = type; }
-
-        void setGreen( bool green ) { m_green = green; }
 
 		void mouseMoveEvent (QMouseEvent *);
 		void mousePressEvent (QMouseEvent *);
@@ -95,18 +73,18 @@ class ProgressFrame : public QFrame
 
     public slots:
         void setValue( int value );
+		void got_connection (XClient *);
 
     private:
+		bool handle_current_id (const unsigned int &);
+		bool handle_playtime (const unsigned int &);
+		bool handle_status (const Xmms::Playback::Status &);
+		void new_info (const QHash<QString, QVariant>&);
+		void entry_changed (uint32_t id);
+	
         void paintEvent( QPaintEvent* event );
 
-        void disableInternalTimer();
-        void disconnectWatch();
-
-        QPixmap m_pixmap;
-
-        QString m_baseText;
         QString m_text;
-        QString m_timerText; 
         
         int m_maxValue;
         int m_value;
@@ -114,26 +92,16 @@ class ProgressFrame : public QFrame
         int m_itemType;
         QHash<QString, QString> m_itemData;
 
-        bool m_drawBackground;
-        bool m_drawTime;
         bool m_reverse;
-        bool m_green;
-
-        QTimer* m_timer;
-        bool m_timerEnabled;
-        
-        QTimer pushTimer;
-
 		bool m_move;
+		
 		uint32_t m_diffx;
 		uint32_t m_diffy;
 
 		XClient *m_client;
 		bool m_seek;
-
-    private slots:
-        void updateTimer() { setValue( value() + 1 ); }
-        void popText();
+		
+		uint32_t m_current_id;
 };
 
 #endif

@@ -18,7 +18,6 @@
 #include "fancyplaylistview.h"
 #include "fancyplaylistmodel.h"
 #include "xclient.h"
-#include "playerwidget.h"
 
 #include <QHeaderView>
 #include <QPainter>

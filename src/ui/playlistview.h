@@ -49,6 +49,7 @@ class PlaylistView : public QTreeView
 		void head_size (int, int, int);
 		void moved (const QModelIndex &, const QModelIndex &);
 		void jump_pos (const QModelIndex &);
+		bool handle_status (const Xmms::Playback::Status &);
 
 	signals:
 		void selectedID (uint32_t);
@@ -60,6 +61,7 @@ class PlaylistView : public QTreeView
 		QWidget *m_parent;
 		PlaylistModel *m_model;
 		QItemSelectionModel *m_selections;
+		Xmms::Playback::Status m_status;
 
 		bool handle_update_pos (const uint32_t &);
 };

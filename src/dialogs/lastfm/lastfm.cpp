@@ -19,7 +19,6 @@
 #include "lastfmparser.h"
 #include "valuebar.h"
 #include "lastfmartist.h"
-#include "playerwidget.h"
 #include "playerbutton.h"
 
 #include <QDialog>

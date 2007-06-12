@@ -101,16 +101,12 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	changed_settings ();
 	ShortcutManager *sm = ShortcutManager::instance ();
 
-	sm->connect (this, "shortcuts/openmedialib", "M", SLOT (mlib_pressed ()));
 	sm->connect (this, "shortcuts/shuffle", "S", SLOT (shuffle_pressed ()));
 	sm->connect (this, "shortcuts/addfile", "A", SLOT (add_local_file ()));
 	sm->connect (this, "shortcuts/adddir", "D", SLOT (add_local_dir ()));
 	sm->connect (this, "shortcuts/play", "Space", SLOT (play_pressed ()));
 	sm->connect (this, "shortcuts/forward", "B", SLOT (fwd_pressed ()));
 	sm->connect (this, "shortcuts/back", "V", SLOT (back_pressed ()));
-	sm->connect (this, "shortcuts/openpref", "P", SLOT (open_pref ()));
-	sm->connect (this, "shortcuts/jump", "J", SLOT (jump_pressed ()));
-	sm->connect (this, "shortcuts/lastfm", "L", SLOT (lastfm_pressed ()));
 	sm->connect (this, "shortcuts/hide", "Esc", SLOT (check_hide ()));
 	sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
 }
@@ -119,12 +115,6 @@ void
 MiniMode::play_pressed () {
  	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
 	pw->play_pressed ();
-}
-
-void 
-MiniMode::lastfm_pressed () {
- 	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
-	pw->lastfm_pressed ();
 }
 
 void 
@@ -146,18 +136,6 @@ MiniMode::shuffle_pressed () {
 }
 
 void 
-MiniMode::jump_pressed () {
- 	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
-	pw->jump_pressed ();
-}
-
-void 
-MiniMode::mlib_pressed () {
- 	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
-	pw->mlib_pressed ();
-}
-
-void 
 MiniMode::add_local_file () {
  	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
 	pw->add_local_file ();
@@ -173,12 +151,6 @@ void
 MiniMode::check_hide () {
  	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
 	pw->toggle_mini ();
-}
-
-void
-MiniMode::open_pref () {
- 	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (m_parent);
-	pw->open_pref ();
 }
 
 void

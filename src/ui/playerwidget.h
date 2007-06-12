@@ -29,21 +29,13 @@
 #include "playerbutton.h"
 #include "volumebar.h"
 #include "systemtray.h"
-#include "infowindow.h"
 #include "minimode.h"
-#include "lastfm.h"
-#include "streamingdialog.h"
 
 class PlayerWidget : public QMainWindow
 {
 	Q_OBJECT
 	public:
 		PlayerWidget (QWidget *parent, XClient *client);
-
-		Xmms::Playback::Status status () const
-		{
-			return m_status;
-		};
 
 		void resizeEvent (QResizeEvent *);
 		void moveEvent (QMoveEvent *);
@@ -65,20 +57,15 @@ class PlayerWidget : public QMainWindow
 
 	public slots:
 		void play_pressed ();
-		void lastfm_pressed ();
-		void coll_pressed ();
 		void playstop_pressed ();
 		void fwd_pressed ();
 		void back_pressed ();
 		void shuffle_pressed ();
 		void snett_pressed (QMouseEvent *);
-		void jump_pressed ();
-		void mlib_pressed ();
 		void add_local_file ();
 		void add_local_dir ();
 		void jump_pos ();
 		void check_hide ();
-		void open_pref ();
 
 	private slots:
 		void plus_pressed (QMouseEvent *);
@@ -88,15 +75,9 @@ class PlayerWidget : public QMainWindow
 		void add_remote_file ();
 		void add_url ();
 		void min_pressed ();
-		void streaming_pressed ();
 
 		void remove_selected ();
 		void remove_all ();
-
-		void entry_changed (uint32_t);
-
-		void open_about ();
-		void open_short_help ();
 
 		void changed_settings ();
 
@@ -107,26 +88,15 @@ class PlayerWidget : public QMainWindow
 		PlayerButton *m_playbutt;
 		PlayerButton *m_playstop;
 
-		bool handle_current_id (const unsigned int &);
-		bool handle_playtime (const unsigned int &);
 		bool handle_status (const Xmms::Playback::Status &);
-
 		void handle_disconnect ();
-
-		void new_info (const QHash<QString, QVariant>&);
-		void set_colors ();
 
 		uint32_t m_current_id;
 
 		ProgressFrame *m_pf;
 		VolumeBar *m_volbar;
-
 		SystemTray *m_systray;
-		InfoWindow *m_info;
 		MiniMode *m_mini;
-
-		LastFmDialog *m_lastfm;
-        StreamingDialog *m_streaming;
 
 };
 
