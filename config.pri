@@ -1,7 +1,7 @@
 DEPENDPATH += ../../ui ../../lib ../ui ../lib
 INCLUDEPATH += ../../ui ../../lib ../ui ../lib
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-QT += network xml
+#QT += network xml
 
 macx {
 	INCLUDEPATH += /opt/local/include # ugly

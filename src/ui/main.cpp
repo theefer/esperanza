@@ -78,7 +78,7 @@ main (int argc, char **argv)
 
 	QString path;
 
-	PlayerWidget *pw = new PlayerWidget (NULL, &client);
+	new PlayerWidget (NULL, &client);
 
 	char *p = NULL;
 
