@@ -183,6 +183,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	ShortcutManager *sm = ShortcutManager::instance ();
 
 	sm->connect (this, "shortcuts/remove", "Del", SLOT (remove_selected ()));
+	sm->connect (this, "shortcuts/remove2", "Backspace", SLOT (remove_selected ()));
 	sm->connect (this, "shortcuts/shuffle", "S", SLOT (shuffle_pressed ()));
 	sm->connect (this, "shortcuts/addfile", "A", SLOT (add_local_file ()));
 	sm->connect (this, "shortcuts/adddir", "D", SLOT (add_local_dir ()));
