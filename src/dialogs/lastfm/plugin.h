@@ -14,34 +14,20 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef __ESPERANZA_PLUGIN_H__
-#define __ESPERANZA_PLUGIN_H__
+#include "esperanza_plugin.h"
+#include "lastfm.h"
 
-#include "xclient.h"
-
-#include <QWidget>
-
-namespace EsperanzaMain {
-	enum DialogItem {
-		DialogNone,
-		DialogInfo,
-		DialogPlaylist,
-		DialogSettings
-	};
-	
-	class EsperanzaDialog : public QObject
-	{
+namespace LastFm {
+	class Plugin : public EsperanzaMain::EsperanzaDialog {
 		Q_OBJECT
+		Q_INTERFACES(EsperanzaMain::EsperanzaDialog)
 		public:
-			virtual ~EsperanzaDialog () { };
-			virtual QString label () const = 0;
-			virtual EsperanzaMain::DialogItem item () const = 0;
-			virtual Qt::Key shortcut () const = 0;
+			virtual QString label () const { return tr ("Last.FM dialog"); }
+			virtual EsperanzaMain::DialogItem item () const { return EsperanzaMain::DialogInfo; }
+			virtual Qt::Key shortcut () const { return Qt::Key_L; }
 			
-			virtual QDialog *create (QWidget *, XClient *) const = 0;
+			virtual QDialog *create (QWidget *parent, XClient *client) const {
+				return new LastFmDialog (parent, client);
+			}
 	};
 }
-
-Q_DECLARE_INTERFACE(EsperanzaMain::EsperanzaDialog, "org.xmms.clients.Esperanza.EsperanzaDialog/0.4")
-
-#endif

@@ -150,9 +150,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	if (s.contains ("player/position"))
 		move (s.value ("player/position").toPoint ());
 
-	connect (m_client->cache (), SIGNAL (entryChanged (uint32_t)),
-			 this, SLOT (entry_changed (uint32_t)));
-
 	connect (m_client->settings (), SIGNAL (settingsChanged ()),
 			 this, SLOT (changed_settings ()));
 
