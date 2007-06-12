@@ -1,7 +1,7 @@
 TEMPLATE = app
 include (../../config.pri)
 
-LIBS += ../lib/liblib.a
+LIBS += ../lib/liblib.a ../../data/libdata.a
 
 TARGET = esperanza
 macx {

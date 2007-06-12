@@ -45,6 +45,8 @@ main (int argc, char **argv)
 	QCoreApplication::setOrganizationDomain ("xmms.org");
 	QCoreApplication::setApplicationName ("Esperanza");
 
+	Q_INIT_RESOURCE(esperanza);
+
     QSettings s;
 
     if (s.value("core/ignoredesktopsettings", false).toBool ()) {
