@@ -16,11 +16,15 @@ ServerPage::ServerPage(QWidget *parent)
 void ServerPage::saveSettings()
 {
 	QSettings s;
-	QString sDefName;
+	QString sDefName, sTmp;
 	QMap<QString, QVariant> m;
 
 	sDefName = "default";
-	m[sDefName] = QVariant(serverConPath->text()); // even when it is emtpy, Esperanza takes a default
+	sTmp == serverConPath->text();
+	if(sTmp.isEmpty())
+		sTmp = "local";
+		
+	m[sDefName] = QVariant(sTmp);
 	s.setValue ("serverbrowser/default", sDefName);
 	s.setValue ("serverbrowser/list", m);
 }
