@@ -20,11 +20,7 @@ void ServerPage::saveSettings()
 	QMap<QString, QVariant> m;
 
 	sDefName = "default";
-	m[sDefName] = QVariant(serverConPath->text());
-
-	if(serverConPath->text() == "")
-		m[sDefName] = "local";
-
+	m[sDefName] = QVariant(serverConPath->text()); // even when it is emtpy, Esperanza takes a default
 	s.setValue ("serverbrowser/default", sDefName);
 	s.setValue ("serverbrowser/list", m);
 }

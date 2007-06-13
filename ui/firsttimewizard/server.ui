@@ -35,7 +35,7 @@
     </rect>
    </property>
    <property name="text" >
-    <string>&lt;b>Server Setting:&lt;/b>&lt;br />&lt;br />Here you should enter the server connection path. This is usually a IP and a Port&lt;br /> or a unix file descriptor. When xmms2d runs on this host, the default of&lt;br />"local" should do it for you. Anyway, if you are not sure stay with&lt;br />the defaul. If this does not work, you could set another connection path later in&lt;br />server browser later after the first time wizard.</string>
+    <string>&lt;b>Server Setting:&lt;/b>&lt;br />&lt;br />Here you should enter the server connection path. This is usually a IP and a Port&lt;br /> or a unix file descriptor. When xmms2d runs on this host, it is ok to let it empty.&lt;br />If this does not work, you could set another connection path later in&lt;br />server browser later after the first time wizard.</string>
    </property>
    <property name="textFormat" >
     <enum>Qt::RichText</enum>
@@ -54,7 +54,7 @@
     </rect>
    </property>
    <property name="text" >
-    <string>local</string>
+    <string/>
    </property>
   </widget>
  </widget>
