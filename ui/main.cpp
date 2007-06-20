@@ -27,12 +27,11 @@
 
 #include "xclient.h"
 #include "playerwidget.h"
-#include "serverdialog.h"
 #include "preferences.h"
 #include "minimode.h"
-#include "mdns.h"
 #include "filehandler.h"
 #include "firsttimewizard/ftwmanager.h"
+#include "misc.h"
 
 int
 main (int argc, char **argv)
@@ -70,53 +69,21 @@ main (int argc, char **argv)
 
 	XClient client (NULL, "Esperanza");
 
-	MDNSQuery mdns (NULL);
-	mdns.browse_service ("_xmms2._tcp");
-
 	/*
 	RemoteFileHandler handler (&client);
 	*/
-	QString path;
 	PlayerWidget *pw = new PlayerWidget (NULL, &client);
-	if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
+	
+
+	// if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
 	{
 		FTWManager *ftwMan =  new FTWManager (&client);
 		if(ftwMan->show())
 			s.setValue ("core/firsttimewizardshowen", QVariant(true));
 	}
 
-	char *p = NULL;
-
-browser:
-	if (!getenv ("XMMS_PATH")) {
-		ServerDialog sd (NULL, &mdns);
-		if (!s.value ("serverdialog/show").toBool ()) {
-			path = sd.get_default ();
-		} else {
-			path = sd.get_path ();
-		}
-
-		if (path == "local") {
-			p = NULL;
-		} else if (path.isNull ()) {
-			return EXIT_FAILURE;
-		} else {
-			p = path.toAscii ().data ();
-		}
-	} else {
-		p = getenv ("XMMS_PATH");
-	}
-
-	if (!client.connect (p)) {
-		if (!getenv ("XMMS_PATH")) {
-			goto browser;
-		} else {
-			QErrorMessage *err = new QErrorMessage (NULL);
-			err->showMessage ("Your XMMS_PATH enviroment sucks. Fix it and restart the Application");
-			err->exec ();
-			exit (EXIT_FAILURE);
-		}
-	}
+	if(!client.isConnected())
+		connectXmms2(&client);
 
 	/*
      * They show themselves if they should be visible ...

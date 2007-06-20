@@ -1,4 +1,8 @@
+#include <xmmsclient/xmmsclient++.h>
+
+#include <QErrorMessage>
 #include <QList>
+#include <QDialog>
 
 #include "xclient.h"
 #include "abstract_page.h"
@@ -12,6 +16,7 @@ class FTWManager : public QObject {
 public:
 	FTWManager(XClient *client_);
 	bool show();
+	XClient* client() { return cli; };
 
 protected slots:
 	void lastPageFinished(bool Canceled);
@@ -23,7 +28,7 @@ protected:
 	void addPage(AbstractPage* p);
 
 	FTWDialog *ftwDlg;
-	XClient *client;
+	XClient *cli;
 	AbstractPage* firstPage;
 	AbstractPage* lastPage;
 	QList<AbstractPage*> pages;

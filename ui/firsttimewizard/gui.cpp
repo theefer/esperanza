@@ -31,7 +31,7 @@ void GuiPage::saveSettings()
 		bTmp = !((bool)doQuitOnClose->checkState() == Qt::Checked);
 		s.setValue("ui/hideOnClose", QVariant(bTmp));
 
-		iTmp = ((bool)singleOrDoubleClick->checkState() == Qt::Checked) ?
+		iTmp = (singleOrDoubleClick->checkState() == Qt::Checked) ?
 						QSystemTrayIcon::DoubleClick : QSystemTrayIcon::Trigger;
 		s.setValue("ui/activateTray", QVariant(iTmp));
 	}

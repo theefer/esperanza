@@ -57,6 +57,19 @@
     <string/>
    </property>
   </widget>
+  <widget class="QPushButton" name="pbTry" >
+   <property name="geometry" >
+    <rect>
+     <x>330</x>
+     <y>150</y>
+     <width>83</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Test It</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
