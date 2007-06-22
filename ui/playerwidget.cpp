@@ -214,14 +214,18 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	sm->connect (this, "shortcuts/adddir", "D", SLOT (add_local_dir ()));
 	sm->connect (this, "shortcuts/removeall", "C", SLOT (remove_all ()));
 	sm->connect (this, "shortcuts/play", "Space", SLOT (play_pressed ()));
+	sm->connect (this, "globalshortcuts/play", "Ctrl+Shift+C", SLOT (play_pressed ()), true);
 	sm->connect (this, "shortcuts/forward", "B", SLOT (fwd_pressed ()));
+	sm->connect (this, "globalshortcuts/forward", "Ctrl+Shift+V", SLOT (fwd_pressed ()), true);
 	sm->connect (this, "shortcuts/back", "V", SLOT (back_pressed ()));
+	sm->connect (this, "globalshortcuts/back", "Ctrl+Shift+X", SLOT (back_pressed ()), true);
 	sm->connect (this, "shortcuts/openpref", "P", SLOT (open_pref ()));
 	sm->connect (this, "shortcuts/jump", "J", SLOT (jump_pressed ()));
 	sm->connect (this, "shortcuts/lastfm", "L", SLOT (lastfm_pressed ()));
 	sm->connect (this, "shortcuts/hide", "Esc", SLOT (check_hide ()));
 	sm->connect (this, "shortcuts/jumppos", "Return", SLOT (jump_pos ()));
 	sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
+	sm->connect (this, "globalshortcuts/stop", "Ctrl+Shift+B", SLOT (playstop_pressed ()), true);
 }
 
 void

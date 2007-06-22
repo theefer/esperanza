@@ -91,3 +91,4 @@ INTERFACES += ui/firsttimewizard/welcome.ui ui/firsttimewizard/page.ui ui/firstt
 #HEADERS += collections/manager.h collections/collectionlist.h collections/collectionview.h collections/collectionmodel.h collections/propertyeditor.h collections/propertyrow.h
 #SOURCES += collections/manager.cpp collections/collectionlist.cpp collections/collectionview.cpp collections/collectionmodel.cpp collections/propertyeditor.cpp collections/propertyrow.cpp
 
+include(ui/globalshortcut/globalshortcut.pri)
