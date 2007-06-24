@@ -32,6 +32,8 @@
 #include <QErrorMessage>
 #include <QTimer>
 #include <QIcon>
+#include <QPluginLoader>
+#include <QAction>
 
 #include "playerwidget.h"
 #include "playerbutton.h"
@@ -43,6 +45,7 @@
 #include "systemtray.h"
 #include "minimode.h"
 #include "shortcutmanager.h"
+#include "esperanza_plugin.h"
 
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
 {
@@ -61,6 +64,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	QGridLayout *layout = new QGridLayout (main_w);
 	m_playlist = new FancyPlaylistView (this, client);
+	connect (m_playlist, SIGNAL (selectedID (uint32_t)), this, SLOT (handle_selected_id (uint32_t)));
 	layout->addWidget (m_playlist, 1, 0, 1, 3);
 
 	QHBoxLayout *pflay = new QHBoxLayout ();
@@ -153,22 +157,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	connect (m_client->settings (), SIGNAL (settingsChanged ()),
 			 this, SLOT (changed_settings ()));
 
-	/* mac specific code to show menus */
-#ifdef Q_WS_MACX
-	QMenu *m = menuBar ()->addMenu (tr ("&File"));
-	m->addAction (tr ("Preferences"), this, SLOT (open_pref ()));
-	m->addAction (tr ("About"), this, SLOT (open_about ()));
-	m = menuBar ()->addMenu (tr ("Playlist"));
-	m->addAction (tr ("Add local file"), this, SLOT (add_local_file ()));
-	m->addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
-	m->addSeparator ();
-	/*
-	m->addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
-	*/
-	m = menuBar ()->addMenu (tr ("Help"));
-	m->addAction (tr ("Esperanza Help"), this, SLOT (open_short_help ()));
-#endif
-
 	// System Tray setup
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
 		m_systray = new SystemTray (this, m_client);
@@ -180,21 +168,66 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	/* run it once first time */
 	changed_settings ();
-	ShortcutManager *sm = ShortcutManager::instance ();
+	m_sm = ShortcutManager::instance ();
 
-	sm->connect (this, "shortcuts/remove", "Del", SLOT (remove_selected ()));
-	sm->connect (this, "shortcuts/remove2", "Backspace", SLOT (remove_selected ()));
-	sm->connect (this, "shortcuts/shuffle", "S", SLOT (shuffle_pressed ()));
-	sm->connect (this, "shortcuts/addfile", "A", SLOT (add_local_file ()));
-	sm->connect (this, "shortcuts/adddir", "D", SLOT (add_local_dir ()));
-	sm->connect (this, "shortcuts/removeall", "C", SLOT (remove_all ()));
-	sm->connect (this, "shortcuts/play", "Space", SLOT (play_pressed ()));
-	sm->connect (this, "shortcuts/forward", "B", SLOT (fwd_pressed ()));
-	sm->connect (this, "shortcuts/back", "V", SLOT (back_pressed ()));
-	sm->connect (this, "shortcuts/jump", "J", SLOT (jump_pressed ()));
-	sm->connect (this, "shortcuts/hide", "Esc", SLOT (check_hide ()));
-	sm->connect (this, "shortcuts/jumppos", "Return", SLOT (jump_pos ()));
-	sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
+	m_sm->connect (this, "shortcuts/remove", "Del", SLOT (remove_selected ()));
+	m_sm->connect (this, "shortcuts/remove2", "Backspace", SLOT (remove_selected ()));
+	m_sm->connect (this, "shortcuts/shuffle", "S", SLOT (shuffle_pressed ()));
+	m_sm->connect (this, "shortcuts/addfile", "A", SLOT (add_local_file ()));
+	m_sm->connect (this, "shortcuts/adddir", "D", SLOT (add_local_dir ()));
+	m_sm->connect (this, "shortcuts/removeall", "C", SLOT (remove_all ()));
+	m_sm->connect (this, "shortcuts/play", "Space", SLOT (play_pressed ()));
+	m_sm->connect (this, "shortcuts/forward", "B", SLOT (fwd_pressed ()));
+	m_sm->connect (this, "shortcuts/back", "V", SLOT (back_pressed ()));
+	m_sm->connect (this, "shortcuts/hide", "Esc", SLOT (check_hide ()));
+	m_sm->connect (this, "shortcuts/jumppos", "Return", SLOT (jump_pos ()));
+	m_sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
+	
+	/* Process the plugins ... */
+	process_dialog_plugin ();
+}
+
+void
+PlayerWidget::process_dialog_plugin ()
+{
+	int i = 0;
+	/* this uses the QPlugin, see esperanza_plugin.h for the interface */
+	QObjectList l = QPluginLoader::staticInstances ();
+	foreach (QObject *o, l) {
+		EsperanzaMain::EsperanzaDialog *dialog = qobject_cast<EsperanzaMain::EsperanzaDialog *> (o);
+		if (!dialog)
+			continue;
+			
+		m_plugin_map[i] = dialog;
+		
+		QAction *action;
+		switch (dialog->item ()) {
+			case EsperanzaMain::DialogInfo:
+				action = m_infomenu.addAction (dialog->label (), this, SLOT (open_dialog ()));
+				break;
+			case EsperanzaMain::DialogPlaylist:
+				action = m_playlistmenu.addAction (dialog->label (), this, SLOT (open_dialog ()));
+				break;
+			case EsperanzaMain::DialogSettings:
+				action = m_settingsmenu.addAction (dialog->label (), this, SLOT (open_dialog ()));
+				break;
+			default:
+				action = NULL;
+				break;
+		}
+		action->setData (QVariant (i));
+//		QString val ("shortcuts/dialogs/%1").arg (dialog->label ());
+//		m_sm->connect (this, val, dialog->shortcut (), SLOT ())
+	}
+}
+
+void
+PlayerWidget::open_dialog ()
+{
+	QAction *a = qobject_cast<QAction *> (sender ());
+	EsperanzaMain::EsperanzaDialog *dialog = m_plugin_map[a->data ().toInt ()];
+	QDialog *d = dialog->create (this, m_client);
+	d->show ();
 }
 
 void
@@ -337,11 +370,13 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 void
 PlayerWidget::info_pressed (QMouseEvent *ev)
 {
+	m_infomenu.exec (ev->globalPos ());
 }
 
 void
 PlayerWidget::snett_pressed (QMouseEvent *ev)
 {
+	m_settingsmenu.exec (ev->globalPos ());
 }
 
 void

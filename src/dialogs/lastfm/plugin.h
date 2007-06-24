@@ -24,8 +24,8 @@ namespace LastFm {
 		public:
 			virtual QString label () const { return tr ("Last.FM dialog"); }
 			virtual EsperanzaMain::DialogItem item () const { return EsperanzaMain::DialogInfo; }
-			virtual Qt::Key shortcut () const { return Qt::Key_L; }
-			
+			virtual QString shortcut () const { return "L"; }
+		
 			virtual QDialog *create (QWidget *parent, XClient *client) const {
 				return new LastFmDialog (parent, client);
 			}

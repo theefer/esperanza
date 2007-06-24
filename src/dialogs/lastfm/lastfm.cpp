@@ -114,6 +114,8 @@ LastFmDialog::LastFmDialog (QWidget *parent, XClient *client) : QDialog (parent)
 	PlayerButton *close = new PlayerButton (dummy, ":images/stop.png");
 	connect (close, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (close ()));
+			
+	connect (parent, SIGNAL (selectedID (uint32_t)), this, SLOT (new_id (uint32_t)));
 
 	h->addWidget (close);
 

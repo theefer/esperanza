@@ -30,6 +30,8 @@
 #include "volumebar.h"
 #include "systemtray.h"
 #include "minimode.h"
+#include "shortcutmanager.h"
+#include "esperanza_plugin.h"
 
 class PlayerWidget : public QMainWindow
 {
@@ -80,6 +82,14 @@ class PlayerWidget : public QMainWindow
 		void remove_all ();
 
 		void changed_settings ();
+		void open_dialog ();
+		
+		void handle_selected_id (uint32_t id) {
+			emit selectedID (id);
+		};
+		
+	signals:
+		void selectedID (uint32_t);
 
 	private:
 		XClient *m_client;
@@ -87,9 +97,12 @@ class PlayerWidget : public QMainWindow
 		FancyPlaylistView *m_playlist;
 		PlayerButton *m_playbutt;
 		PlayerButton *m_playstop;
+		
+		ShortcutManager *m_sm;
 
 		bool handle_status (const Xmms::Playback::Status &);
 		void handle_disconnect ();
+		void process_dialog_plugin ();
 
 		uint32_t m_current_id;
 
@@ -97,7 +110,11 @@ class PlayerWidget : public QMainWindow
 		VolumeBar *m_volbar;
 		SystemTray *m_systray;
 		MiniMode *m_mini;
-
+		
+		QMenu m_infomenu;
+		QMenu m_playlistmenu;
+		QMenu m_settingsmenu;
+		QMap<int32_t, EsperanzaMain::EsperanzaDialog *> m_plugin_map;
 };
 
 #endif

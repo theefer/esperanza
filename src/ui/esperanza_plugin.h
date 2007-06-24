@@ -36,7 +36,7 @@ namespace EsperanzaMain {
 			virtual ~EsperanzaDialog () { };
 			virtual QString label () const = 0;
 			virtual EsperanzaMain::DialogItem item () const = 0;
-			virtual Qt::Key shortcut () const = 0;
+			virtual QString shortcut () const = 0;
 			
 			virtual QDialog *create (QWidget *, XClient *) const = 0;
 	};
