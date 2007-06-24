@@ -79,6 +79,7 @@ class PlayerWidget : public QMainWindow
 		void jump_pos ();
 		void check_hide ();
 		void open_pref ();
+		void toggle_hide ();
 
 	private slots:
 		void plus_pressed (QMouseEvent *);

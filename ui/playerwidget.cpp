@@ -226,6 +226,7 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	sm->connect (this, "shortcuts/jumppos", "Return", SLOT (jump_pos ()));
 	sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
 	sm->connect (this, "globalshortcuts/stop", "Ctrl+Shift+B", SLOT (playstop_pressed ()), true);
+	sm->connect (this, "globalshortcuts/show_hide", "Ctrl+Shift+M", SLOT (toggle_hide ()), true);
 }
 
 void
@@ -699,4 +700,25 @@ PlayerWidget::setWindowFlags()
 
 	if(!s.value("ui/minimode").toBool ())
 		show();
+}
+
+void
+PlayerWidget::toggle_hide ()
+{
+	QSettings s;
+	if (s.value ("ui/minimode", false).toBool ()) {
+		toggle_mini ();
+	} else {
+		if (isVisible () &&
+			(
+				!s.value("ui/alwaysontop").toBool () && isActiveWindow () ||
+				s.value("ui/alwaysontop").toBool ()
+			)
+		) {
+			hide ();
+		} else {
+			hide ();
+			show ();
+		}
+	}
 }

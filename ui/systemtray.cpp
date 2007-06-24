@@ -121,23 +121,8 @@ SystemTray::build_menu ()
 void
 SystemTray::toggle_hide ()
 {
-	QSettings s;
 	PlayerWidget *pw = dynamic_cast<PlayerWidget*> (parent ());
-	if (s.value ("ui/minimode", false).toBool ()) {
-		pw->toggle_mini ();
-	} else {
-		if (pw->isVisible () &&
-			(
-				!s.value("ui/alwaysontop").toBool () && pw->isActiveWindow () ||
-				s.value("ui/alwaysontop").toBool ()
-			)
-		) {
-			pw->hide ();
-		} else {
-			pw->hide ();
-			pw->show ();
-		}
-	}
+	pw->toggle_hide();
 }
 
 void
