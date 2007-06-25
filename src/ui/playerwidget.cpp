@@ -182,7 +182,11 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	m_sm->connect (this, "shortcuts/hide", "Esc", SLOT (check_hide ()));
 	m_sm->connect (this, "shortcuts/jumppos", "Return", SLOT (jump_pos ()));
 	m_sm->connect (this, "shortcuts/minmax", "Ctrl+M", SLOT (min_pressed ()));
-	
+#ifndef Q_WS_MACX
+	m_sm->connect (this, "shortcuts/quit", "Ctrl+Q", SLOT (quit ()));
+	m_sm->connect (this, "shortcuts/close", "Ctrl+W", SLOT (close ()));
+#endif
+
 	/* Process the plugins ... */
 	process_dialog_plugin ();
 }
@@ -525,4 +529,10 @@ PlayerWidget::setWindowFlags()
 
 	if(!s.value("ui/minimode").toBool ())
 		show();
+}
+
+void
+PlayerWidget::quit ()
+{
+	qApp->quit ();
 }

@@ -87,6 +87,8 @@ class PlayerWidget : public QMainWindow
 		void handle_selected_id (uint32_t id) {
 			emit selectedID (id);
 		};
+
+		void quit ();
 		
 	signals:
 		void selectedID (uint32_t);
