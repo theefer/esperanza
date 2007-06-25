@@ -43,6 +43,7 @@ class PreferenceDialog : public QMainWindow
 			T_COLOR,
 			T_STR,
 			T_SELECTION,
+			T_MULTI_SELECTION,
 			T_KEY
 		};
 
