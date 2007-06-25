@@ -32,9 +32,9 @@
 #include "preferences.h"
 
 Q_IMPORT_PLUGIN(lastfm)
+Q_IMPORT_PLUGIN(medialibdialog)
 /*
 Q_IMPORT_PLUGIN(aboutdialog)
-Q_IMPORT_PLUGIN(medialibdialog)
 Q_IMPORT_PLUGIN(streamingdialog)
 */
 

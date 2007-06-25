@@ -2,8 +2,8 @@ TEMPLATE = app
 include (../../config.pri)
 QT += network xml
 
-DIALOGS += ../dialogs/lastfm/liblastfm.a
-LIBS += ../lib/liblib.a ../../data/libdata.a $$DIALOGS
+DIALOGS += ../dialogs/lastfm/liblastfm.a ../dialogs/medialibdialog/libmedialibdialog.a
+LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
 
 TARGET = esperanza
 macx {

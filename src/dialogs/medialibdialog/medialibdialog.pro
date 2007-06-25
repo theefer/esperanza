@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += static
+CONFIG += static plugin
 include (../../../config.pri)
-SOURCES = medialibdialog.cpp medialibsearchmodel.cpp medialibview.cpp medialibpanebrowser.cpp
-HEADERS = medialibdialog.h medialibsearchmodel.h medialibview.h medialibpanebrowser.h
+SOURCES = plugin.cpp medialibdialog.cpp medialibsearchmodel.cpp medialibview.cpp medialibpanebrowser.cpp
+HEADERS = plugin.h medialibdialog.h medialibsearchmodel.h medialibview.h medialibpanebrowser.h

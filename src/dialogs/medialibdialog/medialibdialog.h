@@ -23,7 +23,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCheckBox>
-#include <QMainWindow>
+#include <QDialog>
 #include <QCompleter>
 
 class MedialibDialog;
@@ -32,7 +32,7 @@ class MedialibDialog;
 #include "progressindicator.h"
 #include "medialibpanebrowser.h"
 
-class MedialibDialog : public QMainWindow
+class MedialibDialog : public QDialog
 {
 	Q_OBJECT
 
