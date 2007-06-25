@@ -80,11 +80,11 @@ main (int argc, char **argv)
 
 	new PlayerWidget (NULL, &client);
 
-	// if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
+	if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
 	{
 		FTWManager *ftwMan =  new FTWManager (&client);
-		if(ftwMan->show())
-			s.setValue ("core/firsttimewizardshowen", QVariant(true));
+		ftwMan->show();
+		s.setValue ("core/firsttimewizardshowen", QVariant(true));
 	}
 
 	if (!client.isConnected ())

@@ -443,7 +443,7 @@
     </rect>
    </property>
    <property name="text" >
-    <string>Cancel</string>
+    <string>Skip</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pbNext" >

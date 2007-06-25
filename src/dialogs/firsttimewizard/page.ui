@@ -798,7 +798,7 @@
     </rect>
    </property>
    <property name="text" >
-    <string>Cancel</string>
+    <string>Skip</string>
    </property>
   </widget>
   <widget class="Line" name="line_2" >
