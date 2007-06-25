@@ -25,5 +25,6 @@
 		<file>translations/esperanza_nl.qm</file>
 		<file>translations/esperanza_sv.qm</file>
 		<file>translations/esperanza_de.qm</file>
+		<file>translations/esperanza_ru.qm</file>
 	</qresource>
 </RCC>
