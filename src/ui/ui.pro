@@ -3,6 +3,7 @@ QT += network xml
 
 DIALOGS += ../dialogs/lastfm/liblastfm.a \
 		   ../dialogs/medialibdialog/libmedialibdialog.a \
+		   ../dialogs/streamingdialog/libstreamingdialog.a \
 		   ../dialogs/firsttimewizard/libfirsttimewizard.a
 
 LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a

@@ -1,6 +1,6 @@
 TEMPLATE = lib
-CONFIG += static
+CONFIG += static plugin
 QT += network xml
 include (../../../config.pri)
-SOURCES = streamingdialog.cpp icecasthandler.cpp
-HEADERS = streamingdialog.h icecasthandler.h
+SOURCES = plugin.cpp streamingdialog.cpp icecasthandler.cpp
+HEADERS = plugin.h streamingdialog.h icecasthandler.h

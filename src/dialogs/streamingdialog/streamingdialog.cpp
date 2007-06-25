@@ -31,22 +31,18 @@
 #include <QPushButton>
 #include <QMenu>
 
-StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindow (parent)
+StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QDialog (parent)
 {
 	QSettings s;
 
 	m_client = client;
 
 	setWindowFlags (Qt::Dialog);
-	setWindowTitle (tr ("Esperanza - Stream Directory"));
 
-	QWidget *base = new QWidget (this);
-	setCentralWidget (base);
+	QGridLayout *g = new QGridLayout (this);
 
-	QGridLayout *g = new QGridLayout (base);
-
-	m_tab = new QTabWidget (base);
-	m_bookmarks = new StreamingBookmarks (base, client);
+	m_tab = new QTabWidget (this);
+	m_bookmarks = new StreamingBookmarks (this, client);
 	m_tab->addTab (m_bookmarks, tr ("My bookmarks"));
 #if 0
 	m_tab->addTab (new QWidget, tr ("Last.Fm radio"));
@@ -60,7 +56,7 @@ StreamingDialog::StreamingDialog (QWidget *parent, XClient *client) : QMainWindo
 	g->addWidget (m_tab, 0, 0, 4, 4);
 	g->setRowStretch (0, 1);
 
-	QWidget *dummy = new QWidget (base);
+	QWidget *dummy = new QWidget (this);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
 
 	g->addWidget (dummy, 4, 0, 1, 4);

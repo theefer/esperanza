@@ -23,7 +23,7 @@
 #include "playlistmodel.h"
 #include "icecasthandler.h"
 
-#include <QMainWindow>
+#include <QDialog>
 #include <QTabWidget>
 #include <QSettings>
 #include <QStandardItemModel>
@@ -92,7 +92,7 @@ class StreamingBookmarks : public QTreeView
 
 };
 
-class StreamingDialog : public QMainWindow
+class StreamingDialog : public QDialog
 {
 	Q_OBJECT
 	public:
