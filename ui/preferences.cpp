@@ -58,6 +58,10 @@ PreferenceDialog::build_prefvalues ()
 	contextvalues[tr("Album")] = "album";
 	contextvalues[tr("Timesplayed")] = "timesplayed";
 	contextvalues[tr("Duration")] = "duration";
+	contextvalues[tr("Artist")] = "artist";
+	contextvalues[tr("Title")] = "title";
+	contextvalues[tr("Genre")] = "genre";
+	contextvalues[tr("Tracknumber")] = "tracknr";
 	PREF_VALUE("ui/contextvalues", tr ("Information to be shown in the context area"), T_MULTI_SELECTION, "album,timesplayed,duration", contextvalues);
 	PREF_VALUE("ui/contextareabright", tr ("Draw the context area in a lighter color"), T_BOOL, true, 0);
 	PREF_VALUE("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), T_BOOL, false, 0);
