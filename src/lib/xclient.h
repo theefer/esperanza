@@ -26,6 +26,7 @@ class XClient;
 #include <QHash>
 #include <QVariant>
 #include <QDir>
+#include <QWidget>
 
 #include "xclientcache.h"
 
@@ -46,7 +47,7 @@ class XClient : public QObject, public Xmms::Client
 	public:
 		XClient (QObject *, const std::string &);
 
-		bool connect (const char *path = NULL, const bool &sync = false);
+		bool connect (const char *path = NULL, const bool &sync = false, QWidget* parent = NULL);
 		static void propDictToQHash (const std::string &key,
 									 const Xmms::Dict::Variant &value,
 									 const std::string &source,

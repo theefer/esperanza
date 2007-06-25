@@ -1,5 +1,5 @@
 DEPENDPATH += ../../ui ../../lib ../ui ../lib
-INCLUDEPATH += ../../ui ../../lib ../ui ../lib
+INCLUDEPATH += ../../ui ../../lib ../ui ../lib ../dialogs
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #QT += network xml
 

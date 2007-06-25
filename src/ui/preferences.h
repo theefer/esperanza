@@ -31,7 +31,7 @@
 
 #include "preferencessupport.h"
 
-#define PREF_VALUE(v,h,t,d) { QMap<QString, QVariant> m; m["value"]=QVariant(v); m["help"]=QVariant(h); m["type"]=QVariant(t);m["default"]=QVariant(d);ret.append(m); }
+#define PREF_VALUE(v,h,t,d,r) { QMap<QString, QVariant> m; m["value"]=QVariant(v); m["help"]=QVariant(h); m["type"]=QVariant(t);m["default"]=QVariant(d);m["range"]=QVariant(r);ret.append(m); }
 
 class PreferenceDialog : public QMainWindow
 {
@@ -42,6 +42,8 @@ class PreferenceDialog : public QMainWindow
 			T_NUM,
 			T_COLOR,
 			T_STR,
+			T_SELECTION,
+			T_MULTI_SELECTION,
 			T_KEY
 		};
 

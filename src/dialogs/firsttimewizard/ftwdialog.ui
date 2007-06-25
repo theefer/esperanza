@@ -1,0 +1,20 @@
+<ui version="4.0" >
+ <class>FTWDialog</class>
+ <widget class="QWidget" name="FTWDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>550</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="../../esperanza.qrc" >:/images/esperanza.png</iconset>
+  </property>
+ </widget>
+ <resources>
+  <include location="../../esperanza.qrc" />
+ </resources>
+ <connections/>
+</ui>

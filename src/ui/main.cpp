@@ -30,6 +30,8 @@
 #include "minimode.h"
 #include "serverdialog.h"
 #include "preferences.h"
+#include "firsttimewizard/ftwmanager.h"
+#include "misc.h"
 
 Q_IMPORT_PLUGIN(lastfm)
 Q_IMPORT_PLUGIN(medialibdialog)
@@ -76,43 +78,20 @@ main (int argc, char **argv)
 
 	XClient client (NULL, "Esperanza");
 
-	QString path;
-
 	new PlayerWidget (NULL, &client);
 
-	char *p = NULL;
-
-browser:
-	if (!getenv ("XMMS_PATH")) {
-		ServerDialog sd (NULL);
-		if (!s.value ("serverdialog/show").toBool ()) {
-			path = sd.get_default ();
-		} else {
-			path = sd.get_path ();
-		}
-
-		if (path == "local") {
-			p = NULL;
-		} else if (path.isNull ()) {
-			return EXIT_FAILURE;
-		} else {
-			p = path.toAscii ().data ();
-		}
-	} else {
-		p = getenv ("XMMS_PATH");
+	// if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
+	{
+		FTWManager *ftwMan =  new FTWManager (&client);
+		if(ftwMan->show())
+			s.setValue ("core/firsttimewizardshowen", QVariant(true));
 	}
 
-	if (!client.connect (p)) {
-		if (!getenv ("XMMS_PATH")) {
-			goto browser;
-		} else {
-			QErrorMessage *err = new QErrorMessage (NULL);
-			err->showMessage ("Your XMMS_PATH enviroment sucks. Fix it and restart the Application");
-			err->exec ();
-			exit (EXIT_FAILURE);
-		}
-	}
-	
+	if (!client.isConnected ())
+		connectXmms2 (&client);
+
+	// SHOWS THE PLAYERWINDOW respectivly minimode window
+	client.settings ()->change_settings ();
 	return app.exec ();
 }
 

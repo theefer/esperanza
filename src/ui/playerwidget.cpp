@@ -294,7 +294,6 @@ PlayerWidget::changed_settings ()
 	}
 
 	setWindowFlags ();
-
 	update ();
 }
 
@@ -520,7 +519,12 @@ void
 PlayerWidget::setWindowFlags()
 {
 	QSettings s;
-	Qt::WindowFlags f;
+	Qt::WindowFlags f = 0;
+
+	if(s.value ("ui/toolwindow").toBool () && s.value ("core/systray").toBool ())
+		f |= Qt::Tool;
+	else
+		f |= Qt::Window;
 
 	if(s.value("ui/alwaysontop").toBool ())
 		f |= Qt::WindowStaysOnTopHint;
@@ -535,4 +539,25 @@ void
 PlayerWidget::quit ()
 {
 	qApp->quit ();
+}
+
+void
+PlayerWidget::toggle_hide ()
+{
+	QSettings s;
+	if (s.value ("ui/minimode", false).toBool ()) {
+		toggle_mini ();
+	} else {
+		if (isVisible () &&
+			(
+				!s.value("ui/alwaysontop").toBool () && isActiveWindow () ||
+				s.value("ui/alwaysontop").toBool ()
+			)
+		) {
+			hide ();
+		} else {
+			hide ();
+			show ();
+		}
+	}
 }

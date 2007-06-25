@@ -7,11 +7,13 @@ SOURCES = 	collectioninfomodel.cpp \
 			xmmsqt4.cpp \
 			collectionmodel.cpp \
 			playlistmodel.cpp \
-			xclientcache.cpp
+			xclientcache.cpp \
+			misc.cpp
 HEADERS = 	collectioninfomodel.h \
 			fancyplaylistmodel.h \
 			xclient.h \
 			xmmsqt4.h \
 			collectionmodel.h \
 			playlistmodel.h \
-			xclientcache.h
+			xclientcache.h \
+			misc.h

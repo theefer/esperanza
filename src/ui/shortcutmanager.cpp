@@ -17,6 +17,7 @@
 #include <QSettings>
 #include <QWidget>
 
+#include "globalshortcut/globalshortcutmanager.h"
 #include "shortcutmanager.h"
 
 ShortcutManager* ShortcutManager::instance_ = NULL;
@@ -28,16 +29,13 @@ ShortcutManager* ShortcutManager::instance ()
 	return ShortcutManager::instance_;
 }
 
-bool ShortcutManager::connect(QWidget* parent, QString name, QString defKey, const char* slot)
+bool ShortcutManager::connect(QWidget* parent, QString name, QString defKey, const char* slot, bool global /*= false*/)
 {
 	QSettings s;
 	QString	key;
 	QString tmp;
 	int multiKeysIndex;
-	QShortcut *shortcut;
 	bool ret = true;
-
-	// qDebug(qPrintable(QString("[ShortcutManager::connect] - entered")));
 
 	key = s.value (name, QVariant (defKey)).toString ();
 	if(key == defKey)
@@ -50,29 +48,39 @@ bool ShortcutManager::connect(QWidget* parent, QString name, QString defKey, con
 			if(key == "")
 				break;
 
-			// qDebug(qPrintable(QString("[ShortcutManager::connect] - multiple keys found")));
 			// use the configured key
-			shortcut = new QShortcut(QKeySequence(key), parent);
-			ret = QObject::connect ( shortcut, SIGNAL (activated ()), parent, slot);
+			ret = connect(key, parent, slot, global);
+
 			if(!ret)
 				break;
 		}
+
 		// if still == 1, we have not configured multiple keys, just use the default key
 		if(ret && multiKeysIndex == 1)
 		{
-			// qDebug(qPrintable(QString("[ShortcutManager::connect] - using default key: '%1'").arg(defKey)));
 			s.setValue (name, QVariant (defKey));
-			shortcut = new QShortcut (QKeySequence (defKey), parent);
-			ret = QObject::connect ( shortcut, SIGNAL (activated ()), parent, slot);
+			ret = connect(defKey, parent, slot, global);
 		}
 	}
-	else {
-		// qDebug(qPrintable(QString("[ShortcutManager::connect] - found a configured key")));
-		// use the configured key
-		s.setValue (name, QVariant (defKey));
-		shortcut = new QShortcut (QKeySequence (key), parent);
+	else
+		ret = connect(key, parent, slot, global);
+	return ret;
+}
+
+bool ShortcutManager::connect(QKeySequence key, QWidget* parent, const char* slot, bool global)
+{
+	QShortcut *shortcut;
+	bool ret = false;
+
+	if(!global) {
+		shortcut = new QShortcut (key, parent);
 		ret = QObject::connect ( shortcut, SIGNAL (activated ()), parent, slot);
 	}
-	// qDebug(qPrintable(QString("[ShortcutManager::connect] - leave: '%1'").arg(ret ? "true" : "false")));
+	else {
+		// no return from connect here. but it will work!! :)
+		ret = true;
+		GlobalShortcutManager::instance()->connect(key, parent, slot);
+	}
+
 	return ret;
 }

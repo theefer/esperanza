@@ -24,6 +24,7 @@
 #include <QWidget>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QHeaderView>
 #include <QPushButton>
 #include <QColor>
@@ -35,35 +36,50 @@
 #include <QKeyEvent>
 #include <QDialogButtonBox>
 #include <QSystemTrayIcon>
+#include <QMessageBox>
 
 QList < QMap < QString, QVariant > >
 PreferenceDialog::build_prefvalues ()
 {
 	QList < QMap < QString, QVariant > > ret;
 
-	PREF_VALUE("core/autostart", tr ("Autostart xmms2d if it's not running"), T_BOOL, true);
-	PREF_VALUE("core/ignoredesktopsettings", tr ("Ignore the desktop settings (use this if everything is black)"), T_BOOL, false);
+	PREF_VALUE("core/autostart", tr ("Autostart xmms2d if it's not running"), T_BOOL, true, 0);
+	PREF_VALUE("core/ignoredesktopsettings", tr ("Ignore the desktop settings (use this if everything is black)"), T_BOOL, false, 0);
 	//PREF_VALUE("core/numrandomsongs", tr ("Number of songs to keep in the random playlist"), T_NUM, 5);
-	PREF_VALUE("core/skiplocales", tr ("Ignore locale settings and use default language"), T_BOOL, false);
-	PREF_VALUE("serverdialog/show", tr ("Show the server browser on startup"), T_BOOL, true);
-	PREF_VALUE("playlist/jumptocurrent", tr ("Jump to the current entry in the playlist on song change"), T_BOOL, true);
-	PREF_VALUE("playlist/compactmode", tr ("Use compact playlist mode (no context area)"), T_BOOL, false);
-	PREF_VALUE("playlist/albumartplace", tr ("Show album art under artist"), T_BOOL, true);
-	PREF_VALUE("ui/showstop", tr ("Show a stop button"), T_BOOL, false);
-	PREF_VALUE("ui/reverseplaytime", tr ("Show time remaining instead of elapsed"), T_BOOL, true);
-	PREF_VALUE("core/pixmapcache", tr ("Size of album art cache in kB"), T_NUM, 12040);
-	PREF_VALUE("ui/contextvalues", tr ("Information to be shown in the context area"), T_STR, "album,timesplayed,duration");
-	PREF_VALUE("ui/contextareabright", tr ("Draw the context area in a lighter color"), T_BOOL, true);
-	PREF_VALUE("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), T_BOOL, false);
-	PREF_VALUE("ui/volumepopup", tr ("Show the volume slider in a popup"), T_BOOL, false);
-	PREF_VALUE("ui/volumeinteractive", tr ("Change volume interactively (could cause problems)"), T_BOOL, false);
-	PREF_VALUE("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), T_BOOL, true);
-	PREF_VALUE("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), T_BOOL, false);
-	PREF_VALUE("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), T_BOOL, true);
+	PREF_VALUE("core/skiplocales", tr ("Ignore locale settings and use default language"), T_BOOL, false, 0);
+	PREF_VALUE("serverdialog/show", tr ("Show the server browser on startup"), T_BOOL, true, 0);
+	PREF_VALUE("playlist/jumptocurrent", tr ("Jump to the current entry in the playlist on song change"), T_BOOL, true, 0);
+	PREF_VALUE("playlist/compactmode", tr ("Use compact playlist mode (no context area)"), T_BOOL, false, 0);
+	PREF_VALUE("playlist/albumartplace", tr ("Show album art under artist"), T_BOOL, true, 0);
+	PREF_VALUE("ui/showstop", tr ("Show a stop button"), T_BOOL, false, 0);
+	PREF_VALUE("ui/reverseplaytime", tr ("Show time remaining instead of elapsed"), T_BOOL, true, 0);
+	PREF_VALUE("core/pixmapcache", tr ("Size of album art cache in kB"), T_NUM, 12040, 0);
+	QMap <QString, QVariant> contextvalues;
+	contextvalues[tr("Album")] = "album";
+	contextvalues[tr("Timesplayed")] = "timesplayed";
+	contextvalues[tr("Duration")] = "duration";
+	contextvalues[tr("Artist")] = "artist";
+	contextvalues[tr("Title")] = "title";
+	contextvalues[tr("Genre")] = "genre";
+	contextvalues[tr("Tracknumber")] = "tracknr";
+	contextvalues[tr("Filename")] = "filename";
+	PREF_VALUE("ui/contextvalues", tr ("Information to be shown in the context area"), T_MULTI_SELECTION, "album,timesplayed,duration", contextvalues);
+	PREF_VALUE("ui/contextareabright", tr ("Draw the context area in a lighter color"), T_BOOL, true, 0);
+	PREF_VALUE("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), T_BOOL, false, 0);
+	PREF_VALUE("ui/volumepopup", tr ("Show the volume slider in a popup"), T_BOOL, false, 0);
+	PREF_VALUE("ui/volumeinteractive", tr ("Change volume interactively (could cause problems)"), T_BOOL, false, 0);
+	PREF_VALUE("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), T_BOOL, true, 0);
+	PREF_VALUE("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), T_BOOL, false, 0);
+	PREF_VALUE("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), T_BOOL, true, 0);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
-		PREF_VALUE("core/systray", tr ("Show icon in system tray"), T_BOOL, true);
-		PREF_VALUE("core/donotification", tr ("Show popup notification on song change"), T_BOOL, true);
-		PREF_VALUE("ui/hideOnClose", tr ("Do not quit esperanza on close, rather then hide it (needs System tray active)."), T_BOOL, true);
+		PREF_VALUE("core/systray", tr ("Show icon in system tray"), T_BOOL, true, 0);
+		PREF_VALUE("core/donotification", tr ("Show popup notification on song change"), T_BOOL, true, 0);
+		PREF_VALUE("ui/hideOnClose", tr ("Do not quit esperanza on close, rather then hide it (needs System tray active)."), T_BOOL, true, 0);
+		PREF_VALUE("ui/toolwindow", tr ("Show the playerwindow as a toolwindow (no windowlist entry)."), T_BOOL, false, 0);
+		QMap <QString, QVariant> map;
+		map["Single Click"] = QSystemTrayIcon::Trigger;
+		map["Double Click"] = QSystemTrayIcon::DoubleClick;
+		PREF_VALUE("ui/activateTray", tr ("Show mainwindow on single or double click on the tray icon."), T_SELECTION, QSystemTrayIcon::Trigger, map);
 	}
 
 	return ret;
@@ -196,6 +212,49 @@ PreferenceDialog::fill_list ()
 					m_table->setCellWidget (i, 1, le);
 					break;
 				}
+			case T_SELECTION:
+				{
+					QComboBox *cb = new QComboBox (this);
+					if(m["range"].canConvert <QMap <QString, QVariant> > ()) {
+						QMap<QString, QVariant> map = m["range"].toMap ();
+						QMapIterator<QString, QVariant> i (map);
+						while (i.hasNext ()) {
+							i.next ();
+							cb->addItem (i.key (), i.value ());
+							if (i.value () == s.value (val, def).toInt ())
+								cb->setCurrentIndex (cb->count () - 1);
+						}
+					}
+					m_table->setCellWidget (i, 1, cb);
+					break;
+				}
+			case T_MULTI_SELECTION:
+				{
+					QWidget *w = new QWidget;
+					QVBoxLayout *l = new QVBoxLayout;
+					QCheckBox *cb;
+					if(m["range"].canConvert <QMap <QString, QVariant> > ()) {
+						QMap<QString, QVariant> map = m["range"].toMap ();
+						QMapIterator<QString, QVariant> i (map);
+						while (i.hasNext ()) {
+							i.next ();
+							cb = NULL;
+							cb = new QCheckBox (i.key (), this);
+							if (s.value (val, def).toString ().contains (i.value ().toString ()) )
+								cb->setCheckState (Qt::Checked);
+							else
+								cb->setCheckState (Qt::Unchecked);
+
+							l->addWidget (cb);	
+						}
+					}
+					l->setSpacing (2);
+					w->setLayout (l);
+					w->setVisible (true);
+					m_table->setCellWidget (i, 1, w);
+					m_table->setRowHeight (i, w->height());
+					item->setTextAlignment (Qt::AlignTop);
+				}
 			default:
 				qDebug ("error!");
 				break;
@@ -234,6 +293,33 @@ PreferenceDialog::on_save ()
 				{
 					QLineEdit *le = dynamic_cast<QLineEdit *>(m_table->cellWidget (i, 1));
 					ret = QVariant (le->text ());
+					break;
+				}
+			case T_SELECTION:
+				{
+					QComboBox *cb = dynamic_cast<QComboBox *>(m_table->cellWidget (i, 1));
+					ret = cb->itemData (cb->currentIndex ());
+					break;
+				}
+			case T_MULTI_SELECTION:
+				{
+					QLayout *l = m_table->cellWidget (i, 1)->layout ();
+					QMap<QString, QVariant> range = m["range"].toMap();
+					QLayoutItem *li;
+					QCheckBox *cb;
+					QString s;
+					int i = 0;
+					while(i < l->count()) {
+						li = l->itemAt (i);
+						cb = dynamic_cast<QCheckBox *>(li->widget ());
+						if(cb->checkState () == Qt::Checked) {
+							if(i)
+								s += ",";
+							s += range[cb->text ()].toString ();
+						}
+						i++;
+					}
+					ret = QVariant(s);
 					break;
 				}
 		}

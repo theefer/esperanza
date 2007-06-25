@@ -73,7 +73,7 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 }
 
 bool
-XClient::connect (const char *ipcpath, const bool &sync)
+XClient::connect (const char *ipcpath, const bool &sync, QWidget *parent)
 {
 	bool tried_once = false;
 
@@ -93,7 +93,7 @@ try_again:
 			}
 		}
 
-		QErrorMessage *err = new QErrorMessage ();
+		QErrorMessage *err = new QErrorMessage (parent);
 		err->showMessage ("Couldn't connect to XMMS2, please try again.");
 		err->exec ();
 		delete err;

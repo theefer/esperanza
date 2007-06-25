@@ -1,0 +1,76 @@
+<ui version="4.0" >
+ <class>server</class>
+ <widget class="QWidget" name="server" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>531</width>
+    <height>271</height>
+   </rect>
+  </property>
+  <widget class="QLabel" name="label_2" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>155</y>
+     <width>107</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Connection Path:</string>
+   </property>
+   <property name="alignment" >
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>511</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>&lt;b>Server Setting:&lt;/b>&lt;br />&lt;br />Here you should enter the server connection path. This is usually a IP and a Port&lt;br /> or a unix file descriptor. When xmms2d runs on this host, it is ok to let it empty.&lt;br />If this does not work, you could set another connection path later in&lt;br />server browser later after the first time wizard.</string>
+   </property>
+   <property name="textFormat" >
+    <enum>Qt::RichText</enum>
+   </property>
+   <property name="alignment" >
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="serverConPath" >
+   <property name="geometry" >
+    <rect>
+     <x>130</x>
+     <y>150</y>
+     <width>181</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbTry" >
+   <property name="geometry" >
+    <rect>
+     <x>330</x>
+     <y>150</y>
+     <width>83</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Test It</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

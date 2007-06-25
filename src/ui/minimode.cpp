@@ -97,8 +97,6 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 
 	move (s.value ("minimode/pos", parent->pos ()).toPoint ());
 
-	/* run it once first time */
-	changed_settings ();
 	ShortcutManager *sm = ShortcutManager::instance ();
 
 	sm->connect (this, "shortcuts/shuffle", "S", SLOT (shuffle_pressed ()));

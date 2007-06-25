@@ -1,8 +1,10 @@
 TEMPLATE = app
-include (../../config.pri)
 QT += network xml
 
-DIALOGS += ../dialogs/lastfm/liblastfm.a ../dialogs/medialibdialog/libmedialibdialog.a
+DIALOGS += ../dialogs/lastfm/liblastfm.a \
+		   ../dialogs/medialibdialog/libmedialibdialog.a \
+		   ../dialogs/firsttimewizard/libfirsttimewizard.a
+
 LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
 
 TARGET = esperanza
@@ -50,3 +52,5 @@ HEADERS += 	esperanza_plugin.h \
 			systemtray.h \
 			volumebar.h
 
+include (globalshortcut/globalshortcut.pri)
+include (../../config.pri)
