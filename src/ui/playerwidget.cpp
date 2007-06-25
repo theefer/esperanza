@@ -187,6 +187,12 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	m_sm->connect (this, "shortcuts/close", "Ctrl+W", SLOT (close ()));
 #endif
 
+	m_sm->connect (this, "globalshortcuts/play", "Ctrl+Shift+C", SLOT (play_pressed ()), true);
+	m_sm->connect (this, "globalshortcuts/forward", "Ctrl+Shift+V", SLOT (fwd_pressed ()), true);
+	m_sm->connect (this, "globalshortcuts/back", "Ctrl+Shift+X", SLOT (back_pressed ()), true);
+	m_sm->connect (this, "globalshortcuts/stop", "Ctrl+Shift+B", SLOT (playstop_pressed ()), true);
+	m_sm->connect (this, "globalshortcuts/show_hide", "Ctrl+Shift+M", SLOT (toggle_hide ()), true);
+
 	/* Process the plugins ... */
 	process_dialog_plugin ();
 }
