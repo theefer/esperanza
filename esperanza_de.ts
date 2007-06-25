@@ -5,7 +5,7 @@
     <message>
         <location filename="ui/serverdialog.cpp" line="137"/>
         <source>Add a new server</source>
-        <translation>Neuen Server hinzufügen</translation>
+        <translation type="unfinished">Neuen Server hinzufügen</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="140"/>
@@ -15,7 +15,7 @@
     <message>
         <location filename="ui/serverdialog.cpp" line="145"/>
         <source>Path</source>
-        <translation>Pfad</translation>
+        <translation type="unfinished">Serveradresse</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="150"/>
@@ -30,7 +30,7 @@
     <message>
         <location filename="ui/serverdialog.cpp" line="140"/>
         <source>Name</source>
-        <translation>Name</translation>
+        <translation type="unfinished">Name</translation>
     </message>
 </context>
 <context>
@@ -100,7 +100,7 @@
     <message>
         <location filename="ui/preferencessupport.cpp" line="60"/>
         <source>Press a key:</source>
-        <translation>Taste drücken:</translation>
+        <translation type="unfinished">Kürzeltaste drücken:</translation>
     </message>
     <message>
         <location filename="ui/preferencessupport.cpp" line="94"/>
@@ -151,17 +151,17 @@
     <message>
         <location filename="ui/lastfm.cpp" line="176"/>
         <source>Open artist page at Last.fm</source>
-        <translation>Seite des Künstlers bei Last.fm öffnen</translation>
+        <translation type="unfinished">Seite des Künstlers bei Last.fm öffnen</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="179"/>
         <source>Open artist page at Musicbrainz</source>
-        <translation>Seite des Künstlers bei Musicbrainz öffnen</translation>
+        <translation type="unfinished">Seite des Künstlers bei Musicbrainz öffnen</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="183"/>
         <source>Search for artist on OiNK</source>
-        <translation>Suche nach Künstler bei OINK</translation>
+        <translation type="unfinished">Suche nach Künstler bei oink</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="217"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="ui/medialibdialog.cpp" line="99"/>
         <source>Display unavailable entries</source>
-        <translation>Nicht verfügbare Einträge anzeigen</translation>
+        <translation type="unfinished">Nicht verfügbare Einträge anzeigen</translation>
     </message>
 </context>
 <context>
@@ -363,12 +363,12 @@
     <message>
         <location filename="ui/playerwidget.cpp" line="431"/>
         <source>Stream directory</source>
-        <translation>Stream Verzeichnis</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="629"/>
         <source>Server died. Esperanza will close.</source>
-        <translation>Serververbindung verloren. Esperanza wird beendet.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -406,7 +406,7 @@
     <message>
         <location filename="ui/preferences.cpp" line="260"/>
         <source>Are your sure you want to reset the preferences to default values?</source>
-        <translation>Programm wirklich auf die Standardwerte zurücksetzen?</translation>
+        <translation type="unfinished">Programm wirklich auf die Standardwerte zurücksetzen?</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="261"/>
@@ -421,7 +421,7 @@
     <message>
         <location filename="ui/preferences.cpp" line="44"/>
         <source>Autostart xmms2d if it&apos;s not running</source>
-        <translation>Starte xmms2d automatisch, falls er nicht läuft</translation>
+        <translation type="unfinished">Starte xmms2d automatisch, falls er nicht läuft</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="46"/>
@@ -436,82 +436,82 @@
     <message>
         <location filename="ui/preferences.cpp" line="48"/>
         <source>Show the server browser on startup</source>
-        <translation>Serverbrowser beim Start zeigen</translation>
+        <translation type="unfinished">Serverbrowser beim Start zeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="49"/>
         <source>Jump to the current entry in the playlist on song change</source>
-        <translation>Bei Titelwechsel zum aktuellen Titel wechseln</translation>
+        <translation type="unfinished">Bei Titelwechsel zum aktuellen Titel wechseln</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="50"/>
         <source>Use compact playlist mode (no context area)</source>
-        <translation>Verwende kompakten Playlistenmodus (kein Kontextbereich)</translation>
+        <translation type="unfinished">Verwende kompakten (langweiligen) Playlistenmodus</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="51"/>
         <source>Show album art under artist</source>
-        <translation>Album-Art unter Künstler anzeigen</translation>
+        <translation type="unfinished">Album-Art unter Künstler anzeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="52"/>
         <source>Show a stop button</source>
-        <translation>Stopp-Taste anzeigen</translation>
+        <translation type="unfinished">Stopp-Taste anzeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="53"/>
         <source>Show time remaining instead of elapsed</source>
-        <translation>Verbleibende Zeit anzeigen</translation>
+        <translation type="unfinished">Verbleibende Zeit anzeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="54"/>
         <source>Size of album art cache in kB</source>
-        <translation>Größe des Album-Art Caches in kb</translation>
+        <translation type="unfinished">Größe des Album-Art caches in kb</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="55"/>
         <source>Information to be shown in the context area</source>
-        <translation>Werte, die in der Kontextspalte angezeigt werden sollen</translation>
+        <translation type="unfinished">Werte, die in der Kontextspalte angezeigt werden (Kommagetrennt)</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="56"/>
         <source>Draw the context area in a lighter color</source>
-        <translation>Kontextbereich in hellerer Farbe zeichnen</translation>
+        <translation type="unfinished">Kontextbereich in hellerer Farbe zeichnen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="57"/>
         <source>Paint the progress bar in a lighter color</source>
-        <translation>Fortschritt in hellerer Farbe zeichnen</translation>
+        <translation type="unfinished">Fortschritt in hellerer Farbe zeichnen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="58"/>
         <source>Show the volume slider in a popup</source>
-        <translation>Lautstärke in einem PopUp anzeigen</translation>
+        <translation type="unfinished">Lautstärke in einem PopUp anzeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="59"/>
         <source>Change volume interactively (could cause problems)</source>
-        <translation>Lautstärke interaktiv verändern (könnte Probleme verursachen)</translation>
+        <translation type="unfinished">Lautstärke interaktiv verändern (könnte Probleme verursachen).</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="60"/>
         <source>Show OiNK search in Last.FM view</source>
-        <translation>OINK Suche im Last.fm Kontext anzeigen</translation>
+        <translation type="unfinished">Oink Suche im Last.fm Kontext anzeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="63"/>
         <source>Show icon in system tray</source>
-        <translation>Systemtray Logo anzeigen</translation>
+        <translation type="unfinished">Systemtray Logo anzeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="64"/>
         <source>Show popup notification on song change</source>
-        <translation>Benachrichtigung bei Songwechsel anzeigen</translation>
+        <translation type="unfinished">Benachrichtigung bei Songwechsel anzeigen</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="45"/>
         <source>Ignore the desktop settings (use this if everything is black)</source>
-        <translation>Ignoriere Desktopeinstellungen (Verwende dies bei Darstellungsfehlern)</translation>
+        <translation type="unfinished">Ignoriere Desktopeinstellungen (Verwende dies bei Darstellungsfehlern)</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="61"/>
@@ -526,34 +526,34 @@
         <source>Welcome to Esperanza
 Please select a server to connect to.
 You may disable this dialog in the preferences.</source>
-        <translation>Wilkommen zu einem XMMS2 Client
+        <translation type="unfinished">Wilkommen zu einem XMMS2 Client
 Bitte wähle den Server zu dem verbunden werden soll.
-Man kann diesen Dialog in den Einstellungen deaktivieren.</translation>
+Man kann diesen Dialog in den Einstellungen deaktivieren</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="73"/>
         <source>Connect</source>
-        <translation>Verbinden</translation>
+        <translation type="unfinished">Verbinden</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="77"/>
         <source>Quit</source>
-        <translation>Verlassen</translation>
+        <translation type="unfinished">Verlassen</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="168"/>
         <source>Sorry, that name is already taken.</source>
-        <translation>Entschuldigung, dieser Name wird bereits verwendet.</translation>
+        <translation type="unfinished">Dang! Dieser Name wird bereits verwendet!</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="186"/>
         <source>Sorry, you can&apos;t remove autodetected servers!</source>
-        <translation>Entschuldigung, automatisch erkannte Einträge können nicht entfernt werden!</translation>
+        <translation type="unfinished">Eeep! Kann mDNS Einträge nicht löschen!</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="192"/>
         <source>Sorry, you can&apos;t remove the local server!</source>
-        <translation>Entschuldigung, kann den lokalen Server nicht entfernen!</translation>
+        <translation type="unfinished">Eeep! Kann lokalen Eintrag nicht löschen!</translation>
     </message>
 </context>
 <context>
@@ -561,7 +561,7 @@ Man kann diesen Dialog in den Einstellungen deaktivieren.</translation>
     <message>
         <location filename="ui/streamingdialog.cpp" line="41"/>
         <source>Esperanza - Stream Directory</source>
-        <translation>Esperanza - Stream Verzeichnis</translation>
+        <translation type="unfinished">Esperanza - Streaming Verzeichnis</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="50"/>

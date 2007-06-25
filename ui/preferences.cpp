@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -41,27 +41,27 @@ PreferenceDialog::build_prefvalues ()
 {
 	QList < QMap < QString, QVariant > > ret;
 
-	PREF_VALUE("core/autostart", tr ("Autostart xmms2d if not running"), T_BOOL, true);
-	PREF_VALUE("core/ignoredesktopsettings", tr ("Ignore the desktop settings, use this if everything is black"), T_BOOL, false);
-	PREF_VALUE("core/numrandomsongs", tr ("Number of songs to randomly add"), T_NUM, 5);
+	PREF_VALUE("core/autostart", tr ("Autostart xmms2d if it's not running"), T_BOOL, true);
+	PREF_VALUE("core/ignoredesktopsettings", tr ("Ignore the desktop settings (use this if everything is black)"), T_BOOL, false);
+	//PREF_VALUE("core/numrandomsongs", tr ("Number of songs to keep in the random playlist"), T_NUM, 5);
 	PREF_VALUE("core/skiplocales", tr ("Ignore locale settings and use default language"), T_BOOL, false);
-	PREF_VALUE("serverdialog/show", tr ("Show serverbrowser on startup"), T_BOOL, true);
-	PREF_VALUE("playlist/jumptocurrent", tr ("Jump to current entry on song change"), T_BOOL, true);
-	PREF_VALUE("playlist/compactmode", tr ("Use compact (boring) playlist mode"), T_BOOL, false);
-	PREF_VALUE("playlist/albumartplace", tr ("Show albumart under artist"), T_BOOL, true);
-	PREF_VALUE("ui/showstop", tr ("Show a stop button as well"), T_BOOL, false);
-	PREF_VALUE("ui/reverseplaytime", tr ("Use reversed elapsed time"), T_BOOL, true);
-	PREF_VALUE("core/pixmapcache", tr ("Size of album art cache in kb"), T_NUM, 12040);
-	PREF_VALUE("ui/contextvalues", tr ("Values to be shown in context row (comma-separated)"), T_STR, "album,timesplayed,duration");
-	PREF_VALUE("ui/contextareabright", tr ("Draw the contextarea in a bright color"), T_BOOL, true);
-	PREF_VALUE("ui/titlelighter", tr ("Paint the progress in a lighter color"), T_BOOL, false);
-	PREF_VALUE("ui/volumepopup", tr ("Show volume in a popup"), T_BOOL, false);
-	PREF_VALUE("ui/volumeinteractive", tr ("Change volume interactivly, could cause problems."), T_BOOL, false);
-	PREF_VALUE("lastfm/showoink", tr ("Show oink search in last.fm context"), T_BOOL, false);
-    PREF_VALUE("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), T_BOOL, true);
+	PREF_VALUE("serverdialog/show", tr ("Show the server browser on startup"), T_BOOL, true);
+	PREF_VALUE("playlist/jumptocurrent", tr ("Jump to the current entry in the playlist on song change"), T_BOOL, true);
+	PREF_VALUE("playlist/compactmode", tr ("Use compact playlist mode (no context area)"), T_BOOL, false);
+	PREF_VALUE("playlist/albumartplace", tr ("Show album art under artist"), T_BOOL, true);
+	PREF_VALUE("ui/showstop", tr ("Show a stop button"), T_BOOL, false);
+	PREF_VALUE("ui/reverseplaytime", tr ("Show time remaining instead of elapsed"), T_BOOL, true);
+	PREF_VALUE("core/pixmapcache", tr ("Size of album art cache in kB"), T_NUM, 12040);
+	PREF_VALUE("ui/contextvalues", tr ("Information to be shown in the context area"), T_STR, "album,timesplayed,duration");
+	PREF_VALUE("ui/contextareabright", tr ("Draw the context area in a lighter color"), T_BOOL, true);
+	PREF_VALUE("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), T_BOOL, false);
+	PREF_VALUE("ui/volumepopup", tr ("Show the volume slider in a popup"), T_BOOL, false);
+	PREF_VALUE("ui/volumeinteractive", tr ("Change volume interactively (could cause problems)"), T_BOOL, false);
+	PREF_VALUE("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), T_BOOL, false);
+	PREF_VALUE("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), T_BOOL, true);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
-		PREF_VALUE("core/systray", tr ("Show system tray icon"), T_BOOL, true);
-		PREF_VALUE("core/donotification", tr ("Show notification on song change"), T_BOOL, true);
+		PREF_VALUE("core/systray", tr ("Show icon in system tray"), T_BOOL, true);
+		PREF_VALUE("core/donotification", tr ("Show popup notification on song change"), T_BOOL, true);
 	}
 
 	return ret;
@@ -160,7 +160,7 @@ PreferenceDialog::fill_list ()
 		QTableWidgetItem *item = new QTableWidgetItem (help);
 		item->setData (Qt::UserRole, m);
 		item->setToolTip (help);
-		
+
 		m_table->setItem (i, 0, item);
 
 		switch (type) {
@@ -257,7 +257,7 @@ PreferenceDialog::on_reset ()
 
 	if (QMessageBox::question (this,
 							   tr ("Reset settings?"),
-							   tr ("Are your sure you want to reset program to standard values?"),
+							   tr ("Are your sure you want to reset the preferences to default values?"),
 							   tr ("Yes"), tr ("No")) == 0) {
 		QStringList l = s.allKeys ();
 		for (int i = 0; i < l.count (); i++) {

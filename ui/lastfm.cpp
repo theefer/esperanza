@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -115,7 +115,7 @@ LastFmDialog::LastFmDialog (QWidget *parent, XClient *client) : QDialog (parent)
 	PlayerButton *close = new PlayerButton (dummy, ":images/stop.png");
 	connect (close, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (close ()));
-	
+
 	h->addWidget (close);
 
 	grid->addWidget (dummy, 5, 0, 1, 4);
@@ -171,16 +171,16 @@ LastFmDialog::link_context (const QString &l)
 	QAction *ac;
 
 	QMenu m (this);
-	
+
 	m.addSeparator ();
-	ac = m.addAction (tr ("Open artist at Last.fm"));
+	ac = m.addAction (tr ("Open artist page at Last.fm"));
 	ac->setData (3);
 	if (a.contains ("mbid")) {
-		ac = m.addAction (tr ("Open artist at Musicbrainz"));
+		ac = m.addAction (tr ("Open artist page at Musicbrainz"));
 		ac->setData (4);
 	}
 	if (s.value ("lastfm/showoink").toBool ()) {
-		ac = m.addAction (tr ("Search for artist on oink"));
+		ac = m.addAction (tr ("Search for artist on OiNK"));
 		ac->setData (5);
 	}
 
@@ -235,7 +235,7 @@ LastFmDialog::update_artists (const QString &artist)
 			m_labels[i]->setText (QString ("<a href='%1'>%1</a>").arg (a.name ()));
 			m_values[i]->setValue ((uint32_t)a.match ());
 			m_artists[a.name ()] = a;
-			
+
 			/* When collections support it we want to use some aggregation here instead */
             Xmms::Coll::Universe univ;
             Xmms::Coll::Match m (univ, "artist", XClient::qToStd (a.name ()));
@@ -256,7 +256,7 @@ LastFmDialog::num_reply (Xmms::List<unsigned int> const &list, const QString &ar
 	for (list.first (); list.isValid (); ++list) {
 		num ++;
 	}
-	
+
 	QString s = QString ("<a href='%1'>%1</a>").arg (artist);
 
 	for (int i = 0; i < m_labels.count (); i ++) {

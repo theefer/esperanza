@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -44,7 +44,7 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	QWidget *base = new QWidget (this);
 	setCentralWidget (base);
-	
+
 	QGridLayout *g = new QGridLayout (base);
 
 	m_client = client;
@@ -57,7 +57,7 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	m_qb->addItem (tr ("Title"), MedialibSearchModel::TITLE);
 	m_qb->addItem (tr ("Year"), MedialibSearchModel::YEAR);
 
-	
+
 	g->addWidget (m_qb, 0, 0, 1, 1);
 
 	QLabel *l = new QLabel (tr ("="), base);
@@ -73,12 +73,12 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	m_indicator = new ProgressIndicator (base);
 	g->addWidget (m_indicator, 0, 3, 1, 1);
-	
+
     PlayerButton *expand = new PlayerButton (base, ":images/minmax.png");
     g->addWidget (expand, 0, 4, 1, 1);
     connect (expand, SIGNAL (clicked (QMouseEvent *)),
              this, SLOT (expand_clicked ()));
-    
+
     m_browser = new MedialibPaneBrowser (this, m_client);
     if (!s.value ("medialib/paneopen", false).toBool ()) {
         m_browser->hide ();
@@ -96,7 +96,7 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 
 	g->setRowStretch (2, 1);
 
-	m_cb = new QCheckBox (tr ("Display non-available entries"), dummy);
+	m_cb = new QCheckBox (tr ("Display unavailable entries"), dummy);
 	hbox->addWidget (m_cb);
 	connect (m_cb, SIGNAL (stateChanged (int)), this, SLOT (do_search ()));
 
@@ -121,7 +121,7 @@ MedialibDialog::MedialibDialog (QWidget *parent, XClient *client) : QMainWindow 
 	connect (m_list, SIGNAL (searchDone ()), this, SLOT (search_done ()));
 
 	m_qb->setCurrentIndex (s.value ("medialib/searchdef", 0).toInt ());
-    
+
 	load_compl_list (m_qb->currentIndex ());
     connect (m_qb, SIGNAL (currentIndexChanged (int)), this, SLOT (load_compl_list (int)));
 }
@@ -130,7 +130,7 @@ void
 MedialibDialog::expand_clicked ()
 {
     QSettings s;
-    
+
     if (m_browser->isVisible ()) {
         m_browser->hide ();
         m_le->setEnabled (true);
@@ -149,11 +149,11 @@ void
 MedialibDialog::load_compl_list (int i)
 {
     QSettings s;
-    
+
     if (s.value ("medialib/paneopen").toBool ()) {
         return;
     }
-        
+
     if (!s.value ("medialib/completion").toBool ()) {
         return;
     }
@@ -204,7 +204,7 @@ MedialibDialog::compl_reply (const Xmms::List <Xmms::Dict> &list)
 		if ((*list).contains (m_currentsel)) {
 			QString qs = XClient::stdToQ ((*list).get<std::string> (m_currentsel));
 			compl_list.append (qs);
-		} 
+		}
 	}
 
 	if (m_completer) {
@@ -234,7 +234,7 @@ void
 MedialibDialog::plus_pressed (QMouseEvent *ev)
 {
 	QList<uint32_t> ids = m_list->get_selection ();
-	
+
 	if (ids.size () == 0) {
 		ids = m_list->get_all ();
 	}

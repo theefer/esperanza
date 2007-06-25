@@ -1,4 +1,4 @@
-/** 
+/**
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
  *  Copyright (C) 2005-2006 XMMS2 Team
@@ -37,7 +37,7 @@ ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
 
 	QGridLayout *g = new QGridLayout (this);
 
-	QLabel *l = new QLabel (tr ("Welcome to an XMMS2 client\nPlease select the server to connect to.\nIt's possible to disable this dialog in preferences"), this);
+	QLabel *l = new QLabel (tr ("Welcome to Esperanza\nPlease select a server to connect to.\nYou may disable this dialog in the preferences."), this);
 	l->setAlignment (Qt::AlignCenter);
 	g->addWidget (l, 0, 0, 1, 2);
 	g->setRowStretch (0, 0);
@@ -70,11 +70,11 @@ ServerDialog::ServerDialog (QWidget *parent, MDNSQuery *mdns) : QDialog (parent)
 	QWidget *dummy = new QWidget (this);
 	QHBoxLayout *hbox = new QHBoxLayout (dummy);
 
-	PlayerButton *c = new PlayerButton (dummy, tr ("connect"));
+	PlayerButton *c = new PlayerButton (dummy, tr ("Connect"));
 	connect (c, SIGNAL(clicked (QMouseEvent *)), this, SLOT (accept ()));
 	hbox->addWidget (c);
 
-	c = new PlayerButton (dummy, tr ("quit"));
+	c = new PlayerButton (dummy, tr ("Quit"));
 	connect (c, SIGNAL(clicked (QMouseEvent *)), this, SLOT (reject ()));
 	hbox->addWidget (c);
 
@@ -134,15 +134,15 @@ ServerDialog::keyPressEvent (QKeyEvent *ev)
 AddServerDialog::AddServerDialog (QWidget *parent)
 {
 	QGridLayout *g = new QGridLayout (this);
-	QLabel *l = new QLabel (tr ("Adding new server"), this);
+	QLabel *l = new QLabel (tr ("Add a new server"), this);
 	g->addWidget (l, 0, 0, 1, 2);
 
-	l = new QLabel (tr ("Server name"), this);
+	l = new QLabel (tr ("Name"), this);
 	g->addWidget (l, 1, 0, 1, 1);
 	m_name = new QLineEdit (this);
 	g->addWidget (m_name, 1, 1, 1, 1);
 
-	l = new QLabel (tr ("Server path"), this);
+	l = new QLabel (tr ("Path"), this);
 	g->addWidget (l, 2, 0, 1, 1);
 	m_path = new QLineEdit (this);
 	g->addWidget (m_path, 2, 1, 1, 1);
@@ -165,7 +165,7 @@ ServerDialog::add_server ()
 			item = m_list->item (i);
 			if (item->text () == add.m_name->text ()) {
 				QErrorMessage *err = new QErrorMessage (this);
-				err->showMessage (tr ("Dang! That name is already taken!"));
+				err->showMessage (tr ("Sorry, that name is already taken."));
 				err->exec ();
 				return;
 			}
@@ -183,13 +183,13 @@ ServerDialog::remove_server ()
 
 	if (item->data (Qt::UserRole).toBool ()) {
 		QErrorMessage *err = new QErrorMessage (this);
-		err->showMessage (tr ("Eeep! Can't remove mDNS items!"));
+		err->showMessage (tr ("Sorry, you can't remove autodetected servers!"));
 		err->exec ();
 		return;
 	}
 	if (item->text () == "local") {
 		QErrorMessage *err = new QErrorMessage (this);
-		err->showMessage (tr ("Eeep! Can't remove local item!"));
+		err->showMessage (tr ("Sorry, you can't remove the local server!"));
 		err->exec ();
 		return;
 	}
