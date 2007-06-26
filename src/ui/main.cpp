@@ -29,9 +29,10 @@
 #include "playerwidget.h"
 #include "minimode.h"
 #include "serverdialog.h"
-#include "preferences.h"
 #include "firsttimewizard/ftwmanager.h"
 #include "misc.h"
+
+#include "preferencemanager.h"
 
 Q_IMPORT_PLUGIN(lastfm)
 Q_IMPORT_PLUGIN(medialibdialog)
@@ -68,7 +69,8 @@ main (int argc, char **argv)
 
 	QString locale = QLocale::system ().name ();
 
-	PreferenceDialog::save_defaults ();
+	/* create the preference manager */
+	PreferenceManager::instance ();
 
 	QTranslator trans;
 	if (!s.value ("core/skiplocales").toBool ()) {

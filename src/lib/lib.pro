@@ -1,6 +1,7 @@
 TEMPLATE = lib
 CONFIG += static
 include (../../config.pri)
+
 SOURCES = 	collectioninfomodel.cpp \
 			fancyplaylistmodel.cpp \
 			xclient.cpp \
@@ -8,7 +9,9 @@ SOURCES = 	collectioninfomodel.cpp \
 			collectionmodel.cpp \
 			playlistmodel.cpp \
 			xclientcache.cpp \
-			misc.cpp
+			misc.cpp \
+			preferencemanager.cpp
+
 HEADERS = 	collectioninfomodel.h \
 			fancyplaylistmodel.h \
 			xclient.h \
@@ -16,4 +19,5 @@ HEADERS = 	collectioninfomodel.h \
 			collectionmodel.h \
 			playlistmodel.h \
 			xclientcache.h \
-			misc.h
+			misc.h \
+			preferencemanager.h

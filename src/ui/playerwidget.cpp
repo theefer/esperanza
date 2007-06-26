@@ -40,7 +40,6 @@
 #include "fancyplaylistview.h"
 #include "progressframe.h"
 #include "filedialog.h"
-#include "preferences.h"
 #include "volumebar.h"
 #include "systemtray.h"
 #include "minimode.h"

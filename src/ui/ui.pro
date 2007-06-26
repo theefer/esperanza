@@ -1,5 +1,6 @@
 TEMPLATE = app
 QT += network xml
+include (../../config.pri)
 
 DIALOGS += ../dialogs/lastfm/liblastfm.a \
 		   ../dialogs/medialibdialog/libmedialibdialog.a \
@@ -8,6 +9,7 @@ DIALOGS += ../dialogs/lastfm/liblastfm.a \
 
 LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
 DESTDIR = ../..
+CONFIG+=debug
 
 TARGET = esperanza
 macx {
@@ -18,11 +20,9 @@ macx {
 
 SOURCES += 	fancyplaylistview.cpp \
 			minimode.cpp \
-			preferences.cpp \
 			shortcutmanager.cpp \
 			filedialog.cpp \
 			panebrowserview.cpp \
-			preferencessupport.cpp \
 			systemtray.cpp \
 			growl.cpp \
 			playerbutton.cpp \
@@ -45,8 +45,6 @@ HEADERS += 	esperanza_plugin.h \
 			playerbutton.h \
 			playerwidget.h \
 			playlistview.h \
-			preferences.h \
-			preferencessupport.h \
 			progressframe.h \
 			progressindicator.h \
 			serverdialog.h \
@@ -55,4 +53,3 @@ HEADERS += 	esperanza_plugin.h \
 			volumebar.h
 
 include (globalshortcut/globalshortcut.pri)
-include (../../config.pri)
