@@ -227,6 +227,8 @@ PlayerWidget::process_dialog_plugin ()
 		action->setData (QVariant (i));
 //		QString val ("shortcuts/dialogs/%1").arg (dialog->label ());
 //		m_sm->connect (this, val, dialog->shortcut (), SLOT ())
+		
+		i++;
 	}
 }
 
