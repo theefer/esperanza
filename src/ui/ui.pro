@@ -7,6 +7,7 @@ DIALOGS += ../dialogs/lastfm/liblastfm.a \
 		   ../dialogs/firsttimewizard/libfirsttimewizard.a
 
 LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
+DESTDIR = ../..
 
 TARGET = esperanza
 macx {
