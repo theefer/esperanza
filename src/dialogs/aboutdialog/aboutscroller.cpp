@@ -141,6 +141,7 @@ AboutScroller::AboutScroller (QWidget *parent) : QWidget (parent), m_orgpix (":i
 
 	setSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed);
 	setMinimumSize (m_orgpix.width () * 2, m_orgpix.width ());
+	setMaximumSize (m_orgpix.width () * 2, m_orgpix.width ());
     
 }
 
