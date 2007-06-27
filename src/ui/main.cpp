@@ -37,9 +37,7 @@
 Q_IMPORT_PLUGIN(lastfm)
 Q_IMPORT_PLUGIN(medialibdialog)
 Q_IMPORT_PLUGIN(streamingdialog)
-/*
 Q_IMPORT_PLUGIN(aboutdialog)
-*/
 
 int
 main (int argc, char **argv)

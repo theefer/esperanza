@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += static
+CONFIG += static plugin
 include (../../../config.pri)
-SOURCES = textdialog.cpp
-HEADERS = textdialog.h
+SOURCES = aboutscroller.cpp plugin.cpp aboutdialog.cpp
+HEADERS = aboutscroller.h plugin.h aboutdialog.h

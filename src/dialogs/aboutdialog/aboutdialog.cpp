@@ -15,21 +15,23 @@
  */
 
 
-#ifndef __TEXTDIALOG_H__
-#define __TEXTDIALOG_H__
+#include "aboutdialog.h"
+#include "aboutscroller.h"
 
 #include <QDialog>
-#include <QTextBrowser>
-#include <QFile>
+#include <QGridLayout>
+#include <QPushButton>
 
-class TextDialog : public QDialog
+AboutDialog::AboutDialog (QWidget *parent) : QDialog (parent)
 {
-	Q_OBJECT
-	public:
-		TextDialog (QWidget *);
-		void read_file (const QString &);
-	private:
-		QTextBrowser *m_textbrowser;
-};
+	QGridLayout *g = new QGridLayout (this);
 
-#endif
+	QPushButton *close = new QPushButton (tr ("Close"), this);
+	connect (close, SIGNAL (clicked ()), this, SLOT (accept ()));
+
+	AboutScroller *aboutscroll = new AboutScroller (this);
+
+	g->addWidget (aboutscroll, 0, 0, 3, 3);
+	g->addWidget (close, 3, 2, 1, 1);
+}
+

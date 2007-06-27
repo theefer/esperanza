@@ -5,7 +5,8 @@ include (../../config.pri)
 DIALOGS += ../dialogs/lastfm/liblastfm.a \
 		   ../dialogs/medialibdialog/libmedialibdialog.a \
 		   ../dialogs/streamingdialog/libstreamingdialog.a \
-		   ../dialogs/firsttimewizard/libfirsttimewizard.a
+		   ../dialogs/firsttimewizard/libfirsttimewizard.a \
+		   ../dialogs/aboutdialog/libaboutdialog.a
 
 LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
 DESTDIR = ../..
