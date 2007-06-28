@@ -27,7 +27,9 @@ win32 {
 	DESTDIR = $$PWD/../..
 	RC_FILE = $$PWD/esperanza.rc
 }
-unix {
+
+unix:!mac {
+	QMAKE_POST_LINK = rm -f ../../esperanza ; ln -s src/ui/esperanza ../../esperanza
 	target.path = $$BINDIR
 	INSTALLS += target
 }
