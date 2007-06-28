@@ -42,6 +42,7 @@ Q_IMPORT_PLUGIN(aboutdialog)
 int
 main (int argc, char **argv)
 {
+	int ret;
     QCoreApplication::setOrganizationName ("xmms2");
 	QCoreApplication::setOrganizationDomain ("xmms.org");
 	QCoreApplication::setApplicationName ("Esperanza");
@@ -92,6 +93,8 @@ main (int argc, char **argv)
 
 	// SHOWS THE PLAYERWINDOW respectivly minimode window
 	client.settings ()->change_settings ();
-	return app.exec ();
+	ret = app.exec ();
+	delete pw;
+	return ret;
 }
 
