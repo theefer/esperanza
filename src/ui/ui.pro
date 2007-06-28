@@ -1,4 +1,5 @@
 TEMPLATE = app
+BINDIR = /usr/bin
 QT += network xml
 include (../../config.pri)
 
@@ -20,9 +21,19 @@ win32 {
 	LIBS += $$DIALOGS ../lib/release/liblib.a ../../data/release/libdata.a
 }
 
-DESTDIR = ../..
-
+# Target
 TARGET = esperanza
+win32 {
+	DESTDIR = $$PWD/../..
+	RC_FILE = $$PWD/esperanza.rc
+}
+unix {
+	target.path = $$BINDIR
+	INSTALLS += target
+}
+
+
+
 macx {
 	TARGET = Esperanza
 	SOURCES += mac_growl.mm

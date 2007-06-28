@@ -21,5 +21,4 @@ win32 {
 	LIBPATH += /c/temp/lib
 	LIBPATH += /lib
 	LIBS += -lxmmsclient -lxmmsclient++ -lboost_signals -lws2_32
-#	RC_FILE = esperanza.rc
 }
