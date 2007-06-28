@@ -7,12 +7,12 @@
 #include "gui.h"
 #include "finish.h"
 
-FTWManager::FTWManager(XClient *client_)
+FTWManager::FTWManager(QWidget *parent, XClient *client_)
 {
 	cli = client_;
 	firstPage = NULL;
 	lastPage = NULL;
-	ftwDlg = new FTWDialog(this);
+	ftwDlg = new FTWDialog(parent, this);
 	addPage(new Welcome(ftwDlg));
 	addPage(new ServerPage(ftwDlg));
 	addPage(new MediaPage(ftwDlg));

@@ -82,7 +82,7 @@ main (int argc, char **argv)
 
 	if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
 	{
-		FTWManager *ftwMan =  new FTWManager (&client);
+		FTWManager *ftwMan =  new FTWManager (pw, &client);
 		ftwMan->show();
 		s.setValue ("core/firsttimewizardshowen", QVariant(true));
 	}

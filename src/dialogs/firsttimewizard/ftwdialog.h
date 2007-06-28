@@ -10,9 +10,12 @@ class FTWManager;
 
 class FTWDialog : public QDialog, public Ui::FTWDialog {
 public:
-	FTWDialog(FTWManager *ftwman_) {
+	FTWDialog(QWidget *parent, FTWManager *ftwman_)
+	: QDialog(parent)
+	{
 		setupUi(this);
 		ftwman = ftwman_;
+		setModal(true);
 	}
 
 	FTWManager* manager() { return ftwman; };

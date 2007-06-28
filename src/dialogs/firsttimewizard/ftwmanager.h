@@ -14,7 +14,7 @@
 class FTWManager : public QObject {
 	Q_OBJECT
 public:
-	FTWManager(XClient *client_);
+	FTWManager(QWidget *parent, XClient *client_);
 	bool show();
 	XClient* client() { return cli; };
 

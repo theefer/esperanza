@@ -19,7 +19,7 @@ void GuiPage::saveSettings()
 	bool bTmp;
 	int iTmp;
 
-	bTmp = !((bool)(IgnoreDesktopSettings->checkState() == Qt::Checked));
+	bTmp = (bool)(IgnoreDesktopSettings->checkState() == Qt::Checked);
 	s.setValue("core/ignoredesktopsettings", QVariant(bTmp));
 
 	bTmp = (bool)(showServerBrowser->checkState() == Qt::Checked);
