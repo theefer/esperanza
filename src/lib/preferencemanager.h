@@ -21,6 +21,7 @@
 #include <QString>
 #include <QStringList>
 #include <QVariant>
+#include <QDebug>
 
 /**
  * This class defines a registered config value.
@@ -34,7 +35,7 @@ class PreferenceValue
 		/** Describe the type of this value */
 		enum ValueType {
 			/** true or false */
-			Bool,
+			Bool = 0,
 			/** number, just int at the moment */
 			Num,
 			/** a single string */
@@ -48,7 +49,7 @@ class PreferenceValue
 		};
 
 		enum ValueSection {
-			None,
+			None = 0,
 			Core,
 			Look,
 			Feel,

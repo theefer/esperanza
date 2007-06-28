@@ -1,0 +1,85 @@
+<ui version="4.0" >
+ <class>prefDialog</class>
+ <widget class="QDialog" name="prefDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>497</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Esperanza - Preferences</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="../../../data/esperanza.qrc" >:/images/esperanza.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabCore" >
+      <attribute name="title" >
+       <string>Core</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabLook" >
+      <attribute name="title" >
+       <string>Look</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabFeel" >
+      <attribute name="title" >
+       <string>Feel</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabShortcuts" >
+      <attribute name="title" >
+       <string>Shortcuts</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../data/esperanza.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>prefDialog</receiver>
+   <slot>clickedBtnBox(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>469</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>299</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

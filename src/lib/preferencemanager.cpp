@@ -56,7 +56,7 @@ PreferenceManager::registerVal (const QString &key,
 								const QVariant &data,
 								const PreferenceValue::ValueSection &section)
 {
-	PreferenceValue *val = new PreferenceValue (key, help, type, defval, data);
+	PreferenceValue *val = new PreferenceValue (key, help, type, defval, data, section);
 	m_values[key] = val;
 	m_sections[section] = val;
 
@@ -74,16 +74,18 @@ PreferenceManager::PreferenceManager () : QObject (NULL)
 	 */
 
 
-	registerVal ("core/autostart", tr ("Autostart xmms2d if it's not running"), PreferenceValue::Bool, true);
-	registerVal ("core/ignoredesktopsettings", tr ("Ignore the desktop settings (use this if everything is black)"), PreferenceValue::Bool, false);
-	registerVal ("core/skiplocales", tr ("Ignore locale settings and use default language"), PreferenceValue::Bool, false);
-	registerVal ("serverdialog/show", tr ("Show the server browser on startup"), PreferenceValue::Bool, true);
-	registerVal ("playlist/jumptocurrent", tr ("Jump to the current entry in the playlist on song change"), PreferenceValue::Bool, true);
-	registerVal ("playlist/compactmode", tr ("Use compact playlist mode (no context area)"), PreferenceValue::Bool, false);
-	registerVal ("playlist/albumartplace", tr ("Show album art under artist"), PreferenceValue::Bool, true);
-	registerVal ("ui/showstop", tr ("Show a stop button"), PreferenceValue::Bool, false);
-	registerVal ("ui/reverseplaytime", tr ("Show time remaining instead of elapsed"), PreferenceValue::Bool, true);
-	registerVal ("core/pixmapcache", tr ("Size of album art cache in kB"), PreferenceValue::Num, 12040);
+	registerVal ("core/autostart", tr ("Autostart xmms2d if it's not running"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Core);
+	registerVal ("core/ignoredesktopsettings", tr ("Ignore the desktop settings (use this if everything is black)"),
+			PreferenceValue::Bool, false, QVariant (), PreferenceValue::Core);
+	registerVal ("core/skiplocales", tr ("Ignore locale settings and use default language"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Core);
+	registerVal ("serverdialog/show", tr ("Show the server browser on startup"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Core);
+	registerVal ("playlist/jumptocurrent", tr ("Jump to the current entry in the playlist on song change"),
+			PreferenceValue::Bool, true, QVariant (), PreferenceValue::Feel);
+	registerVal ("playlist/compactmode", tr ("Use compact playlist mode (no context area)"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Look);
+	registerVal ("playlist/albumartplace", tr ("Show album art under artist"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Look);
+	registerVal ("ui/showstop", tr ("Show a stop button"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Look);
+	registerVal ("ui/reverseplaytime", tr ("Show time remaining instead of elapsed"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Look);
+	registerVal ("core/pixmapcache", tr ("Size of album art cache in kB"), PreferenceValue::Num, 12040, QVariant (), PreferenceValue::Core);
 
 	QMap <QString, QVariant> contextvalues;
 	contextvalues[tr("Album")] = "album";
@@ -94,24 +96,29 @@ PreferenceManager::PreferenceManager () : QObject (NULL)
 	contextvalues[tr("Genre")] = "genre";
 	contextvalues[tr("Tracknumber")] = "tracknr";
 	contextvalues[tr("Filename")] = "filename";
-	registerVal ("ui/contextvalues", tr ("Information to be shown in the context area"), PreferenceValue::MultiSelection, "album,timesplayed,duration", QVariant (contextvalues));
+	registerVal ("ui/contextvalues", tr ("Information to be shown in the context area"),
+			PreferenceValue::MultiSelection, "album,timesplayed,duration", QVariant (contextvalues), PreferenceValue::Look);
 
-	registerVal ("ui/contextareabright", tr ("Draw the context area in a lighter color"), PreferenceValue::Bool, true);
-	registerVal ("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), PreferenceValue::Bool, false);
-	registerVal ("ui/volumepopup", tr ("Show the volume slider in a popup"), PreferenceValue::Bool, false);
-	registerVal ("ui/volumeinteractive", tr ("Change volume interactively (could cause problems)"), PreferenceValue::Bool, false);
-	registerVal ("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), PreferenceValue::Bool, true);
-	registerVal ("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), PreferenceValue::Bool, false);
-	registerVal ("medialib/completion", tr ("Load artists and albums for completion in Medialib window"), PreferenceValue::Bool, true);
+	registerVal ("ui/contextareabright", tr ("Draw the context area in a lighter color"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Look);
+	registerVal ("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Look);
+	registerVal ("ui/volumepopup", tr ("Show the volume slider in a popup"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
+	registerVal ("ui/volumeinteractive", tr ("Change volume interactively (could cause problems)"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
+	registerVal ("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Feel);
+	registerVal ("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
+	registerVal ("medialib/completion", tr ("Load artists and albums for completion in Medialib window"),
+			PreferenceValue::Bool, true, QVariant (), PreferenceValue::Core);
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
-		registerVal ("core/systray", tr ("Show icon in system tray"), PreferenceValue::Bool, true);
-		registerVal ("core/donotification", tr ("Show popup notification on song change"), PreferenceValue::Bool, true);
-		registerVal ("ui/hideOnClose", tr ("Do not quit esperanza on close, rather then hide it (needs System tray active)."), PreferenceValue::Bool, true);
-		registerVal ("ui/toolwindow", tr ("Show the playerwindow as a toolwindow (no windowlist entry)."), PreferenceValue::Bool, false);
+		registerVal ("core/systray", tr ("Show icon in system tray"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Core);
+		registerVal ("core/donotification", tr ("Show popup notification on song change"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Feel);
+		registerVal ("ui/hideOnClose", tr ("Do not quit esperanza on close, rather then hide it (needs System tray active)."),
+				PreferenceValue::Bool, true, QVariant (), PreferenceValue::Feel);
+		registerVal ("ui/toolwindow", tr ("Show the playerwindow as a toolwindow (no windowlist entry)."),
+				PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
 		QMap <QString, QVariant> map;
-		map["Single Click"] = QSystemTrayIcon::Trigger;
-		map["Double Click"] = QSystemTrayIcon::DoubleClick;
-		registerVal ("ui/activateTray", tr ("Show mainwindow on single or double click on the tray icon."), PreferenceValue::Selection, QSystemTrayIcon::Trigger, map);
+		map[tr("Single Click")] = QSystemTrayIcon::Trigger;
+		map[tr("Double Click")] = QSystemTrayIcon::DoubleClick;
+		registerVal ("ui/activateTray", tr ("Show mainwindow on single or double click on the tray icon."),
+				PreferenceValue::Selection, QSystemTrayIcon::Trigger, map, PreferenceValue::Feel);
 	}
 }
 

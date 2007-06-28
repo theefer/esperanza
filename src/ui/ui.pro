@@ -8,6 +8,7 @@ include (../../config.pri)
 			   ../dialogs/medialibdialog/libmedialibdialog.a \
 			   ../dialogs/streamingdialog/libstreamingdialog.a \
 			   ../dialogs/firsttimewizard/libfirsttimewizard.a \
+			   ../dialogs/preferencesdialog/libpreferencesdialog.a \
 			   ../dialogs/aboutdialog/libaboutdialog.a
 	LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
 }
@@ -17,6 +18,7 @@ win32 {
 			   ../dialogs/medialibdialog/release/libmedialibdialog.a \
 			   ../dialogs/streamingdialog/release/libstreamingdialog.a \
 			   ../dialogs/firsttimewizard/release/libfirsttimewizard.a \
+			   ../dialogs/preferencesdialog/release/libpreferencesdialog.a \
 			   ../dialogs/aboutdialog/release/libaboutdialog.a
 	LIBS += $$DIALOGS ../lib/release/liblib.a ../../data/release/libdata.a
 }
