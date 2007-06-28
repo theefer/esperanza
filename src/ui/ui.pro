@@ -2,15 +2,25 @@ TEMPLATE = app
 QT += network xml
 include (../../config.pri)
 
-DIALOGS += ../dialogs/lastfm/liblastfm.a \
-		   ../dialogs/medialibdialog/libmedialibdialog.a \
-		   ../dialogs/streamingdialog/libstreamingdialog.a \
-		   ../dialogs/firsttimewizard/libfirsttimewizard.a \
-		   ../dialogs/aboutdialog/libaboutdialog.a
+!win32 {
+	DIALOGS += ../dialogs/lastfm/liblastfm.a \
+			   ../dialogs/medialibdialog/libmedialibdialog.a \
+			   ../dialogs/streamingdialog/libstreamingdialog.a \
+			   ../dialogs/firsttimewizard/libfirsttimewizard.a \
+			   ../dialogs/aboutdialog/libaboutdialog.a
+	LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
+}
 
-LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a
+win32 {
+	DIALOGS += ../dialogs/lastfm/release/liblastfm.a \
+			   ../dialogs/medialibdialog/release/libmedialibdialog.a \
+			   ../dialogs/streamingdialog/release/libstreamingdialog.a \
+			   ../dialogs/firsttimewizard/release/libfirsttimewizard.a \
+			   ../dialogs/aboutdialog/release/libaboutdialog.a
+	LIBS += $$DIALOGS ../lib/release/liblib.a ../../data/release/libdata.a
+}
+
 DESTDIR = ../..
-CONFIG+=debug
 
 TARGET = esperanza
 macx {

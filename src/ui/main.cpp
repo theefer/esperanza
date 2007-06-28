@@ -78,7 +78,7 @@ main (int argc, char **argv)
 
 	XClient client (NULL, "Esperanza");
 
-	new PlayerWidget (NULL, &client);
+	PlayerWidget *pw = new PlayerWidget (NULL, &client);
 
 	if (!s.value("core/firsttimewizardshowen", QVariant(false)).toBool ())
 	{
@@ -88,7 +88,7 @@ main (int argc, char **argv)
 	}
 
 	if (!client.isConnected ())
-		connectXmms2 (&client);
+		connectXmms2 (&client, pw);
 
 	// SHOWS THE PLAYERWINDOW respectivly minimode window
 	client.settings ()->change_settings ();
