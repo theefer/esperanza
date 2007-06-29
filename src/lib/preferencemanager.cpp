@@ -120,5 +120,7 @@ PreferenceManager::PreferenceManager () : QObject (NULL)
 		registerVal ("ui/activateTray", tr ("Show mainwindow on single or double click on the tray icon."),
 				PreferenceValue::Selection, QSystemTrayIcon::Trigger, map, PreferenceValue::Feel);
 	}
+	registerVal ("globalshortcuts/play", tr ("Global shortcut to play / pause the playback."),
+				PreferenceValue::Key, "Ctrl+Shift+C", QVariant (), PreferenceValue::Shortcuts);
 }
 

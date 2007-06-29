@@ -28,6 +28,8 @@
 #include <QSettings>
 #include <QComboBox>
 #include <QGroupBox>
+#include <QHeaderView>
+#include <QTableWidgetItem>
 #include <QDebug>
 
 PreferencesDialog::PreferencesDialog (QWidget *parent, XClient *client_)
@@ -66,7 +68,16 @@ void PreferencesDialog::initTabs (QList<PreferenceValue *> prefs)
 	tabLook->setLayout (new QVBoxLayout ());
 	tabFeel->setLayout (new QVBoxLayout ());
 	tabCore->setLayout (new QVBoxLayout ());
-	tabShortcuts->setLayout (new QVBoxLayout ());
+
+	QStringList sl;
+	sl << tr("Description");
+	sl << tr("Keycombination");
+	shortcutsTable->setColumnCount(2);
+	shortcutsTable->setHorizontalHeaderLabels (sl);
+	shortcutsTable->verticalHeader ()->hide ();
+	shortcutsTable->horizontalHeader ()->setClickable (false);
+	shortcutsTable->horizontalHeader ()->resizeSection (0, 400);
+	shortcutsTable->horizontalHeader ()->resizeSection (1, 150);
 
 	while (prefsIter.hasNext ())
 	{
@@ -88,7 +99,6 @@ void PreferencesDialog::initTabs (QList<PreferenceValue *> prefs)
 	tabLook->layout ()->addItem (new QSpacerItem (1, 1, QSizePolicy::Expanding, QSizePolicy::Expanding));
 	tabFeel->layout ()->addItem (new QSpacerItem (1, 1, QSizePolicy::Expanding, QSizePolicy::Expanding));
 	tabCore->layout ()->addItem (new QSpacerItem (1, 1, QSizePolicy::Expanding, QSizePolicy::Expanding));
-	tabShortcuts->layout ()->addItem (new QSpacerItem (1, 1, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
 
 void PreferencesDialog::addPref (QWidget* tab, PreferenceValue *pref)
@@ -273,11 +283,22 @@ QWidget* PreferencesDialog::createMultiSelectPref (QWidget* tab, PreferenceValue
 QWidget* PreferencesDialog::createShortcutPref (QWidget* tab, PreferenceValue *pref)
 {
 	QSettings s;
-	QWidget *w;
+	QString sKey = s.value (pref->key (), pref->defval ()).toString ();
+	QTableWidgetItem *desc = new QTableWidgetItem (pref->help ());
+	QTableWidgetItem *key = new QTableWidgetItem (sKey);
+	int row = shortcutsTable->rowCount ();
 
-	w = NULL;
+	// add a row
+	shortcutsTable->setRowCount (row + 1);
 
-	return w;
+	// set the content for the row
+	qDebug () << "adding Shortcut, row: " << row << ", text: " << pref->help () << ", Key: " << sKey;
+	shortcutsTable->setItem (row, 0, desc);
+	shortcutsTable->setItem (row, 1, key);
+
+	// we don't need it to return a Widget 
+	// for the shortcuts tab
+	return NULL;
 }
 
 void PreferencesDialog::pressedOk ()
