@@ -27,10 +27,11 @@
 #include <QLineEdit>
 #include <QSettings>
 #include <QComboBox>
+#include <QGroupBox>
 #include <QDebug>
 
 PreferencesDialog::PreferencesDialog (QWidget *parent, XClient *client_)
-: QDialog(parent)
+: QDialog (parent)
 {
 	setupUi (this);
 	client = client_;
@@ -38,9 +39,9 @@ PreferencesDialog::PreferencesDialog (QWidget *parent, XClient *client_)
 	initTabs (prefs);
 }
 
-void PreferencesDialog::clickedBtnBox(QAbstractButton* btn)
+void PreferencesDialog::clickedBtnBox (QAbstractButton* btn)
 {
-	switch(buttonBox->buttonRole(btn))
+	switch (buttonBox->buttonRole (btn))
 	{
 		case QDialogButtonBox::AcceptRole:
 			pressedOk ();
@@ -62,15 +63,15 @@ void PreferencesDialog::initTabs (QList<PreferenceValue *> prefs)
 	QListIterator<PreferenceValue *> prefsIter (prefs);
 	QWidget *tab;
 	
-	tabLook->setLayout(new QVBoxLayout());
-	tabFeel->setLayout(new QVBoxLayout());
-	tabCore->setLayout(new QVBoxLayout());
-	tabShortcuts->setLayout(new QVBoxLayout());
+	tabLook->setLayout (new QVBoxLayout ());
+	tabFeel->setLayout (new QVBoxLayout ());
+	tabCore->setLayout (new QVBoxLayout ());
+	tabShortcuts->setLayout (new QVBoxLayout ());
 
-	while (prefsIter.hasNext())
+	while (prefsIter.hasNext ())
 	{
 		tab = NULL;
-		pref = prefsIter.next();
+		pref = prefsIter.next ();
 		switch (pref->section ())
 		{
 			case PreferenceValue::Core: tab = tabCore; break;
@@ -79,7 +80,7 @@ void PreferencesDialog::initTabs (QList<PreferenceValue *> prefs)
 			case PreferenceValue::Shortcuts: tab = tabShortcuts; break;
 			default: qDebug () << "ERROR! unclassified Preference" << pref->key (); break;
 		}
-		if(tab)
+		if (tab)
 			addPref (tab, pref);
 
 	}
@@ -92,78 +93,191 @@ void PreferencesDialog::initTabs (QList<PreferenceValue *> prefs)
 
 void PreferencesDialog::addPref (QWidget* tab, PreferenceValue *pref)
 {
-	QSettings s;
 	QWidget *w = NULL;
-	QHBoxLayout *hlay;
-	QLabel *lab;
-	QLineEdit *le;
-	QCheckBox *cb;
-	QSpinBox *sb;
-	QComboBox *co;
-	QMapIterator<QString, QVariant> *iterSelect;
 
 	switch (pref->type ())
 	{
 		case PreferenceValue::Bool:
-			cb = new QCheckBox (tab);
-			cb->setText (pref->help ());
-			cb->setCheckState (s.value (pref->key (), pref->defval ()).toBool () ? Qt::Checked : Qt::Unchecked);
-			w = cb;
+			w = createBoolPref (tab, pref);
 			break;
 		case PreferenceValue::Num:
-			w = new QWidget (tab);
-			hlay = new QHBoxLayout (w);
-			lab = new QLabel (w);
-			sb = new QSpinBox (w);
-
-			sb->setRange (0, 999999); // what should be min and max!??! No Idea what are good values.
-			sb->setValue (s.value (pref->key (), pref->defval ()).toInt ());
-			lab->setText (pref->help ());
-			lab->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred);
-			hlay->addWidget (lab);
-			hlay->addItem (new QSpacerItem(10, 0, QSizePolicy::Preferred, QSizePolicy::Preferred));
-			hlay->addWidget (sb);
-			w->setLayout (hlay);
+			w = createNumberPref (tab, pref);
 			break;
 		case PreferenceValue::Str:
-			w = new QWidget (tab);
-			hlay = new QHBoxLayout (w);
-			lab = new QLabel (w);
-			le = new QLineEdit (w);
-
-			lab->setText (pref->help ());
-			le->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred);
-			le->setText (s.value (pref->key (), pref->defval ()).toString ());
-
-			hlay->addWidget (lab);
-			hlay->addItem (new QSpacerItem(10, 0, QSizePolicy::Preferred, QSizePolicy::Preferred));
-			hlay->addWidget (le);
-			w->setLayout (hlay);
+			w = createStringPref (tab, pref);
 			break;
 		case PreferenceValue::Selection:
-			w = new QWidget (tab);
-			hlay = new QHBoxLayout (w);
-			lab = new QLabel (w);
-			co = new QComboBox (w);
-
-			lab->setText (pref->help ());
-			iterSelect = new QMapIterator<QString, QVariant>(pref->data ().toMap ());
-			while (iterSelect->hasNext()) {
-				iterSelect->next();
-				co->addItem (iterSelect->key (), QVariant (iterSelect->value ()));
-			}
-			hlay->addWidget (lab);
-			hlay->addItem (new QSpacerItem(10, 0, QSizePolicy::Preferred, QSizePolicy::Preferred));
-			hlay->addWidget (co);
-			w->setLayout (hlay);
+			w = createSelectionPref (tab, pref);
 			break;
-		case PreferenceValue::MultiSelection: break;
-		case PreferenceValue::Key: break;
-		default: qDebug () << "ERROR! unknown preference type of key '" << pref->key () << "' (type: '" << pref->type () << "')"; break;
+		case PreferenceValue::MultiSelection:
+			w = createMultiSelectPref (tab, pref);
+			break;
+		case PreferenceValue::Key:
+			w = createShortcutPref (tab, pref);
+			break;
+		default:
+			qDebug () << "ERROR! unknown preference type of key '" <<
+						pref->key () << "' (type: '" << pref->type () << "')";
+			break;
 	}
 
 	if(w)
 		tab->layout ()->addWidget (w);
+}
+
+QWidget* PreferencesDialog::createBoolPref (QWidget* tab, PreferenceValue *pref)
+{
+	QSettings s;
+	QCheckBox *cb;
+
+	cb = new QCheckBox (tab);
+	cb->setText (pref->help ());
+	cb->setCheckState (s.value (pref->key (), pref->defval ()).toBool () ? Qt::Checked : Qt::Unchecked);
+
+	return cb;
+}
+
+QWidget* PreferencesDialog::createNumberPref (QWidget* tab, PreferenceValue *pref)
+{
+	QSettings s;
+	QWidget *w;
+	QHBoxLayout *hlay;
+	QLabel *lab;
+	QSpinBox *sb;
+
+	w = new QWidget (tab);
+	hlay = new QHBoxLayout (w);
+	lab = new QLabel (w);
+	sb = new QSpinBox (w);
+
+	sb->setRange (0, 999999); // what should be min and max!??! No Idea what are good values.
+	sb->setValue (s.value (pref->key (), pref->defval ()).toInt ());
+
+	lab->setText (pref->help ());
+	lab->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+	hlay->addWidget (lab);
+	hlay->addItem (new QSpacerItem (10, 0, QSizePolicy::Preferred, QSizePolicy::Preferred));
+	hlay->addWidget (sb);
+
+	w->setLayout (hlay);
+
+	return w;
+}
+
+QWidget* PreferencesDialog::createStringPref (QWidget* tab, PreferenceValue *pref)
+{
+	QSettings s;
+	QWidget *w;
+	QHBoxLayout *hlay;
+	QLabel *lab;
+	QLineEdit *le;
+
+	w = new QWidget (tab);
+	hlay = new QHBoxLayout (w);
+	lab = new QLabel (w);
+	le = new QLineEdit (w);
+
+	lab->setText (pref->help ());
+
+	le->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred);
+	le->setText (s.value (pref->key (), pref->defval ()).toString ());
+
+	hlay->addWidget (lab);
+	hlay->addItem (new QSpacerItem (10, 0, QSizePolicy::Preferred, QSizePolicy::Preferred));
+	hlay->addWidget (le);
+
+	w->setLayout (hlay);
+
+	return w;
+}
+
+QWidget* PreferencesDialog::createSelectionPref (QWidget* tab, PreferenceValue *pref)
+{
+	QSettings s;
+	QWidget *w;
+	QHBoxLayout *hlay;
+	QLabel *lab;
+	QComboBox *co;
+	QMapIterator<QString, QVariant> *iterSelect;
+
+	w = new QWidget (tab);
+	hlay = new QHBoxLayout (w);
+	lab = new QLabel (w);
+	co = new QComboBox (w);
+	iterSelect = new QMapIterator<QString, QVariant> (pref->data ().toMap ());
+
+	while (iterSelect->hasNext ()) {
+		iterSelect->next ();
+		co->addItem (iterSelect->key (), QVariant (iterSelect->value ()));
+	}
+
+	lab->setText (pref->help ());
+
+	hlay->addWidget (lab);
+	hlay->addItem (new QSpacerItem (10, 0, QSizePolicy::Preferred, QSizePolicy::Preferred));
+	hlay->addWidget (co);
+
+	w->setLayout (hlay);
+
+	return w;
+}
+
+QWidget* PreferencesDialog::createMultiSelectPref (QWidget* tab, PreferenceValue *pref)
+{
+	QSettings s;
+	QVBoxLayout *vbox;
+	QHBoxLayout *hbox;
+	QGroupBox *gb;
+	QMapIterator<QString, QVariant> *iter;
+	QCheckBox *cb;
+
+	gb = new QGroupBox (tab);
+	vbox = new QVBoxLayout ();
+	iter = new QMapIterator<QString, QVariant> (pref->data ().toMap ());
+
+	gb->setTitle (pref->help ());
+
+	while (iter->hasNext ()) {
+		iter->next ();
+		hbox = new QHBoxLayout ();
+		cb = new QCheckBox (gb);
+
+		cb->setText (iter->key ());
+		if (s.value (pref->key (), pref->defval ()).toString ().contains (iter->value ().toString ()))
+			cb->setCheckState (Qt::Checked);
+		else
+			cb->setCheckState (Qt::Unchecked);
+		hbox->addWidget (cb);
+
+		if (iter->hasNext ())
+		{
+			iter->next ();
+			cb = new QCheckBox (gb);
+
+			cb->setText (iter->key ());
+			if (s.value (pref->key (), pref->defval ()).toString ().contains (iter->value ().toString ()))
+				cb->setCheckState (Qt::Checked);
+			else
+				cb->setCheckState (Qt::Unchecked);
+			hbox->addWidget (cb);
+		}
+		vbox->addLayout (hbox);
+	}
+
+	gb->setLayout (vbox);
+
+	return gb;
+}
+
+QWidget* PreferencesDialog::createShortcutPref (QWidget* tab, PreferenceValue *pref)
+{
+	QSettings s;
+	QWidget *w;
+
+	w = NULL;
+
+	return w;
 }
 
 void PreferencesDialog::pressedOk ()
