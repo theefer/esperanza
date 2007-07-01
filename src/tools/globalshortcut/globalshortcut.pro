@@ -1,3 +1,7 @@
+TEMPLATE = lib
+CONFIG += static plugin
+include (../../../config.pri)
+
 # this code was copied from Psi (http://psi-im.org)
 HEADERS += $$PWD/globalshortcutmanager.h $$PWD/globalshortcuttrigger.h
 SOURCES += $$PWD/globalshortcutmanager.cpp

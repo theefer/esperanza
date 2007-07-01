@@ -1,7 +1,7 @@
 /** 
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2006 XMMS2 Team
+ *  Copyright (C) 2007 XMMS2 Team
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,33 +15,22 @@
  */
 
 
-#ifndef __PREFERENCESDIALOG_H__
-#define __PREFERENCESDIALOG_H__
+#ifndef __PREFSELECTIONWIDGET_H__
+#define __PREFSELECTIONWIDGET_H__
 
-#include "xclient.h"
+#include <QWidget>
 #include "preferencemanager.h"
+#include "ui_prefselectionwidget.h"
 
-#include "ui_preferencesdialog.h"
-
-class PreferencesDialog : public QDialog, public Ui::prefDialog
+class PrefSelectionWidget : public QWidget, public Ui::prefSelectionWidget
 {
 	Q_OBJECT
 	public:
-		PreferencesDialog (QWidget *parent, XClient *client_);
-
-	public slots:
-		void clickedBtnBox(QAbstractButton*);
+		PrefSelectionWidget (QWidget *parent, PreferenceValue *pref);
+		void setLabel (QString s) { }
+		QVariant getPrefValue () { return comboBox->itemData (comboBox->currentIndex ()); }
 
 	protected:
-		void pressedOk ();
-		void pressedApply ();
-		void pressedCancel ();
-		void initTabs (QList<PreferenceValue *> prefs);
-		void addPref (QWidget* tab, PreferenceValue *pref);
-		QWidget* createScrollableWidget (QWidget *parent);
-
-	private:
-		QMap<PreferenceValue *, QWidget *> prefWidgets;
-		XClient *client;
+		void setMap (QMap<QString, QVariant> map, QVariant def = QVariant ());
 };
 #endif

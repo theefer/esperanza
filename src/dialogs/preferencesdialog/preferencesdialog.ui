@@ -15,62 +15,55 @@
   <property name="windowIcon" >
    <iconset resource="../../../data/esperanza.qrc" >:/images/esperanza.png</iconset>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
+  <widget class="QDialogButtonBox" name="buttonBox" >
+   <property name="geometry" >
+    <rect>
+     <x>9</x>
+     <y>461</y>
+     <width>582</width>
+     <height>27</height>
+    </rect>
    </property>
-   <property name="spacing" >
-    <number>6</number>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <item>
-    <widget class="QTabWidget" name="tabWidget" >
-     <property name="currentIndex" >
-      <number>3</number>
-     </property>
-     <widget class="QWidget" name="tabCore" >
-      <attribute name="title" >
-       <string>Core</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tabLook" >
-      <attribute name="title" >
-       <string>Look</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tabFeel" >
-      <attribute name="title" >
-       <string>Feel</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tabShortcuts" >
-      <attribute name="title" >
-       <string>Shortcuts</string>
-      </attribute>
-      <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>9</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="QTableWidget" name="shortcutsTable" />
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons" >
-      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-  </layout>
+   <property name="standardButtons" >
+    <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget" >
+   <property name="geometry" >
+    <rect>
+     <x>9</x>
+     <y>9</y>
+     <width>582</width>
+     <height>446</height>
+    </rect>
+   </property>
+   <property name="currentIndex" >
+    <number>3</number>
+   </property>
+   <widget class="QWidget" name="tabCore" >
+    <attribute name="title" >
+     <string>Core</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tabLook" >
+    <attribute name="title" >
+     <string>Look</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tabFeel" >
+    <attribute name="title" >
+     <string>Feel</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="tabShortcuts" >
+    <attribute name="title" >
+     <string>Shortcuts</string>
+    </attribute>
+   </widget>
+  </widget>
  </widget>
  <resources>
   <include location="../../../data/esperanza.qrc" />

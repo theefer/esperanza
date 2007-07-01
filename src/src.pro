@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 CONFIG += ordered
-SUBDIRS = dialogs lib ui
+SUBDIRS = tools widgets dialogs lib ui

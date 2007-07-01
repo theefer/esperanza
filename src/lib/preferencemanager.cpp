@@ -120,7 +120,48 @@ PreferenceManager::PreferenceManager () : QObject (NULL)
 		registerVal ("ui/activateTray", tr ("Show mainwindow on single or double click on the tray icon."),
 				PreferenceValue::Selection, QSystemTrayIcon::Trigger, map, PreferenceValue::Feel);
 	}
+
+	// SHORTCUTS
+	registerVal ("shortcuts/remove", tr ("Remove a selected playlist entry from the playlist."),
+				PreferenceValue::Key, "Del", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/remove2", tr ("Remove a selected playlist entry from the playlist."),
+				PreferenceValue::Key, "Backspace", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/shuffle", tr ("Enable / Disable shuffling the playlist."),
+				PreferenceValue::Key, "S", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/addfile", tr ("Add a local file."),
+				PreferenceValue::Key, "A", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/adddir", tr ("Add a local directory recursively."),
+				PreferenceValue::Key, "D", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/removeall", tr ("Clear the playlist."),
+				PreferenceValue::Key, "C", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/play", tr ("Play / pause the playback."),
+				PreferenceValue::Key, "Space", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/forward", tr ("Jump to the next playlist entry."),
+				PreferenceValue::Key, "B", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/back", tr ("Jump to the previous playlist entry."),
+				PreferenceValue::Key, "V", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/hide", tr ("Hide the player."),
+				PreferenceValue::Key, "Esc", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/jumppos", tr ("JumpPos !?"),
+				PreferenceValue::Key, "Return", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/minmax", tr ("Switch between minimode and the normal mode."),
+				PreferenceValue::Key, "Ctrl+M", QVariant (), PreferenceValue::Shortcuts);
+#ifndef Q_WS_MACX
+	registerVal ("shortcuts/quit", tr ("Quit esperanza, but you don't really need this!!"),
+				PreferenceValue::Key, "Ctrl+Q", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("shortcuts/close", tr ("Close the window."),
+				PreferenceValue::Key, "Ctrl+W", QVariant (), PreferenceValue::Shortcuts);
+#endif
+
 	registerVal ("globalshortcuts/play", tr ("Global shortcut to play / pause the playback."),
 				PreferenceValue::Key, "Ctrl+Shift+C", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("globalshortcuts/forward", tr ("Global shortcut to jump to the next playlist entry."),
+				PreferenceValue::Key, "Ctrl+Shift+V", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("globalshortcuts/back", tr ("Global shortcut to jump to the previous playlist entry."),
+				PreferenceValue::Key, "Ctrl+Shift+X", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("globalshortcuts/stop", tr ("Global shortcut to stop the playback."),
+				PreferenceValue::Key, "Ctrl+Shift+B", QVariant (), PreferenceValue::Shortcuts);
+	registerVal ("globalshortcuts/show_hide", tr ("Global shortcut to show / hide the player."),
+				PreferenceValue::Key, "Ctrl+Shift+M", QVariant (), PreferenceValue::Shortcuts);
 }
 
