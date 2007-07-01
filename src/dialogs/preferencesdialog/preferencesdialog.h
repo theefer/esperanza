@@ -39,15 +39,25 @@ class PreferencesDialog : public QDialog, public Ui::prefDialog
 		void initTabs (QList<PreferenceValue *> prefs);
 		void addPref (QWidget* tab, PreferenceValue *pref);
 
-		// the PrefSettingsWidgets
+		// show the current PrefValues
 		QWidget* createBoolPref(QWidget* tab, PreferenceValue *pref);
 		QWidget* createNumberPref(QWidget* tab, PreferenceValue *pref);
 		QWidget* createStringPref(QWidget* tab, PreferenceValue *pref);
 		QWidget* createSelectionPref(QWidget* tab, PreferenceValue *pref);
 		QWidget* createMultiSelectPref(QWidget* tab, PreferenceValue *pref);
-		QWidget* createShortcutPref(QWidget* tab, PreferenceValue *pref);
+		int createShortcutPref(QWidget* tab, PreferenceValue *pref);
+
+		// get the new PrefValues
+		bool getBoolValue(QWidget *w);
+		int getNumberValue(QWidget *w);
+		QString getStringValue(QWidget *w);
+		QVariant getSelectionValue(QWidget *w);
+		QString getMultiSelectValue(QWidget *w, QMap<QString, QVariant> range);
+		QString getShortcutValue(QWidget *w);
+
 
 	private:
+		QMap<PreferenceValue *, QWidget *> prefWidgets;
 		XClient *client;
 };
 #endif

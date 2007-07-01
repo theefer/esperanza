@@ -123,7 +123,9 @@ void PreferencesDialog::addPref (QWidget* tab, PreferenceValue *pref)
 			w = createMultiSelectPref (tab, pref);
 			break;
 		case PreferenceValue::Key:
-			w = createShortcutPref (tab, pref);
+			// just save the int as a widget pointer.
+			prefWidgets[pref] = (QWidget*)createShortcutPref (tab, pref);
+			w = NULL;
 			break;
 		default:
 			qDebug () << "ERROR! unknown preference type of key '" <<
@@ -132,7 +134,10 @@ void PreferencesDialog::addPref (QWidget* tab, PreferenceValue *pref)
 	}
 
 	if(w)
+	{
 		tab->layout ()->addWidget (w);
+		prefWidgets[pref] = w;
+	}
 }
 
 QWidget* PreferencesDialog::createBoolPref (QWidget* tab, PreferenceValue *pref)
@@ -220,6 +225,8 @@ QWidget* PreferencesDialog::createSelectionPref (QWidget* tab, PreferenceValue *
 	while (iterSelect->hasNext ()) {
 		iterSelect->next ();
 		co->addItem (iterSelect->key (), QVariant (iterSelect->value ()));
+		if (s.value (pref->key (), pref->defval ()).toInt () == iterSelect->value ())
+			co->setCurrentIndex (co->count () - 1);
 	}
 
 	lab->setText (pref->help ());
@@ -241,11 +248,14 @@ QWidget* PreferencesDialog::createMultiSelectPref (QWidget* tab, PreferenceValue
 	QGroupBox *gb;
 	QMapIterator<QString, QVariant> *iter;
 	QCheckBox *cb;
+	QString sValue;
 
 	gb = new QGroupBox (tab);
 	vbox = new QVBoxLayout ();
 	iter = new QMapIterator<QString, QVariant> (pref->data ().toMap ());
 
+	sValue = s.value (pref->key (), pref->defval ()).toString ();
+	qDebug () << "Key: " << pref->key () << ", value: " << sValue;
 	gb->setTitle (pref->help ());
 
 	while (iter->hasNext ()) {
@@ -254,7 +264,7 @@ QWidget* PreferencesDialog::createMultiSelectPref (QWidget* tab, PreferenceValue
 		cb = new QCheckBox (gb);
 
 		cb->setText (iter->key ());
-		if (s.value (pref->key (), pref->defval ()).toString ().contains (iter->value ().toString ()))
+		if (sValue.contains (iter->value ().toString ()))
 			cb->setCheckState (Qt::Checked);
 		else
 			cb->setCheckState (Qt::Unchecked);
@@ -266,7 +276,7 @@ QWidget* PreferencesDialog::createMultiSelectPref (QWidget* tab, PreferenceValue
 			cb = new QCheckBox (gb);
 
 			cb->setText (iter->key ());
-			if (s.value (pref->key (), pref->defval ()).toString ().contains (iter->value ().toString ()))
+			if (sValue.contains (iter->value ().toString ()))
 				cb->setCheckState (Qt::Checked);
 			else
 				cb->setCheckState (Qt::Unchecked);
@@ -280,7 +290,7 @@ QWidget* PreferencesDialog::createMultiSelectPref (QWidget* tab, PreferenceValue
 	return gb;
 }
 
-QWidget* PreferencesDialog::createShortcutPref (QWidget* tab, PreferenceValue *pref)
+int PreferencesDialog::createShortcutPref (QWidget* tab, PreferenceValue *pref)
 {
 	QSettings s;
 	QString sKey = s.value (pref->key (), pref->defval ()).toString ();
@@ -298,7 +308,68 @@ QWidget* PreferencesDialog::createShortcutPref (QWidget* tab, PreferenceValue *p
 
 	// we don't need it to return a Widget 
 	// for the shortcuts tab
-	return NULL;
+	return row;
+}
+
+bool PreferencesDialog::getBoolValue(QWidget *w)
+{
+	QCheckBox *cb;
+	cb = dynamic_cast<QCheckBox *> (w);
+	return cb->checkState () == Qt::Checked ? true : false;
+}
+
+int PreferencesDialog::getNumberValue(QWidget *w)
+{
+	QSpinBox *sb;
+	sb = dynamic_cast<QSpinBox *> (w->layout ()->itemAt (2)->widget ());
+	return sb->value ();
+}
+
+QString PreferencesDialog::getStringValue(QWidget *w)
+{
+	QLineEdit *le;
+	le = dynamic_cast<QLineEdit *> (w->layout ()->itemAt (2)->widget ());
+	return le->text ();
+}
+
+QVariant PreferencesDialog::getSelectionValue(QWidget *w)
+{
+	QComboBox *cb;
+	cb = dynamic_cast<QComboBox *> (w->layout ()->itemAt (2)->widget ());
+	return cb->itemData (cb->currentIndex ());
+}
+
+QString PreferencesDialog::getMultiSelectValue(QWidget *w, QMap<QString, QVariant> range)
+{
+	bool first = true;
+	QString ret, tmp;
+	QCheckBox *cb;
+	QLayoutItem *li;
+	for (int i = 0; i < w->layout ()->count (); i++)
+	{
+		li = w->layout ()->itemAt (i);
+		for (int y = 0; y < li->layout ()->count (); y++)
+		{
+			cb = dynamic_cast<QCheckBox *> (li->layout ()->itemAt (y)->widget ());
+			
+			if (cb->checkState () == Qt::Checked)
+			{
+				if(!first)
+					ret += ",";
+				else
+					first = false;
+				ret += range[cb->text ()].toString ();
+			}
+		}
+	}
+
+	return ret;
+}
+
+QString PreferencesDialog::getShortcutValue(QWidget *w)
+{
+
+	return "";
 }
 
 void PreferencesDialog::pressedOk ()
@@ -309,7 +380,52 @@ void PreferencesDialog::pressedOk ()
 
 void PreferencesDialog::pressedApply ()
 {
-	// TODO: save!!
+	QSettings s;
+	QMapIterator<PreferenceValue *, QWidget *> iter (prefWidgets);
+	PreferenceValue *pref;
+	QWidget *w;
+	QVariant v;
+
+	while(iter.hasNext ())
+	{
+		v.clear ();
+		iter.next ();
+		pref = iter.key ();
+		w = iter.value ();
+
+		switch (pref->type ())
+		{
+			case PreferenceValue::Bool:
+				v = QVariant(getBoolValue (w));
+				break;
+			case PreferenceValue::Num:
+				v = QVariant(getNumberValue (w));
+				break;
+			case PreferenceValue::Str:
+				v = QVariant(getStringValue (w));
+				break;
+			case PreferenceValue::Selection:
+				v = getSelectionValue (w);
+				break;
+			case PreferenceValue::MultiSelection:
+				v = QVariant(getMultiSelectValue (w, pref->data ().toMap ()));
+				break;
+			case PreferenceValue::Key:
+				break;
+			default:
+				qDebug () << "ERROR! unknown preference type of key '" <<
+							pref->key () << "' (type: '" << pref->type () << "')";
+				break;
+		}
+
+		if (v.isValid ())
+		{
+			qDebug () << "setting Key: " << pref->key () << " to value: " << v.toString ();
+			s.setValue (pref->key (), v);
+		}
+		else
+			qDebug () << "ERROR!! got no valid value for key: " << pref->key ();
+	}
 }
 
 void PreferencesDialog::pressedCancel ()
