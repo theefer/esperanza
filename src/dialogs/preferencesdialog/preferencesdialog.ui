@@ -9,61 +9,57 @@
     <height>497</height>
    </rect>
   </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle" >
    <string>Esperanza - Preferences</string>
   </property>
   <property name="windowIcon" >
    <iconset resource="../../../data/esperanza.qrc" >:/images/esperanza.png</iconset>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox" >
-   <property name="geometry" >
-    <rect>
-     <x>9</x>
-     <y>461</y>
-     <width>582</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="orientation" >
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons" >
-    <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QTabWidget" name="tabWidget" >
-   <property name="geometry" >
-    <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>582</width>
-     <height>446</height>
-    </rect>
-   </property>
-   <property name="currentIndex" >
-    <number>3</number>
-   </property>
-   <widget class="QWidget" name="tabCore" >
-    <attribute name="title" >
-     <string>Core</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="tabLook" >
-    <attribute name="title" >
-     <string>Look</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="tabFeel" >
-    <attribute name="title" >
-     <string>Feel</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="tabShortcuts" >
-    <attribute name="title" >
-     <string>Shortcuts</string>
-    </attribute>
-   </widget>
-  </widget>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>3</number>
+     </property>
+     <widget class="QWidget" name="tabCore" >
+      <attribute name="title" >
+       <string>Core</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabLook" >
+      <attribute name="title" >
+       <string>Look</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabFeel" >
+      <attribute name="title" >
+       <string>Feel</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabShortcuts" >
+      <attribute name="title" >
+       <string>Shortcuts</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources>
   <include location="../../../data/esperanza.qrc" />
