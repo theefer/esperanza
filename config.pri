@@ -18,6 +18,7 @@ macx {
 			   ../dialogs/firsttimewizard/libfirsttimewizard.a \
 			   ../dialogs/preferencesdialog/libpreferencesdialog.a \
 			   ../dialogs/aboutdialog/libaboutdialog.a
+
 	LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a ../widgets/libwidgets.a \
 			../tools/grepshortcutkeydlg/libgrepshortcutkeydlg.a \
 			../tools/globalshortcut/libglobalshortcut.a
@@ -30,14 +31,14 @@ win32 {
 			   ../dialogs/firsttimewizard/release/libfirsttimewizard.a \
 			   ../dialogs/preferencesdialog/release/libpreferencesdialog.a \
 			   ../dialogs/aboutdialog/release/libaboutdialog.a
-	LIBS += $$DIALOGS ../lib/release/liblib.a ../../data/release/libdata.a
+
+	LIBS += $$DIALOGS ../lib/release/liblib.a ../../data/release/libdata.a \
 			../widgets/release/libwidgets.a \
 			../tools/grepshortcutkeydlg/release/libgrepshortcutkeydlg.a \
 			../tools/globalshortcut/release/libglobalshortcut.a
 
-	INCLUDEPATH += /c/temp/include/xmms2
-	INCLUDEPATH += /include
-	LIBPATH += /c/temp/lib
-	LIBPATH += /lib
+	PREFIX += "SET THIS TO YOUR XMMS2 INSTALL DIR"
+	INCLUDEPATH += "$$PREFIX/include/xmms2"
+	LIBPATH += "$$PREFIX"
 	LIBS += -lxmmsclient -lxmmsclient++ -lboost_signals -lws2_32
 }
