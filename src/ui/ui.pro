@@ -6,22 +6,23 @@ include (../../config.pri)
 DIALOGS += lastfm medialibdialog \
 	   streamingdialog firsttimewizard \
 	   preferencesdialog aboutdialog
+TOOLS += grepshortcutkeydlg globalshortcut
 
 !win32 {
 	for(a, DIALOGS):COMPONENTS+=../dialogs/$$a/lib$${a}.a
+	for(a, TOOLS):COMPONENTS+=../tools/$$a/lib$${a}.a
+	COMPONENTS+=../lib/liblib.a ../../data/libdata.a
 }
 
 win32 {
 	for(a, DIALOGS):COMPONENTS+=../dialogs/$$a/release/lib$${a}.a
+	for(a, TOOLS):COMPONENTS+=../tools/$$a/release/lib$${a}.a
+	COMPONENTS+=../lib/release/liblib.a ../../data/release/libdata.a
 }
 
-COMPONENTS+=../lib/liblib.a ../../data/libdata.a
+LIBS += $$COMPONENTS
 
-LIBS += $$COMPONENTS \
-	../tools/grepshortcutkeydlg/libgrepshortcutkeydlg.a \
-	../tools/globalshortcut/libglobalshortcut.a
-
-PRE_TARGETDEPS=$$COMPONENTS
+PRE_TARGETDEPS = $$COMPONENTS
 
 # Target
 TARGET = esperanza
