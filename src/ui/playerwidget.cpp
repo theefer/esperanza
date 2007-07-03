@@ -365,7 +365,6 @@ PlayerWidget::plus_pressed (QMouseEvent *ev)
 
 	m.addAction (tr ("Add local file"), this, SLOT (add_local_file ()));
 	m.addAction (tr ("Add local dir"), this, SLOT (add_local_dir ()));
-	m.addAction (tr ("Search medialib"), this, SLOT (mlib_pressed ()));
 	m.addSeparator ();
 	/*
 	m.addAction (tr ("Add remote file"), this, SLOT (add_remote_file ()));
