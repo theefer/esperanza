@@ -263,9 +263,7 @@ void
 PlayerWidget::closeEvent (QCloseEvent *ev)
 {
 	QSettings s;
-	if( !s.value("ui/hideOnClose").toBool () || !s.value("core/systray").toBool () )
-		qApp->quit ();
-	else {
+	if( s.value("ui/hideOnClose").toBool () && s.value("core/systray").toBool () ) {
 		hide ();
 		ev->ignore ();
 	}
