@@ -73,11 +73,17 @@ void PreferencesDialog::initTabs (QList<PreferenceValue *> prefs)
 	PreferenceValue *pref;
 	QListIterator<PreferenceValue *> prefsIter (prefs);
 	QWidget *tab;
+	int margin = 2;
 	
 	tabLook->setLayout (new QVBoxLayout ());
 	tabFeel->setLayout (new QVBoxLayout ());
 	tabCore->setLayout (new QVBoxLayout ());
 	tabShortcuts->setLayout (new QVBoxLayout ());
+
+	tabLook->layout ()->setMargin (margin);
+	tabFeel->layout ()->setMargin (margin);
+	tabCore->layout ()->setMargin (margin);
+	tabShortcuts->layout ()->setMargin (margin);
 
 	QWidget *tabsaLook = createScrollableWidget (tabLook);
 	QWidget *tabsaFeel = createScrollableWidget (tabFeel);
