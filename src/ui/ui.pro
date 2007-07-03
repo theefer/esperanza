@@ -3,6 +3,26 @@ BINDIR = /usr/bin
 QT += network xml
 include (../../config.pri)
 
+DIALOGS += lastfm medialibdialog \
+	   streamingdialog firsttimewizard \
+	   preferencesdialog aboutdialog
+
+!win32 {
+	for(a, DIALOGS):COMPONENTS+=../dialogs/$$a/lib$${a}.a
+}
+
+win32 {
+	for(a, DIALOGS):COMPONENTS+=../dialogs/$$a/release/lib$${a}.a
+}
+
+COMPONENTS+=../lib/liblib.a ../../data/libdata.a
+
+LIBS += $$COMPONENTS \
+	../tools/grepshortcutkeydlg/libgrepshortcutkeydlg.a \
+	../tools/globalshortcut/libglobalshortcut.a
+
+PRE_TARGETDEPS=$$COMPONENTS
+
 # Target
 TARGET = esperanza
 win32 {
@@ -21,6 +41,7 @@ macx {
 	SOURCES += mac_growl.mm
 	HEADERS += mac_growl.h
 }
+
 
 SOURCES += 	fancyplaylistview.cpp \
 			minimode.cpp \
