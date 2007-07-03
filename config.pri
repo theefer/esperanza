@@ -1,5 +1,5 @@
 DEPENDPATH += $PWD/src/ui $PWD/src/lib
-INCLUDEPATH += $$PWD/src/ui $$PWD/src/lib $$PWD/src/widgets $$PWD/src/dialogs $$PWD/src/tools
+INCLUDEPATH += $$PWD/src/ui $$PWD/src/lib $$PWD/src/dialogs $$PWD/src/tools
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #QT += network xml
 
@@ -19,7 +19,7 @@ macx {
 			   ../dialogs/preferencesdialog/libpreferencesdialog.a \
 			   ../dialogs/aboutdialog/libaboutdialog.a
 
-	LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a ../widgets/libwidgets.a \
+	LIBS += $$DIALOGS ../lib/liblib.a ../../data/libdata.a \
 			../tools/grepshortcutkeydlg/libgrepshortcutkeydlg.a \
 			../tools/globalshortcut/libglobalshortcut.a
 }
@@ -33,7 +33,6 @@ win32 {
 			   ../dialogs/aboutdialog/release/libaboutdialog.a
 
 	LIBS += $$DIALOGS ../lib/release/liblib.a ../../data/release/libdata.a \
-			../widgets/release/libwidgets.a \
 			../tools/grepshortcutkeydlg/release/libgrepshortcutkeydlg.a \
 			../tools/globalshortcut/release/libglobalshortcut.a
 
