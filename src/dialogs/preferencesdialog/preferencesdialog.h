@@ -31,6 +31,7 @@ class PreferencesDialog : public QDialog, public Ui::prefDialog
 
 	public slots:
 		void clickedBtnBox(QAbstractButton*);
+		void currentTabChanged (int index);
 
 	protected:
 		void pressedOk ();

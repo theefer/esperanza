@@ -43,11 +43,22 @@
 PreferencesDialog::PreferencesDialog (QWidget *parent, XClient *client_)
 : QDialog (parent)
 {
+	QSettings s;
+	int tab = s.value ("preferencesdialog/lastusedtab", 0).toInt ();
+
 	setupUi (this);
+
+	if (tab < 0 || tab > tabWidget->count () - 1)
+	{
+		tab = 0;
+		s.setValue ("preferencesdialog/lastusedtab", 0);
+	}
+
 	client = client_;
 	QList<PreferenceValue *> prefs = PreferenceManager::instance ()->values ();
 	initTabs (prefs);
-	tabWidget->setCurrentIndex (0);
+	tabWidget->setCurrentIndex (tab);
+	connect(tabWidget, SIGNAL (currentChanged (int)), this, SLOT (currentTabChanged (int)));
 }
 
 void PreferencesDialog::clickedBtnBox (QAbstractButton* btn)
@@ -224,4 +235,9 @@ void PreferencesDialog::pressedApply ()
 void PreferencesDialog::pressedCancel ()
 {
 	close ();
+}
+
+void PreferencesDialog::currentTabChanged (int index)
+{
+	QSettings ().setValue ("preferencesdialog/lastusedtab", index);
 }
