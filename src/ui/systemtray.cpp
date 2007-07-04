@@ -158,17 +158,6 @@ SystemTray::systray_trigger (QSystemTrayIcon::ActivationReason reason)
 	QSettings s;
 
 	if (reason == s.value ("ui/activateTray").toInt () && reason != QSystemTrayIcon::Unknown) 
-	{
-		if (s.value ("ui/minimode", false).toBool ()) {
-			pw->toggle_mini ();
-		} else {
-			if (pw->isHidden() || (!pw->isActiveWindow () && !s.value("ui/alwaysontop").toBool ())) {
-				pw->hide();
-				pw->show();
-			}
-			else
-				pw->hide();
-		}
-	}
+		pw->toggle_hide ();
 #endif
 }

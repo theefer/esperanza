@@ -187,6 +187,7 @@ MiniMode::min_pressed ()
 	QSettings s;
 	s.setValue ("ui/minimode", false);
 	m_parent->show ();
+	m_parent->activateWindow ();
 	hide ();
 }
 
@@ -203,5 +204,8 @@ MiniMode::setWindowFlags ()
 	QFrame::setWindowFlags (f);
 	
 	if(s.value("ui/minimode").toBool ())
+	{
 		show();
+		activateWindow ();
+	}
 }

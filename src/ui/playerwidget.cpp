@@ -252,8 +252,8 @@ PlayerWidget::toggle_mini () const
 		) {
 		m_mini->hide ();
 	} else {
-		m_mini->hide ();
 		m_mini->show ();
+		m_mini->activateWindow ();
 	}
 }
 
@@ -273,6 +273,7 @@ PlayerWidget::min_pressed ()
 	QSettings s;
 	s.setValue ("ui/minimode", true);
 	m_mini->show ();
+	m_mini->activateWindow ();
 	hide ();
 }
 
@@ -534,7 +535,10 @@ PlayerWidget::setWindowFlags()
 	QMainWindow::setWindowFlags (f);
 
 	if(!s.value("ui/minimode").toBool ())
-		show();
+	{
+		show ();
+		activateWindow ();
+	}
 }
 
 void
@@ -558,8 +562,8 @@ PlayerWidget::toggle_hide ()
 		) {
 			hide ();
 		} else {
-			hide ();
 			show ();
+			activateWindow ();
 		}
 	}
 }
