@@ -152,7 +152,7 @@ ProgressFrame::paintEvent( QPaintEvent * event )
     QColor cactivebottom = cactivemiddle.dark ();
 
 	QColor ctop, cmiddle, cbottom;
-	if (s.value ("ui/titlelighter").toBool ()) {
+	if (!s.value ("ui/titlelighter").toBool ()) {
 		ctop = cactivetop.dark ();
 		cmiddle = cactivemiddle.dark ();
 		cbottom = cactivebottom.dark ();
