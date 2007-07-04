@@ -208,6 +208,7 @@ PlayerWidget::process_dialog_plugin ()
 			continue;
 			
 		m_plugin_map[i] = dialog;
+		dialog->init (this, m_client);
 		
 		QAction *action;
 		switch (dialog->item ()) {
@@ -225,9 +226,7 @@ PlayerWidget::process_dialog_plugin ()
 				break;
 		}
 		action->setData (QVariant (i));
-//		QString val ("shortcuts/dialogs/%1").arg (dialog->label ());
-//		m_sm->connect (this, val, dialog->shortcut (), SLOT ())
-		
+		m_sm->connect (this, QString("shortcuts/dialog_%1").arg (dialog->label ()), dialog->shortcut (), SLOT (showit ()), false, dialog);
 		i++;
 	}
 }
@@ -237,8 +236,7 @@ PlayerWidget::open_dialog ()
 {
 	QAction *a = qobject_cast<QAction *> (sender ());
 	EsperanzaMain::EsperanzaDialog *dialog = m_plugin_map[a->data ().toInt ()];
-	QDialog *d = dialog->create (this, m_client);
-	d->show ();
+	dialog->showit ();
 }
 
 void

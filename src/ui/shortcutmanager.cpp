@@ -13,7 +13,7 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  */
-#include <QShortcut>
+#include <QAction>
 #include <QSettings>
 #include <QWidget>
 
@@ -29,13 +29,16 @@ ShortcutManager* ShortcutManager::instance ()
 	return ShortcutManager::instance_;
 }
 
-bool ShortcutManager::connect(QWidget* parent, QString name, QString defKey, const char* slot, bool global /*= false*/)
+bool ShortcutManager::connect(QObject* parent, QString name, QString defKey, const char* slot, bool global /*= false*/, QObject *receiver /*= NULL*/)
 {
 	QSettings s;
 	QString	key;
 	QString tmp;
 	int multiKeysIndex;
 	bool ret = true;
+
+	if(!receiver)
+		receiver = parent;
 
 	key = s.value (name, QVariant (defKey)).toString ();
 	if(key == defKey)
@@ -49,7 +52,7 @@ bool ShortcutManager::connect(QWidget* parent, QString name, QString defKey, con
 				break;
 
 			// use the configured key
-			ret = connect(key, parent, slot, global);
+			ret = connect(key, parent, slot, global, receiver);
 
 			if(!ret)
 				break;
@@ -59,28 +62,27 @@ bool ShortcutManager::connect(QWidget* parent, QString name, QString defKey, con
 		if(ret && multiKeysIndex == 1)
 		{
 			s.setValue (name, QVariant (defKey));
-			ret = connect(defKey, parent, slot, global);
+			ret = connect(defKey, parent, slot, global, receiver);
 		}
 	}
 	else
-		ret = connect(key, parent, slot, global);
+		ret = connect(key, parent, slot, global, receiver);
 	return ret;
 }
 
-bool ShortcutManager::connect(QKeySequence key, QWidget* parent, const char* slot, bool global)
+bool ShortcutManager::connect(QKeySequence key, QObject* parent, const char* slot, bool global, QObject *receiver)
 {
-	QShortcut *shortcut;
-	bool ret = false;
+	QAction *a;
 
 	if(!global) {
-		shortcut = new QShortcut (key, parent);
-		ret = QObject::connect ( shortcut, SIGNAL (activated ()), parent, slot);
+		a = new QAction (parent);
+		a->setShortcut (key);
+		if (parent->isWidgetType ())
+			((QWidget*) parent)->addAction (a);
+		receiver->connect ( a, SIGNAL (activated ()), slot);
 	}
-	else {
-		// no return from connect here. but it will work!! :)
-		ret = true;
-		GlobalShortcutManager::instance()->connect(key, parent, slot);
-	}
+	else
+		GlobalShortcutManager::instance()->connect(key, receiver, slot);
 
-	return ret;
+	return true;
 }

@@ -24,10 +24,10 @@ class ShortcutManager : public QObject
 	Q_OBJECT
 	public:
 		static ShortcutManager* instance ();
-		bool connect(QWidget* parent, QString name, QString defKey, const char* slot, bool global = false);
+		bool connect(QObject* parent, QString name, QString defKey, const char* slot, bool global = false, QObject *receiver = NULL);
 
 	protected:
-		bool connect(QKeySequence key, QWidget* parent, const char* slot, bool global);
+		bool connect(QKeySequence key, QObject* parent, const char* slot, bool global, QObject *receiver);
 		ShortcutManager () {};
 		~ShortcutManager () {};
 		static ShortcutManager* instance_;

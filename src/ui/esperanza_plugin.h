@@ -20,6 +20,7 @@
 #include "xclient.h"
 
 #include <QWidget>
+#include <QDialog>
 
 namespace EsperanzaMain {
 	enum DialogItem {
@@ -33,12 +34,27 @@ namespace EsperanzaMain {
 	{
 		Q_OBJECT
 		public:
+			EsperanzaDialog () { init (); }
 			virtual ~EsperanzaDialog () { };
+			void init (QWidget *parent_ = NULL, XClient *client_ = NULL) { parent = parent_; client = client_; };
 			virtual QString label () const = 0;
 			virtual EsperanzaMain::DialogItem item () const = 0;
 			virtual QString shortcut () const = 0;
 			
 			virtual QDialog *create (QWidget *, XClient *) const = 0;
+
+		public slots:
+			void showit () {
+				QDialog *d;
+				if(!parent || !client)
+					return;
+				d = create (parent, client);
+				if (d)
+					d->show ();
+			};
+		private:
+			QWidget *parent;
+			XClient *client;
 	};
 }
 
