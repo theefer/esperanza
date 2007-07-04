@@ -89,3 +89,4 @@ PaneBrowserView::item_filter (const Xmms::Coll::Equals &coll)
     
     m_model->set_collection (coll, sl, sl, sl);
 }
+

@@ -18,3 +18,4 @@
 #include <QtPlugin>
 
 Q_EXPORT_PLUGIN2(lastfm, LastFm::Plugin)
+

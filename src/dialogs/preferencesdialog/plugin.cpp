@@ -18,3 +18,4 @@
 #include <QtPlugin>
 
 Q_EXPORT_PLUGIN2(preferencesdialog, Preferences::Plugin)
+

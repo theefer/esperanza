@@ -65,6 +65,7 @@ LastFmParser::parse_xml (const QByteArray &b, int id)
 		m_cache[m_cache_map[id]] = l;
 		emit gotData (m_cache_map[id]);
 	}
+	return true;
 }
 
 int
