@@ -103,7 +103,7 @@ PreferenceManager::PreferenceManager () : QObject (NULL)
 	registerVal ("ui/titlelighter", tr ("Paint the progress bar in a lighter color"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Look);
 	registerVal ("ui/volumepopup", tr ("Show the volume slider in a popup"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
 	registerVal ("ui/volumeinteractive", tr ("Change volume interactively (could cause problems)"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
-	registerVal ("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Feel);
+	registerVal ("ui/alwaysontop", tr ("Show the playlist (and minimode window) always on top."), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
 	registerVal ("lastfm/showoink", tr ("Show OiNK search in Last.FM view"), PreferenceValue::Bool, false, QVariant (), PreferenceValue::Feel);
 	registerVal ("medialib/completion", tr ("Load artists and albums for completion in Medialib window"),
 			PreferenceValue::Bool, true, QVariant (), PreferenceValue::Core);
