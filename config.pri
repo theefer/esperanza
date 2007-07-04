@@ -10,11 +10,11 @@ macx {
 }
 
 !win32 {
-	PKGCONFIG += xmms2-client xmms2-client-cpp
-	CONFIG += link_pkgconfig debug
+	include (conf.pri)
 }
 
 win32 {
+	CONFIG += release
 	PREFIX += "SET THIS TO YOUR XMMS2 INSTALL DIR"
 	INCLUDEPATH += "$$PREFIX/include/xmms2"
 	LIBPATH += "$$PREFIX"

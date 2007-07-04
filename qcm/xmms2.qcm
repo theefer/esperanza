@@ -1,0 +1,32 @@
+/*
+-----BEGIN QCMOD-----
+name: Xmms2 Client C++ Bindings
+-----END QCMOD-----
+*/
+
+//----------------------------------------------------------------------------
+// qc_xmms2
+//----------------------------------------------------------------------------
+class qc_xmms2 : public ConfObj
+{
+public:
+	qc_xmms2(Conf *c) : ConfObj(c) {}
+	QString name() const { return "Xmms2 Client C++ Bindings"; }
+	QString shortname() const { return "xmms2"; }
+	QString checkString() const { return QString(); }
+
+	bool exec()
+	{
+		QStringList incs;
+		QString version, libs, other;
+		if(!conf->findPkgConfig("xmms2-client-cpp", VersionMin, "0.2", &version, &incs, &libs, &other))
+			return false;
+
+		for(int n = 0; n < incs.count(); ++n)
+			conf->addIncludePath(incs[n]);
+		if(!libs.isEmpty())
+			conf->addLib(libs);
+
+		return true;
+	}
+};
