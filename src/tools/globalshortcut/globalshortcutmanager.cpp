@@ -1,6 +1,6 @@
 /*
  * globalshortcutmanager.cpp - Class managing global shortcuts
- * Copyright (C) 2006  Maciej Niedzielski
+ * Copyright (C) 2006 - 2007  Maciej Niedzielski
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

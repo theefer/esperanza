@@ -1,7 +1,7 @@
 /** 
  *  This file is a part of Esperanza, an XMMS2 Client.
  *
- *  Copyright (C) 2005-2006 Cestonaro Thilo <c.thilo@gmx.de>
+ *  Copyright (C) 2005-2007 Cestonaro Thilo <c.thilo@gmx.de>
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License

@@ -1,6 +1,6 @@
 /*
  * globalshortcutmanager_win.cpp - Windows implementation of global shortcuts
- * Copyright (C) 2003-2006  Justin Karneges, Maciej Niedzielski
+ * Copyright (C) 2003-2007  Justin Karneges, Maciej Niedzielski
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
