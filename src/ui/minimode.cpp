@@ -89,7 +89,6 @@ MiniMode::MiniMode (QWidget *parent, XClient *client) : QFrame (NULL)
 	g->addWidget (m_progress, 0, 6);
 	g->addWidget (minmax, 0, 7);
 
-	g->setColumnStretch (6, 1);
 	g->setMargin (1);
 
 	connect (m_client->settings (), SIGNAL (settingsChanged ()),

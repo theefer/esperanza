@@ -39,32 +39,30 @@
 #include "progressframe.h"
 #include <QPainter>
 
-
 ProgressFrame::ProgressFrame (QWidget *parent, XClient *client, bool seek) :
     QFrame( parent ),
     m_reverse( false )
 {
+	m_client = client;
     m_maxValue = 0;
-    m_value = 0;
+    m_curValue = 0;
 	m_seek = seek;
 
     setMinimumHeight( 22 );
     setMinimumWidth( 22 );
     setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+	setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
     setLineWidth( 1 );
-
+	
+	connect (client->cache (), SIGNAL (playtime (uint32_t)), this, SLOT (playtime (uint32_t)));
+	connect (client->cache (), SIGNAL (entryChanged (uint32_t)), this, SLOT (entry_changed (uint32_t)));
 	connect (client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *)));
-
-	m_client = client;
 }
 
 void
 ProgressFrame::got_connection (XClient *client)
 {
 	m_client = client;
-
-	client->playback.signalPlaytime () (Xmms::bind (&ProgressFrame::handle_playtime, this));
-	client->playback.getPlaytime () (Xmms::bind (&ProgressFrame::handle_playtime, this));
 
 	client->playback.getStatus () (Xmms::bind (&ProgressFrame::handle_status, this));
 	client->playback.broadcastStatus () (Xmms::bind (&ProgressFrame::handle_status, this));
@@ -109,13 +107,6 @@ ProgressFrame::new_info (const QHash<QString,QVariant> &h)
 		setMaximum (dur / 1000);
 		setValue (0);
 	}
-}
-
-bool
-ProgressFrame::handle_playtime (const unsigned int &tme)
-{
-	setValue (tme / 1000);
-	return true;
 }
 
 bool
@@ -178,11 +169,10 @@ ProgressFrame::paintEvent( QPaintEvent * event )
     int w = 0;
     if ( m_maxValue > 0 )
 	{
-		w = (int)( ( (float)m_value / (float)m_maxValue ) * ( width() - 2 ) );
+		w = (int)( ( (float)currentValue () / (float)m_maxValue ) * ( width() - 2 ) );
 		if ( w > width() - 2 )
 			w = width() - 2;
 	}
-
 	// active progressbar
 	QRect r( 1, 2, w, height() - 3 );
 	painter.fillRect( r, gradientActive );
@@ -197,7 +187,7 @@ ProgressFrame::paintEvent( QPaintEvent * event )
     QString timeString;
     if ( maximum() != 0 )
     {
-        int time = m_reverse ? maximum() - value() : value();
+        int time = m_reverse ? maximum() - currentValue() : currentValue();
 
 		QString hrs  = QString::number( ( time / 3600 ) > 0 ? ( time / 3600 ) : 0 );
 		QString mins = QString::number( ( ( time % 3600 ) / 60 ) > 0 ? ( ( time % 3600 ) / 60 ) : 0 );
@@ -245,9 +235,14 @@ ProgressFrame::mouseMoveEvent (QMouseEvent *event)
 void
 ProgressFrame::setValue( int value )
 {
-	if (m_value != value) {
-		m_value = value;
+	if (m_curValue != value) {
+		m_curValue = value;
 		update();
 	}
 }
 
+void
+ProgressFrame::playtime( uint32_t tme)
+{
+	setValue (tme / 1000);
+}

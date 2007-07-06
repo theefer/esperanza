@@ -37,6 +37,9 @@ void
 XClientCache::got_connection (XClient *client)
 {
 	m_client = client;
+	client->playback.signalPlaytime () (Xmms::bind (&XClientCache::handle_playtime, this));
+	client->playback.getPlaytime () (Xmms::bind (&XClientCache::handle_playtime, this));
+
 	client->medialib.broadcastEntryChanged () (Xmms::bind (&XClientCache::handle_mlib_entry_changed, this));
 }
 
@@ -155,3 +158,10 @@ XClientCache::handle_mlib_entry_changed (const uint32_t &id)
 	return true;
 }
 
+
+bool
+XClientCache::handle_playtime (const unsigned int &tme)
+{
+	emit playtime(tme);
+	return true;
+}

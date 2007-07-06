@@ -71,7 +71,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	m_pf = new ProgressFrame (this, client);
 	pflay->addWidget (m_pf);
-	pflay->setStretchFactor (m_pf, 1);
 
 	PlayerButton *min = new PlayerButton (dummy, ":images/minmax.png");
 	connect (min, SIGNAL (clicked (QMouseEvent *)),

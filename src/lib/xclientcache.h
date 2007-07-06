@@ -55,6 +55,7 @@ class XClientCache : public QObject
 	signals:
 		void entryChanged (uint32_t);
         void entryRemoved (uint32_t);
+		void playtime (uint32_t);
 
 	public slots:
 		void got_connection (XClient *);
@@ -65,6 +66,8 @@ class XClientCache : public QObject
         
 		bool handle_mlib_entry_changed (const uint32_t &id);
 		bool handle_bindata (const Xmms::bin &, const QString &);
+
+		bool handle_playtime (const unsigned int &tme);
 
 		QHash< uint32_t, QHash<QString, QVariant> > m_info;
 

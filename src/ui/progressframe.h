@@ -54,7 +54,7 @@ class ProgressFrame : public QFrame
 
         int maximum() { return m_maxValue; }
         void setMaximum( int value ) { m_maxValue = value; }
-        int value() { return m_value; }
+        int currentValue() { return m_curValue; }
 
         QString text() { return m_text; }
         void setText( const QString& text );
@@ -73,21 +73,22 @@ class ProgressFrame : public QFrame
 
     public slots:
         void setValue( int value );
+        void playtime( uint32_t tme);
 		void got_connection (XClient *);
 
+	private slots:
+		void entry_changed (uint32_t id);
     private:
 		bool handle_current_id (const unsigned int &);
-		bool handle_playtime (const unsigned int &);
 		bool handle_status (const Xmms::Playback::Status &);
 		void new_info (const QHash<QString, QVariant>&);
-		void entry_changed (uint32_t id);
 	
         void paintEvent( QPaintEvent* event );
 
         QString m_text;
         
         int m_maxValue;
-        int m_value;
+        int m_curValue;
 
         int m_itemType;
         QHash<QString, QString> m_itemData;
