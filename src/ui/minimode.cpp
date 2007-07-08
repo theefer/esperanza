@@ -197,6 +197,9 @@ MiniMode::setWindowFlags ()
 	Qt::WindowFlags f;
 	f = Qt::FramelessWindowHint;
 
+	if(s.value ("ui/toolwindow").toBool () && s.value ("core/systray").toBool ())
+		f |= Qt::Tool;
+
 	if(s.value("ui/alwaysontop").toBool ())
 		 f |= Qt::WindowStaysOnTopHint;
 
