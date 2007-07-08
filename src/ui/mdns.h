@@ -25,7 +25,17 @@
 #include <QObject>
 
 #ifdef HAVE_DNSSD
-#include <dns_sd.h>
+#	if defined(_WIN32)
+		typedef unsigned short UINT16;
+		typedef signed short INT16;
+		typedef unsigned char UINT8;
+		typedef unsigned int UINT32;
+		typedef unsigned __int64 UINT64;
+		typedef signed char INT8;
+		typedef signed int INT32;
+		typedef signed __int64 INT64;
+#	endif
+#	include <dns_sd.h>
 #endif
 
 class MDNSServer

@@ -20,7 +20,7 @@
 #ifdef HAVE_DNSSD
 #include <dns_sd.h>
 
-static void
+static void DNSSD_API
 qr_reply (DNSServiceRef sdRef,
 		  DNSServiceFlags flags,
 		  uint32_t ifIndex,
@@ -53,7 +53,7 @@ qr_reply (DNSServiceRef sdRef,
 	mq->destroy_sock (sdRef);
 }
 
-static void
+static void DNSSD_API
 resolve_reply (DNSServiceRef client,
 			   DNSServiceFlags flags,
 			   uint32_t ifIndex,
@@ -97,7 +97,7 @@ resolve_reply (DNSServiceRef client,
 	mq->destroy_sock (client);
 }
 
-static void 
+static void DNSSD_API
 browse_reply (DNSServiceRef client,
 			  DNSServiceFlags flags,
 			  uint32_t ifIndex,
@@ -118,7 +118,7 @@ browse_reply (DNSServiceRef client,
 
 		err = DNSServiceResolve (&c2, 0, kDNSServiceInterfaceIndexAny,
 								 replyName, mq->service ().toAscii (), "local",
-								 resolve_reply, mq);
+								 (DNSServiceResolveReply)resolve_reply, mq);
 
 		if (err != kDNSServiceErr_NoError) {
 			delete server;
