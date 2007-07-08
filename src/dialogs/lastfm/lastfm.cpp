@@ -30,6 +30,10 @@
 #include <QCursor>
 #include <QDesktopServices>
 
+#define LASTFM_SEARCH_URL "http://www.last.fm/music/?m=artists&q=%1"
+#define OINK_SEARCH_URL   "http://oink.cd/browse.php?search=%1"
+#define MUSICBRAINZ_URL   "http://musicbrainz.org/artist/%1.html"
+
 LastFmDialog::LastFmDialog (QWidget *parent, XClient *client) : QDialog (parent)
 {
 	QGridLayout *grid = new QGridLayout (this);
@@ -166,7 +170,17 @@ LastFmDialog::set_top_albums ()
 void
 LastFmDialog::link_context (const QString &l)
 {
-	LastFmArtist a = m_artists[l];
+	LastFmArtist a;
+	if (l == QString (LASTFM_SEARCH_URL).arg (m_current_artist)) {
+		a.setNextAttribName("name");
+		a.setNextAttrib(m_current_artist);
+		
+		a.setNextAttribName("url");
+		a.setNextAttrib(l);		
+	} else {
+		a = m_artists[l];
+	}
+	
 	QSettings s;
 
 	QAction *ac;
@@ -195,9 +209,9 @@ LastFmDialog::link_context (const QString &l)
 	} else if (ac->data ().toInt () == 3) {
 		QDesktopServices::openUrl (QUrl (a.prop ("url")));
 	} else if (ac->data ().toInt () == 4) {
-		QDesktopServices::openUrl (QUrl (QString ("http://musicbrainz.org/artist/%1.html").arg (a.prop ("mbid"))));
+		QDesktopServices::openUrl (QUrl (QString (MUSICBRAINZ_URL).arg (a.prop ("mbid"))));
 	} else if (ac->data ().toInt () == 5) {
-		QDesktopServices::openUrl (QUrl (QString ("http://oink.me.uk/browse.php?incldead=1&search=%1&x=0&y=0").arg (a.name ())));
+		QDesktopServices::openUrl (QUrl (QString (OINK_SEARCH_URL).arg (a.name ())));
 	}
 
 
@@ -224,8 +238,6 @@ LastFmDialog::update_artists (const QString &artist)
 	QList<LastFmArtist> l = m_parser->similar_artist (artist);
 
 	m_artists.clear ();
-	m_has_mlib.clear ();
-	m_has_mlib.append (artist);
 
 	for (int i = 0; i < 10; i ++) {
 		if (i >= l.count ()) {
@@ -233,9 +245,9 @@ LastFmDialog::update_artists (const QString &artist)
 			m_values[i]->setValue (0);
 		} else {
 			LastFmArtist a = l.at (i);
-			m_labels[i]->setText (QString ("<a href='%1'>%1</a>").arg (a.name ()));
+			m_labels[i]->setText (QString ("<a href='%1'>%2</a>").arg (a.prop ("url"), a.name ()));
 			m_values[i]->setValue ((uint32_t)a.match ());
-			m_artists[a.name ()] = a;
+			m_artists[a.prop ("url")] = a;
 
 			/* When collections support it we want to use some aggregation here instead */
             Xmms::Coll::Universe univ;
@@ -257,13 +269,16 @@ LastFmDialog::num_reply (Xmms::List<unsigned int> const &list, const QString &ar
 	for (list.first (); list.isValid (); ++list) {
 		num ++;
 	}
+	
+	if (num == 0) {
+		return false;
+	}
 
-	QString s = QString ("<a href='%1'>%1</a>").arg (artist);
+	QString s = QString ("'>%1</a>").arg (artist);
 
 	for (int i = 0; i < m_labels.count (); i ++) {
-		if (m_labels.at (i)->text () == s) {
-			m_labels[i]->setText ("<b>" + s + "</b>");
-			m_has_mlib.append (artist);
+		if (m_labels.at(i)->text().endsWith(s)) {
+			m_labels[i]->setText ("<b>" + m_labels.at(i)->text() + QString(" (%1)</b>").arg(num));			
 		}
 	}
 	return true;
@@ -303,6 +318,6 @@ LastFmDialog::new_id (uint32_t id)
 		m_pl->setText (tr ("Loading data"));
 	}
 
-	m_artistl->setText (QString ("<a href='%1'>%1</a>").arg (minfo["artist"].toString ()));
+	m_artistl->setText (QString(QString ("<a href='") + QString(LASTFM_SEARCH_URL) + QString("'>%1</a>")).arg (minfo["artist"].toString ()));
 }
 

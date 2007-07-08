@@ -63,7 +63,6 @@ class LastFmDialog : public QDialog
 
         bool num_reply (Xmms::List<unsigned int> const &list, const QString &artist);
 
-		QStringList m_has_mlib;
 		QString m_current_artist;
 
 		uint32_t m_current;
