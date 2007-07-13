@@ -79,7 +79,7 @@ bool ShortcutManager::connect(QKeySequence key, QObject* parent, const char* slo
 		a->setShortcut (key);
 		if (parent->isWidgetType ())
 			((QWidget*) parent)->addAction (a);
-		receiver->connect ( a, SIGNAL (activated ()), slot);
+		receiver->connect ( a, SIGNAL (triggered ()), slot);
 	}
 	else
 		GlobalShortcutManager::instance()->connect(key, receiver, slot);
