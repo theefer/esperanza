@@ -56,6 +56,7 @@ class PlayerWidget : public QMainWindow
 		};
 
 		void setWindowFlags ();
+		uint32_t currentID () { return m_current_id; };
 
 	public slots:
 		void play_pressed ();
