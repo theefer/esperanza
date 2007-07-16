@@ -18,7 +18,7 @@
 
 #include <QSystemTrayIcon>
 #include <QSettings>
-#include <QMessageBox>
+#include <QMovie>
 
 #include "server.h"
 #include "xclient.h"
@@ -34,8 +34,9 @@ ServerPage::ServerPage(FTWDialog *parent_)
 {
 	Ui::server::setupUi(this->Content);
     connect(Ui::server::pbTry, SIGNAL(clicked()), SLOT(tryit()));
-	connect(Ui::server::serverConPath, SIGNAL(textEdited(QString)), SLOT(textEdited(QString)));
+	connect(Ui::server::serverConPath, SIGNAL(textChanged(QString)), SLOT(textChanged(QString)));
 	Ui::server::conStatus->setText(tr(NOTCONNECTED));
+	Ui::DefaultPage::pbNext->setDisabled(true);
 	parent = parent_;
 }
 
@@ -54,16 +55,15 @@ void ServerPage::saveSettings()
 	if(sTmp.isEmpty())
 		sTmp = "local";
 		
-	qDebug(qPrintable(QString("Trying Connection to: %1").arg(sTmp)));
-
 	m[sDefName] = QVariant(sTmp);
 	s.setValue ("serverbrowser/default", sDefName);
 	s.setValue ("serverbrowser/list", m);
 }
 
-void ServerPage::textEdited(QString s)
+void ServerPage::textChanged(QString s)
 {
 	Ui::server::conStatus->setText(tr(NOTCONNECTED));
+	Ui::DefaultPage::pbNext->setDisabled(true);
 }
 
 void ServerPage::nextPage()
@@ -76,7 +76,11 @@ void ServerPage::nextPage()
 void ServerPage::tryit()
 {
 	QString sTmp = serverConPath->text();
+	bool b = false;
 	char *p = NULL;
+
+	Ui::server::conStatus->setMovie (new QMovie (":images/progress.mng", NULL, Ui::DefaultPage::pbNext));
+	Ui::server::conStatus->movie ()->start ();	
 
 	if (sTmp == "local" || sTmp.isEmpty()) {
 		p = NULL;
@@ -84,14 +88,19 @@ void ServerPage::tryit()
 		p = sTmp.toAscii().data();
 	}
 
-	if(parent->manager()->client()->connect(p, false, parent))
+	b = parent->manager()->client()->connect(p, false, parent);
+	Ui::server::conStatus->movie ()->stop ();	
+
+	if (b)
 	{
 		Ui::server::conStatus->setText(tr(CONNECTED));
+		Ui::DefaultPage::pbNext->setDisabled(false);
 		saveSettings();
 	}
 	else
 	{
 		Ui::server::conStatus->setText(tr(NOTCONNECTED));
+		Ui::DefaultPage::pbNext->setDisabled(true);
 	}
 }
 

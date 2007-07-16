@@ -29,7 +29,7 @@ public:
 	void saveSettings();
 
 public slots:
-	void textEdited(QString);
+	void textChanged(QString);
 	void showEvent(QShowEvent *ev); 
 	void tryit();
 	void nextPage();
