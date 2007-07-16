@@ -46,6 +46,7 @@ class XClient : public QObject {
 	public:
 		XClient (QObject *, const std::string &);
 
+		void disconnect ();
 		bool connect (const char *path = NULL, const bool &sync = false, QWidget* parent = NULL);
 		static void propDictToQHash (const std::string &key,
 									 const Xmms::Dict::Variant &value,
@@ -97,7 +98,6 @@ class XClient : public QObject {
         bool m_isconnected;
 
 		Xmms::Client m_sync;
-
 };
 
 

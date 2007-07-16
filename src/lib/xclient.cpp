@@ -74,6 +74,13 @@ XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), 
 	m_name = name;
 }
 
+void XClient::disconnect ()
+{
+	delete m_client;
+	m_client = NULL;
+    m_isconnected = false;
+}
+
 bool
 XClient::connect (const char *ipcpath, const bool &sync, QWidget *parent)
 {

@@ -12,17 +12,14 @@
   <widget class="QLabel" name="label_2" >
    <property name="geometry" >
     <rect>
-     <x>10</x>
-     <y>155</y>
+     <x>20</x>
+     <y>150</y>
      <width>107</width>
-     <height>17</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text" >
     <string>Connection Path:</string>
-   </property>
-   <property name="alignment" >
-    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label" >
@@ -35,7 +32,7 @@
     </rect>
    </property>
    <property name="text" >
-    <string>&lt;b>Server Setting:&lt;/b>&lt;br />&lt;br />Here you should enter the server connection path. This is usually a IP and a Port&lt;br /> or a unix file descriptor. When xmms2d runs on this host, it is ok to let it empty.&lt;br />If this does not work, you could set another connection path later in&lt;br />server browser later after the first time wizard.</string>
+    <string>&lt;b>Server Setting:&lt;/b>&lt;br />&lt;br />Here you should enter the server connection path. This is usually an IP and Port&lt;br /> or a unix file descriptor. When xmms2d runs on this host, it is ok to let it empty&lt;br />and just press 'Test it'.</string>
    </property>
    <property name="textFormat" >
     <enum>Qt::RichText</enum>

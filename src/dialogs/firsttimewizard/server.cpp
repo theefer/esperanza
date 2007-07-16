@@ -36,7 +36,6 @@ ServerPage::ServerPage(FTWDialog *parent_)
     connect(Ui::server::pbTry, SIGNAL(clicked()), SLOT(tryit()));
 	connect(Ui::server::serverConPath, SIGNAL(textChanged(QString)), SLOT(textChanged(QString)));
 	Ui::server::conStatus->setText(tr(NOTCONNECTED));
-	Ui::DefaultPage::pbNext->setDisabled(true);
 	parent = parent_;
 }
 
@@ -60,10 +59,17 @@ void ServerPage::saveSettings()
 	s.setValue ("serverbrowser/list", m);
 }
 
-void ServerPage::textChanged(QString s)
+void ServerPage::textChanged(QString sText)
 {
+	Q_UNUSED (sText);
+	QSettings s;
+
 	Ui::server::conStatus->setText(tr(NOTCONNECTED));
-	Ui::DefaultPage::pbNext->setDisabled(true);
+	parent->manager()->client()->disconnect ();
+
+	s.setValue ("serverbrowser/default", "");
+	s.setValue ("serverbrowser/list", "");
+
 }
 
 void ServerPage::nextPage()
@@ -94,14 +100,11 @@ void ServerPage::tryit()
 	if (b)
 	{
 		Ui::server::conStatus->setText(tr(CONNECTED));
-		Ui::DefaultPage::pbNext->setDisabled(false);
 		saveSettings();
+		return;
 	}
-	else
-	{
-		Ui::server::conStatus->setText(tr(NOTCONNECTED));
-		Ui::DefaultPage::pbNext->setDisabled(true);
-	}
+
+	Ui::server::conStatus->setText(tr(NOTCONNECTED));
 }
 
 void ServerPage::showEvent(QShowEvent *ev)
