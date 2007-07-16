@@ -60,12 +60,12 @@ PlaylistModel::set_playlist (const QString &name)
 {
     if (name == QLatin1String ("_active")) {
         m_isactive = true;
-        m_client->playlist.currentActive () (Xmms::bind (&PlaylistModel::handle_current_pls, this));
+        m_client->playlist ()->currentActive () (Xmms::bind (&PlaylistModel::handle_current_pls, this));
     } else {
         m_isactive = false;
     }
 	m_name = name;
-	m_client->playlist.listEntries (XClient::qToStd (name)) (Xmms::bind (&PlaylistModel::handle_list, this));
+	m_client->playlist ()->listEntries (XClient::qToStd (name)) (Xmms::bind (&PlaylistModel::handle_list, this));
 }
 
 bool
@@ -82,16 +82,16 @@ void
 PlaylistModel::got_connection (XClient *client)
 {
     if (m_isactive) {
-        client->playlist.currentActive () (Xmms::bind (&PlaylistModel::handle_current_pls, this));
+        client->playlist ()->currentActive () (Xmms::bind (&PlaylistModel::handle_current_pls, this));
     }
     
-	client->playlist.listEntries (XClient::qToStd (m_name)) (Xmms::bind (&PlaylistModel::handle_list, this));
-	client->playlist.currentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
+	client->playlist ()->listEntries (XClient::qToStd (m_name)) (Xmms::bind (&PlaylistModel::handle_list, this));
+	client->playlist ()->currentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
-	client->playlist.broadcastChanged () (Xmms::bind (&PlaylistModel::handle_change, this));
-	client->playlist.broadcastCurrentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
+	client->playlist ()->broadcastChanged () (Xmms::bind (&PlaylistModel::handle_change, this));
+	client->playlist ()->broadcastCurrentPos () (Xmms::bind (&PlaylistModel::handle_update_pos, this));
 
-	client->playlist.broadcastLoaded () (Xmms::bind (&PlaylistModel::handle_pls_loaded, this));
+	client->playlist ()->broadcastLoaded () (Xmms::bind (&PlaylistModel::handle_pls_loaded, this));
 
 	m_client = client;
 }
@@ -100,7 +100,7 @@ bool
 PlaylistModel::handle_pls_loaded (const std::string &name)
 {
 	if (m_isactive) {
-		m_client->playlist.listEntries (name)
+		m_client->playlist ()->listEntries (name)
 									   (Xmms::bind (&PlaylistModel::handle_list, this));
         m_name = XClient::stdToQ (name);
 	}
@@ -200,7 +200,7 @@ PlaylistModel::handle_change (const Xmms::Dict &chg)
 		case XMMS_PLAYLIST_CHANGED_SORT:
 		case XMMS_PLAYLIST_CHANGED_CLEAR:
             m_client->cache ()->invalidate_all ();
-			m_client->playlist.listEntries () (Xmms::bind (&PlaylistModel::handle_list, this));
+			m_client->playlist ()->listEntries () (Xmms::bind (&PlaylistModel::handle_list, this));
 			break;
 	}
 
@@ -408,7 +408,7 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 
 		while (l.size ()) {
 			int orow = l.takeAt (0) - mod;
-			m_client->playlist.moveEntry (orow, target) ();
+			m_client->playlist ()->moveEntry (orow, target) ();
 			if (orow < target) {
 				mod ++;
 			} else {
@@ -432,9 +432,9 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 		while (l.size ()) {
 			int id = l.takeAt (0);
 			if (target >= m_plist.size ()) {
-				m_client->playlist.addId (id) ();
+				m_client->playlist ()->addId (id) ();
 			} else {
-				m_client->playlist.insertId (target ++, id) ();
+				m_client->playlist ()->insertId (target ++, id) ();
 			}
 		}
 		return true;
@@ -456,12 +456,12 @@ PlaylistModel::dropMimeData (const QMimeData *data,
 			s.append (fi.absoluteFilePath ().toLocal8Bit ());
 			if (fi.isFile ()) {
 				if (target >= m_plist.size ()) {
-					m_client->playlist.addUrl (s) ();
+					m_client->playlist ()->addUrl (s) ();
 				} else {
-					m_client->playlist.insertUrl (target ++, s) ();
+					m_client->playlist ()->insertUrl (target ++, s) ();
 				}
 			} else if (fi.isDir ()) {
-				m_client->playlist.addRecursive (s) ();
+				m_client->playlist ()->addRecursive (s) ();
 			}
 		}
 

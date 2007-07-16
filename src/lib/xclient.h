@@ -41,8 +41,7 @@ class XSettings : public QObject
 		void settingsChanged ();
 };
 
-class XClient : public QObject, public Xmms::Client
-{
+class XClient : public QObject {
 	Q_OBJECT
 	public:
 		XClient (QObject *, const std::string &);
@@ -80,11 +79,19 @@ class XClient : public QObject, public Xmms::Client
         };
         
         static QDir esperanza_dir ();
+		void setDisconnectCallback (const Xmms::DisconnectCallback::slot_type &slot) { m_client->setDisconnectCallback (slot); }
+		const Xmms::Collection* collection () { if (m_client && m_client->isConnected ()) return &m_client->collection; else return NULL; }
+		const Xmms::Playlist* playlist () { if (m_client && m_client->isConnected ()) return &m_client->playlist; else return NULL; }
+		const Xmms::Playback* playback () { if (m_client && m_client->isConnected ()) return &m_client->playback; else return NULL; }
+		const Xmms::Medialib* medialib () { if (m_client && m_client->isConnected ()) return &m_client->medialib; else return NULL; }
+		const Xmms::Bindata* bindata () { if (m_client && m_client->isConnected ()) return &m_client->bindata; else return NULL; }
 
 	signals:
 		void gotConnection (XClient *);
 
 	private:
+		std::string m_name;
+		Xmms::Client *m_client;
 		XClientCache *m_cache;
 		XSettings *m_settings;
         bool m_isconnected;

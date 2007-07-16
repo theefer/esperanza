@@ -89,7 +89,7 @@ StreamingDialog::add_pressed (QMouseEvent *ev)
 										    tr ("URL:"), QLineEdit::Normal,
 										    "http://", &ok);
 	    if (ok) {
-            m_client->playlist.addUrl (XClient::qToStd (url), "_esperanza_bookmarks") ();
+            m_client->playlist ()->addUrl (XClient::qToStd (url), "_esperanza_bookmarks") ();
 	    }
 	} else if (m_tab->currentIndex () == 2) {
 		StreamingIcecast *ice = dynamic_cast<StreamingIcecast*> (m_tab->currentWidget ());
@@ -198,13 +198,13 @@ void
 StreamingIcecast::add_to_bookmarks ()
 {
 	QModelIndex idx = m_tree->currentIndex ();
-    m_client->playlist.addUrl (XClient::qToStd (idx.data (Qt::UserRole + 1).toString ()), "_esperanza_bookmarks") ();
+    m_client->playlist ()->addUrl (XClient::qToStd (idx.data (Qt::UserRole + 1).toString ()), "_esperanza_bookmarks") ();
 }
 
 void
 StreamingIcecast::dbclicked (const QModelIndex &idx)
 {
-    m_client->playlist.addUrl (XClient::qToStd (idx.data (Qt::UserRole + 1).toString ())) ();
+    m_client->playlist ()->addUrl (XClient::qToStd (idx.data (Qt::UserRole + 1).toString ())) ();
 }
 
 void
@@ -354,7 +354,7 @@ StreamingBookmarks::StreamingBookmarks (QWidget *parent, XClient *client) : QTre
 
     connect (this, SIGNAL (doubleClicked (const QModelIndex &)), this, SLOT (dbclicked (const QModelIndex &)));
 
-    m_client->playlist.list () (Xmms::bind (&StreamingBookmarks::handle_list, this));
+    m_client->playlist ()->list () (Xmms::bind (&StreamingBookmarks::handle_list, this));
 
     m_timer = new QTimer ();
     connect (m_timer, SIGNAL (timeout ()), this, SLOT (update_list ()));
@@ -365,7 +365,7 @@ StreamingBookmarks::update_list ()
 {
     QList<quint32> l = m_model->get_all_id ();
     for (int i = 0; i < l.size (); i ++) {
-        m_client->medialib.rehash (l.value (i));
+        m_client->medialib ()->rehash (l.value (i));
     }
 
     m_timer->start (1000 * 60);
@@ -379,10 +379,10 @@ StreamingBookmarks::keyPressEvent (QKeyEvent *ev)
 	switch (ev->key ()) {
 		case Qt::Key_Backspace:
 		case Qt::Key_Delete:
-            m_client->playlist.removeEntry (pos, "_esperanza_bookmarks") ();
+            m_client->playlist ()->removeEntry (pos, "_esperanza_bookmarks") ();
             break;
         case Qt::Key_Return:
-            m_client->playlist.addId (id) ();
+            m_client->playlist ()->addId (id) ();
             break;
         default:
             ev->ignore ();
@@ -394,7 +394,7 @@ StreamingBookmarks::keyPressEvent (QKeyEvent *ev)
 void
 StreamingBookmarks::dbclicked (const QModelIndex &idx)
 {
-    m_client->playlist.addId (idx.data (PlaylistModel::MedialibIdRole).toUInt ());
+    m_client->playlist ()->addId (idx.data (PlaylistModel::MedialibIdRole).toUInt ());
 }
 
 bool
@@ -409,7 +409,7 @@ StreamingBookmarks::handle_list (const Xmms::List<std::string> &list)
 	}
 
 	if (!r) {
-        m_client->playlist.create ("_esperanza_bookmarks") ();
+        m_client->playlist ()->create ("_esperanza_bookmarks") ();
 	}
 
     m_model = new PlaylistModel (this, m_client, "_esperanza_bookmarks");

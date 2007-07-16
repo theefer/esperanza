@@ -64,11 +64,11 @@ ProgressFrame::got_connection (XClient *client)
 {
 	m_client = client;
 
-	client->playback.getStatus () (Xmms::bind (&ProgressFrame::handle_status, this));
-	client->playback.broadcastStatus () (Xmms::bind (&ProgressFrame::handle_status, this));
+	client->playback ()->getStatus () (Xmms::bind (&ProgressFrame::handle_status, this));
+	client->playback ()->broadcastStatus () (Xmms::bind (&ProgressFrame::handle_status, this));
 
-	client->playback.broadcastCurrentID () (Xmms::bind (&ProgressFrame::handle_current_id, this));
-	client->playback.currentID () (Xmms::bind (&ProgressFrame::handle_current_id, this));
+	client->playback ()->broadcastCurrentID () (Xmms::bind (&ProgressFrame::handle_current_id, this));
+	client->playback ()->currentID () (Xmms::bind (&ProgressFrame::handle_current_id, this));
 }
 
 bool
@@ -218,7 +218,7 @@ ProgressFrame::mousePressEvent (QMouseEvent *event)
 		float pro = (float) m_diffx / (float) width ();
 		uint32_t m = (uint32_t) (pro * m_maxValue * 1000);
 
-		m_client->playback.seekMs (m) ();
+		m_client->playback ()->seekMs (m) ();
 	}
 }
 

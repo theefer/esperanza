@@ -57,11 +57,11 @@ PaneBrowserView::item_dbclicked (const QModelIndex &idx)
     QString val = idx.data(0).toString ();
     if (val == tr ("[ All ]")) {
         Xmms::Coll::Equals eq (*m_parentcoll, "status", "1");
-        m_client->playlist.addCollection (eq, o) ();
+        m_client->playlist ()->addCollection (eq, o) ();
     } else {
         Xmms::Coll::Equals eq (*m_parentcoll, XClient::qToStd (m_view),
                                XClient::qToStd (val));    
-        m_client->playlist.addCollection (eq, o) ();                   
+        m_client->playlist ()->addCollection (eq, o) ();                   
     }
 }
 

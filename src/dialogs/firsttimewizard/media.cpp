@@ -58,7 +58,7 @@ void MediaPage::importFile()
 		for (int i = 0; i < files.count(); i++) {
 			QString s = "file://" + files.at (i);
 			qDebug(qPrintable(QString("trying to import file: '%1'").arg(s)));
-			par->manager()->client()->medialib.addEntry(XClient::qToStd (s)) ();
+			par->manager()->client()->medialib ()->addEntry(XClient::qToStd (s)) ();
 		}
 	} catch (...) {
 		QMessageBox::critical(this, tr("Error occurred"), tr("There was an error while importing the files."));
@@ -75,7 +75,7 @@ void MediaPage::importFolder()
 	if (!dir.isEmpty())
 		try {
 			qDebug(qPrintable(QString("trying to import directory: '%1'").arg(dir)));
-			par->manager()->client()->medialib.pathImport(XClient::qToStd("file://" + dir)) ();
+			par->manager()->client()->medialib ()->pathImport(XClient::qToStd("file://" + dir)) ();
 		} catch (...) {
 			QMessageBox::critical(this, tr("Error occurred"), tr("There was an error while importing the directory."));
 			return;

@@ -65,11 +65,13 @@ XClient::esperanza_dir ()
     return QDir ();
 }
 
-XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), Xmms::Client (name), m_sync (name + "-sync")
+XClient::XClient (QObject *parent, const std::string &name) : QObject (parent), m_sync (name + "-sync")
 {
+	m_client = NULL;
     m_isconnected = false;
 	m_cache = new XClientCache (this, this);
 	m_settings = new XSettings (this);
+	m_name = name;
 }
 
 bool
@@ -80,7 +82,9 @@ XClient::connect (const char *ipcpath, const bool &sync, QWidget *parent)
 try_again:
 
 	try {
-		Xmms::Client::connect (ipcpath);
+		delete m_client;
+		m_client = new Xmms::Client (m_name);
+		m_client->connect (ipcpath);
 	}
 	catch (Xmms::connection_error& e) {
 		if (ipcpath == NULL && !tried_once) {
@@ -100,7 +104,7 @@ try_again:
 		return false;
 	}
 
-	setMainloop (new XmmsQT4 (getConnection ()));
+	m_client->setMainloop (new XmmsQT4 (m_client->getConnection ()));
 
     if (sync) {
 	    try {

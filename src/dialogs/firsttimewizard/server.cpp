@@ -26,11 +26,16 @@
 
 #include "misc.h"
 
+#define NOTCONNECTED "<html><body><span style=\" color:#8b0000;\">not Connected</span></body></html>"
+#define CONNECTED "<html><body><span style=\" color:#008b00;\">Connected</span></body></html>"
+
 ServerPage::ServerPage(FTWDialog *parent_)
 : Page(parent_)
 {
 	Ui::server::setupUi(this->Content);
     connect(Ui::server::pbTry, SIGNAL(clicked()), SLOT(tryit()));
+	connect(Ui::server::serverConPath, SIGNAL(textEdited(QString)), SLOT(textEdited(QString)));
+	Ui::server::conStatus->setText(tr(NOTCONNECTED));
 	parent = parent_;
 }
 
@@ -56,11 +61,14 @@ void ServerPage::saveSettings()
 	s.setValue ("serverbrowser/list", m);
 }
 
+void ServerPage::textEdited(QString s)
+{
+	Ui::server::conStatus->setText(tr(NOTCONNECTED));
+}
+
 void ServerPage::nextPage()
 {
-	if(!parent->manager()->client()->isConnected())
-		tryit();
-
+	tryit();
 	if(parent->manager()->client()->isConnected())
 		Page::nextPage();
 }
@@ -78,8 +86,12 @@ void ServerPage::tryit()
 
 	if(parent->manager()->client()->connect(p, false, parent))
 	{
-		QMessageBox::information(this, tr("Connected"), tr("You successfully connected Xmms2d."));
+		Ui::server::conStatus->setText(tr(CONNECTED));
 		saveSettings();
+	}
+	else
+	{
+		Ui::server::conStatus->setText(tr(NOTCONNECTED));
 	}
 }
 

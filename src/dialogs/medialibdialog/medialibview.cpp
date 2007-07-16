@@ -64,7 +64,7 @@ void
 MedialibView::add_id (const QModelIndex &idx)
 {
 	uint32_t id = idx.data (CollectionModel::MedialibIdRole).toUInt ();
-    m_client->playlist.addId (id) ();
+    m_client->playlist ()->addId (id) ();
 }
 
 void

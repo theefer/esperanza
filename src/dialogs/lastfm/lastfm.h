@@ -65,7 +65,6 @@ class LastFmDialog : public QDialog
 
 		QString m_current_artist;
 
-		uint32_t m_current;
 		uint32_t m_current_type;
 };
 

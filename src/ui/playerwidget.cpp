@@ -337,23 +337,23 @@ void
 PlayerWidget::play_pressed ()
 {
 	if (m_status == Xmms::Playback::PLAYING)
-		m_client->playback.pause () ();
+		m_client->playback ()->pause () ();
 	else
-		m_client->playback.start () ();
+		m_client->playback ()->start () ();
 }
 
 void
 PlayerWidget::fwd_pressed ()
 {
-	m_client->playlist.setNextRel (1) ();
-	m_client->playback.tickle () ();
+	m_client->playlist ()->setNextRel (1) ();
+	m_client->playback ()->tickle () ();
 }
 
 void
 PlayerWidget::back_pressed ()
 {
-	m_client->playlist.setNextRel (-1) ();
-	m_client->playback.tickle () ();
+	m_client->playlist ()->setNextRel (-1) ();
+	m_client->playback ()->tickle () ();
 }
 
 void
@@ -387,7 +387,7 @@ PlayerWidget::snett_pressed (QMouseEvent *ev)
 void
 PlayerWidget::shuffle_pressed ()
 {
-	m_client->playlist.shuffle () ();
+	m_client->playlist ()->shuffle () ();
 }
 
 void
@@ -397,7 +397,7 @@ PlayerWidget::add_url ()
 	QString url = QInputDialog::getText (this, tr ("URL dialog"), tr ("Enter URL:"),
 										 QLineEdit::Normal, "http://", &ok);
 	if (ok && !url.isEmpty ()) {
-		m_client->playlist.addUrl (XClient::qToStd (url)) ();
+		m_client->playlist ()->addUrl (XClient::qToStd (url)) ();
 	}
 }
 
@@ -408,7 +408,7 @@ PlayerWidget::add_remote_file ()
 	QStringList files = fd.getFiles ();
 
 	for (int i = 0; i < files.count(); i++) {
-		m_client->playlist.addUrlEncoded (files.value (i).toStdString ()) ();
+		m_client->playlist ()->addUrlEncoded (files.value (i).toStdString ()) ();
 	}
 
 }
@@ -419,7 +419,7 @@ PlayerWidget::add_local_dir ()
 	FileDialog fd (this, "playlist_add_dir");
 	QString dir = fd.getDirectory ();
 	if (!dir.isNull ())
-		m_client->playlist.addRecursive (XClient::qToStd ("file://" + dir)) ();
+		m_client->playlist ()->addRecursive (XClient::qToStd ("file://" + dir)) ();
 }
 
 void
@@ -432,7 +432,7 @@ PlayerWidget::add_local_file ()
 
 	for (int i = 0; i < files.count(); i++) {
 		QString s = "file://" + files.at (i);
-		m_client->playlist.addUrl (XClient::qToStd (s)) ();
+		m_client->playlist ()->addUrl (XClient::qToStd (s)) ();
 	}
 
 }
@@ -464,20 +464,20 @@ PlayerWidget::remove_selected ()
 
 	qSort (idlist);
 	for (int i = idlist.size () - 1; i > -1; i --) {
-		m_client->playlist.removeEntry (idlist.at (i)) ();
+		m_client->playlist ()->removeEntry (idlist.at (i)) ();
 	}
 }
 
 void
 PlayerWidget::playstop_pressed ()
 {
-	m_client->playback.stop () ();
+	m_client->playback ()->stop () ();
 }
 
 void
 PlayerWidget::remove_all ()
 {
-	m_client->playlist.clear () ();
+	m_client->playlist ()->clear () ();
 }
 
 void
@@ -485,8 +485,8 @@ PlayerWidget::got_connection (XClient *client)
 {
 	m_client = client;
 
-	client->playback.getStatus () (Xmms::bind (&PlayerWidget::handle_status, this));
-	client->playback.broadcastStatus () (Xmms::bind (&PlayerWidget::handle_status, this));
+	client->playback ()->getStatus () (Xmms::bind (&PlayerWidget::handle_status, this));
+	client->playback ()->broadcastStatus () (Xmms::bind (&PlayerWidget::handle_status, this));
 
 	client->setDisconnectCallback (boost::bind (&PlayerWidget::handle_disconnect, this));
 }

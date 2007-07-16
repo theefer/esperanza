@@ -132,11 +132,11 @@ void
 PlaylistView::got_connection (XClient *client)
 {
 	m_client = client;
-	client->playback.broadcastCurrentID () (Xmms::bind (&PlaylistView::handle_update_pos, this));
-	client->playback.currentID () (Xmms::bind (&PlaylistView::handle_update_pos, this));
+	client->playback ()->broadcastCurrentID () (Xmms::bind (&PlaylistView::handle_update_pos, this));
+	client->playback ()->currentID () (Xmms::bind (&PlaylistView::handle_update_pos, this));
 	
-	client->playback.getStatus () (Xmms::bind (&PlaylistView::handle_status, this));
-	client->playback.broadcastStatus () (Xmms::bind (&PlaylistView::handle_status, this));
+	client->playback ()->getStatus () (Xmms::bind (&PlaylistView::handle_status, this));
+	client->playback ()->broadcastStatus () (Xmms::bind (&PlaylistView::handle_status, this));
 }
 
 bool
@@ -150,11 +150,9 @@ bool
 PlaylistView::handle_update_pos (const uint32_t &id)
 {
 	QSettings s;
-	QModelIndex idx = m_model->current_playlist_pos ();
-	if (!idx.isValid ())
-		return true;
 
-	if (s.value ("playlist/jumptocurrent").toBool ())
+	QModelIndex idx = m_model->current_playlist_pos ();
+	if (idx.isValid () && s.value ("playlist/jumptocurrent").toBool ())
 		setCurrentIndex (idx);
 
 	return true;
@@ -198,18 +196,18 @@ PlaylistView::jump_pos (const QModelIndex &i)
 	if (idx.internalId () != -1)
 		row = idx.parent ().row ();
 
-	m_client->playlist.setNext (row) ();
+	m_client->playlist ()->setNext (row) ();
 	/* Note. tickle before checking status is a good
 	 * idea here. It seems to bork on linux platform
 	 * otherwise
 	 */
-	m_client->playback.tickle () ();
+	m_client->playback ()->tickle () ();
 
 	if (m_status != Xmms::Playback::PLAYING) {
-		m_client->playback.start () ();
+		m_client->playback ()->start () ();
 
 		if (m_status == Xmms::Playback::PAUSED) {
-			m_client->playback.tickle () ();
+			m_client->playback ()->tickle () ();
 		}
 	}
 

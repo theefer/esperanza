@@ -182,7 +182,7 @@ MedialibDialog::load_compl_list (int i)
 
 	arg.push_front (str);
 
-	m_client->collection.queryInfos (univ, arg, arg, 0, 0, arg) (Xmms::bind (&MedialibDialog::compl_reply, this));
+	m_client->collection ()->queryInfos (univ, arg, arg, 0, 0, arg) (Xmms::bind (&MedialibDialog::compl_reply, this));
 
 	m_le->setEnabled (false);
 	m_cb->setEnabled (false);
@@ -235,7 +235,7 @@ MedialibDialog::plus_pressed (QMouseEvent *ev)
 	}
 
 	for (int i = 0; i < ids.size (); i++) {
-		m_client->playlist.addId (ids.at (i)) ();
+		m_client->playlist ()->addId (ids.at (i)) ();
 	}
 }
 

@@ -87,6 +87,7 @@ class PlayerWidget : public QMainWindow
 		void open_dialog ();
 		
 		void handle_selected_id (uint32_t id) {
+			m_current_id = id;
 			emit selectedID (id);
 		};
 

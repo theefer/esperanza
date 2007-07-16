@@ -20,6 +20,7 @@
 #include "valuebar.h"
 #include "lastfmartist.h"
 #include "playerbutton.h"
+#include "playerwidget.h"
 
 #include <QDialog>
 #include <QSettings>
@@ -220,7 +221,8 @@ LastFmDialog::link_context (const QString &l)
 void
 LastFmDialog::entry_update (uint32_t id)
 {
-	if (m_current == id) {
+	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (parent ());
+	if (pw->currentID () == id) {
 		new_id (id);
 	}
 }
@@ -252,7 +254,7 @@ LastFmDialog::update_artists (const QString &artist)
 			/* When collections support it we want to use some aggregation here instead */
             Xmms::Coll::Universe univ;
             Xmms::Coll::Match m (univ, "artist", XClient::qToStd (a.name ()));
-            m_client->collection.queryIds (m) (boost::bind (&LastFmDialog::num_reply, this, _1, a.name ()));
+            m_client->collection ()->queryIds (m) (boost::bind (&LastFmDialog::num_reply, this, _1, a.name ()));
 		}
 	}
 
@@ -287,16 +289,14 @@ LastFmDialog::num_reply (Xmms::List<unsigned int> const &list, const QString &ar
 void
 LastFmDialog::showEvent (QShowEvent *ev)
 {
-	new_id (m_current);
+	PlayerWidget *pw = dynamic_cast<PlayerWidget *> (parent ());
+	new_id (pw->currentID ());
 }
 
 void
 LastFmDialog::new_id (uint32_t id)
 {
 	QHash<QString, QVariant> minfo = m_client->cache ()->get_info (id);
-	if (m_current != id) {
-		m_current = id;
-	}
 
 	if (!isVisible ()) {
 		return;

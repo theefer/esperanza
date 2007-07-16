@@ -40,7 +40,7 @@ CollectionInfoModel::set_collection (const Xmms::Coll::Coll &ref,
                                      const QList<QString> &order,
                                      const QList<QString> &group) 
 {
-    m_client->collection.queryInfos (ref,
+    m_client->collection ()->queryInfos (ref,
                                      str_list_to_std (fetch),
                                      str_list_to_std (order),
                                      0, 0,

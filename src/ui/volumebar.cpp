@@ -92,8 +92,8 @@ VolumeButton::volume_pressed (QMouseEvent *ev)
 void
 VolumeButton::got_connection (XClient *c)
 {
-	m_client->playback.volumeGet () (Xmms::bind (&VolumeButton::handle_volume, this));
-	m_client->playback.broadcastVolumeChanged () (Xmms::bind (&VolumeButton::handle_volume, this));
+	m_client->playback ()->volumeGet () (Xmms::bind (&VolumeButton::handle_volume, this));
+	m_client->playback ()->broadcastVolumeChanged () (Xmms::bind (&VolumeButton::handle_volume, this));
 }
 
 bool
@@ -120,10 +120,10 @@ void
 VolumeButton::set_volume (int vol)
 {
 	if (m_channels == 1) {
-		m_client->playback.volumeSet ("master", vol) ();
+		m_client->playback ()->volumeSet ("master", vol) ();
 	} else {
-		m_client->playback.volumeSet ("left", vol) ();
-		m_client->playback.volumeSet ("right", vol) ();
+		m_client->playback ()->volumeSet ("left", vol) ();
+		m_client->playback ()->volumeSet ("right", vol) ();
 	}
 }
 
