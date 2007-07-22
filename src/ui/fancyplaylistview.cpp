@@ -22,6 +22,7 @@
 #include <QHeaderView>
 #include <QPainter>
 #include <QSettings>
+#include <QDebug>
 
 PlaylistDelegate::PlaylistDelegate (QObject *parent, PlaylistModel *model) : QItemDelegate (parent)
 {
@@ -61,8 +62,8 @@ FancyPlaylistView::FancyPlaylistView (QWidget *parent, XClient *client) : Playli
 
 	setItemDelegate (new PlaylistDelegate (this, model));
 
-	connect (selectionModel (), SIGNAL (currentRowChanged (const QModelIndex &, const QModelIndex &)),
-			 this, SLOT (item_selected (const QModelIndex &, const QModelIndex &)));
+	connect (selectionModel (), SIGNAL (selectionChanged (const QItemSelection &, const QItemSelection &)),
+			 this, SLOT (item_selected (const QItemSelection &, const QItemSelection &)));
 
 	connect (this, SIGNAL (doubleClicked (const QModelIndex &)),
 			 this, SLOT (jump_pos (const QModelIndex &)));
@@ -81,7 +82,7 @@ FancyPlaylistView::mousePressEvent (QMouseEvent *ev)
 		return;
 	}
 
-	if (!indexAt (ev->pos ()).isValid ()) {
+	if (!indexAt (ev->pos ()).isValid () || indexAt (ev->pos ()).internalId () != -1) {
 		ev->ignore ();
 		return;
 	}
@@ -97,47 +98,43 @@ FancyPlaylistView::changed_settings ()
 	collapseAll ();
 
 	if (!s.value ("playlist/compactmode").toBool ()) {
-		if (getSelection ().size () > 1)
+		QModelIndexList l = getSelection ();
+		if (l.size () < 1 || l.size () > 1)
 			return;
-		setExpanded (selectionModel ()->currentIndex (), true);
+		
+		setExpanded (l[0], true);
 	}
 }
 
 void
-FancyPlaylistView::item_selected (const QModelIndex &n, const QModelIndex &old)
+FancyPlaylistView::item_selected (const QItemSelection & selected, const QItemSelection & deselected)
 {
 	QSettings s;
 
 	if (s.value ("playlist/compactmode").toBool ())
 		return;
 
-	if (n.internalId () != -1) {
-		setCurrentIndex (n.parent ());
-		return;
-	}
+	collapseAll ();
 
 	QModelIndexList l = getSelection ();
-	
-	if (l.count () < 1) {
-		setCurrentIndex (old);
-	} else if (l.count () > 1) {
-		collapseAll ();
-	} else {
-		setCurrentIndex (n);
-
-		collapseAll ();
-
-		setExpanded (n, true);
-
-		QModelIndex c = n.child (0, 0);
-		scrollTo (c);
-	}
 
 	/* emit current id */
 	if (l.count () > 1 || l.count () < 1) {
 		emit selectedID (0);
 	} else {
-		emit selectedID (l[0].data (PlaylistModel::MedialibIdRole).toUInt ());
+		QModelIndex n = l[0];
+
+		if (n.internalId () != -1) {
+			setCurrentIndex (n.parent ());
+			return;
+		}
+
+		setExpanded (n, true);
+
+		QModelIndex c = n.child (0, 0);
+		scrollTo (c);
+
+		emit selectedID (n.data (PlaylistModel::MedialibIdRole).toUInt ());
 	}
 }
 

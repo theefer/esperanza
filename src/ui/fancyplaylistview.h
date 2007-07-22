@@ -49,7 +49,7 @@ class FancyPlaylistView : public PlaylistView
 		void changed_settings ();
 
 	private slots:
-		void item_selected (const QModelIndex &n, const QModelIndex &old);
+		void item_selected (const QItemSelection & selected, const QItemSelection & deselected);
 
 	signals:
 		void selectedID (uint32_t);
