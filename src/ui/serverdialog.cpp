@@ -132,6 +132,7 @@ ServerDialog::keyPressEvent (QKeyEvent *ev)
 }
 
 AddServerDialog::AddServerDialog (QWidget *parent)
+: QDialog(parent)
 {
 	QGridLayout *g = new QGridLayout (this);
 	QLabel *l = new QLabel (tr ("Add a new server"), this);
