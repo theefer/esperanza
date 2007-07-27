@@ -298,18 +298,16 @@ LastFmDialog::new_id (uint32_t id)
 {
 	QHash<QString, QVariant> minfo = m_client->cache ()->get_info (id);
 
-	if (!isVisible ()) {
+	if (
+		!isVisible () ||
+		!minfo.contains ("artist") ||
+		m_current_artist == minfo["artist"].toString ()
+	) {
 		return;
 	}
 
-	if (!minfo.contains ("artist"))
-		return;
-
-	if (m_current_artist != minfo["artist"].toString ()) {
-		m_parser->abort ();
-		m_current_artist = minfo["artist"].toString ();
-	}
-
+	m_parser->abort ();
+	m_current_artist = minfo["artist"].toString ();
 	QList<LastFmArtist> l = m_parser->similar_artist (minfo["artist"].toString ());
 	update_artists (minfo["artist"].toString ());
 
