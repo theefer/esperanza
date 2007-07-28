@@ -110,6 +110,7 @@ PreferenceManager::PreferenceManager () : QObject (NULL)
 	if (QSystemTrayIcon::isSystemTrayAvailable ()) {
 		registerVal ("core/systray", tr ("Show icon in system tray"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Core);
 		registerVal ("core/donotification", tr ("Show popup notification on song change"), PreferenceValue::Bool, true, QVariant (), PreferenceValue::Feel);
+		registerVal ("ui/shownotificationtimeout", tr ("Set the time, how long a popup notification should be shown. (secs)"), PreferenceValue::Num, 10, QVariant (), PreferenceValue::Feel);
 		registerVal ("ui/hideOnClose", tr ("Do not quit esperanza on close, rather then hide it (needs System tray active)."),
 				PreferenceValue::Bool, true, QVariant (), PreferenceValue::Feel);
 		registerVal ("ui/toolwindow", tr ("Show the playerwindow as a toolwindow (no windowlist entry)."),

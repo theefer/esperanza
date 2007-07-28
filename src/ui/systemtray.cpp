@@ -20,13 +20,13 @@
 
 #include <QSystemTrayIcon>
 #include <QSettings>
+#include <QHash>
 
 #include "playerwidget.h"
 
 SystemTray::SystemTray (QObject *parent, XClient *client) : QSystemTrayIcon (parent)
 {
 	QSettings s;
-
 	m_client = client;
 
 	connect (this, SIGNAL (activated (QSystemTrayIcon::ActivationReason)),
@@ -63,7 +63,7 @@ SystemTray::SystemTray (QObject *parent, XClient *client) : QSystemTrayIcon (par
 	connect (systray_menu, SIGNAL (aboutToShow ()), this, SLOT (build_menu ()));
 
 	setContextMenu (systray_menu);
-
+	connect (client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *)));
 #ifdef Q_WS_MACX
 	m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
 	m_growl->do_registration ();
@@ -161,3 +161,38 @@ SystemTray::systray_trigger (QSystemTrayIcon::ActivationReason reason)
 		pw->toggle_hide ();
 #endif
 }
+
+
+void
+SystemTray::got_connection (XClient *client)
+{
+	m_client = client;
+
+	client->playback ()->broadcastCurrentID () (Xmms::bind (&SystemTray::handle_current_id, this));
+	client->playback ()->currentID () (Xmms::bind (&SystemTray::handle_current_id, this));
+}
+
+
+bool
+SystemTray::handle_current_id (const unsigned int &id)
+{
+	QHash<QString,QVariant> h = m_client->cache ()->get_info (id);
+	QString text;
+	QSettings s;
+
+	if (!h.contains ("title")) {
+		text = h["url"].toString ();
+	} else {
+		text = QString ("%1 - %2")
+			.arg(h["artist"].toString ())
+			.arg(h["title"].toString ());
+	}
+
+	if(!text.isEmpty ())
+		do_notification (tr ("Esperanza is now playing:"), text,
+					m_client->cache ()->get_pixmap (h["id"].toInt ()),
+					Information,
+					s.value("ui/shownotificationtimeout").toInt () * 1000);
+	return true;
+}
+

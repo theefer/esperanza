@@ -37,8 +37,11 @@ class SystemTray : public QSystemTrayIcon
 		void systray_trigger (QSystemTrayIcon::ActivationReason reason);
 		void toggle_hide ();
 		void build_menu ();
+		void got_connection (XClient *);
 
 	private:
+		bool handle_current_id (const unsigned int &id);
+
 		QAction *m_display_action;
 		QAction *m_hide_action;
 		QAction *m_play_action;
