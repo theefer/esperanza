@@ -28,25 +28,24 @@
  */
 
 
-FileDialog::FileDialog (QWidget *parent, const QString &name, const bool &remote) : QFileDialog (parent)
+FileDialog::FileDialog (QWidget *parent, const QString &name, const bool &remote) : QObject (parent)
 {
 	QSettings s;
 	QString dir;
 	m_name = name;
 
 	if (s.contains ("filedialog/" + name)) {
-		setDirectory (s.value ("filedialog/" + name).toString ());
+		m_last_dir = s.value ("filedialog/" + name).toString ();
 		return;
 	}
 
 	if (remote) {
-		dir = "/_xmms2/";
+		m_last_dir = "/_xmms2/";
 	} else {
-		dir = QDir::homePath ();
+		m_last_dir = QDir::homePath ();
 	}
 
-	s.setValue ("filedialog/" + name, dir);
-	setDirectory (dir);
+	s.setValue ("filedialog/" + name, m_last_dir);
 }
 
 QStringList
@@ -55,11 +54,11 @@ FileDialog::getFiles ()
 	QSettings s;
 	QStringList ret;
 
-	ret = getOpenFileNames (NULL, tr ("Select music files"),
-							directory ().absolutePath ());
+	ret = QFileDialog::getOpenFileNames (dynamic_cast<QWidget *>(parent ()), tr ("Select music files"),
+							QDir(m_last_dir).absolutePath ());
 	if (ret.size () > 0) { 
-        QString d = QFileInfo (ret[0]).absolutePath ();
-        s.setValue ("filedialog/" + m_name, d);
+        m_last_dir = QFileInfo (ret[0]).absolutePath ();
+        s.setValue ("filedialog/" + m_name, m_last_dir);
     }
 
 	qSort (ret);
@@ -72,9 +71,9 @@ FileDialog::getDirectory ()
 	QSettings s;
     QString ret;
     
-	ret = getExistingDirectory (NULL, tr ("Select music directory"),
-							     directory ().absolutePath ());
-    QString d = QFileInfo (ret).absolutePath ();
-    s.setValue ("filedialog/" + m_name, d);
+	ret = QFileDialog::getExistingDirectory (dynamic_cast<QWidget *>(parent ()), tr ("Select music directory"),
+							     QDir(m_last_dir).absolutePath ());
+    m_last_dir = QFileInfo (ret).absolutePath ();
+    s.setValue ("filedialog/" + m_name, m_last_dir);
 	return ret;
 }

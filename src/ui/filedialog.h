@@ -18,9 +18,9 @@
 #ifndef __FILEDIALOG_H__
 #define __FILEDIALOG_H__
 
-#include <QFileDialog>
+#include <QObject>
 
-class FileDialog : public QFileDialog
+class FileDialog : public QObject
 {
 	Q_OBJECT
 	public:
@@ -30,7 +30,7 @@ class FileDialog : public QFileDialog
 
 	private:
 		QString m_name;
-
+		QString m_last_dir;
 };
 
 #endif
