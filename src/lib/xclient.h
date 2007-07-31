@@ -86,6 +86,7 @@ class XClient : public QObject {
 		const Xmms::Playback* playback () { if (m_client && m_client->isConnected ()) return &m_client->playback; else return NULL; }
 		const Xmms::Medialib* medialib () { if (m_client && m_client->isConnected ()) return &m_client->medialib; else return NULL; }
 		const Xmms::Bindata* bindata () { if (m_client && m_client->isConnected ()) return &m_client->bindata; else return NULL; }
+		const Xmms::Config* config () { if (m_client && m_client->isConnected ()) return &m_client->config; else return NULL; }
 
 	signals:
 		void gotConnection (XClient *);

@@ -39,6 +39,7 @@ Q_IMPORT_PLUGIN(medialibdialog)
 Q_IMPORT_PLUGIN(streamingdialog)
 Q_IMPORT_PLUGIN(aboutdialog)
 Q_IMPORT_PLUGIN(preferencesdialog)
+Q_IMPORT_PLUGIN(xmms2dpreferences)
 
 int
 main (int argc, char **argv)

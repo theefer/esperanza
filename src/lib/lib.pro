@@ -20,4 +20,5 @@ HEADERS = 	collectioninfomodel.h \
 			playlistmodel.h \
 			xclientcache.h \
 			misc.h \
-			preferencemanager.h
+			preferencemanager.h \
+			debug.h

@@ -20,3 +20,9 @@ win32 {
 	LIBPATH += "$$PREFIX"
 	LIBS += -lxmmsclient -lxmmsclient++ -lboost_signals -lws2_32
 }
+
+contains(CONFIG, debug) {
+	DEFINES += _DEBUG
+	# for windows
+	CONFIG += console
+}
