@@ -20,6 +20,7 @@ public:
 	bool insertRow (int row);
 	int findItemRecursive (QVariant data, Xmms2dPrefItem **item);
 	int indexOfChild(Xmms2dPrefItem *child);
+	void sort(int column = 0, Qt::SortOrder order = Qt::AscendingOrder);
 
 private:
 	QList<QVariant> m_data;
@@ -45,7 +46,7 @@ public:
 	QModelIndex findIndex (QVariant data, const QModelIndex & parent = QModelIndex()) const;
 	QModelIndex parent(const QModelIndex &index) const;
 	bool hasChildren ( const QModelIndex & parent = QModelIndex() ) const;
-
+	void sort ( int column = 0, Qt::SortOrder order = Qt::AscendingOrder);
 private:
 	Xmms2dPrefItem* rootItem;
 };

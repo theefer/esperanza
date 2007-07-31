@@ -107,6 +107,33 @@ int Xmms2dPrefItem::indexOfChild(Xmms2dPrefItem *child)
 	return ret;
 }
 
+void Xmms2dPrefItem::sort ( int column/* = 0*/, Qt::SortOrder order/* = Qt::AscendingOrder */)
+{
+	QList<Xmms2dPrefItem*> new_children;
+	Xmms2dPrefItem* item;
+	Xmms2dPrefItem* tmp;
+
+	while (m_children.size () > 0) {
+		item = m_children.takeFirst ();
+		for (int i=0; i < m_children.size (); i++) {
+			if (
+				(item->data (column).toString () > m_children[i]->data (column).toString () && order == Qt::AscendingOrder) ||
+				(item->data (column).toString () < m_children[i]->data (column).toString () && order == Qt::DescendingOrder)
+			) {
+				tmp = m_children[i];
+				m_children[i] = item;
+				item = tmp;
+			}
+		}
+		new_children.append (item);
+	}
+
+	for (int i=0; i < new_children.size (); i++) {
+		new_children[i]->sort(column, order);
+		m_children.append(new_children[i]);
+	}
+}
+
 /******************************************************************************************/
 /* The Model                                                                              */
 /******************************************************************************************/
@@ -304,4 +331,10 @@ bool Xmms2dPrefModel::hasChildren ( const QModelIndex & parent/* = QModelIndex()
 	ret = parentItem->childCount () > 0;
 	// DBGOUT("returning:" << ret);
 	return ret;
+}
+
+void Xmms2dPrefModel::sort ( int column, Qt::SortOrder order/* = Qt::AscendingOrder */)
+{
+	rootItem->sort (column, order);
+	reset ();
 }

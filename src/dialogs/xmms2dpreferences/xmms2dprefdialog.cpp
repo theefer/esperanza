@@ -90,6 +90,7 @@ void Xmms2dPrefDialog::got_connection (XClient *client_)
 bool Xmms2dPrefDialog::handle_valueList (const Xmms::Dict &d)
 {
 	d.each(Xmms::bind (&Xmms2dPrefDialog::addPreference, this));
+	model->sort ();
 	return true;
 }
 
