@@ -4,8 +4,10 @@ QT += network xml
 include (../../config.pri)
 
 DIALOGS += lastfm medialibdialog \
-	   streamingdialog firsttimewizard \
-	   preferencesdialog aboutdialog
+		streamingdialog firsttimewizard \
+		preferencesdialog aboutdialog \
+		xmms2dpreferences
+
 TOOLS += grepshortcutkeydlg globalshortcut
 
 !win32 {

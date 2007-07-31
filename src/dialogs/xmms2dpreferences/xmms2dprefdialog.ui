@@ -1,0 +1,61 @@
+<ui version="4.0" >
+ <class>Xmms2dPrefDialog</class>
+ <widget class="QDialog" name="Xmms2dPrefDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>497</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Esperanza - Preferences</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="../../../data/esperanza.qrc" >:/images/esperanza.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QTreeView" name="treeView" />
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../data/esperanza.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>Xmms2dPrefDialog</receiver>
+   <slot>clickedBtnBox(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>469</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>299</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
