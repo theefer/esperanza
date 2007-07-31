@@ -35,7 +35,7 @@ PlaylistDelegate::paint (QPainter *painter,
 						 const QModelIndex &index) const
 {
 	QSettings s;
-
+	
 	QStyleOptionViewItem o (option);
 	if (index.data (PlaylistModel::CurrentEntryRole).toBool ()) {
 		QFont f (o.font);
@@ -52,7 +52,6 @@ PlaylistDelegate::paint (QPainter *painter,
 	} 
 
 	QItemDelegate::paint (painter, o, index);
-
 }
 
 FancyPlaylistView::FancyPlaylistView (QWidget *parent, XClient *client) : PlaylistView (parent, client)
@@ -123,7 +122,7 @@ FancyPlaylistView::item_selected (const QItemSelection & selected, const QItemSe
 		emit selectedID (0);
 	} else {
 		QModelIndex n = l[0];
-
+		
 		if (n.internalId () != -1) {
 			setCurrentIndex (n.parent ());
 			return;
@@ -133,8 +132,10 @@ FancyPlaylistView::item_selected (const QItemSelection & selected, const QItemSe
 
 		QModelIndex c = n.child (0, 0);
 		scrollTo (c);
-
+		
 		emit selectedID (n.data (PlaylistModel::MedialibIdRole).toUInt ());
 	}
+	
+	update ();
 }
 
