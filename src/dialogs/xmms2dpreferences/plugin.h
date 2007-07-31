@@ -22,7 +22,7 @@ namespace Xmms2dPreferences {
 		Q_OBJECT
 		Q_INTERFACES(EsperanzaMain::EsperanzaDialog)
 		public:
-			virtual QString label () const { return tr ("Xmms2d Preferences"); }
+			virtual QString label () const { return tr ("Server Preferences"); }
 			virtual EsperanzaMain::DialogItem item () const { return EsperanzaMain::DialogSettings; }
 			virtual QString shortcut () const { return ""; }
 		
