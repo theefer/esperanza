@@ -13,7 +13,6 @@ public:
 	qc_xmms2(Conf *c) : ConfObj(c) {}
 	QString name() const { return "Xmms2 Client C++ Bindings"; }
 	QString shortname() const { return "xmms2"; }
-	QString checkString() const { return QString(); }
 
 	bool exec()
 	{
