@@ -25,6 +25,7 @@
 #include "ftwmanager.h"
 
 #include "misc.h"
+#include "debug.h"
 
 #define NOTCONNECTED "<html><body><span style=\" color:#8b0000;\">not Connected</span></body></html>"
 #define CONNECTED "<html><body><span style=\" color:#008b00;\">Connected</span></body></html>"
@@ -83,18 +84,17 @@ void ServerPage::tryit()
 {
 	QString sTmp = serverConPath->text();
 	bool b = false;
-	char *p = NULL;
 
 	Ui::server::conStatus->setMovie (new QMovie (":images/progress.mng", NULL, Ui::DefaultPage::pbNext));
 	Ui::server::conStatus->movie ()->start ();	
 
-	if (sTmp == "local" || sTmp.isEmpty()) {
-		p = NULL;
-	} else {
-		p = sTmp.toAscii().data();
+	if (!sTmp.isEmpty() && sTmp != "local") {
+		b = parent->manager ()->client ()->connect (sTmp.toStdString ().c_str (), false, parent);
+	}
+	else {
+		b = parent->manager ()->client ()->connect (NULL, false, parent);
 	}
 
-	b = parent->manager()->client()->connect(p, false, parent);
 	Ui::server::conStatus->movie ()->stop ();	
 
 	if (b)

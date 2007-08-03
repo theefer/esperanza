@@ -25,6 +25,7 @@
 
 #include "xclient.h"
 #include "xmmsqt4.h"
+#include "debug.h"
 
 XSettings::XSettings (QObject *parent) : QObject (parent)
 {
@@ -85,13 +86,15 @@ bool
 XClient::connect (const char *ipcpath, const bool &sync, QWidget *parent)
 {
 	bool tried_once = false;
-
 try_again:
 
 	try {
 		delete m_client;
 		m_client = new Xmms::Client (m_name);
-		m_client->connect (ipcpath);
+		if (!ipcpath || ipcpath == "")
+			m_client->connect (NULL);
+		else
+			m_client->connect (ipcpath);
 	}
 	catch (Xmms::connection_error& e) {
 		if (ipcpath == NULL && !tried_once) {
