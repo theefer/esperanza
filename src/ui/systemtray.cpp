@@ -64,12 +64,6 @@ SystemTray::SystemTray (QObject *parent, XClient *client) : QSystemTrayIcon (par
 
 	setContextMenu (systray_menu);
 	connect (client, SIGNAL (gotConnection (XClient *)), this, SLOT (got_connection (XClient *)));
-#ifdef Q_WS_MACX
-	m_growl = new GrowlNotifier (this, "Esperanza", QStringList ("New song"));
-	m_growl->do_registration ();
-#else
-	m_growl = NULL;
-#endif
 
 }
 
@@ -138,14 +132,11 @@ SystemTray::do_notification (const QString &title, const QString &message,
 		if (m_display_action) {
 			m_display_action->setText (message);
 		}
+		
 		setToolTip(message);
 		
 		if (s.value ("core/donotification").toBool ()) {
-			if (m_growl) {
-				m_growl->do_notification ("New song", title, message, img);
-			} else {
-				showMessage (title, message, icon, milliseconds);
-			}
+			showMessage (title, message, icon, milliseconds);
 		}
 	}
 }

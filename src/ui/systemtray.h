@@ -23,8 +23,6 @@
 #include <QSystemTrayIcon>
 #include <QAction>
 
-#include "growl.h"
-
 class SystemTray : public QSystemTrayIcon
 {
 	Q_OBJECT
@@ -45,7 +43,6 @@ class SystemTray : public QSystemTrayIcon
 		QAction *m_display_action;
 		QAction *m_hide_action;
 		QAction *m_play_action;
-		GrowlNotifier *m_growl;
 		QString m_last_notif_str;
 		XClient *m_client;
 };

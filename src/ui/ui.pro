@@ -41,8 +41,6 @@ unix:!mac {
 
 macx {
 	TARGET = Esperanza
-	SOURCES += mac_growl.mm
-	HEADERS += mac_growl.h
 }
 
 
@@ -52,7 +50,6 @@ SOURCES += 	fancyplaylistview.cpp \
 			filedialog.cpp \
 			panebrowserview.cpp \
 			systemtray.cpp \
-			growl.cpp \
 			playerbutton.cpp \
 			progressframe.cpp \
 			volumebar.cpp \
@@ -66,7 +63,6 @@ SOURCES += 	fancyplaylistview.cpp \
 HEADERS += 	esperanza_plugin.h \
 			fancyplaylistview.h \
 			filedialog.h \
-			growl.h \
 			mdns.h \
 			minimode.h \
 			panebrowserview.h \
