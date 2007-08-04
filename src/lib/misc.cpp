@@ -22,12 +22,13 @@
 #include "misc.h"
 #include "serverdialog.h"
 #include "xclient.h"
+#include "debug.h"
 
 bool connectXmms2(XClient *client, QWidget *parent)
 {
 	QSettings s;
 	QString path;
-	char *p = NULL;
+	bool b;
 
 browser:
 	if (!getenv ("XMMS_PATH")) {
@@ -38,18 +39,23 @@ browser:
 			path = sd.get_path ();
 		}
 
-		if (path == "local") {
-			p = NULL;
-		} else if (path.isNull ()) {
-			return EXIT_FAILURE;
-		} else {
-			p = path.toAscii ().data ();
-		}
 	} else {
-		p = getenv ("XMMS_PATH");
+		path = getenv ("XMMS_PATH");
 	}
 
-	if (!client->connect (p, false, parent)) {
+	if (path.isNull ()) {
+		return false;
+	}
+	else if (!path.isEmpty() && path != "local") {
+		DBGOUT ("trying to connect to:" << path);
+		b = client->connect (path.toStdString ().c_str (), false, parent);
+	}
+	else {
+		DBGOUT ("trying to connect to: \"\"");
+		b = client->connect (NULL, false, parent);
+	}
+
+	if (!b) {
 		if (!getenv ("XMMS_PATH")) {
 			goto browser;
 		} else {

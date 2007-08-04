@@ -30,6 +30,7 @@
 
 #include "playerbutton.h"
 #include "mdns.h"
+#include "debug.h"
 
 ServerDialog::ServerDialog (QWidget *parent) : QDialog (parent), m_mdns (NULL)
 {
@@ -219,6 +220,7 @@ ServerDialog::get_path ()
 {
 	QSettings s;
 	int ret = exec ();
+	QString tmp;
 
 	QMap<QString, QVariant> m;
 	for (int i = 0; i < m_list->count (); i ++) {
@@ -231,11 +233,11 @@ ServerDialog::get_path ()
 	QListWidgetItem *d = m_list->currentItem ();
 	if (d) {
 		s.setValue ("serverbrowser/default", d->text ());
+		if (ret == QDialog::Accepted) {
+			tmp = d->toolTip ();
+			DBGOUT ("returning:" << tmp);
+			return tmp;
+		}
 	}
-
-	if (ret == QDialog::Accepted) {
-		return d->toolTip ();
-	}
-
 	return QString ();
 }
