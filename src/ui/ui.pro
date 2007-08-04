@@ -6,7 +6,7 @@ include (../../config.pri)
 DIALOGS += lastfm medialibdialog \
 		streamingdialog firsttimewizard \
 		preferencesdialog aboutdialog \
-		xmms2dpreferences
+		xmms2dpreferences equalizer
 
 TOOLS += grepshortcutkeydlg globalshortcut
 

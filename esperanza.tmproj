@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>src/ui/playerwidget.cpp</string>
+	<string>src/ui/playerwidget.h</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -63,34 +63,6 @@
 			<key>firstVisibleLine</key>
 			<integer>2</integer>
 		</dict>
-		<key>src/ui/main.cpp</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>2</integer>
-				<key>line</key>
-				<integer>34</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>73</integer>
-		</dict>
-		<key>src/ui/playerwidget.cpp</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>2</integer>
-				<key>line</key>
-				<integer>209</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>176</integer>
-		</dict>
 		<key>src/ui/playerwidget.h</key>
 		<dict>
 			<key>caret</key>
@@ -108,8 +80,6 @@
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>src/ui/main.cpp</string>
-		<string>src/ui/playerwidget.cpp</string>
 		<string>src/ui/playerwidget.h</string>
 		<string>src/ui/esperanza_plugin.h</string>
 		<string>src/dialogs/lastfm/plugin.h</string>
@@ -117,6 +87,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{-4, 45}, {852, 731}}</string>
+	<string>{{0, 45}, {852, 731}}</string>
 </dict>
 </plist>
