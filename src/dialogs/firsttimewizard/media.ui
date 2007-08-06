@@ -22,9 +22,6 @@
     </rect>
    </property>
    <layout class="QHBoxLayout" >
-    <property name="margin" >
-     <number>0</number>
-    </property>
     <property name="spacing" >
      <number>6</number>
     </property>
@@ -106,6 +103,11 @@
      <width>453</width>
      <height>102</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="text" >
     <string>&lt;b>Import some Mediafiles:&lt;/b>&lt;br />&lt;br />Here you can import as many files or directories (recursive) as you want.&lt;br />Just use the buttons as often you need it.&lt;br />The imported mediafiles can be searched via the mediabrowser by&lt;br />e.g. author, genre ...</string>

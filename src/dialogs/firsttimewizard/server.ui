@@ -18,6 +18,11 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="text" >
     <string>Connection Path:</string>
    </property>
@@ -30,6 +35,11 @@
      <width>511</width>
      <height>121</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="text" >
     <string>&lt;b>Server Setting:&lt;/b>&lt;br />&lt;br />Here you should enter the server connection path. This is usually an IP and Port&lt;br /> or a unix file descriptor. When xmms2d runs on this host, it is ok to let it empty&lt;br />and just press 'Test it'.</string>
@@ -76,6 +86,11 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="text" >
     <string>Connection Status:</string>
    </property>
@@ -88,6 +103,11 @@
      <width>271</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="text" >
     <string/>

@@ -21,6 +21,11 @@
      <height>22</height>
     </rect>
    </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="text" >
     <string>Ignore the desktop settings (use this if everything is black)</string>
    </property>
@@ -37,6 +42,11 @@
      <height>22</height>
     </rect>
    </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="text" >
     <string>Show the server browser on startup</string>
    </property>
@@ -49,6 +59,11 @@
      <width>431</width>
      <height>111</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="title" >
     <string>Show icon in system tray</string>
@@ -71,6 +86,11 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="font" >
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
     <property name="text" >
      <string>Do not quit esperanza on close, rather then hide it.</string>
     </property>
@@ -83,6 +103,11 @@
       <width>401</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="font" >
+     <font>
+      <pointsize>9</pointsize>
+     </font>
     </property>
     <property name="text" >
      <string>Use double click on trayicon to show mainwindow.</string>
