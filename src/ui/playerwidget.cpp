@@ -165,7 +165,8 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 	m_mini = new MiniMode (this, m_client);
 
 	/* run it once first time */
-	changed_settings ();
+	// changed_settings ();
+
 	m_sm = ShortcutManager::instance ();
 
 	m_sm->connect (this, "shortcuts/remove", "Del", SLOT (remove_selected ()));
