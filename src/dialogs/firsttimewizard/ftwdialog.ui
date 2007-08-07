@@ -9,12 +9,17 @@
     <height>400</height>
    </rect>
   </property>
+  <property name="font" >
+   <font>
+    <pointsize>9</pointsize>
+   </font>
+  </property>
   <property name="windowIcon" >
-   <iconset resource="../../esperanza.qrc" >:/images/esperanza.png</iconset>
+   <iconset resource="../../../data/esperanza.qrc" >:/images/esperanza.png</iconset>
   </property>
  </widget>
  <resources>
-  <include location="../../esperanza.qrc" />
+  <include location="../../../data/esperanza.qrc" />
  </resources>
  <connections/>
 </ui>
