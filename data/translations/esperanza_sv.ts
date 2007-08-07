@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="sv_SE">
+<defaultcodec></defaultcodec>
 <context>
     <name>AddServerDialog</name>
     <message>
@@ -100,7 +101,7 @@
     <message>
         <location filename="ui/preferencessupport.cpp" line="60"/>
         <source>Press a key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryck på valfri knapp:</translation>
     </message>
     <message>
         <location filename="ui/preferencessupport.cpp" line="94"/>
@@ -151,12 +152,12 @@
     <message>
         <location filename="ui/lastfm.cpp" line="176"/>
         <source>Open artist page at Last.fm</source>
-        <translation type="unfinished">Öppna artistens Last.fm sida</translation>
+        <translation>Öppna artistens Last.fm sida</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="179"/>
         <source>Open artist page at Musicbrainz</source>
-        <translation type="unfinished">Öppna artistens Musicbrainz sida</translation>
+        <translation>Öppna artistens Musicbrainz sida</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="183"/>
@@ -526,9 +527,9 @@
         <source>Welcome to Esperanza
 Please select a server to connect to.
 You may disable this dialog in the preferences.</source>
-        <translation type="unfinished">Välkommen till Esperanza
+        <translation>Välkommen till Esperanza
 Vänligen välj vilken server du vill ansluta till.
-Det är möjligt att stänga av den här dialogen under iställningar</translation>
+Det är möjligt att stänga av den här dialogen under iställningar.</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="73"/>
@@ -543,7 +544,7 @@ Det är möjligt att stänga av den här dialogen under iställningar</translati
     <message>
         <location filename="ui/serverdialog.cpp" line="168"/>
         <source>Sorry, that name is already taken.</source>
-        <translation type="unfinished">Det namnet är redan använt!</translation>
+        <translation>Det namnet är redan använt.</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="186"/>
