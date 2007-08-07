@@ -18,6 +18,7 @@
 #define __EQULIZERWIDGET_H__
 
 #include <QGraphicsView>
+#include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 
 #include "equalizerdot.h"
