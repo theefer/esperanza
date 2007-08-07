@@ -60,7 +60,10 @@ CollectionInfoModel::info_callback (const Xmms::List<Xmms::Dict> &list)
 
 void
 CollectionInfoModel::set_data (const QList < QHash < QString, QVariant > > &data)
-{    
+{
+	/* Clear the model */
+	clear ();
+	
     /* take the headers and add the columns */
     QStringList s = data[0].keys ();
     setColumnCount (s.size ());
