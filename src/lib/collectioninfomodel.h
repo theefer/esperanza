@@ -38,6 +38,7 @@ class CollectionInfoModel : public QStandardItemModel
         static std::list<std::string> str_list_to_std (const QList<QString> &);
         XClient *m_client;
         bool m_all_field;
+		void set_data (const QList < QHash < QString, QVariant > > &);
 		
 };
 

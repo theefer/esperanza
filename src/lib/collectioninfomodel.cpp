@@ -40,25 +40,32 @@ CollectionInfoModel::set_collection (const Xmms::Coll::Coll &ref,
                                      const QList<QString> &order,
                                      const QList<QString> &group) 
 {
-    m_client->collection ()->queryInfos (ref,
-                                     str_list_to_std (fetch),
-                                     str_list_to_std (order),
-                                     0, 0,
-                                     str_list_to_std (group))
-                                     (Xmms::bind (&CollectionInfoModel::info_callback, this));
+    m_client->collection ()->queryInfos (ref, str_list_to_std (fetch), str_list_to_std (order), 0, 0, str_list_to_std (group))
+										(Xmms::bind (&CollectionInfoModel::info_callback, this));
 }
 
 bool
 CollectionInfoModel::info_callback (const Xmms::List<Xmms::Dict> &list)
 {
-    /* start with clearing the model */
-    clear ();
-    
     /* convert the first entry in the list to get the headers */
-    QHash<QString, QVariant> h = XClient::convert_dict (*list);
-    
+	QList < QHash < QString, QVariant > > l;
+	for (list.first (); list.isValid (); ++list) {
+	    QHash<QString, QVariant> h = XClient::convert_dict (*list);
+		l.append (h);
+	}
+	set_data (l);
+	
+	return true;
+}
+
+void
+CollectionInfoModel::set_data (const QList < QHash < QString, QVariant > > &data)
+{
+	/* Clear the model */
+	clear ();
+	
     /* take the headers and add the columns */
-    QStringList s = h.keys ();
+    QStringList s = data[0].keys ();
     setColumnCount (s.size ());
     
     for (int i = 0; i < s.size (); i ++) {
@@ -75,10 +82,10 @@ CollectionInfoModel::info_callback (const Xmms::List<Xmms::Dict> &list)
         appendRow (item);
     }
 
-    for (list.first (); list.isValid (); ++list) {
+	for (int i = 0; i < data.size (); i ++) {
         QList<QStandardItem *> l;
 
-    	QHash<QString, QVariant> hash = XClient::convert_dict (*list);
+		QHash<QString, QVariant> hash = data[i];
         for (int i = 0; i < s.size (); i ++) {
             QStandardItem *item = new QStandardItem (hash[s.value (i)].toString ());
             item->setEditable (false);
@@ -87,6 +94,5 @@ CollectionInfoModel::info_callback (const Xmms::List<Xmms::Dict> &list)
         appendRow (l);
 	}
 	
-    return true;
 }
 

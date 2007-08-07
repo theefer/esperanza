@@ -48,7 +48,6 @@ SOURCES += 	fancyplaylistview.cpp \
 			minimode.cpp \
 			shortcutmanager.cpp \
 			filedialog.cpp \
-			panebrowserview.cpp \
 			systemtray.cpp \
 			playerbutton.cpp \
 			progressframe.cpp \
@@ -65,7 +64,6 @@ HEADERS += 	esperanza_plugin.h \
 			filedialog.h \
 			mdns.h \
 			minimode.h \
-			panebrowserview.h \
 			playerbutton.h \
 			playerwidget.h \
 			playlistview.h \

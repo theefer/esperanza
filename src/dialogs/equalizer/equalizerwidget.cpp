@@ -27,11 +27,11 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QGraphicsView (parent)
 	setRenderHints (QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 	
 	/* add lines */
-	sc->addLine (0, sc->height () / 6.0, sc->width (), sc->height () / 6.0, QPen (Qt::gray));
-	sc->addLine (0, sc->height () / 3.0, sc->width (), sc->height () / 3.0, QPen (Qt::gray));
-	sc->addLine (0, sc->height () / 2.0, sc->width (), sc->height () / 2.0, QPen (Qt::gray));
-	sc->addLine (0, sc->height () / 1.2, sc->width (), sc->height () / 1.2, QPen (Qt::gray));
-	sc->addLine (0, sc->height () / 1.5, sc->width (), sc->height () / 1.5, QPen (Qt::gray));
+	sc->addLine (QLineF (0, sc->height () / 6.0, sc->width (), sc->height () / 6.0), QPen (Qt::gray));
+	sc->addLine (QLineF (0, sc->height () / 3.0, sc->width (), sc->height () / 3.0), QPen (Qt::gray));
+	sc->addLine (QLineF (0, sc->height () / 2.0, sc->width (), sc->height () / 2.0), QPen (Qt::gray));
+	sc->addLine (QLineF (0, sc->height () / 1.2, sc->width (), sc->height () / 1.2), QPen (Qt::gray));
+	sc->addLine (QLineF (0, sc->height () / 1.5, sc->width (), sc->height () / 1.5), QPen (Qt::gray));
 	
 	/* do dot configuration */
 	float numdots = 15.0;
@@ -57,7 +57,7 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QGraphicsView (parent)
 	int startx = 0;
 	int starty = sc->height () / 2.0;
 	for (int i = 0; i < numdots; i ++) {
-		QGraphicsLineItem *line = sc->addLine (0, 0, 0, 0, pen);
+		QGraphicsLineItem *line = sc->addLine (QLineF (0, 0, 0, 0), pen);
 		line->setLine (startx, starty, m_dots[i]->pos ().x () + 3.0, m_dots[i]->pos ().y () + 3.0);
 		if (i > 0) {
 			m_dots[i - 1]->setRight (line);
@@ -69,7 +69,7 @@ EqualizerWidget::EqualizerWidget (QWidget *parent) : QGraphicsView (parent)
 	
 	/* add the last line */
 	EqualizerDot *dot = m_dots[numdots - 1];
-	dot->setRight (sc->addLine (dot->pos ().x () + 3.0, dot->pos ().y () + 3.0, sc->width (), sc->height () / 2.0, pen));
+	dot->setRight (sc->addLine (QLineF (dot->pos ().x () + 3.0, dot->pos ().y () + 3.0, sc->width (), sc->height () / 2.0), pen));
 	
 	/* Set the scene */
 	setScene (sc);
