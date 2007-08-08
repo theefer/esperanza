@@ -21,6 +21,7 @@
 #include "equalizerwidget.h"
 #include <QDialog>
 #include <QCheckBox>
+#include <QSlider>
 
 class EqualizerConfig : public QObject
 {
@@ -55,12 +56,15 @@ class EqualizerDialog : public QDialog
 		void cbChanged (int);
 		void reset ();
 		
+		void preamp_changed (int);
+		
 		void config_changed (const QHash<QString, QVariant> &);
 		
 	private:
 		XClient *m_client;
 		QCheckBox *m_cb;
 		EqualizerWidget *m_eq;
+		QSlider *m_preamp;
 	
 };
 

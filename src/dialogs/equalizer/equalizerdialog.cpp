@@ -18,6 +18,8 @@
 #include "playerbutton.h"
 
 #include <QGridLayout>
+#include <QSlider>
+#include <QHBoxLayout>
 
 /* 
  * I have a instance here that takes care of the broadcast it seems like there is no
@@ -54,28 +56,40 @@ EqualizerDialog::EqualizerDialog (QWidget *parent, XClient *client) : QDialog (p
 		     this, SLOT (config_changed (const QHash<QString, QVariant> &)));
 	
 	QGridLayout *g = new QGridLayout (this);
+	
+	m_preamp = new QSlider (Qt::Vertical, this);
+	g->addWidget (m_preamp, 0, 0, 2, 1);
+	m_preamp->setMaximum (20);
+	m_preamp->setMinimum (-20);
+	m_preamp->setTracking (true);
+	m_preamp->setSingleStep (1);
+	m_preamp->setPageStep (10);
+	m_preamp->setToolTip (tr ("Pre Amplification"));
+	connect (m_preamp, SIGNAL (valueChanged (int)), this, SLOT (preamp_changed (int)));
+	
 	m_eq = new EqualizerWidget (this);
-	g->addWidget (m_eq, 0, 0, 2, 3);
+	g->addWidget (m_eq, 0, 1, 2, 2);
 	g->setRowStretch (0, 1);
+	connect (m_eq, SIGNAL (gainChanged (int, qreal)),
+			 this, SLOT (gain_updated (int, qreal)));
+
+	QHBoxLayout *hbox = new QHBoxLayout (this);
+	g->addLayout (hbox, 2, 0, 1, 3);
 
 	m_cb = new QCheckBox (tr ("Enable"));
 	m_cb->setEnabled (false);
-	g->addWidget (m_cb, 2, 0);
+	hbox->addWidget (m_cb);
+	hbox->addStretch (1);
+	connect (m_cb, SIGNAL (stateChanged (int)), this, SLOT (cbChanged (int)));
+
+	PlayerButton *c = new PlayerButton (this, tr ("Reset"));
+	connect (c, SIGNAL(clicked (QMouseEvent *)), this, SLOT (reset ()));
+	hbox->addWidget (c);
+
 	PlayerButton *stop = new PlayerButton (this, ":images/stop.png");
 	connect (stop, SIGNAL (clicked (QMouseEvent *)),
 			 this, SLOT (close ()));
-	g->addWidget (stop, 2, 2);
-					
-	connect (m_eq, SIGNAL (gainChanged (int, qreal)),
-			 this, SLOT (gain_updated (int, qreal)));
-			
-	connect (m_cb, SIGNAL (stateChanged (int)), this, SLOT (cbChanged (int)));
-			
-	PlayerButton *c = new PlayerButton (this, tr ("Reset"));
-	connect (c, SIGNAL(clicked (QMouseEvent *)), this, SLOT (reset ()));
-	g->addWidget (c, 2, 1);
-	
-	g->setColumnStretch (0,1);
+	hbox->addWidget (stop);
 }
 
 void
@@ -86,6 +100,11 @@ EqualizerDialog::config_changed (const QHash<QString, QVariant> &hash)
 		QString v = key.right (2);
 		m_eq->setValue (v.toFloat (), hash[key].toDouble ());
 	}
+	if (key == "equalizer.preamp") {
+		if (!m_preamp->isSliderDown ()) {
+			m_preamp->setValue (hash[key].toDouble ());
+		}
+	}
 }
 
 void
@@ -95,6 +114,7 @@ EqualizerDialog::reset ()
 		QString v = QString ("equalizer.gain%1").arg (i, 2, 10, QChar ('0'));
 		m_client->config ()->valueSet (v.toStdString (), "0.0");
 	}
+	m_client->config ()->valueSet ("equalizer.preamp", "0.0");
 }
 
 void
@@ -107,6 +127,13 @@ EqualizerDialog::cbChanged (int state)
 		m_client->config ()->valueSet ("effect.order.0", "equalizer") ();
 		m_client->config ()->valueSet ("equalizer.bands", "15") ();
 	}
+}
+
+void
+EqualizerDialog::preamp_changed (int gain)
+{
+	QString s = QString::number (gain);
+	m_client->config ()->valueSet ("equalizer.preamp", s.toStdString ()) ();
 }
 
 void
@@ -171,6 +198,11 @@ EqualizerDialog::value_list (const Xmms::Dict &d)
 	}
 	
 	m_eq->setValues (ret);
+	
+	if (d.contains ("equalizer.preamp")) {
+		QString val = QString::fromStdString (d.get<std::string> ("equalizer.preamp"));
+		m_preamp->setValue (val.toInt ());
+	}
 	
 	return true;
 }
