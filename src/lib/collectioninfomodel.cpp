@@ -52,7 +52,9 @@ bool
 CollectionInfoModel::info_callback (const Xmms::List<Xmms::Dict> &list)
 {
     /* start with clearing the model */
+	beginRemoveRows (QModelIndex (), 0, rowCount ());
     clear ();
+	endRemoveRows ();
     
     /* convert the first entry in the list to get the headers */
     QHash<QString, QVariant> h = XClient::convert_dict (*list);
