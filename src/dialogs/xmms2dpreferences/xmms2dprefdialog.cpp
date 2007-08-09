@@ -58,8 +58,7 @@ Xmms2dPrefDialog::Xmms2dPrefDialog (QWidget *parent, XClient *client_)
 
 Xmms2dPrefDialog::~Xmms2dPrefDialog ()
 {
-	// destroing locked QMutex could make probs, hence unlock it
-	dataChanging.unlock ();
+
 }
 
 void Xmms2dPrefDialog::clickedBtnBox (QAbstractButton* btn)
