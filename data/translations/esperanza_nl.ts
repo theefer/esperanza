@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="nl_NL">
+<defaultcodec></defaultcodec>
 <context>
     <name>AddServerDialog</name>
     <message>
         <location filename="ui/serverdialog.cpp" line="137"/>
         <source>Add a new server</source>
-        <translation type="unfinished">Voeg een nieuwe server toe</translation>
+        <translation>Voeg een nieuwe server toe</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="140"/>
@@ -15,7 +16,7 @@
     <message>
         <location filename="ui/serverdialog.cpp" line="145"/>
         <source>Path</source>
-        <translation type="unfinished">Server adres</translation>
+        <translation>Server adres</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="150"/>
@@ -30,7 +31,7 @@
     <message>
         <location filename="ui/serverdialog.cpp" line="140"/>
         <source>Name</source>
-        <translation type="unfinished">Naam</translation>
+        <translation>Naam</translation>
     </message>
 </context>
 <context>
@@ -71,7 +72,7 @@
     <message>
         <location filename="lib/collectioninfomodel.cpp" line="73"/>
         <source>[ All ]</source>
-        <translation type="unfinished"></translation>
+        <translation>[ Alles ]</translation>
     </message>
 </context>
 <context>
@@ -79,12 +80,12 @@
     <message>
         <location filename="ui/filedialog.cpp" line="58"/>
         <source>Select music files</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer muziek bestanden</translation>
     </message>
     <message>
         <location filename="ui/filedialog.cpp" line="75"/>
         <source>Select music directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer muziek map</translation>
     </message>
 </context>
 <context>
@@ -100,7 +101,7 @@
     <message>
         <location filename="ui/preferencessupport.cpp" line="60"/>
         <source>Press a key:</source>
-        <translation type="unfinished">Druk een toets als sneltoest:</translation>
+        <translation>Druk een toets als sneltoest:</translation>
     </message>
     <message>
         <location filename="ui/preferencessupport.cpp" line="94"/>
@@ -176,32 +177,32 @@
     <message>
         <location filename="ui/lastfm.cpp" line="132"/>
         <source>Artists that are similar to ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Artiest zoals ...</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="137"/>
         <source>Most played tracks by ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Meest gespeelde nummer ...</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="142"/>
         <source>Most played albums by ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Meest gespeelde albums ...</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="176"/>
         <source>Open artist page at Last.fm</source>
-        <translation type="unfinished"></translation>
+        <translation>Open artiest op Last.fm</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="179"/>
         <source>Open artist page at Musicbrainz</source>
-        <translation type="unfinished"></translation>
+        <translation>Open artiest op Musicbrainz</translation>
     </message>
     <message>
         <location filename="ui/lastfm.cpp" line="183"/>
         <source>Search for artist on OiNK</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek voor artiest op OiNK</translation>
     </message>
 </context>
 <context>
@@ -244,7 +245,7 @@
     <message>
         <location filename="ui/medialibdialog.cpp" line="99"/>
         <source>Display unavailable entries</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon onbeschikbare nummers</translation>
     </message>
 </context>
 <context>
@@ -260,7 +261,7 @@
     <message>
         <location filename="ui/panebrowserview.cpp" line="72"/>
         <source>[ All ]</source>
-        <translation type="unfinished"></translation>
+        <translation>[ Alles ]</translation>
     </message>
 </context>
 <context>
@@ -353,37 +354,37 @@
     <message>
         <location filename="ui/playerwidget.cpp" line="416"/>
         <source>Search medialib</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek in bibliotheek</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="421"/>
         <source>Add URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg URL toe</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="431"/>
         <source>Stream directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Stream directory</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="435"/>
         <source>About Esperanza</source>
-        <translation type="unfinished"></translation>
+        <translation>Over Esperanza</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="517"/>
         <source>URL dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg URL toe</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="517"/>
         <source>Enter URL:</source>
-        <translation type="unfinished"></translation>
+        <translation>URL:</translation>
     </message>
     <message>
         <location filename="ui/playerwidget.cpp" line="629"/>
         <source>Server died. Esperanza will close.</source>
-        <translation type="unfinished"></translation>
+        <translation>De server is gestopt. Esperanza wordt nu afgesloten.</translation>
     </message>
 </context>
 <context>
@@ -436,7 +437,7 @@
     <message>
         <location filename="ui/preferences.cpp" line="44"/>
         <source>Autostart xmms2d if it&apos;s not running</source>
-        <translation type="unfinished">Autostart xmms2d wanneer deze niet draait</translation>
+        <translation>Autostart xmms2d wanneer deze niet draait</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="45"/>
@@ -456,12 +457,12 @@
     <message>
         <location filename="ui/preferences.cpp" line="48"/>
         <source>Show the server browser on startup</source>
-        <translation type="unfinished">Spring naar huidige nummer bij nummerwissel</translation>
+        <translation>Toon serverbrowser bij het opstarten</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="49"/>
         <source>Jump to the current entry in the playlist on song change</source>
-        <translation type="unfinished">Gebruik compacte (saaie) speellijst modus</translation>
+        <translation>Spring naar huidige nummer bij nummerwissel</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="50"/>
@@ -471,7 +472,7 @@
     <message>
         <location filename="ui/preferences.cpp" line="51"/>
         <source>Show album art under artist</source>
-        <translation type="unfinished">Toon ook een stop knop</translation>
+        <translation>Toon album afbeelding onder artiest</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="52"/>
@@ -481,22 +482,22 @@
     <message>
         <location filename="ui/preferences.cpp" line="53"/>
         <source>Show time remaining instead of elapsed</source>
-        <translation type="unfinished">Grootte van album afbeelding cache in kb</translation>
+        <translation>Gebruik aflopende tijd</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="54"/>
         <source>Size of album art cache in kB</source>
-        <translation type="unfinished">Te tonen waardes in context rij (komma gescheiden)</translation>
+        <translation>Grootte van album afbeelding cache in kb</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="55"/>
         <source>Information to be shown in the context area</source>
-        <translation type="unfinished">Toon het contextvak in een felle kleur</translation>
+        <translation>Te tonen waardes in context rij (komma gescheiden)</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="56"/>
         <source>Draw the context area in a lighter color</source>
-        <translation type="unfinished">Toon de verloop balk in een lichte kleur</translation>
+        <translation>Toon het contextvak in een lichte kleur</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="57"/>
@@ -506,12 +507,12 @@
     <message>
         <location filename="ui/preferences.cpp" line="58"/>
         <source>Show the volume slider in a popup</source>
-        <translation type="unfinished">Verander volume interactief, kan problemen veroorzaken.</translation>
+        <translation>Toon het volume in een popup</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="59"/>
         <source>Change volume interactively (could cause problems)</source>
-        <translation type="unfinished">Toon oink zoeken in last.fm scherm</translation>
+        <translation>Verander volume interactief (kan problemen veroorzaken)</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="61"/>
@@ -526,47 +527,47 @@
     <message>
         <location filename="ui/preferences.cpp" line="45"/>
         <source>Ignore the desktop settings (use this if everything is black)</source>
-        <translation type="unfinished"></translation>
+        <translation>Negeer desktop kleur instellingen (gebruik dit als alles zwart is)</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="50"/>
         <source>Use compact playlist mode (no context area)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik compacte (saaie) speellijst modus</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="52"/>
         <source>Show a stop button</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon ook een stop knop</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="57"/>
         <source>Paint the progress bar in a lighter color</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon de verloop balk in een lichte kleur</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="60"/>
         <source>Show OiNK search in Last.FM view</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon OiNK zoeken in Last.fm venster</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="61"/>
         <source>Load artists and albums for completion in Medialib window</source>
-        <translation type="unfinished"></translation>
+        <translation>Laadt artiesten en albums</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="63"/>
         <source>Show icon in system tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon systeem icoon</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="64"/>
         <source>Show popup notification on song change</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon notificatie bij nummer wissel</translation>
     </message>
     <message>
         <location filename="ui/preferences.cpp" line="260"/>
         <source>Are your sure you want to reset the preferences to default values?</source>
-        <translation type="unfinished"></translation>
+        <translation>Weet u zeker dat u de standaard instellingen wilt herstellen?</translation>
     </message>
 </context>
 <context>
@@ -576,34 +577,34 @@
         <source>Welcome to Esperanza
 Please select a server to connect to.
 You may disable this dialog in the preferences.</source>
-        <translation type="unfinished">Welkom bij een XMMS2 client
+        <translation>Welkom bij Esperanza
 Selecteer de server waarmee verbinding moet worden gemaakt.
-Het is mogelijk om deze dialoog uit te schakelen in de instellingen</translation>
+Het is mogelijk om deze dialoog uit te schakelen in de instellingen.</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="73"/>
         <source>Connect</source>
-        <translation type="unfinished">verbindt</translation>
+        <translation>Verbindt</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="77"/>
         <source>Quit</source>
-        <translation type="unfinished">sluit</translation>
+        <translation>Sluit</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="168"/>
         <source>Sorry, that name is already taken.</source>
-        <translation type="unfinished">Die naam is al in gebruik!</translation>
+        <translation>Sorry, die naam is al in gebruik.</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="186"/>
         <source>Sorry, you can&apos;t remove autodetected servers!</source>
-        <translation type="unfinished">Kan geen mDNS server verwijderen!</translation>
+        <translation>Sorry, je kan geen mDNS server verwijderen!</translation>
     </message>
     <message>
         <location filename="ui/serverdialog.cpp" line="192"/>
         <source>Sorry, you can&apos;t remove the local server!</source>
-        <translation type="unfinished">Kan geen lokaal item verwijderen!</translation>
+        <translation>Sorry, je kan geen lokaal item verwijderen!</translation>
     </message>
 </context>
 <context>
@@ -611,32 +612,32 @@ Het is mogelijk om deze dialoog uit te schakelen in de instellingen</translation
     <message>
         <location filename="ui/streamingdialog.cpp" line="41"/>
         <source>Esperanza - Stream Directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Esperanza - Stream Directory</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="50"/>
         <source>My bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Mijn bladwijzers</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="52"/>
         <source>Last.Fm radio</source>
-        <translation type="unfinished"></translation>
+        <translation>Last.Fm radio</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="54"/>
         <source>Icecast directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Icecast directory</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="92"/>
         <source>Bookmark this URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg url toe aan bladwijzers</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="93"/>
         <source>URL:</source>
-        <translation type="unfinished"></translation>
+        <translation>URL:</translation>
     </message>
 </context>
 <context>
@@ -644,42 +645,42 @@ Het is mogelijk om deze dialoog uit te schakelen in de instellingen</translation
     <message>
         <location filename="ui/streamingdialog.cpp" line="326"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Ververs</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="161"/>
         <source>Reset</source>
-        <translation type="unfinished">Herstel</translation>
+        <translation>Herstel</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="190"/>
         <source>Add to playlist</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg toe aan speellijst</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="191"/>
         <source>Add to bookmarks</source>
-        <translation type="unfinished"></translation>
+        <translation>Voeg toe aan bladwijzers</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="239"/>
         <source>Name</source>
-        <translation type="unfinished">Naam</translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="240"/>
         <source>Genre</source>
-        <translation type="unfinished"></translation>
+        <translation>Genre</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="241"/>
         <source>Bitrate</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitrate</translation>
     </message>
     <message>
         <location filename="ui/streamingdialog.cpp" line="318"/>
         <source>Downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>Downloaden</translation>
     </message>
 </context>
 <context>
