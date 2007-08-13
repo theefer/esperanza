@@ -1,4 +1,11 @@
-Version 0.4.0 (TBA)
+Version 0.4.0 (2007-08-13)
+	* Updated russian translation
+	* Fixed a mutex warning in the server prefs
+	* Fixed a text cut-off in the first time wizard
+	* Fixed a segfault in windows builds
+	* Fixed problems with the PATH parser
+
+Version 0.4.0rc1 (2007-08-01)
 	* Rewrite of The PlayerWidget class
 	* Reorganization of sources
 	* First-time wizard
