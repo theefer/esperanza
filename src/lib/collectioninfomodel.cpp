@@ -62,7 +62,9 @@ void
 CollectionInfoModel::set_data (const QList < QHash < QString, QVariant > > &data)
 {
 	/* Clear the model */
-	clear ();
+	beginRemoveRows (QModelIndex (), 0, rowCount ());
+    clear ();
+	endRemoveRows ();
 	
     /* take the headers and add the columns */
     QStringList s = data[0].keys ();
