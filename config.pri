@@ -7,6 +7,7 @@ macx {
 	INCLUDEPATH += /opt/local/include # ugly
 	DEFINES += HAVE_DNSSD
 	LIBS += -lboost_signals
+	QMAKE_LFLAGS_SHAPP += -bind_at_load
 }
 
 !win32 {
