@@ -47,7 +47,10 @@
 #include "esperanza_plugin.h"
 
 
-PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent), macMenuBar(0)
+PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
+#ifdef Q_WS_MAC
+, macMenuBar(0)
+#endif
 {
 	QSettings s;
 
