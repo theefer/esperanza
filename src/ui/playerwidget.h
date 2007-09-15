@@ -116,6 +116,9 @@ class PlayerWidget : public QMainWindow
 		SystemTray *m_systray;
 		MiniMode *m_mini;
 		
+		#ifdef Q_WS_MAC
+		QMenuBar macMenuBar;
+		#endif
 		QMenu m_infomenu;
 		QMenu m_playlistmenu;
 		QMenu m_settingsmenu;

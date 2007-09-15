@@ -46,7 +46,11 @@
 #include "shortcutmanager.h"
 #include "esperanza_plugin.h"
 
+
 PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (parent)
+#ifdef Q_WS_MAC
+, macMenuBar(0)
+#endif
 {
 	QSettings s;
 
@@ -194,6 +198,16 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	/* Process the plugins ... */
 	process_dialog_plugin ();
+
+	#ifdef Q_WS_MAC
+	m_infomenu.setTitle(tr("Info"));
+	// m_playlistmenu.setTitle(tr("Playlist"));
+	m_settingsmenu.setTitle(tr("Extras"));
+	
+	macMenuBar.addMenu(&m_infomenu);
+	// macMenuBar.addMenu(&m_playlistmenu);
+	macMenuBar.addMenu(&m_settingsmenu);
+	#endif
 }
 
 void
