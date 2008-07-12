@@ -92,7 +92,7 @@
      </font>
     </property>
     <property name="text" >
-     <string>Do not quit esperanza on close, rather then hide it.</string>
+     <string>Hide Esperanza on close instead of terminating it.</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="singleOrDoubleClick" >
