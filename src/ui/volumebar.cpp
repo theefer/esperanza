@@ -24,7 +24,7 @@
 #include <QApplication>
 #include <QSettings>
 
-VolumeButton::VolumeButton (QWidget *parent, XClient *client) : QWidget (parent)
+VolumeButton::VolumeButton (QWidget *parent, XClient *client) : QWidget (parent), m_channels (0)
 {
 	m_client = client;
 
@@ -121,7 +121,7 @@ VolumeButton::set_volume (int vol)
 {
 	if (m_channels == 1) {
 		m_client->playback ()->volumeSet ("master", vol) ();
-	} else {
+	} else if (m_channels == 2) {
 		m_client->playback ()->volumeSet ("left", vol) ();
 		m_client->playback ()->volumeSet ("right", vol) ();
 	}
