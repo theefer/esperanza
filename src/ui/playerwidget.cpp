@@ -58,7 +58,6 @@ PlayerWidget::PlayerWidget (QWidget *parent, XClient *client) : QMainWindow (par
 
 	setWindowTitle ("Esperanza");
 	setFocusPolicy (Qt::StrongFocus);
-	setAttribute (Qt::WA_DeleteOnClose);
 
 	QWidget *main_w = new QWidget (this);
 	setCentralWidget (main_w);
