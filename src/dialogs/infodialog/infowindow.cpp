@@ -26,7 +26,7 @@
 #include <QFile>
 #include <QByteArray>
 
-InfoBrowser::InfoBrowser (QWidget *parent) : QTextBrowser (parent)
+InfoBrowser::InfoBrowser (QWidget *parent) : QTextBrowser (parent), m_current_id (0)
 {
 }
 

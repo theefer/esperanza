@@ -19,7 +19,7 @@
 
 #include <QXmlContentHandler>
 
-LastFmHandler::LastFmHandler () : QXmlDefaultHandler ()
+LastFmHandler::LastFmHandler () : QXmlDefaultHandler (), m_type (NONE)
 {
 }
 

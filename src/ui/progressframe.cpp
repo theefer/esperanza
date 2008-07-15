@@ -41,7 +41,8 @@
 
 ProgressFrame::ProgressFrame (QWidget *parent, XClient *client, bool seek) :
     QFrame( parent ),
-    m_reverse( false )
+    m_reverse( false ),
+    m_move( false )
 {
 	m_client = client;
     m_maxValue = 0;
