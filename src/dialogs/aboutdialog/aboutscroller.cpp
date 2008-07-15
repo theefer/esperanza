@@ -44,7 +44,7 @@ const char *text =
 "Gianluca Romanin\n"
 "j_zar@openjay.org\n"
 "\n"
-"Anders Gustafsson\n"
+"Anders Waldenborg\n"
 "andersg@xmms.org\n"
 "\n"
 "Dan Chokola\n"
