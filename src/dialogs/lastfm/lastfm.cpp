@@ -32,7 +32,6 @@
 #include <QDesktopServices>
 
 #define LASTFM_SEARCH_URL "http://www.last.fm/music/?m=artists&q=%1"
-#define OINK_SEARCH_URL   "http://oink.cd/browse.php?search=%1"
 #define MUSICBRAINZ_URL   "http://musicbrainz.org/artist/%1.html"
 
 LastFmDialog::LastFmDialog (QWidget *parent, XClient *client) : QDialog (parent)
@@ -195,10 +194,6 @@ LastFmDialog::link_context (const QString &l)
 		ac = m.addAction (tr ("Open artist page at Musicbrainz"));
 		ac->setData (4);
 	}
-	if (s.value ("lastfm/showoink").toBool ()) {
-		ac = m.addAction (tr ("Search for artist on OiNK"));
-		ac->setData (5);
-	}
 
 	ac = m.exec (QCursor::pos ());
 
@@ -211,8 +206,6 @@ LastFmDialog::link_context (const QString &l)
 		QDesktopServices::openUrl (QUrl (a.prop ("url")));
 	} else if (ac->data ().toInt () == 4) {
 		QDesktopServices::openUrl (QUrl (QString (MUSICBRAINZ_URL).arg (a.prop ("mbid"))));
-	} else if (ac->data ().toInt () == 5) {
-		QDesktopServices::openUrl (QUrl (QString (OINK_SEARCH_URL).arg (a.name ())));
 	}
 
 
