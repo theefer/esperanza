@@ -130,11 +130,10 @@ BrowseModel::list_cb (const Xmms::List< Xmms::Dict > &res)
 				}
 				name += QString::fromStdString (d.get<std::string> ("title"));
 			} else {
-				const char *tmp;
+				std::string tmp;
 				QString tmp2 = path.mid (path.lastIndexOf ("/")+1);
-				tmp = xmmsc_result_decode_url (NULL, tmp2.toAscii ());
-				name = QString::fromUtf8 (tmp);
-				free ((char *)tmp);
+				tmp = Xmms::decodeUrl (tmp2.toAscii ());
+				name = QString::fromUtf8 (tmp.c_str ());
 			}
 		}
 
